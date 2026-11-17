@@ -5,9 +5,9 @@ namespace App\Database\Migrations;
 use CodeIgniter\Database\Migration;
 
 /**
- * Lista de advogados com acesso a registros restritos (privacidade granular).
+ * Lista de profissionais com acesso a registros restritos (privacidade granular).
  *
- * Tabela polimórfica única para processos, clientes e contratos. Quem está aqui
+ * Tabela polimórfica única para clientes e contratos. Quem está aqui
  * tem acesso de leitura e edição ao registro; o responsável (`responsavel_id`
  * da própria entidade) e os usuários com `privacidade.bypass` não precisam
  * constar nela.
@@ -18,7 +18,7 @@ class CreateAcessosEntidades extends Migration
     {
         $this->forge->addField([
             'id'            => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'entidade_tipo' => ['type' => 'ENUM', 'constraint' => ['processo', 'cliente', 'contrato']],
+            'entidade_tipo' => ['type' => 'ENUM', 'constraint' => ['cliente', 'contrato']],
             'entidade_id'   => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true],
             'user_id'       => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true],
             'concedido_por' => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'null' => true],

@@ -7,16 +7,16 @@
     @change="emit('update:modelValue', ($event.target as HTMLSelectElement).value)"
   >
     <option value="">{{ placeholder }}</option>
-    <option v-for="adv in advogados" :key="adv.id" :value="String(adv.id)">{{ adv.username }}</option>
+    <option v-for="adv in profissionais" :key="adv.id" :value="String(adv.id)">{{ adv.username }}</option>
   </select>
 </template>
 
 <script setup lang="ts">
 /**
- * Seleção do advogado responsável (privacidade granular) para clientes e
+ * Seleção do profissional responsável (privacidade granular) para clientes e
  * contratos, e filtro por responsável nas listagens.
  */
-import { useAdvogados } from '../../../composables/useAdvogados'
+import { useProfissionais } from '../../../composables/useProfissionais'
 
 defineProps({
   id: { type: String, default: 'responsavel_id' },
@@ -28,5 +28,5 @@ defineProps({
 
 const emit = defineEmits(['update:modelValue'])
 
-const { advogados } = useAdvogados()
+const { profissionais: profissionais } = useProfissionais()
 </script>

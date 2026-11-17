@@ -22,16 +22,16 @@ class PlanoContasModeloService
 {
     /**
      * Plano padrão do sistema: estrutura do Anexo 7 da ITG 1000 (pequena
-     * empresa) com as contas específicas de um escritório de advocacia.
+     * empresa) com as contas específicas de uma clínica.
      */
-    public const MODELO_PADRAO = 'itg-1000-advocacia';
+    public const MODELO_PADRAO = 'itg-1000-clinica';
 
     /**
      * Modelos disponíveis, com o rótulo exibido na tela. O padrão vem primeiro.
      */
     private const MODELOS = [
-        self::MODELO_PADRAO     => 'Padrão ITG 1000 - Escritório de advocacia (valores de clientes segregados)',
-        'professional-services' => 'Escritório / prestação de serviços profissionais (valores de clientes segregados)',
+        self::MODELO_PADRAO     => 'Padrão ITG 1000 - Clínica (valores de clientes segregados)',
+        'professional-services' => 'Clínica / prestação de serviços profissionais (valores de clientes segregados)',
         'generic'               => 'Genérico (cinco classes)',
     ];
 
@@ -88,7 +88,7 @@ class PlanoContasModeloService
 
         $db->table('acc_entities')->insert([
             'id'            => $entityId,
-            'name'          => 'Cardoso & Bruno Advogados',
+            'name'          => 'Clínica Saúde',
             'currency'      => 'BRL',
             'default_basis' => 'ACCRUAL',
             'created_at'    => $agora,

@@ -1,7 +1,7 @@
 # Templates do site público
 
 Formato de um template instalável (épico #641, issue #644). Um template é **tema visual +
-conteúdo inicial**; o conteúdo do escritório vive no banco e não pertence ao template.
+conteúdo inicial**; o conteúdo da clínica vive no banco e não pertence ao template.
 
 ## Origem e motor de views
 
@@ -40,7 +40,7 @@ A validação oficial é `App\Libraries\Site\Template\ManifestValidator`.
 | `nome` | sim | até 100 caracteres |
 | `versao` | sim | `X.Y.Z` |
 | `autor`, `descricao` | não | até 100 / 255 |
-| `ordojuris` | não* | `>=X.Y.Z`; se a instalação for mais antiga, o template é recusado. *Sem ele, só um aviso. |
+| `sistema` | não* | `>=X.Y.Z`; se a instalação for mais antiga, o template é recusado. *Sem ele, só um aviso. |
 | `motor` | sim | `php` ou `twig` |
 | `layouts` | sim | lista de nomes de layout (mínimo 1) |
 | `menus` | não | locais de menu que o template usa |
@@ -141,7 +141,7 @@ Preparo dos `dados` por tipo de campo:
 
 **Helpers / funções Twig** (mesmos nomes): `site_config(chave, padrao)`, `site_menu(local)` (árvore com
 `rotulo, href, destaque, filhos`; itens de página em rascunho não aparecem), `site_texto(chave, padrao)`
-(o texto editado pelo escritório vence o `textos` do manifesto) e `asset(caminho)` no Twig /
+(o texto editado pela clínica vence o `textos` do manifesto) e `asset(caminho)` no Twig /
 `site_asset(caminho)` no PHP (URL em `templates/<slug>/assets/`).
 
 **Carrossel (Clássico):** a seção `carrossel` usa o Bootstrap Carousel já carregado pelo shell. Campos: `sobretitulo`,
@@ -250,9 +250,9 @@ atualize-a sempre que mudar o texto da política). A seção `dados_controlador`
 `lgpd.encarregado_email`), omitindo o que estiver vazio. As páginas `politica-de-privacidade` e `termos-de-uso`
 vêm no seed e entram no menu `rodape` e no sitemap.
 - **JSON-LD:** `site_jsonld()` (e a função Twig `site_jsonld()`) devolve o `<script type="application/ld+json">`
-  de um `LegalService` com `identidade.nome`, `contato.telefone`, `contato.email`, `redes.*` (só `http(s)`)
+  de um `MedicalClinic` com `identidade.nome`, `contato.telefone`, `contato.email`, `redes.*` (só `http(s)`)
   e as unidades de `contato.enderecos` que tenham `rua`/`cidade`/`uf`/`cep`. Campo ausente é omitido; sem
-  nome do escritório, não gera nada.
+  nome da clínica, não gera nada.
 
 **Sitemap (`/sitemap.xml`):** páginas publicadas com `exibir_sitemap = 1` (usando `prioridade_sitemap` e
 `changefreq` de cada uma; `lastmod` é a data mais recente entre a página e suas seções) + notícias
@@ -282,7 +282,7 @@ Algumas rotas não são "páginas de conteúdo", mas também vêm do template (`
   `<meta name="robots" content="noindex, nofollow">`.
 - **Tela ausente:** se o template ativo não tem `pages/<tela>`, usa-se a do Clássico (aviso no log).
 - **Textos:** rótulos, placeholders e mensagens (inclusive as de JavaScript) são `textos.*` do
-  manifesto (`noticias.*`, `cliente.*`, `painel.*`), editáveis pelo escritório. Textos de JavaScript
+  manifesto (`noticias.*`, `cliente.*`, `painel.*`), editáveis pela clínica. Textos de JavaScript
   chegam como um objeto `T` impresso com `json_encode(..., JSON_HEX_TAG | JSON_HEX_AMP)`; textos com
   marcação (`noticias.hero_titulo`) passam por `HtmlSanitizer::inline()`.
 - **Filtros rápidos de notícias:** lista de termos em `noticias.filtros` (configuração JSON, grupo
@@ -294,7 +294,7 @@ Algumas rotas não são "páginas de conteúdo", mas também vêm do template (`
 
 **Mídias:** `site_midia(id)` monta a URL a partir de `Config\SiteTemplate::$prefixoUploads`
 (`public/uploads/site`); o logo também alimenta o e-mail do link de acesso do cliente
-(`emails/cliente_magic_link`), que usa o nome do escritório em vez de texto fixo.
+(`emails/cliente_magic_link`), que usa o nome da clínica em vez de texto fixo.
 
 ## Tema: cores e fontes sobrescrevíveis
 
@@ -312,7 +312,7 @@ O template declara os tokens em `template.json → tema`:
   `--font-y`. Para usar a cor com transparência, o CSS usa `rgba(var(--x-rgb), 0.5)` (o `:root` define os
   canais RGB padrão e o tema os recalcula ao trocar a cor). **Não escreva a cor em hexadecimal/rgba fora do
   `:root`**: um teste (`TemaTest`) falha se o CSS do Clássico tiver cor de token fixa.
-- **Personalização:** o escritório grava `tema.cores.<token>` (hexadecimal `#RGB`/`#RRGGBB`) e
+- **Personalização:** a clínica grava `tema.cores.<token>` (hexadecimal `#RGB`/`#RRGGBB`) e
   `tema.fontes.<token>` (uma família da lista `Config\SiteTemplate::$fontesPermitidas`). Escolher o valor
   padrão não conta como personalização; valor vazio volta ao padrão.
 - **Saída no HTML:** `site_tema_css()` devolve `:root{...}` **só dos tokens trocados** (revalidado: hexadecimal
@@ -389,11 +389,11 @@ slug; ids de mídia e configurações de imagem ficam de fora, porque não valem
 |---|---|---|
 | `site.conteudo` | páginas, seções, menus, mídias e notícias (`GET template/schema` também aceita `site.configuracoes`) | superadmin, admin |
 | `site.publicar` | `POST paginas/{id}/publicar` e `/despublicar` | superadmin, admin |
-| `site.configuracoes` | `configuracoes` e `template/tema` (dados do escritório, SEO, integrações, tema) | superadmin, admin |
+| `site.configuracoes` | `configuracoes` e `template/tema` (dados da clínica, SEO, integrações, tema) | superadmin, admin |
 | `site.templates` | `templates*` (instalar, ativar, exportar, remover) | só superadmin |
 
 Cada rota de `api/v2/site/admin` leva os filtros `auth`, `modulo:site` e `permission:<acima>`. Quem tem a permissão por
-grupo ou por usuário (Shield) pode receber qualquer uma delas separadamente. `advogado` e `estagiario` não recebem
+grupo ou por usuário (Shield) pode receber qualquer uma delas separadamente. `profissional` e `recepcao` não recebem
 nenhuma por padrão.
 
 **Módulo "Site"** (slug `site`): entra no catálogo de módulos (ativo por padrão; migration `CadastraModuloSite`). Desligado,

@@ -1,6 +1,6 @@
 <?php /** @var array $dados */
-// Equipe do escritório. Ordem de preferência: membros cadastrados na seção; usuários do sistema
-// marcados com "Exibir em Quem Somos"; por fim a lista `identidade.advogados` (nome, cargo, OAB),
+// Equipe da clínica. Ordem de preferência: membros cadastrados na seção; usuários do sistema
+// marcados com "Exibir em Quem Somos"; por fim a lista `identidade.profissionais` (nome, cargo, registro),
 // a mesma que alimenta o JSON-LD.
 $membros = array_values(array_filter(
     (array) ($dados['membros'] ?? []),
@@ -11,7 +11,7 @@ if ($membros === []) {
 }
 if ($membros === []) {
     $membros = array_values(array_filter(
-        (array) site_config('identidade.advogados', []),
+        (array) site_config('identidade.profissionais', []),
         static fn ($m): bool => is_array($m) && trim((string) ($m['nome'] ?? '')) !== ''
     ));
 }
@@ -29,7 +29,7 @@ $rotulosLinks = ['lattes' => 'Currículo Lattes', 'linkedin' => 'LinkedIn'];
 <?php foreach ($membros as $i => $m): ?>
 <?php $foto = is_array($m['foto'] ?? null) ? $m['foto'] : null; ?>
                     <div class="col-md-6">
-                        <article class="equipe-card" id="advogado-<?= $i + 1 ?>">
+                        <article class="equipe-card" id="profissional-<?= $i + 1 ?>">
 <?php if (! empty($foto['url'])): ?>
                             <?= site_imagem($foto, ['alt' => ($foto['alt'] ?? '') !== '' ? $foto['alt'] : $m['nome'], 'class' => 'equipe-foto', 'sizes' => '220px']) ?>
 <?php endif ?>
@@ -37,8 +37,8 @@ $rotulosLinks = ['lattes' => 'Currículo Lattes', 'linkedin' => 'LinkedIn'];
 <?php if (($m['cargo'] ?? '') !== ''): ?>
                             <p class="equipe-cargo"><?= esc($m['cargo']) ?></p>
 <?php endif ?>
-<?php if (($m['oab'] ?? '') !== ''): ?>
-                            <p class="equipe-oab"><?= esc(site_texto('equipe.oab', 'OAB')) ?> <?= esc($m['oab']) ?></p>
+<?php if (($m['registro'] ?? '') !== ''): ?>
+                            <p class="equipe-registro"><?= esc(site_texto('equipe.registro', 'Registro')) ?> <?= esc($m['registro']) ?></p>
 <?php endif ?>
 <?php if (($m['curriculo'] ?? '') !== ''): ?>
                             <p class="equipe-bio"><?= esc($m['curriculo']) ?></p>

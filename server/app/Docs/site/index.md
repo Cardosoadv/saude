@@ -1,13 +1,13 @@
 ---
 titulo: Site
-resumo: Editar o site público do escritório: páginas, menus, imagens, aparência, notícias e templates.
+resumo: Editar o site público da clínica: páginas, menus, imagens, aparência, notícias e templates.
 ordem: 150
 modulo: site
 permissao: site.conteudo
 palavras_chave: [site, portal, público, CMS]
 ---
 
-O grupo **Site** do menu edita o site público do escritório. O que cada um vê depende das permissões:
+O grupo **Site** do menu edita o site público da clínica. O que cada um vê depende das permissões:
 
 | Tela | Para que serve | Permissão |
 |---|---|---|

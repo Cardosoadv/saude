@@ -7,7 +7,6 @@ namespace App\Controllers\ApiV2;
 use App\Controllers\BaseController;
 use App\Services\TarefasService;
 use App\Services\UsuariosService;
-use App\Traits\AcessoProcessoTrait;
 use App\Traits\VerificaPermissoesTrait;
 use CodeIgniter\API\ResponseTrait;
 use Exception;
@@ -18,7 +17,6 @@ use Exception;
  * Fornece endpoints JSON para listagem, criação, atualização e exclusão de tarefas.
  * Utilizado pelo frontend via AJAX.
  *
- * @author Cardoso
  * @version 1.0.1
  * @since 2026-04-12
  */
@@ -26,7 +24,6 @@ class Tarefas extends BaseController
 {
     use ResponseTrait;
     use VerificaPermissoesTrait;
-    use AcessoProcessoTrait;
 
     private TarefasService $service;
     private UsuariosService $usuariosService;
@@ -66,7 +63,7 @@ class Tarefas extends BaseController
         ];
 
         try {
-            $tarefas = $this->filtrarTarefasVisiveis($this->service->listarTarefas($filtros));
+            $tarefas = $this->service->listarTarefas($filtros);
             $tarefasComVinculos = $this->service->popularVinculos($tarefas);
 
             return $this->respond([
@@ -92,15 +89,6 @@ class Tarefas extends BaseController
         $data = $this->getRequestData(); 
         $id = $data['id_tarefa'] ?? null;
         $acao = !empty($id) ? 'edit' : 'create';
-
-        // Criar tarefa num processo (ou mover uma tarefa para ele) exige acesso ao processo.
-        $processoNovo = (int) ($data['processo_id'] ?? 0);
-        if ($processoNovo) {
-            $processoAtual = $id ? (int) ($this->service->buscarTarefa((int) $id)['processo_id'] ?? 0) : 0;
-            if ($processoNovo !== $processoAtual && ($negado = $this->acessoAoProcessoNegado($processoNovo))) {
-                return $negado;
-            }
-        }
 
         if ($acao === 'edit') {
             $allowed = $this->checkOwnership((int)$id, 'edit');
@@ -199,7 +187,7 @@ class Tarefas extends BaseController
         }
 
         try {
-            $tarefas = $this->filtrarTarefasVisiveis($this->service->obterTarefasUrgentes());
+            $tarefas = $this->service->obterTarefasUrgentes();
             return $this->respond(['success' => true, 'data' => $tarefas]);
         } catch (Exception $e) {
             return $this->respond(['success' => false, 'message' => $e->getMessage()], 500);
@@ -315,28 +303,6 @@ class Tarefas extends BaseController
      * @param string $action Ação a ser verificada ('edit', 'delete').
      * @return bool|\CodeIgniter\HTTP\ResponseInterface Retorna true se permitido, ou ResponseInterface se negado.
      */
-    /**
-     * Privacidade granular: tarefa de processo que o usuário não vê sai da lista,
-     * exceto quando ele é o responsável pela tarefa.
-     */
-    private function filtrarTarefasVisiveis(array $tarefas): array
-    {
-        $ocultos = $this->acessoEntidade()->processosOcultos();
-        if ($ocultos === null) {
-            return $tarefas;
-        }
-
-        $usuario = (int) user_id();
-
-        return array_values(array_filter($tarefas, static function ($tarefa) use ($ocultos, $usuario) {
-            $processoId = (int) ($tarefa['processo_id'] ?? 0);
-
-            return !$processoId
-                || !isset($ocultos['ids'][$processoId])
-                || (int) ($tarefa['responsavel'] ?? 0) === $usuario;
-        }));
-    }
-
     private function checkOwnership(int $id, string $action)
     {
         if (!$this->verificaPermissao($this->permissaoNecessaria, $action)) {
@@ -361,12 +327,7 @@ class Tarefas extends BaseController
             return true;
         }
 
-        // Tarefa de processo restrito: além do responsável pela tarefa, só quem acessa o processo.
-        if (!empty($tarefa['processo_id']) && $this->acessoAoProcessoNegado((int) $tarefa['processo_id'])) {
-            return $this->respond(['success' => false, 'message' => 'Tarefa não encontrada.'], 404);
-        }
-
-        // Advogados geralmente podem gerenciar todas as tarefas da banca, a menos que tenham permissão 'exclusive'.
+        // Profissionais geralmente podem gerenciar todas as tarefas da equipe, a menos que tenham permissão 'exclusive'.
         if ($this->verificaPermissao('tarefas', 'exclusive')) {
             return $this->respond(['success' => false, 'message' => 'Você só pode gerenciar suas próprias tarefas.'], 403);
         }

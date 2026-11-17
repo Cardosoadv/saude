@@ -9,7 +9,6 @@ use Exception;
 use App\Services\BaseService;
 
 /**
- * @autor Cardoso
  * @version 0.9.1
  * @since 2026-01-01
  *

@@ -13,10 +13,10 @@ palavras_chave: [configurações do site, contato, SEO, cores, fontes, aparênci
 privacidade (LGPD) e os textos fixos do site público.
 
 - **Identidade**: nome, logos, favicon, cor dos documentos e **CNPJ**. O CNPJ aparece no rodapé do site (com a
-  razão social e o registro na OAB) e na Política de Privacidade, como dado do controlador. Se os e-mails
+  razão social e o registro no conselho profissional) e na Política de Privacidade, como dado do controlador. Se os e-mails
   pedem um logo diferente do site (por exemplo, outras cores), escolha-o em **Logo dos e-mails**; vazio usa o
   **Logo**.
-- **Contato**: telefone, e-mail e **Unidades** (cada endereço do escritório, com **Adicionar unidade**).
+- **Contato**: telefone, e-mail e **Unidades** (cada endereço da clínica, com **Adicionar unidade**).
   Marque **Transformar os telefones em link do WhatsApp** para que, no site, o telefone abra uma conversa no
   WhatsApp.
 - **SEO**: título e descrição, com a **Prévia no Google** e o limite de caracteres de cada campo.
@@ -28,7 +28,7 @@ privacidade (LGPD) e os textos fixos do site público.
   Privacidade**.
 - **Textos**: os textos do template podem ser personalizados; **Restaurar padrão** volta ao original.
 
-Os dados do escritório também são usados nos documentos gerados pelo sistema.
+Os dados da clínica também são usados nos documentos gerados pelo sistema.
 Clique em **Salvar alterações**.
 
 > [!NOTA]
@@ -56,7 +56,7 @@ Sem nenhuma configuração, o site público também:
   Cliente, ficam fora);
 - publica `/llms.txt` e `/llms-full.txt`, com o resumo e o conteúdo do site em formato próprio para
   assistentes de IA;
-- inclui dados estruturados (JSON-LD) em cada página, para o Google entender o escritório e o conteúdo;
+- inclui dados estruturados (JSON-LD) em cada página, para o Google entender a clínica e o conteúdo;
 - redireciona qualquer endereço alternativo (sem `www`, com `http` ou com a subpasta do sistema) para o
   endereço oficial do site.
 

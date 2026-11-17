@@ -15,31 +15,22 @@ class CreateTarefas extends Migration
             'prioridade'        => ['type' => 'TINYINT', 'constraint' => 3, 'unsigned' => true, 'null' => false, 'default' => 5],
             'detalhes'          => ['type' => 'TEXT', 'null' => true],
             'responsavel'       => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'null' => true],
-            'processo_id'       => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'null' => true],
             'cliente_id'        => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'null' => true],
-            'caso_id'           => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'null' => true],
             'status'            => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'null' => true],
             'notificar'         => ['type' => 'TINYINT', 'default' => 0],
-            'checklist_item_id' => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'null' => true],
             'created_at'        => ['type' => 'DATETIME', 'null' => true],
             'updated_at'        => ['type' => 'DATETIME', 'null' => true],
             'deleted_at'        => ['type' => 'DATETIME', 'null' => true],
         ]);
         $this->forge->addPrimaryKey('id_tarefa');
-        $this->forge->addKey('processo_id');
-        $this->forge->addKey(['processo_id', 'status']);
         $this->forge->addKey('cliente_id');
-        $this->forge->addKey('caso_id');
-        $this->forge->addKey('checklist_item_id');
         $this->forge->addKey('deleted_at', false, false, 'idx_tarefas_deleted');
         $this->forge->addKey('responsavel', false, false, 'idx_tarefas_responsavel');
         $this->forge->addKey('status', false, false, 'idx_tarefas_status');
         $this->forge->addKey(['prazo', 'status'], false, false, 'idx_tarefas_prazo');
 
         $this->forge->addForeignKey('responsavel', 'users', 'id', 'SET NULL', 'CASCADE');
-        $this->forge->addForeignKey('processo_id', 'processos', 'id_processo', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('cliente_id', 'clientes', 'id_cliente', 'CASCADE', 'CASCADE');
-        $this->forge->addForeignKey('caso_id', 'casos', 'id_caso', 'CASCADE', 'CASCADE');
 
         $this->forge->createTable('tarefas', true);
     }

@@ -1,6 +1,6 @@
 /**
  * Tipos da API de leitura da documentação interna (`api/v2/documentacao/*`).
- * Contrato: docs/api-documentacao.md (ordojuris).
+ * Contrato: docs/api-documentacao.md.
  */
 
 export interface DocResposta<T> {
@@ -64,7 +64,7 @@ export interface DocResultadoBusca {
   trecho: string
 }
 
-// ---------------------------------------------------------------- edição (Docs 3, ordojuris#711)
+// ---------------------------------------------------------------- edição (Docs 3)
 
 /** Item da lista de edição: páginas do banco e de arquivo. */
 export interface DocItemEdicao {

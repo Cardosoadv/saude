@@ -307,8 +307,8 @@ class ExtratoRepositoryTest extends CIUnitTestCase
     public function testGetSaldosAnterioresAgrupados()
     {
         // 1. Setup Data
-        // User 1 (Advogado)
-        // User 2 (Advogado)
+        // User 1 (Profissional)
+        // User 2 (Profissional)
 
         // Receipt with rateio (User 1: 300, User 2: 200)
         $this->db->table('fin_pgto_receitas')->insert([
@@ -373,7 +373,7 @@ class ExtratoRepositoryTest extends CIUnitTestCase
 
     /**
      * Regressão: um lançamento com rateio PARCIAL (que não soma 100% do valor,
-     * ex.: uma parte fica sem atribuição explícita a nenhum advogado) não pode
+     * ex.: uma parte fica sem atribuição explícita a nenhum profissional) não pode
      * fazer o "total" do saldo anterior perder a diferença.
      *
      * Antes da correção, o total era reconstruído somando apenas os valores

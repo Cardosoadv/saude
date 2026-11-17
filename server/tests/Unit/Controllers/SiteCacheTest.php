@@ -143,57 +143,57 @@ class SiteCacheTest extends CIUnitTestCase
 
     public function testPaginaEmCacheNaoConsultaOBanco(): void
     {
-        $this->assertTrue($this->get('pagina', ['direito-civil'])->isOK());
-        $this->removeDireto('direito-civil');
+        $this->assertTrue($this->get('pagina', ['consultas'])->isOK());
+        $this->removeDireto('consultas');
 
-        $r = $this->get('pagina', ['direito-civil']);
+        $r = $this->get('pagina', ['consultas']);
         $this->assertTrue($r->isOK(), 'servida do cache, sem a página no banco');
-        $this->assertStringContainsString('Direito Civil', $r->getBody());
+        $this->assertStringContainsString('Consultas', $r->getBody());
     }
 
     public function testAlteracaoPublicadaAparecePorEvento(): void
     {
-        $this->get('pagina', ['direito-civil']);
-        $id = (int) $this->db->table('site_paginas')->where('slug', 'direito-civil')->get()->getRow()->id;
+        $this->get('pagina', ['consultas']);
+        $id = (int) $this->db->table('site_paginas')->where('slug', 'consultas')->get()->getRow()->id;
 
         (new SitePaginaService())->atualizar($id, ['meta_title' => 'Civil Renovado']);
 
-        $this->assertStringContainsString('Civil Renovado', $this->get('pagina', ['direito-civil'])->getBody());
+        $this->assertStringContainsString('Civil Renovado', $this->get('pagina', ['consultas'])->getBody());
     }
 
     public function testLimparDescartaPaginasEmCache(): void
     {
-        $this->get('pagina', ['direito-civil']);
-        $this->removeDireto('direito-civil');
+        $this->get('pagina', ['consultas']);
+        $this->removeDireto('consultas');
         SiteCache::limpar();
 
-        $this->assertSame(404, $this->get('pagina', ['direito-civil'])->response()->getStatusCode());
+        $this->assertSame(404, $this->get('pagina', ['consultas'])->response()->getStatusCode());
     }
 
     public function testPreviewIgnoraOCacheENaoOGrava(): void
     {
-        $this->db->table('site_paginas')->where('slug', 'direito-civil')->update(['status' => 'rascunho']);
+        $this->db->table('site_paginas')->where('slug', 'consultas')->update(['status' => 'rascunho']);
         SiteCache::limpar();
-        $id = (int) $this->db->table('site_paginas')->where('slug', 'direito-civil')->get()->getRow()->id;
+        $id = (int) $this->db->table('site_paginas')->where('slug', 'consultas')->get()->getRow()->id;
         $token = (new \App\Libraries\Site\PreviewToken('segredo-de-teste'))->gerar($id);
 
         config('Encryption')->key = 'segredo-de-teste';
-        $r = $this->get('pagina', ['direito-civil'], [], ['preview' => $token]);
+        $r = $this->get('pagina', ['consultas'], [], ['preview' => $token]);
 
         $this->assertSame(200, $r->response()->getStatusCode(), substr((string) $r->response()->getBody(), 0, 300));
         $this->assertSame('no-store', $r->response()->getHeaderLine('Cache-Control'));
-        $this->assertNull(SiteCache::pagina('direito-civil'), 'rascunho não vai para o cache');
+        $this->assertNull(SiteCache::pagina('consultas'), 'rascunho não vai para o cache');
     }
 
     public function testEtagE304(): void
     {
-        $r = $this->get('pagina', ['direito-civil']);
+        $r = $this->get('pagina', ['consultas']);
         $etag = $r->response()->getHeaderLine('ETag');
 
         $this->assertNotSame('', $etag);
         $this->assertSame('public, max-age=0, must-revalidate', $r->response()->getHeaderLine('Cache-Control'));
 
-        $r2 = $this->get('pagina', ['direito-civil'], ['If-None-Match' => $etag]);
+        $r2 = $this->get('pagina', ['consultas'], ['If-None-Match' => $etag]);
         $this->assertSame(304, $r2->response()->getStatusCode());
         $this->assertSame('', trim((string) $r2->response()->getBody()));
     }
@@ -219,12 +219,12 @@ class SiteCacheTest extends CIUnitTestCase
 
     public function testModuloSiteDesligadoResponde404NoSitePublico(): void
     {
-        $this->assertSame(200, $this->get('pagina', ['direito-civil'])->response()->getStatusCode());
+        $this->assertSame(200, $this->get('pagina', ['consultas'])->response()->getStatusCode());
 
         $this->moduloSite(false);
 
         try {
-            $this->assertSame(404, $this->get('pagina', ['direito-civil'])->response()->getStatusCode(), 'mesmo com a página em cache');
+            $this->assertSame(404, $this->get('pagina', ['consultas'])->response()->getStatusCode(), 'mesmo com a página em cache');
         } finally {
             $this->moduloSite(true);
         }

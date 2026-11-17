@@ -9,10 +9,10 @@ use CodeIgniter\HTTP\ResponseInterface;
 use Exception;
 
 /**
- * Privacidade granular: visibilidade e advogados com acesso a processos,
+ * Privacidade granular: visibilidade e profissionais com acesso a
  * clientes e contratos.
  *
- * Rotas em /api/v2/acessos/{tipo}/{id}, com tipo = processo | cliente | contrato.
+ * Rotas em /api/v2/acessos/{tipo}/{id}, com tipo = cliente | contrato.
  * Registro inexistente ou sem acesso responde 404 (não revela a existência de
  * registros restritos); com acesso mas sem poder de gestão responde 403.
  */
@@ -28,16 +28,16 @@ class Acessos extends BaseController
     }
 
     /**
-     * GET /api/v2/acessos/advogados?q=
-     * Advogados ativos para escolha de responsável e concessão de acesso.
+     * GET /api/v2/acessos/profissionais?q=
+     * Profissionais ativos para escolha de responsável e concessão de acesso.
      */
-    public function advogados(): ResponseInterface
+    public function profissionais(): ResponseInterface
     {
         $termo = (string) ($this->request->getGet('q') ?? '');
 
         return $this->respond([
             'success' => true,
-            'data'    => $this->service->buscarAdvogados($termo),
+            'data'    => $this->service->buscarProfissionais($termo),
         ]);
     }
 
@@ -92,15 +92,15 @@ class Acessos extends BaseController
         }
 
         $userId = (int) ($this->dados()['user_id'] ?? 0);
-        if ($userId <= 0 || !$this->service->ehAdvogadoAtivo($userId)) {
-            return $this->failValidationErrors('Selecione um advogado ativo.');
+        if ($userId <= 0 || !$this->service->ehProfissionalAtivo($userId)) {
+            return $this->failValidationErrors('Selecione um profissional ativo.');
         }
 
         return $this->executar(function () use ($tipo, $id, $userId) {
             $novo = $this->service->conceder($tipo, $id, $userId, user_id());
 
             return [
-                'message' => $novo ? 'Acesso concedido.' : 'O advogado já tinha acesso.',
+                'message' => $novo ? 'Acesso concedido.' : 'O profissional já tinha acesso.',
                 'data'    => $this->service->listarAcessos($tipo, $id),
             ];
         });
@@ -124,7 +124,7 @@ class Acessos extends BaseController
 
     /**
      * POST /api/v2/acessos/cliente/{id}/propagar  { copiar_visibilidade?: bool }
-     * Herança opcional: copia os acessos do cliente para seus processos e contratos.
+     * Herança opcional: copia os acessos do cliente para seus contratos.
      */
     public function propagar(int $clienteId): ResponseInterface
     {
@@ -138,7 +138,7 @@ class Acessos extends BaseController
             $afetados = $this->service->propagarDoCliente($clienteId, user_id(), $copiarVisibilidade);
 
             return [
-                'message' => "Acessos aplicados a {$afetados['processos']} processo(s) e {$afetados['contratos']} contrato(s).",
+                'message' => "Acessos aplicados a {$afetados['contratos']} contrato(s).",
                 'data'    => $afetados,
             ];
         });

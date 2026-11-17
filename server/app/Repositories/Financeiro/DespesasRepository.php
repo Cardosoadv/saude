@@ -604,21 +604,21 @@ class DespesasRepository extends BaseRepository
     }
 
     /**
-     * Obtém o total de despesas pagas agrupadas por ramo do direito (via contrato vinculado).
-     * Despesas sem contrato ou cujo contrato não tem ramo definido caem no bucket "0" (Sem Ramo).
+     * Obtém o total de despesas pagas agrupadas por área/especialidade (via contrato vinculado).
+     * Despesas sem contrato ou cujo contrato não tem área definida caem no bucket vazio (Sem área).
      * Otimizado para dashboard.
      *
      * @param string|null $dataInicio Data inicial opcional (filtra pela data de pagamento).
      * @param string|null $dataFim Data final opcional (filtra pela data de pagamento).
-     * @return array Lista de [ramo_id, despesas]
+     * @return array Lista de [area, despesas]
      */
-    public function getDespesasPagasAgrupadasPorRamo(?string $dataInicio = null, ?string $dataFim = null): array
+    public function getDespesasPagasAgrupadasPorArea(?string $dataInicio = null, ?string $dataFim = null): array
     {
-        $cacheSuffix = 'pagas_agrupadas_ramo_' . ($dataInicio ?? 'all') . '_' . ($dataFim ?? 'all');
+        $cacheSuffix = 'pagas_agrupadas_area_' . ($dataInicio ?? 'all') . '_' . ($dataFim ?? 'all');
 
         return $this->remember($cacheSuffix, function () use ($dataInicio, $dataFim) {
             $builder = $this->pagtoDespesasModel
-                ->select('contratos.area_atuacao as ramo_id, SUM(fin_pgto_despesas.valor) as despesas', false)
+                ->select('contratos.area_atuacao as area, SUM(fin_pgto_despesas.valor) as despesas', false)
                 ->join('fin_despesas', 'fin_despesas.id_despesa = fin_pgto_despesas.despesa_id')
                 ->join('contratos', 'contratos.id_contrato = fin_despesas.contrato_id', 'left')
                 ->where('fin_despesas.deleted_at IS NULL')

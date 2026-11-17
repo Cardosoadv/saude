@@ -1,7 +1,7 @@
 /*
  * Leitura da documentação interna (sistema#193). Global de propósito: o corpo
  * das páginas chega como HTML (`v-html`) gerado pelo backend, e as classes
- * `doc-aviso--*` fazem parte do contrato (ordojuris docs/api-documentacao.md).
+ * `doc-aviso--*` fazem parte do contrato (docs/api-documentacao.md).
  */
 
 /* ─── Layout: índice | conteúdo | sumário ─────────────────── */

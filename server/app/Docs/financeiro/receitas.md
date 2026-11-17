@@ -1,9 +1,9 @@
 ---
 titulo: Receitas
-resumo: Lançar honorários e outras receitas, classificar, repassar entre advogados e registrar o recebimento.
+resumo: Lançar receitas de atendimentos e outras entradas, classificar, repassar entre profissionais e registrar o recebimento.
 ordem: 10
 telas: [receitas, receita-detail, receitas-recebidas, receita-recebida-detail]
-palavras_chave: [receita, honorários, a receber, recebimento, recebida, pagador]
+palavras_chave: [receita, atendimento, a receber, recebimento, recebida, pagador]
 ---
 
 ## Receitas a Receber
@@ -20,11 +20,11 @@ vencimento, o valor, a categoria e se está **Vencida**, **Recebe Hoje** ou **No
 Clique em **Nova Receita** e preencha **Dados da Receita**:
 
 - **Descrição da Receita**, **Valor**, **Vencimento** e **Cliente / Pagador**.
-- **Contrato Vinculado** (opcional): liga a receita a um contrato de honorários.
+- **Contrato Vinculado** (opcional): liga a receita a um contrato.
 - **Rateio de Categorias**: **Adicionar Categoria** quantas vezes precisar e distribua o valor, ou use
   **Dividir Igualmente**. A soma precisa ser igual ao valor total.
-- **Repasse entre Advogados**: **Adicionar Sócio** e informe a parte de cada um. Sem repasse, tudo vai para o
-  caixa do escritório.
+- **Repasse entre Profissionais**: **Adicionar Sócio** e informe a parte de cada um. Sem repasse, tudo vai para o
+  caixa da clínica.
 
 Para registrar uma receita que **já entrou**, ative **Receber Imediatamente**, escolha a **Conta Bancária** e a
 **Data do Recebimento**. Clique em **Salvar Receita**.

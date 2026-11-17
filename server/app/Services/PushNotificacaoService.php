@@ -12,21 +12,16 @@ use Config\Push;
 use Throwable;
 
 /**
- * Notificações push do painel (PWA): novas intimações e prazos de tarefas.
+ * Notificações push do painel (PWA): prazos de tarefas.
  *
  * Regras:
- *  - Intimações: avisa quem tem acesso ao módulo de intimações e ligou "Intimações" no aparelho.
- *    Só entram intimações não tratadas que chegaram depois da inscrição (e dentro da janela
- *    configurada), uma única vez por usuário.
  *  - Prazos: avisa o responsável por tarefas em aberto com prazo hoje (ou nos próximos dias,
  *    conforme `Push::$diasAntecedenciaPrazo`). Mudou o prazo, avisa de novo.
  *  - Nada é enviado fora do horário configurado; o que ficou pendente sai na execução seguinte.
- *  - O conteúdo vai cifrado de ponta a ponta e traz só o número do processo e o tipo do aviso,
- *    nunca o texto da intimação.
+ *  - O conteúdo vai cifrado de ponta a ponta e traz só o tipo do aviso e o título da tarefa.
  */
 class PushNotificacaoService
 {
-    public const TIPO_INTIMACAO = 'intimacao';
     public const TIPO_PRAZO     = 'prazo';
 
     private const MAX_CORPO = 140;
@@ -75,11 +70,11 @@ class PushNotificacaoService
     /**
      * Rotina do cron: envia o que estiver pendente.
      *
-     * @return array{executado: bool, motivo?: string, intimacoes: int, prazos: int, usuarios: int, falhas: int, removidas: int}
+     * @return array{executado: bool, motivo?: string, prazos: int, usuarios: int, falhas: int, removidas: int}
      */
     public function processar(): array
     {
-        $resumo = ['executado' => false, 'intimacoes' => 0, 'prazos' => 0, 'usuarios' => 0, 'falhas' => 0, 'removidas' => 0];
+        $resumo = ['executado' => false, 'prazos' => 0, 'usuarios' => 0, 'falhas' => 0, 'removidas' => 0];
 
         if (!$this->habilitado()) {
             return $resumo + ['motivo' => 'Chaves VAPID não configuradas no .env (push.vapidPublicKey / push.vapidPrivateKey).'];
@@ -90,16 +85,6 @@ class PushNotificacaoService
 
         $resumo['executado'] = true;
         $usuarios = [];
-
-        foreach ($this->avisosDeIntimacoes() as $userId => $aviso) {
-            $r = $this->entregar($userId, 'notificar_intimacoes', $aviso['mensagem'], 'normal');
-            $this->somar($resumo, $r);
-            if ($r['enviadas'] > 0) {
-                $this->repository->registrarEnvios($userId, self::TIPO_INTIMACAO, $aviso['referencias']);
-                $resumo['intimacoes'] += count($aviso['referencias']);
-                $usuarios[$userId] = true;
-            }
-        }
 
         foreach ($this->avisosDePrazos() as $userId => $aviso) {
             $r = $this->entregar($userId, 'notificar_prazos', $aviso['mensagem'], $aviso['urgencia']);
@@ -126,50 +111,10 @@ class PushNotificacaoService
     {
         return $this->entregar($userId, null, [
             'title' => 'Notificações ativadas',
-            'body'  => 'Este aparelho vai receber os avisos do Ordo Juris.',
+            'body'  => 'Este aparelho vai receber os avisos do sistema.',
             'url'   => '#/perfil',
             'tag'   => 'teste',
         ], 'normal');
-    }
-
-    /**
-     * Uma mensagem por usuário com as intimações novas que ele ainda não recebeu.
-     *
-     * @return array<int, array{mensagem: array<string, string>, referencias: list<string>}>
-     */
-    public function avisosDeIntimacoes(): array
-    {
-        $inscritos = $this->repository->inscricoesPorUsuario('notificar_intimacoes');
-        if ($inscritos === []) {
-            return [];
-        }
-
-        $limite     = date('Y-m-d H:i:s', ($this->relogio)() - $this->config->janelaIntimacoesHoras * 3600);
-        $intimacoes = $this->repository->intimacoesNovas($limite);
-        if ($intimacoes === []) {
-            return [];
-        }
-
-        $avisos = [];
-        foreach ($inscritos as $userId => $inscricoes) {
-            if (!($this->podeReceber)($userId, 'intimacoes')) {
-                continue;
-            }
-
-            // Só o que chegou depois que o usuário ativou as notificações.
-            $desde     = min(array_column($inscricoes, 'created_at'));
-            $relevantes = array_values(array_filter($intimacoes, static fn (array $i): bool => $i['created_at'] >= $desde));
-            $relevantes = $this->semJaEnviados($userId, self::TIPO_INTIMACAO, $relevantes, static fn (array $i): string => (string) $i['id_intimacao']);
-
-            if ($relevantes !== []) {
-                $avisos[$userId] = [
-                    'mensagem'    => $this->mensagemIntimacoes($relevantes),
-                    'referencias' => array_map(static fn (array $i): string => (string) $i['id_intimacao'], $relevantes),
-                ];
-            }
-        }
-
-        return $avisos;
     }
 
     /**
@@ -221,39 +166,6 @@ class PushNotificacaoService
     }
 
     /**
-     * @param list<array<string, mixed>> $itens
-     * @return array<string, string>
-     */
-    private function mensagemIntimacoes(array $itens): array
-    {
-        $total = count($itens);
-        if ($total === 1) {
-            $i = $itens[0];
-
-            return [
-                'title' => 'Nova intimação',
-                'body'  => $this->corpo(array_filter([
-                    $i['numero_processo'] ? 'Processo ' . $i['numero_processo'] : null,
-                    $i['tipoComunicacao'] ?: null,
-                ])),
-                'url' => '#/intimacoes/detalhes/' . $i['id_intimacao'],
-                'tag' => 'intimacoes',
-            ];
-        }
-
-        $numeros = array_values(array_unique(array_filter(array_column($itens, 'numero_processo'))));
-
-        return [
-            'title' => "{$total} novas intimações",
-            'body'  => $this->corpo([
-                count($numeros) > 0 ? 'Processos ' . implode(', ', array_slice($numeros, 0, 2)) . (count($numeros) > 2 ? ' e outros' : '') : 'Veja as intimações não tratadas',
-            ]),
-            'url' => '#/intimacoes',
-            'tag' => 'intimacoes',
-        ];
-    }
-
-    /**
      * @param list<array<string, mixed>> $tarefas
      * @return array<string, string>
      */
@@ -271,13 +183,11 @@ class PushNotificacaoService
 
         if (count($tarefas) === 1) {
             $t      = $tarefas[0];
-            $numero = trim((string) ($t['numeroprocessocommascara'] ?: $t['numero_processo']));
 
             return [
                 'title' => 'Prazo ' . $quando((string) $t['prazo']),
                 'body'  => $this->corpo(array_filter([
                     trim(strip_tags((string) $t['tarefa'])),
-                    $numero !== '' ? 'Processo ' . $numero : null,
                 ])),
                 'url' => '#/tarefas',
                 'tag' => 'prazos',

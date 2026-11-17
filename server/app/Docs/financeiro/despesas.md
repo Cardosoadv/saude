@@ -1,6 +1,6 @@
 ---
 titulo: Despesas
-resumo: Lançar contas a pagar, classificar, ratear entre advogados e registrar o pagamento.
+resumo: Lançar contas a pagar, classificar, ratear entre profissionais e registrar o pagamento.
 ordem: 20
 telas: [despesas, despesa-detail, despesas-pagas, despesa-paga-detail]
 palavras_chave: [despesa, conta a pagar, pagamento, paga, fornecedor, boleto]
@@ -20,7 +20,7 @@ Clique em **Nova Despesa** e preencha **Dados da Despesa**:
 - **Descrição da Despesa**, **Valor**, **Vencimento** e **Fornecedor** (veja [Fornecedores](../fornecedores/index.md)).
 - **Contrato Vinculado** (opcional).
 - **Rateio de Categorias**: pelo menos uma categoria; a soma precisa ser igual ao valor total.
-- **Rateio entre Advogados**: divide o custo entre os sócios. Sem rateio, a despesa é do escritório.
+- **Rateio entre Profissionais**: divide o custo entre os sócios. Sem rateio, a despesa é da clínica.
 
 Para uma despesa **já paga**, ative **Pagar Imediatamente** e informe a **Conta Bancária** e a
 **Data do Pagamento**. Clique em **Salvar Despesa**.

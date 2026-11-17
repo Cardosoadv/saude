@@ -13,7 +13,6 @@ use Exception;
 /**
  * Controller API V2 para gerenciar configurações do sistema e limpar cache.
  * 
- * @author Cardoso
  * @version 1.0.0
  * @since 2026-05-25
  */

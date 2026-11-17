@@ -55,7 +55,7 @@ beforeEach(() => {
     value: { getRegistration: vi.fn(async () => ({ active: {}, pushManager })), ready: Promise.resolve({ pushManager }) },
   });
   api.config.mockResolvedValue({ data: { habilitado: true, chavePublica: CHAVE, inscricao: null } });
-  api.inscrever.mockImplementation(async (_s: unknown, prefs?: object) => ({ data: { intimacoes: true, prazos: true, ...prefs } }));
+  api.inscrever.mockImplementation(async (_s: unknown, prefs?: object) => ({ data: { prazos: true, ...prefs } }));
   api.remover.mockResolvedValue({ success: true });
 });
 
@@ -100,15 +100,15 @@ describe('usePush', () => {
     await carregarPush();
     expect(usePush().situacao.value).toBe('desativado');
 
-    await ativarPush({ intimacoes: false, prazos: true });
+    await ativarPush({ prazos: true });
 
     expect(window.Notification.requestPermission).toHaveBeenCalled();
     const opcoes = pushManager.subscribe.mock.calls[0][0];
     expect(opcoes.userVisibleOnly).toBe(true);
     expect(Array.from(opcoes.applicationServerKey)).toEqual(Array.from(chaveParaBytes(CHAVE)));
-    expect(api.inscrever).toHaveBeenCalledWith(sub!.toJSON(), { intimacoes: false, prazos: true });
+    expect(api.inscrever).toHaveBeenCalledWith(sub!.toJSON(), { prazos: true });
     expect(usePush().situacao.value).toBe('ativado');
-    expect(usePush().preferencias.value).toEqual({ intimacoes: false, prazos: true });
+    expect(usePush().preferencias.value).toEqual({ prazos: true });
   });
 
   it('não ativa se o usuário recusar a permissão', async () => {
@@ -142,20 +142,20 @@ describe('usePush', () => {
   it('aparelho já inscrito carrega como ativado com as preferências do servidor', async () => {
     sub = assinatura();
     permissao = 'granted';
-    api.config.mockResolvedValue({ data: { habilitado: true, chavePublica: CHAVE, inscricao: { intimacoes: true, prazos: false } } });
+    api.config.mockResolvedValue({ data: { habilitado: true, chavePublica: CHAVE, inscricao: { prazos: false } } });
 
     await carregarPush();
 
     expect(api.config).toHaveBeenCalledWith(sub.endpoint);
     expect(usePush().situacao.value).toBe('ativado');
-    expect(usePush().preferencias.value).toEqual({ intimacoes: true, prazos: false });
+    expect(usePush().preferencias.value).toEqual({ prazos: false });
   });
 
   it('salva preferências e desativa no navegador e no servidor', async () => {
     sub = assinatura();
     permissao = 'granted';
-    await salvarPreferenciasPush({ intimacoes: false, prazos: true });
-    expect(api.inscrever).toHaveBeenCalledWith(sub.toJSON(), { intimacoes: false, prazos: true });
+    await salvarPreferenciasPush({ prazos: true });
+    expect(api.inscrever).toHaveBeenCalledWith(sub.toJSON(), { prazos: true });
 
     const atual = sub;
     await desativarPush();
@@ -167,7 +167,7 @@ describe('usePush', () => {
   it('ao entrar, reafirma a inscrição do próprio usuário sem pedir permissão', async () => {
     sub = assinatura();
     permissao = 'granted';
-    api.config.mockResolvedValue({ data: { habilitado: true, chavePublica: CHAVE, inscricao: { intimacoes: true, prazos: true } } });
+    api.config.mockResolvedValue({ data: { habilitado: true, chavePublica: CHAVE, inscricao: { prazos: true } } });
 
     await sincronizarPush();
 

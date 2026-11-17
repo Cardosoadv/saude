@@ -4,7 +4,7 @@
   "versao": "1.6.0",
   "autor": "CognitioTechny",
   "descricao": "Tema navy e dourado do site original, com hero, pilares, áreas de atuação, notícias e contato.",
-  "ordojuris": ">=6.5.0",
+  "sistema": ">=6.5.0",
   "motor": "php",
   "layouts": [
     "main",
@@ -32,7 +32,7 @@
     "fontes_url": "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap"
   },
   "textos": {
-    "contato.local_rotulo": "Nosso Escritório",
+    "contato.local_rotulo": "Nosso Clínica",
     "contato.telefone_rotulo": "WhatsApp / Telefone",
     "contato.email_rotulo": "E-mail de Contato",
     "contato.nome": "Nome completo *",
@@ -97,7 +97,7 @@
     "noticias.compartilhar_whatsapp_aria": "Compartilhar este artigo no WhatsApp",
     "noticias.leia_tambem": "Leia também",
     "cliente.titulo": "Área do Cliente",
-    "cliente.subtitulo": "Acesse seus processos e documentos de forma segura.",
+    "cliente.subtitulo": "Acesse seus atendimentos e documentos de forma segura.",
     "cliente.acesso_titulo": "Acesso Seguro",
     "cliente.acesso_descricao": "Insira o seu e-mail cadastrado para receber um link mágico de acesso à plataforma.",
     "cliente.email_placeholder": "Seu E-mail",
@@ -113,38 +113,14 @@
     "painel.carregando": "Carregando...",
     "painel.acessando": "Acessando seus dados seguros...",
     "painel.voltar_login": "Voltar para o Login",
-    "painel.meus_processos": "Meus Processos",
-    "painel.sem_processos": "Nenhum processo encontrado vinculado ao seu cadastro.",
-    "painel.voltar_processos": "Voltar aos Processos",
-    "painel.relatorio_final": "Relatório Final de Encerramento",
-    "painel.ramo": "Ramo do Direito",
-    "painel.responsavel": "Advogado Responsável",
-    "painel.linha_tempo": "Linha do Tempo",
-    "painel.mensagens": "Mensagens",
-    "painel.carregando_andamentos": "Carregando andamentos...",
-    "painel.sem_movimentacoes": "Ainda não há movimentações registradas para este processo.",
-    "painel.carregando_mensagens": "Carregando mensagens...",
-    "painel.sem_mensagens": "Nenhuma mensagem ainda. Envie a primeira mensagem ao seu advogado abaixo.",
-    "painel.assunto": "Assunto",
-    "painel.sua_mensagem": "Sua mensagem",
-    "painel.mensagem_placeholder": "Escreva sua dúvida ou mensagem para o advogado responsável...",
-    "painel.enviar": "Enviar Mensagem",
+    "painel.meus_dados": "Meus dados",
+    "painel.campo_nome": "Nome",
+    "painel.campo_email": "E-mail",
+    "painel.campo_telefone": "Telefone",
+    "painel.campo_documento": "Documento",
+    "painel.campo_cidade": "Cidade / UF",
     "painel.js_bemvindo": "Bem-vindo(a), {nome}",
     "painel.js_erro_requisicao": "Ocorreu um erro na requisição.",
-    "painel.js_sem_numero": "Processo sem número",
-    "painel.js_sem_titulo": "Sem título",
-    "painel.js_responsavel": "Responsável: {nome}",
-    "painel.js_nao_atribuido": "Não atribuído",
-    "painel.js_erro_detalhes": "Erro ao carregar detalhes do processo.",
-    "painel.js_erro_timeline": "Erro ao carregar a linha do tempo.",
-    "painel.js_erro_mensagens": "Erro ao carregar mensagens.",
-    "painel.js_assunto_padrao": "Dúvida sobre o processo {numero}",
-    "painel.js_equipe": "Equipe OrdoJuris",
-    "painel.js_voce": "Você",
-    "painel.js_preencha": "Preencha o assunto e a mensagem antes de enviar.",
-    "painel.js_enviando": "Enviando...",
-    "painel.js_enviar": "Enviar Mensagem",
-    "painel.js_erro_envio": "Não foi possível enviar a mensagem. Tente novamente.",
     "painel.js_na": "N/A",
     "painel.js_link_invalido": "Link inválido ou expirado. Por favor, solicite um novo acesso.",
     "painel.js_sessao_expirada": "Sessão expirada ou acesso negado. Por favor, faça login novamente.",
@@ -165,14 +141,14 @@
     "controlador.encarregado": "Encarregado pelo tratamento de dados (DPO)",
     "controlador.encarregado_email": "Canal do encarregado",
     "equipe.titulo": "Nossa equipe",
-    "equipe.oab": "OAB",
+    "equipe.registro": "Registro",
     "equipe.formacao": "Formação",
     "equipe.especializacoes": "Especializações",
     "equipe.areas": "Áreas de atuação",
     "institucional.titulo": "Dados institucionais",
     "institucional.razao_social": "Razão social",
     "institucional.cnpj": "CNPJ",
-    "institucional.registro_oab": "Registro da sociedade na OAB",
+    "institucional.registro_profissional": "Registro da clínica no conselho profissional",
     "institucional.endereco": "Endereço"
   },
   "menus": [
@@ -532,7 +508,7 @@
       }
     },
     "equipe": {
-      "rotulo": "Equipe (advogados)",
+      "rotulo": "Equipe (profissionais)",
       "campos": {
         "titulo": {
           "tipo": "texto",
@@ -553,7 +529,7 @@
               "obrigatorio": true,
               "max": 120
             },
-            "oab": {
+            "registro": {
               "tipo": "texto",
               "max": 40
             },
@@ -588,7 +564,7 @@
       }
     },
     "dados_institucionais": {
-      "rotulo": "Dados institucionais (razão social, CNPJ, OAB, endereços)",
+      "rotulo": "Dados institucionais (razão social, CNPJ, registro profissional, endereços)",
       "campos": {
         "titulo": {
           "tipo": "texto",

@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use App\Repositories\IntimacoesRepository;
-use App\Repositories\ProcessosRepository;
 use App\Repositories\TarefasRepository;
 use App\Services\NotificacaoService;
 use Exception;
@@ -16,20 +14,6 @@ use Exception;
  */
 class TarefasService extends BaseService
 {
-    /**
-     * Repositório de intimações.
-     *
-     * @var IntimacoesRepository
-     */
-    private IntimacoesRepository $intimacoesRepository;
-
-    /**
-     * Repositório de processos.
-     *
-     * @var ProcessosRepository
-     */
-    private ProcessosRepository $processosRepository;
-
     /**
      * Serviço de notificações.
      *
@@ -45,31 +29,17 @@ class TarefasService extends BaseService
     private $cache;
 
     /**
-     * @var \App\Services\Checklist\ChecklistService|null
-     */
-    protected ?\App\Services\Checklist\ChecklistService $checklistService;
-
-    /**
      * Construtor do TarefasService com injeção de dependência.
      *
      * @param TarefasRepository|null $repository
-     * @param IntimacoesRepository|null $intimacoesRepository
-     * @param ProcessosRepository|null $processosRepository
      * @param NotificacaoService|null $notificacaoService
-     * @param \App\Services\Checklist\ChecklistService|null $checklistService
      */
     public function __construct(
         ?TarefasRepository $repository = null,
-        ?IntimacoesRepository $intimacoesRepository = null,
-        ?ProcessosRepository $processosRepository = null,
-        ?NotificacaoService $notificacaoService = null,
-        ?\App\Services\Checklist\ChecklistService $checklistService = null
+        ?NotificacaoService $notificacaoService = null
     ) {
         $this->repository           = $repository ?? new TarefasRepository();
-        $this->intimacoesRepository = $intimacoesRepository ?? new IntimacoesRepository();
-        $this->processosRepository  = $processosRepository ?? new ProcessosRepository();
         $this->notificacaoService   = $notificacaoService ?? new NotificacaoService();
-        $this->checklistService     = $checklistService ?? (class_exists('\App\Services\Checklist\ChecklistService') ? service('ChecklistService') : null);
         $this->cache                = service('cache');
     }
 
@@ -134,17 +104,6 @@ class TarefasService extends BaseService
                     $this->sincronizarGoogleCalendar((int) $idTarefa, 'update', $dados);
                 }
 
-                // Sincronização com checklist se o status mudou para Concluído ou outro
-                if ($sucesso && !empty($tarefaAtual['checklist_item_id']) && isset($dados['status']) && $dados['status'] != $tarefaAtual['status']) {
-                    $cumprido = ($dados['status'] == 4);
-                    try {
-                        if ($this->checklistService) {
-                            $this->checklistService->marcarItem((int) $tarefaAtual['checklist_item_id'], $cumprido, (int) user_id(), false);
-                        }
-                    } catch (Exception $e) {
-                        log_message('error', 'Erro ao sincronizar checklist após salvar tarefa: ' . $e->getMessage());
-                    }
-                }
 
                 return [
                     'success' => $sucesso,
@@ -162,16 +121,6 @@ class TarefasService extends BaseService
             if ($id) {
                 $this->sincronizarGoogleCalendar((int) $id, 'insert', $dados);
 
-                // Sincronização com checklist para nova tarefa (se já vier com status concluído, improvável mas possível)
-                if (!empty($dados['checklist_item_id']) && isset($dados['status']) && $dados['status'] == 4) {
-                    try {
-                        if ($this->checklistService) {
-                            $this->checklistService->marcarItem((int) $dados['checklist_item_id'], true, (int) user_id(), false);
-                        }
-                    } catch (Exception $e) {
-                        log_message('error', 'Erro ao sincronizar checklist na criação de tarefa: ' . $e->getMessage());
-                    }
-                }
 
                 return [
                     'success' => true,
@@ -209,28 +158,10 @@ class TarefasService extends BaseService
                 ];
             }
 
-            // Limpa cache do processo relacionado
-            if (!empty($tarefa['processo_id'])) {
-                $this->cache->delete('detalhes_processo_' . $tarefa['processo_id'] . '_user_' . user_id());
-            }
-
             $sucesso = $this->repository->atualizarStatus($tarefaId, $statusId);
 
             if ($sucesso) {
                 $this->sincronizarGoogleCalendar($tarefaId, 'update', ['status' => $statusId]);
-            }
-
-            // Sincronização com checklist (Bidirecional)
-            if ($sucesso && !empty($tarefa['checklist_item_id'])) {
-                $cumprido = ($statusId == 4); // 4 = Concluída
-                try {
-                    // Evita circularidade passando syncTask=false
-                    if ($this->checklistService) {
-                        $this->checklistService->marcarItem((int) $tarefa['checklist_item_id'], $cumprido, (int) user_id(), false);
-                    }
-                } catch (Exception $e) {
-                    log_message('error', 'Erro ao sincronizar checklist após atualizar tarefa: ' . $e->getMessage());
-                }
             }
 
             return [
@@ -437,21 +368,11 @@ class TarefasService extends BaseService
      */
     private function limparCacheRelacionado(array $dados): void
     {
-        // Limpa cache de processo
-        if (!empty($dados['processo_id'])) {
-            $this->processosRepository->limparCacheDetalhesProcesso((int) $dados['processo_id']);
-            $this->intimacoesRepository->limparCacheIntimacoes();
-        }
-
         // Limpa cache de cliente (se implementado)
         if (!empty($dados['cliente_id'])) {
             // $this->cache->delete('detalhes_cliente_' . $dados['cliente_id'] . '_user_' . user_id());
         }
 
-        // Limpa cache de caso (se implementado)
-        if (!empty($dados['caso_id'])) {
-            // $this->cache->delete('detalhes_caso_' . $dados['caso_id'] . '_user_' . user_id());
-        }
     }
 
     /**

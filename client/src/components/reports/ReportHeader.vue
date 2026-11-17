@@ -1,14 +1,14 @@
 <template>
   <div class="report-header">
     <div class="header-logo">
-      <img src="../../assets/logo.png" alt="Cardoso & Bruno Logo" />
+      <img src="../../assets/logo.png" alt="Clínica Saúde Logo" />
     </div>
     <div class="header-titles">
       <h1 class="main-title">{{ title }}</h1>
       <h2 class="sub-title" v-if="subtitle">{{ subtitle }}</h2>
     </div>
     <div class="header-info">
-      <div class="company-name"><span class="info-label">Empresa:</span><br/>Cardoso & Bruno Sociedade de Advogados</div>
+      <div class="company-name"><span class="info-label">Empresa:</span><br/>Clínica Saúde</div>
       <div class="company-cnpj"><span class="info-label">CNPJ:</span><br/>32.054.878/0001-04</div>
     </div>
   </div>

@@ -2,7 +2,7 @@
   <div class="page-content animate-fade-in">
     <!-- Breadcrumb -->
     <div class="breadcrumb">
-      <a href="#" @click.prevent="$emit('set-view', 'list')">Ordo Juris</a>
+      <a href="#" @click.prevent="$emit('set-view', 'list')">Saúde</a>
       <i class="bi bi-chevron-right"></i>
       <a href="#/crm" @click.prevent="$emit('set-view', 'crm')">CRM</a>
       <i class="bi bi-chevron-right"></i>
@@ -146,18 +146,15 @@
           </button>
         </div>
 
-        <!-- Filter Area / Ramo do Direito -->
-        <select
-          v-model="selectedArea"
-          class="form-control form-select select-area"
-          aria-label="Filtrar por Área de Interesse"
+        <!-- Filtro por serviço/especialidade de interesse -->
+        <input
+          v-model.trim="selectedArea"
+          type="search"
+          class="form-control select-area"
+          placeholder="Serviço de interesse"
+          aria-label="Filtrar por serviço de interesse"
           @change="loadLeads(1)"
-        >
-          <option value="">Todas as Áreas</option>
-          <option v-for="area in ramosOptions" :key="area.id" :value="String(area.id)">
-            {{ area.nome }}
-          </option>
-        </select>
+        />
 
         <!-- Sort Order -->
         <select
@@ -567,7 +564,7 @@ interface Lead {
   email: string
   phone: string | null
   message: string
-  area_interesse: number | string | null
+  area_interesse: string | null
   area_interesse_nome?: string | null
   status: 'new' | 'contacted' | 'qualified' | 'converted' | 'lost'
   created_at: string
@@ -576,11 +573,6 @@ interface Lead {
 }
 
 interface Etapa {
-  id: number
-  nome: string
-}
-
-interface RamoOption {
   id: number
   nome: string
 }
@@ -619,7 +611,6 @@ const stats = ref({
 })
 
 const etapas = ref<Etapa[]>([])
-const ramosOptions = ref<RamoOption[]>([])
 const currentLead = ref<Lead | null>(null)
 
 const showViewModal = ref(false)
@@ -684,7 +675,7 @@ onMounted(async () => {
   if (props.searchQuery) {
     localSearch.value = props.searchQuery
   }
-  await Promise.all([fetchEtapas(), fetchRamos()])
+  await fetchEtapas()
   await loadLeads(1)
 })
 
@@ -802,27 +793,6 @@ async function fetchEtapas() {
   }
 }
 
-async function fetchRamos() {
-  try {
-    const res = await apiFetch('crm/leads/ramos')
-    if (res && Array.isArray(res)) {
-      ramosOptions.value = res.map((r: any) => ({ id: r.id, nome: r.nome }))
-    } else if (res && res.data && Array.isArray(res.data)) {
-      ramosOptions.value = res.data.map((r: any) => ({ id: r.id, nome: r.nome }))
-    }
-  } catch (e) {
-    // Fallback silencioso caso a rota de ramos não esteja disponível
-    try {
-      const fallbackRes = await apiFetch('conhecimento/ramos')
-      if (fallbackRes && Array.isArray(fallbackRes)) {
-        ramosOptions.value = fallbackRes.map((r: any) => ({ id: r.id, nome: r.nome }))
-      }
-    } catch {
-      // Ignora erro
-    }
-  }
-}
-
 async function loadLeads(page = 1) {
   loading.value = true
   currentPage.value = page
@@ -841,7 +811,7 @@ async function loadLeads(page = 1) {
     }
 
     if (selectedArea.value) {
-      params.append('area_id', selectedArea.value)
+      params.append('area', selectedArea.value)
     }
 
     const res = await apiFetch(`crm/leads?${params.toString()}`)

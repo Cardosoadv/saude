@@ -9,7 +9,7 @@ palavras_chave: [importação, integração, receitas recebidas, despesas pagas,
 ## Visão geral
 
 A aba **Importar do Financeiro** (`#/contabil` ou `#/contabil-importar`) é a ponte entre
-o módulo financeiro do Ordo Juris e a escrituração contábil em partidas dobradas.
+o módulo financeiro do sistema e a escrituração contábil em partidas dobradas.
 
 As movimentações financeiras já liquidadas (recebidas ou pagas) são listadas com sugestão
 automática das contas contábeis de débito e crédito, prontas para conciliação em lote.
@@ -19,7 +19,7 @@ automática das contas contábeis de débito e crédito, prontas para conciliaç
 O sistema classifica cada transação conforme sua origem:
 
 - **Receitas Recebidas**: geram débito na conta bancária/caixa do Ativo e crédito na conta
-  de Receita de Honorários (ou outra categoria cadastrada).
+  de Receita de Atendimentos (ou outra categoria cadastrada).
 - **Despesas Pagas**: geram débito na conta de Despesa/Custo correspondente e crédito na
   conta bancária/caixa de onde o valor saiu.
 - **Transferências**: geram débito na conta bancária de destino e crédito na conta bancária
@@ -63,8 +63,8 @@ Escolha **Agora não** para usar a conta só nesta transação.
    partidas dobradas e confirmará a escrituração no [Livro Diário](lancamentos.md).
 
 > [!NOTA]
-> O sistema aplica chaves únicas de idempotência para cada transação (`ordojuris:fin_receita:...`,
-> `ordojuris:fin_despesa:...` e `ordojuris:fin_transferencia:...`). Mesmo que o botão seja
+> O sistema aplica chaves únicas de idempotência para cada transação (`saude:fin_receita:...`,
+> `saude:fin_despesa:...` e `saude:fin_transferencia:...`). Mesmo que o botão seja
 > clicado repetidamente ou a requisição reenviada, nenhuma transação é escriturada em duplicidade.
 
 > [!ATENCAO]

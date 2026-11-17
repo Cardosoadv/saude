@@ -6,12 +6,11 @@ use CodeIgniter\Shield\Models\UserModel;
 
 /**
  * Modelo de usuários.
- * @author Cardoso
  * @version 0.9.0
  * @since 2025-12-20
  *
  * Estende o UserModel do CodeIgniter Shield para gerenciar usuários do sistema,
- * adicionando campos específicos como 'is_lawyer', 'oab_numero' e métodos auxiliares.
+ * adicionando campos específicos como 'is_profissional', 'registro_numero' e métodos auxiliares.
  */
 class UsuariosModel extends UserModel
 {
@@ -64,11 +63,17 @@ class UsuariosModel extends UserModel
      * @var array
      */
     protected $allowedFields    = [
+        // Campos do Shield (sem eles o `active` informado no cadastro seria ignorado)
         'username',
-        'is_lawyer',
+        'status',
+        'status_message',
+        'active',
+        'last_active',
+        'deleted_at',
+        'is_profissional',
         'rateio_ativo',
-        'oab_numero',
-        'oab_uf',
+        'registro_numero',
+        'registro_uf',
         'avatar',
         'responsavel_tarefas',
         'exibir_site',
@@ -94,13 +99,13 @@ class UsuariosModel extends UserModel
     protected $afterDelete    = [];
 
     /**
-     * Retorna uma lista de advogados.
+     * Retorna uma lista de profissionais.
      *
-     * @return array Lista de usuários marcados como advogados (is_lawyer = 1).
+     * @return array Lista de usuários marcados como profissionais (is_profissional = 1).
      */
-    public function getAdvogados()
+    public function getProfissionais()
     {
-        return $this->where('is_lawyer', 1)->findAll();
+        return $this->where('is_profissional', 1)->findAll();
     }
 
     /**

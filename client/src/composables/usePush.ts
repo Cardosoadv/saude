@@ -19,7 +19,7 @@ export type SituacaoPush =
   | 'ativado'
   | 'erro'             // falha ao consultar o servidor (ex.: sem conexão)
 
-const PREFERENCIAS_PADRAO: PreferenciasPush = { intimacoes: true, prazos: true }
+const PREFERENCIAS_PADRAO: PreferenciasPush = { prazos: true }
 
 const situacao = ref<SituacaoPush>('carregando')
 const preferencias = ref<PreferenciasPush>({ ...PREFERENCIAS_PADRAO })
@@ -164,7 +164,7 @@ export async function desativarPush(): Promise<void> {
   }
 }
 
-/** Salva as preferências (intimações / prazos) deste aparelho. */
+/** Salva as preferências (prazos) deste aparelho. */
 export async function salvarPreferenciasPush(prefs: PreferenciasPush): Promise<void> {
   const sub = await assinaturaAtual()
   if (!sub) throw new Error('Este aparelho não está inscrito.')

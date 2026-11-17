@@ -5,7 +5,7 @@ ordem: 40
 palavras_chave: [IA, MCP, Claude, Gemini, ChatGPT, token, conector, OAuth]
 ---
 
-A aba **Configurações › Integração IA (MCP)** conecta assistentes de IA ao Ordo Juris. A IA passa a agir
+A aba **Configurações › Integração IA (MCP)** conecta assistentes de IA ao sistema. A IA passa a agir
 **estritamente como você**: vê e altera só o que as suas permissões permitem, e nenhuma ação dela pode ser
 atribuída a outro usuário.
 
@@ -14,7 +14,7 @@ atribuída a outro usuário.
 1. Copie a URL do endpoint MCP no cartão **Conector nativo do Claude.ai**.
 2. No claude.ai, abra **Configurações › Conectores › Adicionar conector personalizado**.
 3. Cole a URL em **URL do servidor MCP remoto** e deixe **ID do Cliente OAuth** e **Client Secret** em branco.
-4. O Claude abre uma tela de autorização do Ordo Juris: confirme.
+4. O Claude abre uma tela de autorização do sistema: confirme.
 
 Nesse caso **não é preciso gerar token**.
 
@@ -28,7 +28,7 @@ registrarem sozinhos:
    **URL de redirecionamento (callback)**. Clique em **Criar credenciais**.
 3. Copie para o Gemini os campos exibidos: **URL do servidor MCP**, **Client ID**, **Client Secret**,
    **URL de autorização**, **URL do token** e **Escopo**.
-4. Ao conectar, o Gemini abre a tela de autorização do Ordo Juris: confirme.
+4. Ao conectar, o Gemini abre a tela de autorização do sistema: confirme.
 
 > [!ATENCAO]
 > O **Client Secret** aparece uma única vez. Se perdê-lo, remova o conector na tabela do cartão e crie outro.

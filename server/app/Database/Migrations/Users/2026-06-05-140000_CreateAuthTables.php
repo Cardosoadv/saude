@@ -16,10 +16,10 @@ class CreateAuthTables extends Migration
             'status_message' => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => true],
             'active'         => ['type' => 'TINYINT', 'constraint' => 1, 'default' => 0],
             'last_active'    => ['type' => 'DATETIME', 'null' => true],
-            'is_lawyer'      => ['type' => 'TINYINT', 'constraint' => 1, 'unsigned' => true, 'default' => 0],
+            'is_profissional'      => ['type' => 'TINYINT', 'constraint' => 1, 'unsigned' => true, 'default' => 0],
             'rateio_ativo'   => ['type' => 'TINYINT', 'constraint' => 1, 'unsigned' => true, 'default' => 0],
-            'oab_numero'     => ['type' => 'VARCHAR', 'constraint' => 20, 'null' => true],
-            'oab_uf'         => ['type' => 'CHAR', 'constraint' => 2, 'null' => true],
+            'registro_numero'     => ['type' => 'VARCHAR', 'constraint' => 20, 'null' => true],
+            'registro_uf'         => ['type' => 'CHAR', 'constraint' => 2, 'null' => true],
             'avatar'         => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => true],
             'created_at'     => ['type' => 'DATETIME', 'null' => true],
             'updated_at'     => ['type' => 'DATETIME', 'null' => true],
@@ -29,7 +29,7 @@ class CreateAuthTables extends Migration
         $this->forge->addUniqueKey('username');
         $this->forge->addKey('active');
         $this->forge->addKey(['active', 'deleted_at'], false, false, 'idx_users_active');
-        $this->forge->addKey(['oab_numero', 'oab_uf'], false, false, 'idx_users_oab');
+        $this->forge->addKey(['registro_numero', 'registro_uf'], false, false, 'idx_users_registro');
         $this->forge->createTable('users', true);
 
         // auth_identities

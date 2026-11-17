@@ -5,11 +5,11 @@ Como produzir as imagens das páginas de `app/Docs` (issue #708). O formato das 
 
 ## Regras
 
-- **Só dados fictícios.** Nunca capture processos, clientes, valores ou nomes reais, nem com borrão:
+- **Só dados fictícios.** Nunca capture dados de clientes, valores ou nomes reais, nem com borrão:
   a imagem fica no repositório e no histórico do Git para sempre.
-- Arquivo em `app/Docs/<secao>/img/`, nome em minúsculas com hífen: `processos/img/lista-filtros.webp`.
+- Arquivo em `app/Docs/<secao>/img/`, nome em minúsculas com hífen: `clientes/img/lista-filtros.webp`.
 - **WebP**, com largura máxima de **1600 px**. `docs:verificar` acusa imagem mais larga.
-- Texto alternativo obrigatório, descrevendo o que a imagem mostra: `![Lista de processos com o filtro de status aberto](img/lista-filtros.webp)`.
+- Texto alternativo obrigatório, descrevendo o que a imagem mostra: `![Lista de clientes com o filtro de status ativo](img/lista-filtros.webp)`.
 - Capture só a área que interessa (um painel, um formulário), não a tela inteira com o menu.
 - O backend lê largura e altura do arquivo e põe `width`/`height` no `<img>`; não é preciso informar.
 
@@ -33,13 +33,13 @@ import { readFileSync } from 'node:fs';
 const USUARIO = {
   id: 1, username: 'demo', email: 'demo@exemplo.test',
   // Libere só o necessário para a tela capturada.
-  permissoes: ['processos.access', 'documentacao.access'],
-  modulos_ativos: ['processos', 'documentacao'],
+  permissoes: ['clientes.access', 'documentacao.access'],
+  modulos_ativos: ['clientes', 'documentacao'],
 };
 
 // [arquivo de saída, hash da tela, seletor a capturar, respostas fictícias { 'caminho/da/api': corpo }]
 const CAPTURAS = [
-  ['processos/img/lista.webp', '#/processos', '.page-content', JSON.parse(readFileSync('ficticio/processos.json', 'utf8'))],
+  ['clientes/img/lista.webp', '#/clientes', '.page-content', JSON.parse(readFileSync('ficticio/clientes.json', 'utf8'))],
 ];
 
 const browser = await chromium.launch();
@@ -56,7 +56,7 @@ for (const [saida, hash, seletor, respostas] of CAPTURAS) {
   });
   await page.goto(`http://localhost:5173/${hash}`);
   await page.waitForLoadState('networkidle');
-  await page.locator(seletor).first().screenshot({ path: `../ordojuris/app/Docs/${saida.replace(/\.webp$/, '.png')}` });
+  await page.locator(seletor).first().screenshot({ path: `../clinica/app/Docs/${saida.replace(/\.webp$/, '.png')}` });
   await page.close();
 }
 await browser.close();

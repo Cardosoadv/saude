@@ -3,11 +3,11 @@
  *
  * Todo HTML é escapado ANTES de qualquer formatação, então nada que venha do modelo vira tag. Suporta:
  * parágrafos, quebras de linha, títulos (como negrito), listas, **negrito**, *itálico*, `código` e links
- * `[rótulo](ordo://tipo/id)`, que viram botões com `data-tipo`/`data-id` para a navegação interna.
+ * `[rótulo](app://tipo/id)`, que viram botões com `data-tipo`/`data-id` para a navegação interna.
  * Qualquer outro link vira só o rótulo.
  */
 
-export const TIPOS_REFERENCIA = ['processo', 'cliente', 'contrato', 'caso', 'liquidacao', 'intimacao', 'tarefa'] as const
+export const TIPOS_REFERENCIA = ['cliente', 'contrato', 'tarefa', 'fornecedor'] as const
 
 export function escaparHtml(texto: string): string {
   return texto
@@ -27,7 +27,7 @@ function inline(texto: string): string {
   })
 
   t = t.replace(/\[([^\]\n]{1,200})\]\(([^)\s]+)\)/g, (_, rotulo: string, url: string) => {
-    const m = /^ordo:\/\/([a-z]+)\/(\d{1,12})$/.exec(url)
+    const m = /^app:\/\/([a-z]+)\/(\d{1,12})$/.exec(url)
     if (m && (TIPOS_REFERENCIA as readonly string[]).includes(m[1])) {
       return `<button type="button" class="copiloto-ref" data-tipo="${m[1]}" data-id="${m[2]}">${rotulo}</button>`
     }

@@ -120,7 +120,7 @@ class LancamentoExtratoService
      * - despesa: `fornecedor_id` ou `novo_fornecedor` {nome, documento?};
      * - receita: `cliente_id` (opcional);
      * - `categorias` [{categoria_id, valor?}] ou `categoria_id` (uma só, com o valor todo). Obrigatória na despesa;
-     * - `rateio` [{id, percentual}] entre os advogados, somando 100% (opcional);
+     * - `rateio` [{id, percentual}] entre os profissionais, somando 100% (opcional);
      * - `descricao`, `comentario` (opcionais);
      * - `criar_regra` (bool ou {nome, padrao, campo}): grava uma regra de classificação a partir do lançamento.
      *

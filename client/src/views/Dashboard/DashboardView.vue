@@ -70,18 +70,6 @@
 
           <!-- Sec 2 & 3: Charts -->
           <div class="charts-grid mt-4">
-            <!-- Processos -->
-            <div class="section-card" v-if="verProcessos">
-              <div class="section-header">
-                <h3 class="m-0 font-weight-bold"><i class="bi bi-briefcase-fill me-2"></i>Análise de Processos</h3>
-              </div>
-              <div class="section-body p-3">
-                <div class="chart-container" style="position: relative; height:250px;">
-                  <canvas ref="processChartCanvas"></canvas>
-                </div>
-              </div>
-            </div>
-
             <!-- Financeiro -->
             <div class="section-card" v-if="verFinanceiro">
               <div class="section-header">
@@ -95,14 +83,14 @@
             </div>
           </div>
 
-          <!-- Receitas por Ramo do Direito -->
-          <div class="section-card mt-4" v-if="verFinanceiro && dashboardData?.charts?.resultadoPorRamo?.length">
+          <!-- Resultado por área -->
+          <div class="section-card mt-4" v-if="verFinanceiro && dashboardData?.charts?.resultadoPorArea?.length">
             <div class="section-header">
-              <h3 class="m-0 font-weight-bold"><i class="bi bi-pie-chart-fill me-2"></i>Receitas por Ramo do Direito</h3>
+              <h3 class="m-0 font-weight-bold"><i class="bi bi-pie-chart-fill me-2"></i>Resultado por área</h3>
             </div>
             <div class="section-body p-3">
               <div class="chart-container" style="position: relative; height:320px;">
-                <canvas ref="ramoChartCanvas"></canvas>
+                <canvas ref="areaChartCanvas"></canvas>
               </div>
             </div>
           </div>
@@ -119,10 +107,6 @@
         </div>
         <div class="section-body p-2">
           <div class="quick-actions-grid">
-            <button v-if="verProcessos" class="quick-action-btn" @click="$emit('set-view', 'list')" title="Cadastrar Novo Processo" aria-label="Novo Processo">
-              <i class="bi bi-briefcase text-primary"></i>
-              <span>Novo Processo</span>
-            </button>
             <button v-if="verClientes" class="quick-action-btn" @click="navigateHash('#/clientes/novo')" title="Cadastrar Novo Cliente" aria-label="Novo Cliente">
               <i class="bi bi-person-plus text-success"></i>
               <span>Novo Cliente</span>
@@ -205,18 +189,9 @@
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-1">
                   <div class="small text-truncate" style="max-width: 65%;">
-                    <a v-if="task.vinculo_tipo === 'processo' || task.processo_id" :href="'#/processos/detalhes/' + task.processo_id" class="text-muted text-decoration-none link-hover-primary" title="Acessar processo">
-                      <i class="bi bi-briefcase me-1"></i>{{ task.vinculo_info || task.processo_numero }}
-                    </a>
-                    <a v-else-if="task.vinculo_tipo === 'cliente' || task.cliente_id" :href="'#/clientes/editar/' + task.cliente_id" class="text-muted text-decoration-none link-hover-primary" title="Acessar cliente">
+                    <a v-if="task.vinculo_tipo === 'cliente' || task.cliente_id" :href="'#/clientes/editar/' + task.cliente_id" class="text-muted text-decoration-none link-hover-primary" title="Acessar cliente">
                       <i class="bi bi-person me-1"></i>{{ task.vinculo_info }}
                     </a>
-                    <a v-else-if="task.vinculo_tipo === 'caso' || task.caso_id" :href="'#/casos/detalhes/' + task.caso_id" class="text-muted text-decoration-none link-hover-primary" title="Acessar caso">
-                      <i class="bi bi-folder me-1"></i>{{ task.vinculo_info }}
-                    </a>
-                    <span v-else-if="task.processo_numero" class="text-muted">
-                      {{ task.processo_numero }}
-                    </span>
                   </div>
                   <span class="badge badge-tag" :class="getTaskStatusClass(task.statusPrazo)">{{ task.statusPrazo }}</span>
                 </div>
@@ -245,9 +220,9 @@ import { ref, computed, onMounted, nextTick } from 'vue'
 import { apiFetch, formatCurrency } from '../../services/api'
 import { liberado } from '../../composables/useAcesso'
 import Chart from 'chart.js/auto'
-import TarefaModal from '../../components/modals/Processos/TarefaModal.vue'
+import TarefaModal from '../../components/modals/Tarefas/TarefaModal.vue'
 
-const emit = defineEmits(['set-view', 'open-detail', 'toast'])
+const emit = defineEmits(['set-view', 'toast'])
 
 const loading = ref(true)
 const dashboardData = ref(null)
@@ -255,18 +230,15 @@ const showTarefaModal = ref(false)
 const selectedTarefa = ref(null)
 const crmData = ref(null)
 
-const processChartCanvas = ref(null)
 const financeChartCanvas = ref(null)
 const leadsChartCanvas = ref(null)
-const ramoChartCanvas = ref(null)
+const areaChartCanvas = ref(null)
 
-let processChart = null
 let financeChart = null
 let leadsChart = null
-let ramoChart = null
+let areaChart = null
 
 // Blocos do dashboard por módulo (mesmas regras das rotas da API).
-const verProcessos = computed(() => liberado('processos', 'processos.access', 'processos.exclusive'))
 const verFinanceiro = computed(() => liberado('financeiro', 'financeiro.access'))
 const verClientes = computed(() => liberado('clientes', 'clientes.access'))
 const verCrm = computed(() => liberado('crm', 'clientes.access'))
@@ -276,9 +248,9 @@ const kpis = computed(() => {
   if (!dashboardData.value?.metrics) return []
   const m = dashboardData.value.metrics
   return [
-    ...(verProcessos.value ? [
-      { title: 'Processos Ativos', value: m.processosAtivos || 0, icon: 'bi-briefcase-fill', colorClass: 'kpi-primary' },
-      { title: 'Processos Concluídos', value: m.processosEncerrados || 0, icon: 'bi-check-circle-fill', colorClass: 'kpi-success' },
+    ...(verClientes.value ? [
+      { title: 'Clientes Ativos', value: m.clientesAtivos || 0, icon: 'bi-people-fill', colorClass: 'kpi-primary' },
+      { title: 'Clientes Cadastrados', value: m.clientesTotal || 0, icon: 'bi-person-lines-fill', colorClass: 'kpi-success' },
     ] : []),
     ...(verFinanceiro.value ? [
       { title: 'Receitas (Mês)', value: formatCurrency(m.receitasMes || 0), icon: 'bi-cash-coin', colorClass: 'kpi-info' },
@@ -380,37 +352,6 @@ async function concluirTarefa(id) {
 }
 
 function initCharts() {
-  // Process Chart
-  if (processChartCanvas.value && dashboardData.value?.charts) {
-    const charts = dashboardData.value.charts
-    const labels = charts.processosCadastrados?.map(d => d.mes) || []
-
-    if (processChart) processChart.destroy()
-    processChart = new Chart(processChartCanvas.value, {
-      type: 'bar',
-      data: {
-        labels,
-        datasets: [
-          {
-            label: 'Cadastrados',
-            data: charts.processosCadastrados?.map(d => d.processos) || [],
-            backgroundColor: '#013B51'
-          },
-          {
-            label: 'Encerrados',
-            data: charts.processosEncerrados?.map(d => d.processos) || [],
-            backgroundColor: '#16a34a'
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { position: 'bottom' } }
-      }
-    })
-  }
-
   // Finance Chart
   if (financeChartCanvas.value && dashboardData.value?.charts) {
     const charts = dashboardData.value.charts
@@ -448,33 +389,33 @@ function initCharts() {
     })
   }
 
-  // Receitas por Ramo do Direito
-  if (ramoChartCanvas.value && dashboardData.value?.charts?.resultadoPorRamo?.length) {
+  // Resultado por área
+  if (areaChartCanvas.value && dashboardData.value?.charts?.resultadoPorArea?.length) {
     const CATEGORICAL_COLORS = ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4', '#008300', '#4a3aa7', '#e34948']
     const OUTROS_COLOR = '#898781'
     const MAX_SLICES = 8
 
-    let porRamo = dashboardData.value.charts.resultadoPorRamo
-      .map(r => ({ ramo: r.ramo, receitas: parseFloat(r.receitas) || 0 }))
+    let porArea = dashboardData.value.charts.resultadoPorArea
+      .map(r => ({ area: r.area, receitas: parseFloat(r.receitas) || 0 }))
       .filter(r => r.receitas > 0)
       .sort((a, b) => b.receitas - a.receitas)
 
-    if (porRamo.length > MAX_SLICES) {
-      const principais = porRamo.slice(0, MAX_SLICES - 1)
-      const outros = porRamo.slice(MAX_SLICES - 1).reduce((sum, r) => sum + r.receitas, 0)
-      porRamo = [...principais, { ramo: 'Outros', receitas: outros }]
+    if (porArea.length > MAX_SLICES) {
+      const principais = porArea.slice(0, MAX_SLICES - 1)
+      const outros = porArea.slice(MAX_SLICES - 1).reduce((sum, r) => sum + r.receitas, 0)
+      porArea = [...principais, { area: 'Outros', receitas: outros }]
     }
 
-    const totalReceitas = porRamo.reduce((sum, r) => sum + r.receitas, 0)
-    const colors = porRamo.map((r, i) => r.ramo === 'Outros' ? OUTROS_COLOR : CATEGORICAL_COLORS[i % CATEGORICAL_COLORS.length])
+    const totalReceitas = porArea.reduce((sum, r) => sum + r.receitas, 0)
+    const colors = porArea.map((r, i) => r.area === 'Outros' ? OUTROS_COLOR : CATEGORICAL_COLORS[i % CATEGORICAL_COLORS.length])
 
-    if (ramoChart) ramoChart.destroy()
-    ramoChart = new Chart(ramoChartCanvas.value, {
+    if (areaChart) areaChart.destroy()
+    areaChart = new Chart(areaChartCanvas.value, {
       type: 'pie',
       data: {
-        labels: porRamo.map(r => r.ramo),
+        labels: porArea.map(r => r.area),
         datasets: [{
-          data: porRamo.map(r => r.receitas),
+          data: porArea.map(r => r.receitas),
           backgroundColor: colors
         }]
       },

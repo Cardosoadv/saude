@@ -15,14 +15,13 @@ class CreateSiteTables extends Migration
             'email'          => ['type' => 'VARCHAR', 'constraint' => 100],
             'phone'          => ['type' => 'VARCHAR', 'constraint' => 20],
             'message'        => ['type' => 'TEXT'],
-            'area_interesse' => ['type' => 'BIGINT', 'constraint' => 20, 'unsigned' => true],
+            'area_interesse' => ['type' => 'VARCHAR', 'constraint' => 150, 'null' => true],
             'status'         => ['type' => 'ENUM', 'constraint' => ['new', 'contacted', 'qualified', 'converted', 'lost'], 'default' => 'new'],
             'created_at'     => ['type' => 'DATETIME', 'null' => true],
             'updated_at'     => ['type' => 'DATETIME', 'null' => true],
             'deleted_at'     => ['type' => 'DATETIME', 'null' => true],
         ]);
         $this->forge->addPrimaryKey('id');
-        $this->forge->addForeignKey('area_interesse', 'juris_ramos_direito', 'id', 'CASCADE', 'RESTRICT');
         $this->forge->createTable('site_crm_contacts', true);
 
         // site_news_categories

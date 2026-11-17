@@ -14,8 +14,8 @@ Todos os exemplos abaixo usam dados **fictícios**.
 | Lançar (e lote), criar/alterar/excluir regras | `financeiro.extratos_lancar` |
 | Anexar comprovante a um movimento | `financeiro.edit` |
 
-Quem tem `financeiro.*` (administrador, advogado) já recebe as três. Perfis que listam permissões uma a uma
-(por exemplo, estagiário, que só tinha `financeiro.access/create/edit`) e usuários com permissões individuais
+Quem tem `financeiro.*` (administrador, profissional) já recebe as três. Perfis que listam permissões uma a uma
+(por exemplo, recepção, que só tinha `financeiro.access/create/edit`) e usuários com permissões individuais
 **não** ganham as novas automaticamente: conceda-as em Usuários → permissões. Sem elas, as rotas respondem `403`.
 
 ## Configurações

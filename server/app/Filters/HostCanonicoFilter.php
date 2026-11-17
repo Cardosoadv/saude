@@ -11,7 +11,7 @@ use CodeIgniter\HTTP\ResponseInterface;
 
 /**
  * Redireciona (301, num único salto) o site público para o endereço canônico
- * de `App::$publicURL`: protocolo, host (www × sem www) e subpasta `/ordojuris/`.
+ * de `App::$publicURL`: protocolo, host (www × sem www) e subpasta `/clinica/`.
  * Só atua em GET/HEAD e só quando `publicURL` está configurada.
  */
 class HostCanonicoFilter implements FilterInterface

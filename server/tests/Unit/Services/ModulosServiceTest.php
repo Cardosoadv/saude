@@ -35,8 +35,8 @@ class ModulosServiceTest extends CIUnitTestCase
             ->willReturn([
                 ['nome' => 'Módulo 1', 'slug' => 'modulo1', 'ativo' => 1],
                 ['nome' => 'Módulo 2', 'slug' => 'MODULO2', 'ativo' => 1],
-                ['nome' => 'Processos-Objetos-Imoveis', 'slug' => null, 'ativo' => 1],
-                ['nome' => 'Intimações', 'ativo' => 1],
+                ['nome' => 'Fornecedores Parceiros', 'slug' => null, 'ativo' => 1],
+                ['nome' => 'Agendamentos', 'ativo' => 1],
             ]);
 
         // First call should trigger repository call
@@ -49,7 +49,7 @@ class ModulosServiceTest extends CIUnitTestCase
         $this->assertFalse($this->service->isActive('Modulo3'));
         $this->assertFalse($this->service->isActive('Módulo 1'), 'Compara pelo slug, não pelo nome.');
         // Sem slug (ou sem a coluna): deriva do nome, como o ModulosSeeder.
-        $this->assertSame(['modulo1', 'modulo2', 'objetos', 'intimacoes'], $this->service->getActiveModules());
+        $this->assertSame(['modulo1', 'modulo2', 'fornecedores-parceiros', 'agendamentos'], $this->service->getActiveModules());
     }
 
     public function testSaveClearsCache()
@@ -116,40 +116,40 @@ class ModulosServiceTest extends CIUnitTestCase
     public function testAlterarStatusDesativaELimpaCache()
     {
         $this->mockRepository->method('getActiveModules')->willReturnOnConsecutiveCalls(
-            [['slug' => 'objetos', 'ativo' => 1]],
+            [['slug' => 'fornecedores', 'ativo' => 1]],
             [],
         );
         $this->mockRepository->method('getBySlug')
-            ->willReturn(['id' => 7, 'slug' => 'objetos', 'nome' => 'Objetos', 'ativo' => '1']);
+            ->willReturn(['id' => 7, 'slug' => 'fornecedores', 'nome' => 'Fornecedores', 'ativo' => '1']);
         $this->mockRepository->expects($this->once())->method('update')
             ->with(7, ['ativo' => 0])
             ->willReturn(true);
 
-        $this->assertTrue($this->service->isActive('objetos'));
+        $this->assertTrue($this->service->isActive('fornecedores'));
 
-        $modulo = $this->service->alterarStatus('objetos', false);
+        $modulo = $this->service->alterarStatus('fornecedores', false);
 
-        $this->assertSame(['id' => 7, 'slug' => 'objetos', 'nome' => 'Objetos', 'ativo' => false], $modulo);
-        $this->assertFalse($this->service->isActive('objetos'));
+        $this->assertSame(['id' => 7, 'slug' => 'fornecedores', 'nome' => 'Fornecedores', 'ativo' => false], $modulo);
+        $this->assertFalse($this->service->isActive('fornecedores'));
     }
 
     public function testAlterarStatusSemMudancaNaoGrava()
     {
         $this->mockRepository->method('getBySlug')
-            ->willReturn(['id' => 7, 'slug' => 'objetos', 'nome' => 'Objetos', 'ativo' => 1]);
+            ->willReturn(['id' => 7, 'slug' => 'fornecedores', 'nome' => 'Fornecedores', 'ativo' => 1]);
         $this->mockRepository->expects($this->never())->method('update');
 
-        $this->assertTrue($this->service->alterarStatus('objetos', true)['ativo']);
+        $this->assertTrue($this->service->alterarStatus('fornecedores', true)['ativo']);
     }
 
     public function testAlterarStatusFalhaAoGravar()
     {
         $this->mockRepository->method('getBySlug')
-            ->willReturn(['id' => 7, 'slug' => 'objetos', 'nome' => 'Objetos', 'ativo' => 1]);
+            ->willReturn(['id' => 7, 'slug' => 'fornecedores', 'nome' => 'Fornecedores', 'ativo' => 1]);
         $this->mockRepository->method('update')->willReturn(false);
 
         $this->expectException(\RuntimeException::class);
-        $this->service->alterarStatus('objetos', false);
+        $this->service->alterarStatus('fornecedores', false);
     }
 
     public function testSemModulosCadastradosTudoLiberado()
@@ -160,7 +160,7 @@ class ModulosServiceTest extends CIUnitTestCase
         $service = new ModulosService($vazio);
 
         $this->assertFalse($service->configurado());
-        $this->assertTrue($service->isActive('objetos'));
+        $this->assertTrue($service->isActive('fornecedores'));
         $this->assertTrue($service->isActive('qualquer'));
     }
 
@@ -169,6 +169,6 @@ class ModulosServiceTest extends CIUnitTestCase
         $this->mockRepository->method('getActiveModules')->willReturn([]);
 
         $this->assertTrue($this->service->configurado());
-        $this->assertFalse($this->service->isActive('objetos'));
+        $this->assertFalse($this->service->isActive('fornecedores'));
     }
 }

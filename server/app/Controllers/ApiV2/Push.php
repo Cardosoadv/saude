@@ -53,7 +53,7 @@ class Push extends BaseController
 
     /**
      * POST api/v2/push/inscricao
-     * Corpo: { subscription: {endpoint, keys: {p256dh, auth}}, preferencias?: {intimacoes, prazos} }
+     * Corpo: { subscription: {endpoint, keys: {p256dh, auth}}, preferencias?: {prazos} }
      */
     public function inscrever()
     {
@@ -72,7 +72,7 @@ class Push extends BaseController
         }
 
         $preferencias = [];
-        foreach (['intimacoes' => 'notificar_intimacoes', 'prazos' => 'notificar_prazos'] as $chave => $campo) {
+        foreach (['prazos' => 'notificar_prazos'] as $chave => $campo) {
             if (isset($dados['preferencias'][$chave])) {
                 $preferencias[$campo] = filter_var($dados['preferencias'][$chave], FILTER_VALIDATE_BOOLEAN);
             }
@@ -121,11 +121,10 @@ class Push extends BaseController
         return $this->respond(['success' => true, 'message' => "Teste enviado para {$r['enviadas']} aparelho(s).", 'data' => $r]);
     }
 
-    /** @return array{intimacoes: bool, prazos: bool} */
+    /** @return array{prazos: bool} */
     private function preferencias(array $inscricao): array
     {
         return [
-            'intimacoes' => (bool) (int) $inscricao['notificar_intimacoes'],
             'prazos'     => (bool) (int) $inscricao['notificar_prazos'],
         ];
     }

@@ -2,7 +2,7 @@
   <div class="page-content animate-fade-in contabil-page">
     <!-- Breadcrumb -->
     <div class="breadcrumb">
-      <a href="#" @click.prevent="$emit('set-view', 'dashboard')">Ordo Juris</a>
+      <a href="#" @click.prevent="$emit('set-view', 'dashboard')">Saúde</a>
       <i class="bi bi-chevron-right"></i>
       <span>Módulo Contábil</span>
     </div>
@@ -23,7 +23,7 @@
           <i class="bi bi-book"></i> Manual Contábil
         </a>
         <span class="badge badge-info entidade-badge">
-          <i class="bi bi-building"></i> Cardoso &amp; Bruno Sociedade de Advogados (BRL)
+          <i class="bi bi-building"></i> Clínica Saúde (BRL)
         </span>
       </div>
     </div>
@@ -494,7 +494,7 @@
 
       <div class="card relatorio-card" id="area-relatorio-contabil">
         <div class="relatorio-head">
-          <h2>Cardoso &amp; Bruno Advogados</h2>
+          <h2>Clínica Saúde Profissionais</h2>
           <h3>{{ tituloRelatorio }}</h3>
           <p>
             Período de {{ formatDate(filtroRelatorios.data_inicio) }} até
@@ -945,9 +945,6 @@
           </div>
 
           <div class="abertura-acoes">
-            <button class="btn btn-ghost btn-sm" @click="preencherBalancete2025">
-              <i class="bi bi-magic"></i> Preencher com o balancete de 31/12/2025
-            </button>
             <button class="btn btn-ghost btn-sm" @click="limparAbertura">Limpar valores</button>
           </div>
 
@@ -1065,7 +1062,7 @@
 
 <script setup lang="ts">
 /**
- * View principal do Módulo Contábil do OrdoJuris.
+ * View principal do Módulo Contábil do sistema.
  * Integração direta com financeiro e o componente cognitiotechny/contabil.
  *
  * @version 1.0.0
@@ -1103,8 +1100,7 @@ import {
 import { formatCurrency, formatDate } from '../../services/api'
 import CentroCustoFiltro, { type CentroCusto } from '../../components/Contabil/CentroCustoFiltro.vue'
 import {
-  BALANCETE_2025_CARDOSO_BRUNO,
-  DATA_ABERTURA_2026,
+  primeiroDiaDoAno,
   TIPOS_ABERTURA,
   saldosDasLinhas,
   totaisAbertura,
@@ -1531,7 +1527,7 @@ async function salvarNovoLancamento() {
 const modalAbertura = ref(false)
 const salvandoAbertura = ref(false)
 const abertura = ref<{ data: string; descricao: string; linhas: LinhaAbertura[] }>({
-  data: DATA_ABERTURA_2026,
+  data: primeiroDiaDoAno(),
   descricao: '',
   linhas: [],
 })
@@ -1552,7 +1548,7 @@ async function abrirModalAbertura() {
     }
   }
   abertura.value = {
-    data: DATA_ABERTURA_2026,
+    data: primeiroDiaDoAno(),
     descricao: '',
     linhas: contasFolhas.value
       .filter((c) => TIPOS_ABERTURA.includes(String(c.type).toUpperCase()))
@@ -1566,24 +1562,6 @@ function limparAbertura() {
     l.debito = null
     l.credito = null
   })
-}
-
-function preencherBalancete2025() {
-  limparAbertura()
-  const ausentes: string[] = []
-  for (const saldo of BALANCETE_2025_CARDOSO_BRUNO) {
-    const linha = abertura.value.linhas.find((l) => l.code === saldo.code)
-    if (!linha) {
-      ausentes.push(saldo.code)
-      continue
-    }
-    if (saldo.side === 'D') linha.debito = saldo.amount
-    else linha.credito = saldo.amount
-  }
-  abertura.value.data = DATA_ABERTURA_2026
-  if (ausentes.length) {
-    dispararToast(`Contas não encontradas no plano: ${ausentes.join(', ')}. Importe o plano oficial antes.`, 'warning')
-  }
 }
 
 async function confirmarAbertura() {

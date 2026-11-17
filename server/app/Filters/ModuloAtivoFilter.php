@@ -11,8 +11,8 @@ use CodeIgniter\HTTP\ResponseInterface;
 /**
  * Bloqueia a rota quando o módulo está desativado.
  *
- * Uso: 'filter' => ['permission:objetos.access', 'modulo:objetos']
- * Com vários slugs ('modulo:processos,objetos'), todos precisam estar ativos.
+ * Uso: 'filter' => ['permission:contratos.access', 'modulo:contratos']
+ * Com vários slugs ('modulo:clientes,crm'), todos precisam estar ativos.
  *
  * Responde 403 com `code: modulo_inativo`, que o front trata como
  * "módulo desativado pelo administrador" (diferente de falta de permissão).

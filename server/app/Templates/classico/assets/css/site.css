@@ -538,7 +538,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .hero-section {
   position: relative;
   min-height: 80vh;
-  background-image: url('../../assets/img/themis.jpeg');
+  background-image: url('../../assets/img/hero-bg.jpg');
   background-size: cover;
   background-position: center;
   background-attachment: scroll;
@@ -1478,7 +1478,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
    ========================================================================== */
 .news-hero {
   position: relative;
-  background-image: url('../../assets/img/themis.jpeg');
+  background-image: url('../../assets/img/hero-bg.jpg');
   background-size: cover;
   background-position: center;
   height: 50vh;

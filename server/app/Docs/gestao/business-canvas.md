@@ -1,6 +1,6 @@
 ---
 titulo: Business Canvas
-resumo: Montar e revisar o Business Model Canvas do escritório ou de um projeto.
+resumo: Montar e revisar o Business Model Canvas da clínica ou de um projeto.
 ordem: 10
 telas: [business-canvas]
 palavras_chave: [canvas, modelo de negócio, planejamento, estratégia]

@@ -36,11 +36,11 @@ Todas essas ações ficam registradas na auditoria do sistema.
 | Campo | Para que serve |
 |---|---|
 | **Título** e **Resumo** | aparecem no índice, na busca e na ajuda |
-| **Endereço** | `secao` para a capa de uma seção, `secao/pagina` para uma página. Ex.: `processos/prazos` |
+| **Endereço** | `secao` para a capa de uma seção, `secao/pagina` para uma página. Ex.: `clientes/prazos` |
 | **Ordem** | posição no índice (menor primeiro; padrão 100) |
-| **Módulo** | a página some quando o módulo está desativado (ex.: `processos`) |
-| **Permissão** | só quem tem a permissão vê a página (ex.: `processos.access`) |
-| **Telas da ajuda contextual** | o botão **?** dessas telas abre esta página (ex.: `list, process-form`) |
+| **Módulo** | a página some quando o módulo está desativado (ex.: `clientes`) |
+| **Permissão** | só quem tem a permissão vê a página (ex.: `clientes.access`) |
+| **Telas da ajuda contextual** | o botão **?** dessas telas abre esta página (ex.: `clientes, cliente-detail`) |
 | **Palavras-chave** | termos extras para a busca |
 
 ## Escrever
@@ -49,7 +49,7 @@ O texto usa **Markdown**, e a **Pré-visualização** ao lado mostra o resultado
 
 - `## Título` e `### Subtítulo` formam o sumário da página;
 - `**negrito**`, listas com `-` ou `1.`, tabelas com `|`;
-- link para outra página: `[texto](../secao/pagina.md)`; para uma tela do sistema: `[Processos](#/processos)`;
+- link para outra página: `[texto](../secao/pagina.md)`; para uma tela do sistema: `[Clientes](#/clientes)`;
 - os botões **Dica** e **Atenção** inserem os quadros de aviso.
 
 ## Imagens
@@ -58,7 +58,7 @@ Preencha o **Endereço** e use **Imagem**: o arquivo é enviado e o código da i
 "Descreva a imagem" por uma descrição do que ela mostra. Imagens com mais de 1600 px de largura são reduzidas.
 
 > [!ATENCAO]
-> Use só dados fictícios nas capturas de tela. Nunca mostre processos, clientes ou valores reais.
+> Use só dados fictícios nas capturas de tela. Nunca mostre clientes ou valores reais.
 
 ## Avisos
 

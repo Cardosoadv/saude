@@ -10,7 +10,6 @@ use App\Services\BaseService;
 /**
  * Serviço responsável por gerar o Demonstrativo de Resultados do Exercício (DRE).
  *
- * @author Cardoso
  * @version 1.0.0
  * @since 2026-04-08
  */

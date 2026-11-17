@@ -10,7 +10,7 @@ use Config\AuthGroups;
  * que exibir sem replicar a lógica do Shield.
  *
  * Segue as mesmas regras de User::can(): permissões diretas do usuário mais
- * as da matriz dos grupos dele, com curingas (`processos.*`) expandidos para
+ * as da matriz dos grupos dele, com curingas (`clientes.*`) expandidos para
  * as permissões declaradas daquele escopo.
  */
 class PermissoesEfetivasService

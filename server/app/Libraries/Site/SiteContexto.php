@@ -57,7 +57,7 @@ class SiteContexto
         $this->tema         = $tema;
     }
 
-    /** CSS (`:root{...}`) dos tokens de cor e fonte que o escritório personalizou; '' se nenhum. */
+    /** CSS (`:root{...}`) dos tokens de cor e fonte que a clínica personalizou; '' se nenhum. */
     public function temaCss(): string
     {
         return (new Tema())->css($this->tema, $this->configuracoes->todas());
@@ -76,7 +76,7 @@ class SiteContexto
         return ($valor === null || $valor === '') ? $padrao : $valor;
     }
 
-    /** Texto de interface: o do escritório (`textos.<chave>`), senão o do template, senão $padrao. */
+    /** Texto de interface: o da clínica (`textos.<chave>`), senão o do template, senão $padrao. */
     public function texto(string $chave, string $padrao = ''): string
     {
         $editado = $this->configuracoes->obter('textos.' . $chave);
@@ -171,7 +171,7 @@ class SiteContexto
     }
 
     /**
-     * Caminho no disco do logo do escritório (para e-mails, que embutem a imagem):
+     * Caminho no disco do logo da clínica (para e-mails, que embutem a imagem):
      * o logo da biblioteca de mídias; sem ele, o logo do template ativo.
      */
     public function logoArquivo(): ?string
@@ -196,7 +196,7 @@ class SiteContexto
 
     /**
      * Caminho no disco do logo dos e-mails: o logo próprio para e-mail (`identidade.logo_email`),
-     * para quando o e-mail usa outro fundo que o site; sem ele, o logo do escritório.
+     * para quando o e-mail usa outro fundo que o site; sem ele, o logo da clínica.
      */
     public function logoEmailArquivo(): ?string
     {

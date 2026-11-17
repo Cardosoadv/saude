@@ -23,39 +23,30 @@ class ModulosSeeder extends Seeder
         'administrativo'  => 'Administrativo',
         'usuarios'        => 'Usuários',
         'clientes'        => 'Clientes',
-        'processos'       => 'Processos',
-        'objetos'         => 'Objetos',
-        'intimacoes'      => 'Intimações',
-        'casos'           => 'Casos',
-        'documentos'      => 'Documentos',
         'contratos'       => 'Contratos',
         'tarefas'         => 'Tarefas',
         'financeiro'      => 'Financeiro',
         'fornecedores'    => 'Fornecedores',
         'google'          => 'Google',
-        'exportacao'      => 'Exportação',
         'gestao'          => 'Gestão',
         'business-canvas' => 'Business Canvas',
         'crm'             => 'CRM',
-        'checklist'       => 'Checklist',
-        'conhecimento'    => 'Conhecimento',
         'site'            => 'Site',
         'documentacao'    => 'Documentação',
         'contabil'        => 'Contábil',
     ];
 
     /**
-     * Nomes antigos (normalizados) que não viram o slug por normalização direta.
-     */
-    /**
      * Módulos em descontinuação: inseridos com `ativo = 0` em instalações novas.
      * Registros já existentes não são alterados.
      */
     public const DESATIVADOS_POR_PADRAO = [];
 
+    /**
+     * Nomes antigos (normalizados) que não viram o slug por normalização direta.
+     */
     private const LEGADOS = [
-        'processos-objetos-imoveis' => 'objetos',
-        'google-service'            => 'google',
+        'google-service' => 'google',
     ];
 
     public function run()

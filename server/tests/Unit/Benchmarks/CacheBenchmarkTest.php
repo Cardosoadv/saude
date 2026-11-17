@@ -20,25 +20,25 @@ class CacheBenchmarkTest extends CIUnitTestCase
     {
         $numKeys = 100;
         $userId = 1;
-        $intimacoesIds = [];
+        $agendamentosIds = [];
 
         // Preencher cache
         for ($i = 1; $i <= $numKeys; $i++) {
-            $intimacoesIds[] = ['id_intimacao' => $i];
-            $this->cache->save('intimacao_' . $i . '_user_' . $userId, 'data_' . $i);
+            $agendamentosIds[] = ['id_agendamento' => $i];
+            $this->cache->save('agendamento_' . $i . '_user_' . $userId, 'data_' . $i);
         }
 
         // Benchmark O(N) Deletion
         $startOn = microtime(true);
-        foreach ($intimacoesIds as $intimacao) {
-            $this->cache->delete('intimacao_' . $intimacao['id_intimacao'] . '_user_' . $userId);
+        foreach ($agendamentosIds as $agendamento) {
+            $this->cache->delete('agendamento_' . $agendamento['id_agendamento'] . '_user_' . $userId);
         }
         $endOn = microtime(true);
         $timeOn = $endOn - $startOn;
 
         // Benchmark O(1) Version Increment (Simulado)
         // No sistema real, clearCache incrementa uma versão
-        $cacheKey = 'intimacoes';
+        $cacheKey = 'agendamentos';
         $versionKey = "{$cacheKey}_version";
         $this->cache->save($versionKey, 1);
 

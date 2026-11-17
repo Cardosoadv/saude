@@ -6,7 +6,6 @@ namespace App\Services\Financeiro;
 
 use App\Repositories\Financeiro\CashFlowForecastRepository;
 use App\Repositories\Financeiro\ContasRepository;
-use App\Repositories\LiquidacoesRepository;
 use App\Repositories\Financeiro\SaldoMensalRepository;
 use App\Services\BaseService;
 
@@ -36,15 +35,12 @@ class CashFlowForecastService extends BaseService
 
     protected ContasRepository $contasRepository;
     protected SaldoMensalRepository $saldoMensalRepository;
-    protected ?LiquidacoesRepository $liquidacoesRepository;
 
     public function __construct(
         ?CashFlowForecastRepository $repository = null,
         ?ContasRepository $contasRepository = null,
-        ?SaldoMensalRepository $saldoMensalRepository = null,
-        ?LiquidacoesRepository $liquidacoesRepository = null
+        ?SaldoMensalRepository $saldoMensalRepository = null
     ) {
-        $this->liquidacoesRepository = $liquidacoesRepository;
         $this->repository            = $repository ?? new CashFlowForecastRepository();
         $this->contasRepository      = $contasRepository ?? new ContasRepository();
         $this->saldoMensalRepository = $saldoMensalRepository ?? new SaldoMensalRepository();
@@ -138,8 +134,6 @@ class CashFlowForecastService extends BaseService
         $ultimaChave = end($chavesMeses);
         $chavesFuturas = $this->gerarProximosMeses($ultimaChave, $mesesProjecao);
 
-        $entradasLiquidacoes = $contaId === null ? $this->entradasPrevistasLiquidacoes($chavesFuturas) : [];
-
         foreach ($chavesFuturas as $chave) {
             [$ano, $mes] = array_map('intval', explode('-', $chave));
             $saldoProjetado = $regressao['intercepto'] + $regressao['inclinacao'] * $indice;
@@ -149,8 +143,6 @@ class CashFlowForecastService extends BaseService
                 'mes'             => $mes,
                 'label'           => sprintf('%02d/%d', $mes, $ano),
                 'saldo_projetado' => round($saldoProjetado, 2),
-                // Informativo (não entra na regressão): parcelas de liquidações a receber no mês.
-                'entradas_previstas_liquidacoes' => $entradasLiquidacoes[$chave] ?? 0.0,
             ];
             $indice++;
         }
@@ -176,42 +168,6 @@ class CashFlowForecastService extends BaseService
                 'direcao'           => $direcao,
             ],
         ];
-    }
-
-    /**
-     * Soma, por mês projetado, as parcelas de liquidações ainda a receber. Parcelas já vencidas
-     * contam no primeiro mês projetado. Não depende de conta (as parcelas não têm conta definida).
-     *
-     * @param list<string> $chavesFuturas meses 'Y-m' da projeção
-     * @return array<string,float> valores em reais por mês
-     */
-    private function entradasPrevistasLiquidacoes(array $chavesFuturas): array
-    {
-        if ($chavesFuturas === []) {
-            return [];
-        }
-
-        try {
-            $parcelas = ($this->liquidacoesRepository ??= new LiquidacoesRepository())->getParcelasEmAberto();
-        } catch (\Throwable $e) {
-            log_message('error', '[CashFlowForecastService] Parcelas de liquidações indisponíveis: ' . $e->getMessage());
-
-            return [];
-        }
-
-        $primeiro = $chavesFuturas[0];
-        $ultimo   = end($chavesFuturas);
-        $totais   = [];
-        foreach ($parcelas as $p) {
-            $mes = substr((string) $p['data_vencimento'], 0, 7);
-            $mes = max($mes, $primeiro);
-            if ($mes > $ultimo) {
-                continue;
-            }
-            $totais[$mes] = ($totais[$mes] ?? 0) + (int) $p['valor_parcela'];
-        }
-
-        return array_map(static fn ($centavos) => round($centavos / 100, 2), $totais);
     }
 
     /**

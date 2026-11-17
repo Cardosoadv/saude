@@ -17,7 +17,7 @@ use CodeIgniter\Database\Migration;
  *    e as páginas `politica-de-privacidade` e `termos-de-uso`;
  *  - acrescenta as duas páginas ao fim do menu `rodape`, se ainda não estiverem lá.
  *
- * Idempotente e não destrutiva: nunca sobrescreve conteúdo do escritório.
+ * Idempotente e não destrutiva: nunca sobrescreve conteúdo da clínica.
  */
 class PoliticaPrivacidadeLgpd extends Migration
 {
@@ -48,7 +48,7 @@ class PoliticaPrivacidadeLgpd extends Migration
 
     public function down()
     {
-        // Páginas, menus e configurações ficam: removê-los apagaria conteúdo do escritório.
+        // Páginas, menus e configurações ficam: removê-los apagaria conteúdo da clínica.
         foreach (['privacidade_aceite_em', 'privacidade_versao'] as $coluna) {
             if ($this->temColuna($coluna)) {
                 $this->forge->dropColumn('site_crm_contacts', $coluna);

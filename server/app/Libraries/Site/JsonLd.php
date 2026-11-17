@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Libraries\Site;
 
 /**
- * Dados estruturados (schema.org) do escritório, montados só com o que está nas
+ * Dados estruturados (schema.org) da clínica, montados só com o que está nas
  * configurações do site. `grafo()` junta tudo num único `@graph` por página
- * (LegalService, WebSite, advogados, WebPage/BreadcrumbList, BlogPosting, FAQPage).
+ * (MedicalClinic, WebSite, profissionais, WebPage/BreadcrumbList, BlogPosting, FAQPage).
  * Campos ausentes são omitidos; sem nome, nada é gerado.
  */
 final class JsonLd
@@ -18,7 +18,7 @@ final class JsonLd
     /** Dias aceitos em `contato.horario[].dias` (schema.org/DayOfWeek). */
     private const DIAS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
-    /** `@id` da organização (o escritório) no grafo. */
+    /** `@id` da organização (a clínica) no grafo. */
     public static function idOrganizacao(string $url): string
     {
         return rtrim($url, '/') . '/#organizacao';
@@ -36,14 +36,14 @@ final class JsonLd
      * @param list<string> $areas Títulos das áreas de atuação publicadas (`knowsAbout`)
      * @param string|null $imagem URL absoluta da imagem principal (`image`); sem ela, o logo
      */
-    public static function legalService(array $config, string $url, ?string $logo = null, array $areas = [], ?string $imagem = null): ?array
+    public static function organizacao(array $config, string $url, ?string $logo = null, array $areas = [], ?string $imagem = null): ?array
     {
         $nome = trim((string) ($config['identidade.nome'] ?? ''));
         if ($nome === '') {
             return null;
         }
 
-        $dados = ['@context' => 'https://schema.org', '@type' => 'LegalService', '@id' => self::idOrganizacao($url), 'name' => $nome, 'url' => $url];
+        $dados = ['@context' => 'https://schema.org', '@type' => 'MedicalClinic', '@id' => self::idOrganizacao($url), 'name' => $nome, 'url' => $url];
 
         $razao = trim((string) ($config['identidade.razao_social'] ?? ''));
         if ($razao !== '') {
@@ -138,7 +138,7 @@ final class JsonLd
      */
     public static function grafo(array $config, string $url, ?string $logo = null, array $ctx = []): ?array
     {
-        $org = self::legalService($config, $url, $logo, (array) ($ctx['areas'] ?? []), $ctx['imagem'] ?? null);
+        $org = self::organizacao($config, $url, $logo, (array) ($ctx['areas'] ?? []), $ctx['imagem'] ?? null);
         if ($org === null) {
             return null;
         }
@@ -155,7 +155,7 @@ final class JsonLd
             'publisher'  => $idOrg,
         ]);
 
-        $pessoas = self::advogados($config['identidade.advogados'] ?? [], $url, $idOrg);
+        $pessoas = self::profissionais($config['identidade.profissionais'] ?? [], $url, $idOrg);
         if ($pessoas !== []) {
             $org['member'] = array_map(static fn (array $p): array => ['@id' => $p['@id']], $pessoas);
             $nos[0]        = $org;
@@ -274,11 +274,11 @@ final class JsonLd
     }
 
     /**
-     * @param mixed $lista `[{nome, cargo?, oab?}]`
+     * @param mixed $lista `[{nome, cargo?, registro?}]`
      * @param array{'@id':string} $idOrg
      * @return list<array<string, mixed>>
      */
-    private static function advogados(mixed $lista, string $url, array $idOrg): array
+    private static function profissionais(mixed $lista, string $url, array $idOrg): array
     {
         $pessoas = [];
         foreach (is_array($lista) ? $lista : [] as $i => $a) {
@@ -286,17 +286,17 @@ final class JsonLd
             if ($nome === '') {
                 continue;
             }
-            $oab   = trim((string) ($a['oab'] ?? ''));
+            $registro   = trim((string) ($a['registro'] ?? ''));
             $cargo = trim((string) ($a['cargo'] ?? ''));
             $pessoa = [
                 '@type'    => 'Person',
-                '@id'      => rtrim($url, '/') . '/#advogado-' . ($i + 1),
+                '@id'      => rtrim($url, '/') . '/#profissional-' . ($i + 1),
                 'name'     => $nome,
-                'jobTitle' => $cargo !== '' ? $cargo : 'Advogado(a)',
+                'jobTitle' => $cargo !== '' ? $cargo : 'Profissional de saúde',
                 'worksFor' => $idOrg,
             ];
-            if ($oab !== '') {
-                $pessoa['identifier'] = ['@type' => 'PropertyValue', 'propertyID' => 'OAB', 'value' => $oab];
+            if ($registro !== '') {
+                $pessoa['identifier'] = ['@type' => 'PropertyValue', 'propertyID' => 'Registro profissional', 'value' => $registro];
             }
             $pessoas[] = $pessoa;
         }

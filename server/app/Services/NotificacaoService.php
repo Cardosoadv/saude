@@ -10,7 +10,6 @@ use CodeIgniter\Email\Email;
 
 /**
  * Serviço responsável pelo envio de notificações.
- * @author Cardoso
  * @version 1.0
  * @since 2025-12-21
  *
@@ -28,7 +27,7 @@ class NotificacaoService extends BaseService
 
     /**
      * Repositório de tarefas, usado para resolver o link da entidade vinculada
-     * (processo, caso ou cliente) exibido nas notificações.
+     * (cliente) exibido nas notificações.
      *
      * @var TarefasRepository
      */
@@ -122,7 +121,7 @@ class NotificacaoService extends BaseService
             // Monta o corpo (limpa o e-mail e os anexos anteriores) e devolve o assunto
             $assunto = $this->montarMensagem($tipoLayout, $dados);
 
-            $this->email->setFrom('noreply@cardosoebruno.adv.br', 'Ordojuris - Sistema de Administração de Escritórios de Advocacia');
+            $this->email->setFrom('noreply@exemplo.com.br', config('Email')->fromName ?: 'Saúde - Gestão de Clínicas');
             $this->email->setTo($email);
             $this->email->setSubject($assunto);
 
@@ -163,7 +162,6 @@ class NotificacaoService extends BaseService
                     'detalhes'       => $prazoVencendo ? null : ($dados['detalhes'] ?? null),
                     'prazoFormatado' => $prazo['data'],
                     'situacaoPrazo'  => $prazo['situacao'],
-                    'processo'       => $this->resumoProcessoDaTarefa($dados),
                     'vinculo'        => $this->resumoVinculo($dados),
                     'urlSistema'     => $urlSistema,
                 ], [
@@ -174,45 +172,6 @@ class NotificacaoService extends BaseService
                 ]);
 
                 return $prazoVencendo ? 'Tarefa com prazo vencendo' : 'Nova tarefa atribuída a você';
-
-            case 'LAYOUT_LIQUIDACAO_PARCELA':
-                $vencida = ($dados['tipo'] ?? '') === 'vencida';
-                $parcela = (int) ($dados['numero_parcela'] ?? 0) === 0 ? 'de entrada' : (string) (int) $dados['numero_parcela'];
-
-                EmailMarca::montar($this->email, 'emails/notificacao_liquidacao', [
-                    'vencida'    => $vencida,
-                    'parcela'    => $parcela,
-                    'liquidacao' => (int) ($dados['liquidacao_id'] ?? 0),
-                    'valor'      => 'R$ ' . number_format(((int) ($dados['valor_parcela'] ?? 0)) / 100, 2, ',', '.'),
-                    'vencimento' => !empty($dados['data_vencimento']) ? date('d/m/Y', strtotime($dados['data_vencimento'])) : '',
-                    'processo'   => !empty($dados['processo_id']) ? $this->repository->resumoProcesso((int) $dados['processo_id']) : null,
-                    'urlSistema' => $urlSistema,
-                ], [
-                    'titulo'    => $vencida ? 'Parcela de liquidação em atraso' : 'Parcela de liquidação a vencer',
-                    'etiqueta'  => 'Liquidação',
-                    'tom'       => $vencida ? 'danger' : 'warning',
-                    'preheader' => 'Parcela ' . $parcela . ' da liquidação #' . (int) ($dados['liquidacao_id'] ?? 0),
-                ]);
-
-                return $vencida ? 'Parcela de liquidação em atraso' : 'Parcela de liquidação a vencer';
-
-            case 'LAYOUT_MENSAGEM_RECEBIDA':
-                $mensagemId = (int) ($dados['mensagem_id'] ?? 0);
-
-                EmailMarca::montar($this->email, 'emails/notificacao_mensagem', [
-                    'remetente' => $this->nomeUsuario($dados['remetente_id'] ?? null),
-                    'assunto'   => (string) $dados['assunto'],
-                    'conteudo'  => (string) $dados['conteudo'],
-                    'processo'  => !empty($dados['processo_id']) ? $this->repository->resumoProcesso((int) $dados['processo_id']) : null,
-                    'url'       => $urlSistema . ($mensagemId > 0 ? 'mensagens/detalhes/' . $mensagemId : 'mensagens'),
-                ], [
-                    'titulo'    => 'Nova mensagem recebida',
-                    'etiqueta'  => 'Mensagem',
-                    'tom'       => 'primary',
-                    'preheader' => (string) $dados['assunto'],
-                ]);
-
-                return (string) $dados['assunto'];
 
             default:
                 EmailMarca::montar($this->email, 'emails/notificacao_generica', [
@@ -228,23 +187,7 @@ class NotificacaoService extends BaseService
     }
 
     /**
-     * Resume o processo ao qual a tarefa está vinculada: número, título e cliente.
-     *
-     * @param array $dados Dados da tarefa.
-     * @return array|null Null quando a tarefa não tem processo ou ele não existe mais.
-     */
-    private function resumoProcessoDaTarefa(array $dados): ?array
-    {
-        if (empty($dados['processo_id'])) {
-            return null;
-        }
-
-        return $this->repository->resumoProcesso((int) $dados['processo_id']);
-    }
-
-    /**
-     * Resume o cliente ou caso vinculado à tarefa. Processos são exibidos no cartão
-     * de processo (com título e cliente); aqui só entram se o resumo não estiver disponível.
+     * Resume o cliente vinculado à tarefa.
      *
      * @param array $dados Dados da tarefa, já enriquecidos por TarefasRepository::popularVinculos.
      * @return array{rotulo: string, info: string, url: string, acao: string}|null
@@ -255,20 +198,9 @@ class NotificacaoService extends BaseService
             return null;
         }
 
-        $tipo = $dados['vinculo_tipo'] ?? '';
         $info = (string) ($dados['vinculo_info'] ?? '');
 
-        if ($tipo === 'processo') {
-            if ($this->resumoProcessoDaTarefa($dados) !== null) {
-                return null;
-            }
-
-            return ['rotulo' => 'Processo', 'info' => $info, 'url' => $dados['vinculo_url'], 'acao' => 'Ver processo'];
-        }
-
-        return $tipo === 'caso'
-            ? ['rotulo' => 'Caso', 'info' => $info, 'url' => $dados['vinculo_url'], 'acao' => 'Ver caso']
-            : ['rotulo' => 'Cliente', 'info' => $info, 'url' => $dados['vinculo_url'], 'acao' => 'Ver cliente'];
+        return ['rotulo' => 'Cliente', 'info' => $info, 'url' => $dados['vinculo_url'], 'acao' => 'Ver cliente'];
     }
 
     /**

@@ -1,7 +1,7 @@
 # API administrativa do site (contrato para a SPA)
 
 Contrato dos endpoints que as telas do editor do site (repositório `CognitioTechny/sistema`, épico
-[sistema#162](https://github.com/CognitioTechny/sistema/issues/162)) consomem. Épico do backend: ordojuris#641.
+[sistema#162](https://github.com/CognitioTechny/sistema/issues/162)) consomem. 
 Os exemplos de páginas, seções, menus, configurações e tema foram gerados executando os serviços reais sobre o
 template Clássico instalado (URLs e datas variam); os de mídias e templates foram montados a partir do código e dos
 testes, sem execução HTTP. O contrato do template em si está em [`site-templates.md`](site-templates.md).
@@ -106,7 +106,7 @@ de mídia), `cor`, `bool`.
 
 ```json
 {"data": {"contato": [
-  {"chave": "contato.email", "tipo": "string", "grupo": "contato", "valor": "contato@cardosoebruno.adv.br"},
+  {"chave": "contato.email", "tipo": "string", "grupo": "contato", "valor": "contato@exemplo.com.br"},
   {"chave": "contato.enderecos", "tipo": "json", "grupo": "contato", "valor": [{"titulo": "Belo Horizonte / MG", "cidade": "Belo Horizonte", "uf": "MG"}]}]}}
 ```
 
@@ -190,7 +190,7 @@ Só **um nível** de submenu e até 50 itens. Na leitura cada item traz também 
 
 ```json
 {"itens": [
-  {"rotulo": "Direito Civil", "tipo": "pagina", "pagina_id": 2},
+  {"rotulo": "Serviços", "tipo": "pagina", "pagina_id": 2},
   {"rotulo": "Notícias", "tipo": "url", "url": "/noticias", "destaque": false},
   {"rotulo": "Contato", "tipo": "ancora", "ancora": "contato"}]}
 ```

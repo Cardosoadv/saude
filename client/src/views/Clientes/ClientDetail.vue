@@ -2,7 +2,7 @@
   <div class="page-content animate-fade-in">
     <!-- Breadcrumb -->
     <div class="breadcrumb">
-      <a href="#/dashboard" @click.exact.prevent="$emit('set-view', 'dashboard')">Ordo Juris</a>
+      <a href="#/dashboard" @click.exact.prevent="$emit('set-view', 'dashboard')">Saúde</a>
       <i class="bi bi-chevron-right"></i>
       <a href="#/clientes" @click.exact.prevent="$emit('set-view', 'clientes')">Clientes</a>
       <i class="bi bi-chevron-right"></i>
@@ -16,15 +16,6 @@
         <p>{{ isNew ? 'Cadastre um novo cliente na sua carteira' : 'Gerencie e visualize dados consolidados do cliente' }}</p>
       </div>
       <div class="header-actions">
-        <button
-          v-if="podeEnriquecer"
-          type="button"
-          class="btn btn-ghost"
-          @click="showEnriquecerModal = true"
-          :title="`Completar endereço e dados cadastrais pelo ${documentoDigitos.length === 14 ? 'CNPJ (Receita Federal)' : 'CPF (API Brasil)'}`"
-        >
-          <i class="bi bi-stars" style="color:var(--primary);"></i> Enriquecer Dados
-        </button>
         <button
           v-if="!isNew && !semAcesso && ehFornecedor && liberado('fornecedores', 'fornecedores.access')"
           type="button"
@@ -271,7 +262,7 @@
                 <label for="visibilidade" class="form-label"><i class="bi bi-lock"></i> Visibilidade</label>
                 <select v-model="form.visibilidade" id="visibilidade" class="form-control form-select">
                   <option value="restrito">Restrito: você, o responsável e quem for liberado</option>
-                  <option value="publico">Público: todos os advogados</option>
+                  <option value="publico">Público: todos os profissionais</option>
                 </select>
               </div>
             </div>
@@ -337,94 +328,6 @@
           </div>
 
           <div class="tab-content">
-            <!-- Processos Tab -->
-            <div v-if="activeTab === 'processos'" class="table-wrap">
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th>Número CNJ</th>
-                    <th>Título / Ação</th>
-                    <th class="center">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="p in processes" :key="p.id_processo">
-                    <td class="nowrap">
-                      <a
-                        :href="'#/processos/detalhes/' + p.id_processo"
-                        class="table-link"
-                        @click.exact.prevent="$emit('open-process-detail', p.id_processo)"
-                      >
-                        <i class="bi bi-folder2-open"></i>
-                        {{ formatCNJ(p.numeroprocessocommascara || p.numero_processo) }}
-                      </a>
-                    </td>
-                    <td>
-                      <a
-                        v-if="p.titulo_processo || p.titulo || p.acao"
-                        :href="'#/processos/detalhes/' + p.id_processo"
-                        class="table-link-secondary"
-                        @click.exact.prevent="$emit('open-process-detail', p.id_processo)"
-                      >
-                        {{ p.titulo_processo || p.titulo || p.acao }}
-                      </a>
-                      <span v-else class="text-muted">—</span>
-                    </td>
-                    <td class="center nowrap">
-                      <span :class="['badge', getProcessoBadgeClass(p)]">
-                        {{ getProcessoStatusLabel(p) }}
-                      </span>
-                    </td>
-                  </tr>
-                  <tr v-if="!processes.length">
-                    <td colspan="3" class="table-empty">
-                      <i class="bi bi-folder-x"></i>
-                      <span>Nenhum processo vinculado a este cliente.</span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <!-- Casos Tab -->
-            <div v-if="activeTab === 'casos'" class="table-wrap">
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th>Título do Caso</th>
-                    <th>Descrição</th>
-                    <th class="center">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="c in cases" :key="c.id_caso">
-                    <td>
-                      <a
-                        :href="'#/casos/detalhes/' + c.id_caso"
-                        class="table-link"
-                        @click.exact.prevent="$emit('open-caso-detail', c.id_caso)"
-                      >
-                        <i class="bi bi-briefcase"></i>
-                        {{ c.titulo }}
-                      </a>
-                    </td>
-                    <td>{{ c.descricao || c.tipo || '—' }}</td>
-                    <td class="center nowrap">
-                      <span :class="['badge', getCasoBadgeClass(c.status)]">
-                        {{ c.status || 'Ativo' }}
-                      </span>
-                    </td>
-                  </tr>
-                  <tr v-if="!cases.length">
-                    <td colspan="3" class="table-empty">
-                      <i class="bi bi-briefcase"></i>
-                      <span>Nenhum caso extrajudicial cadastrado.</span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
             <!-- Financeiro Tab -->
             <div v-if="activeTab === 'financeiro'" class="table-wrap">
               <table class="data-table">
@@ -461,97 +364,13 @@
                   <tr v-if="!financial.length">
                     <td colspan="4" class="table-empty">
                       <i class="bi bi-cash-coin"></i>
-                      <span>Nenhuma receita ou honorário lançado.</span>
+                      <span>Nenhuma receita lançada.</span>
                     </td>
                   </tr>
                 </tbody>
               </table>
             </div>
 
-            <!-- Intimações Tab -->
-            <div v-if="activeTab === 'intimacoes'" class="table-wrap">
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th>Publicação / Processo</th>
-                    <th class="nowrap">Data Publicação</th>
-                    <th>Conteúdo da Publicação</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="i in intimacoes" :key="i.id_intimacao">
-                    <td class="nowrap">
-                      <a
-                        :href="'#/intimacoes/detalhes/' + i.id_intimacao"
-                        class="table-link"
-                        @click.exact.prevent="$emit('open-intimacao-detail', i.id_intimacao)"
-                      >
-                        <i class="bi bi-envelope-paper"></i>
-                        {{ i.diario || i.tipoComunicacao || ('Intimação #' + i.id_intimacao) }}
-                      </a>
-                      <div v-if="i.numeroprocessocommascara || i.numero_processo" style="margin-top:2px;">
-                        <a
-                          v-if="i.id_processo"
-                          :href="'#/processos/detalhes/' + i.id_processo"
-                          class="table-sublink"
-                          @click.exact.prevent="$emit('open-process-detail', i.id_processo)"
-                        >
-                          Processo: {{ formatCNJ(i.numeroprocessocommascara || i.numero_processo) }}
-                        </a>
-                        <small v-else class="text-muted">Processo: {{ formatCNJ(i.numeroprocessocommascara || i.numero_processo) }}</small>
-                      </div>
-                    </td>
-                    <td class="nowrap">{{ formatDate(i.data_publicacao || i.data_intimacao || i.data_disponibilizacao) }}</td>
-                    <td>
-                      <a
-                        :href="'#/intimacoes/detalhes/' + i.id_intimacao"
-                        class="table-link-secondary intimacao-excerpt"
-                        @click.exact.prevent="$emit('open-intimacao-detail', i.id_intimacao)"
-                      >
-                        {{ i.conteudo || i.texto || 'Visualizar íntegra da publicação' }}
-                      </a>
-                    </td>
-                  </tr>
-                  <tr v-if="!intimacoes.length">
-                    <td colspan="3" class="table-empty">
-                      <i class="bi bi-mailbox"></i>
-                      <span>Nenhuma intimação associada cadastrada.</span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <!-- CRM Histórico Tab -->
-            <div v-if="activeTab === 'historico'" class="tab-body-padded">
-              <div class="timeline animate-fade-in" v-if="notes.length">
-                <div class="timeline-item" v-for="n in notes" :key="`${n.tipo || 'nota'}-${n.id_anotacao}`">
-                  <div class="timeline-badge"><i class="bi bi-chat-square-text-fill"></i></div>
-                  <div class="timeline-card">
-                    <div class="timeline-header">
-                      <div>
-                        <strong>{{ n.titulo || 'Nota CRM' }}</strong>
-                        <a
-                          v-if="n.entidade_id"
-                          :href="getNotaHref(n)"
-                          class="timeline-ref-link"
-                          @click.exact.prevent="openNotaEntidade(n)"
-                        >
-                          <i :class="n.tipo === 'caso' ? 'bi bi-briefcase' : 'bi bi-folder2-open'"></i>
-                          {{ n.referencia || (n.tipo === 'caso' ? `Caso #${n.entidade_id}` : `Processo #${n.entidade_id}`) }}
-                        </a>
-                      </div>
-                      <span class="timeline-date">{{ formatDate(n.created_at) }}</span>
-                    </div>
-                    <p class="timeline-body">{{ n.conteudo }}</p>
-                  </div>
-                </div>
-              </div>
-              <div class="table-empty" v-else>
-                <i class="bi bi-chat-left-dots"></i>
-                <span>Nenhuma anotação de interação de CRM registrada para este cliente.</span>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -566,7 +385,6 @@
           @loaded="a => podeGerenciarAcessos = !!a?.pode_gerenciar"
         />
         <CrmTimelineWidget v-if="liberado('crm')" :clientId="props.clientId" @toast="(msg) => $emit('toast', msg)" />
-        <ClientNotesWidget :clientId="props.clientId" :documento="form.documento" @toast="(msg) => $emit('toast', msg)" />
 
         <!-- Client stats card -->
         <div class="card" style="margin-bottom:16px;">
@@ -574,33 +392,13 @@
             <h3><i class="bi bi-activity"></i> Indicadores do Cliente</h3>
           </div>
           <ul class="widget-list">
-            <li v-if="abaLiberada('processos')" style="padding:0;">
-              <a
-                :href="`#/clientes/editar/${props.clientId}`"
-                class="indicator-link"
-                @click.prevent="activeTab = 'processos'"
-              >
-                <span class="process-date" style="font-size:.82rem;"><i class="bi bi-file-earmark-code"></i> Processos Ativos</span>
-                <span class="process-num" style="font-size:.82rem;">{{ clientStats.processos || 0 }}</span>
-              </a>
-            </li>
-            <li v-if="abaLiberada('casos')" style="padding:0;">
-              <a
-                :href="`#/clientes/editar/${props.clientId}`"
-                class="indicator-link"
-                @click.prevent="activeTab = 'casos'"
-              >
-                <span class="process-date" style="font-size:.82rem;"><i class="bi bi-briefcase"></i> Casos Registrados</span>
-                <span class="process-num" style="font-size:.82rem;">{{ clientStats.casos || 0 }}</span>
-              </a>
-            </li>
             <li v-if="abaLiberada('financeiro')" style="padding:0;">
               <a
                 :href="`#/clientes/editar/${props.clientId}`"
                 class="indicator-link"
                 @click.prevent="activeTab = 'financeiro'"
               >
-                <span class="process-date" style="font-size:.82rem;"><i class="bi bi-cash-coin"></i> Honorários Totais</span>
+                <span class="process-date" style="font-size:.82rem;"><i class="bi bi-cash-coin"></i> Receitas Totais</span>
                 <span class="process-num" style="color:var(--success); font-weight:700; font-size:.82rem;">{{ formatCurrency(clientStats.receitas || 0) }}</span>
               </a>
             </li>
@@ -623,8 +421,8 @@
             <h3><i class="bi bi-info-circle"></i> Diretrizes do CRM</h3>
           </div>
           <div style="padding:16px 18px; color:var(--ink-muted); font-size:0.82rem; line-height:1.5;">
-            <p style="margin-bottom:0.75rem;"><strong style="color:var(--ink);">🔥 Quente</strong>: Negociações ativas de contrato de honorários ou reuniões iminentes.</p>
-            <p style="margin-bottom:0.75rem;"><strong style="color:var(--ink);">⚖️ Morno</strong>: Cliente prospectado que está reunindo documentos.</p>
+            <p style="margin-bottom:0.75rem;"><strong style="color:var(--ink);">🔥 Quente</strong>: Negociações ativas ou atendimentos iminentes.</p>
+            <p style="margin-bottom:0.75rem;"><strong style="color:var(--ink);">🌤️ Morno</strong>: Cliente em contato, ainda avaliando o atendimento.</p>
             <p><strong style="color:var(--ink);">❄️ Frio</strong>: Sem contato recente ou arquivado preventivamente.</p>
           </div>
         </div>
@@ -640,17 +438,6 @@
       @success="onTransformSuccess"
     />
 
-    <ModalEnriquecerCadastro
-      v-if="showEnriquecerModal && props.clientId"
-      :show="showEnriquecerModal"
-      tipo="cliente"
-      :id="props.clientId"
-      :nome="form.nome"
-      :documento="form.documento"
-      @close="showEnriquecerModal = false"
-      @toast="$emit('toast', $event)"
-      @aplicado="onEnriquecido"
-    />
   </div>
 </template>
 
@@ -660,14 +447,11 @@
  * @version 1.2.0
  */
 import { ref, reactive, onMounted, computed, watch } from 'vue'
-import { apiFetch, ApiError, formatDate, formatCurrency, formatCNJ, formatDocument, formatPhone } from '../../services/api'
+import { apiFetch, ApiError, formatDate, formatCurrency, formatDocument, formatPhone } from '../../services/api'
 import { liberado, pode } from '../../composables/useAcesso'
-import ModalEnriquecerCadastro from '../../components/Consultas/ModalEnriquecerCadastro.vue'
-import { documentoEnriquecivel, somenteDigitos } from '../../services/consultasApi'
 import AcessosCard from '../../components/widgets/Privacidade/AcessosCard.vue'
 import ResponsavelSelect from '../../components/widgets/Privacidade/ResponsavelSelect.vue'
 import CrmTimelineWidget from '../../components/widgets/CrmTimelineWidget.vue'
-import ClientNotesWidget from '../../components/widgets/ClientNotesWidget.vue'
 import ModalTransformarEmFornecedor from '../../components/modals/Clientes/ModalTransformarEmFornecedor.vue'
 
 const props = defineProps({
@@ -680,12 +464,9 @@ const props = defineProps({
 const emit = defineEmits([
   'set-view',
   'toast',
-  'open-process-detail',
-  'open-caso-detail',
   'open-supplier-detail',
   'open-receita-detail',
-  'open-receita-recebida-detail',
-  'open-intimacao-detail'
+  'open-receita-recebida-detail'
 ])
 
 const isNew = computed(() => !props.clientId)
@@ -694,24 +475,8 @@ const semAcesso = ref(false)
 const podeGerenciarAcessos = ref(false)
 const responsavelSalvo = ref('')
 const showTransformModal = ref(false)
-const showEnriquecerModal = ref(false)
 /** Cadastro único: o mesmo registro pode ser cliente/CRM e fornecedor. */
 const ehFornecedor = ref(false)
-
-const documentoDigitos = computed(() => somenteDigitos(form.documento || ''))
-/** Consultas (módulo gestão) + edição de clientes + CPF/CNPJ completo. */
-const podeEnriquecer = computed(() =>
-  !isNew.value && !semAcesso.value
-  && liberado('gestao', 'consultas.access') && pode('clientes.edit')
-  && documentoEnriquecivel(form.documento)
-)
-
-/** Campos já gravados pelo enriquecimento: reflete no formulário. */
-function onEnriquecido(campos: Record<string, string>) {
-  Object.entries(campos).forEach(([k, v]) => {
-    if (k in form) form[k] = v
-  })
-}
 
 function onTransformSuccess(payload: { fornecedorId: number; message: string }) {
   if (payload.fornecedorId) {
@@ -722,24 +487,16 @@ function onTransformSuccess(payload: { fornecedorId: number; message: string }) 
 }
 
 // Active Tab for bottom related tables
-const activeTab = ref('processos')
+const activeTab = ref('financeiro')
 
 /** Cada aba é de um módulo: [slug, permissões aceitas] (mesmas regras da API). */
 const REGRAS_ABAS: Record<string, [string, ...string[]]> = {
-  processos: ['processos', 'processos.access', 'processos.exclusive'],
-  casos: ['casos', 'casos.access'],
   financeiro: ['financeiro', 'financeiro.access'],
-  intimacoes: ['intimacoes', 'intimacoes.access'],
-  historico: ['crm'],
 }
 const abaLiberada = (id: string) => liberado(...REGRAS_ABAS[id])
 
 const tabs = computed(() => [
-  { id: 'processos', label: 'Processos', icon: 'bi bi-file-earmark-code' },
-  { id: 'casos', label: 'Casos Extrajudiciais', icon: 'bi bi-briefcase' },
-  { id: 'financeiro', label: 'Financeiro', icon: 'bi bi-cash-coin' },
-  { id: 'intimacoes', label: 'Intimações', icon: 'bi bi-mailbox' },
-  { id: 'historico', label: 'CRM / Histórico', icon: 'bi bi-chat-left-dots' }
+  { id: 'financeiro', label: 'Financeiro', icon: 'bi bi-cash-coin' }
 ].filter(t => abaLiberada(t.id)))
 
 // Aba ativa sem acesso: passa para a primeira liberada.
@@ -784,15 +541,9 @@ const form = reactive({
 }) as Record<string, any> & { id_cliente: number | string; nome: string }
 
 // Sub-resource lists
-const processes = ref<any[]>([])
-const cases = ref<any[]>([])
-const notes = ref<any[]>([])
 const financial = ref<any[]>([])
-const intimacoes = ref<any[]>([])
 
 const clientStats = reactive({
-  processos: 0,
-  casos: 0,
   receitas: 0,
   tarefas: 0
 })
@@ -800,31 +551,8 @@ const clientStats = reactive({
 const origens = ref<any[]>([])
 
 function getTabCount(tabId: string): number | null {
-  if (tabId === 'processos') return processes.value.length
-  if (tabId === 'casos') return cases.value.length
   if (tabId === 'financeiro') return financial.value.length
-  if (tabId === 'intimacoes') return intimacoes.value.length
-  if (tabId === 'historico') return notes.value.length
   return null
-}
-
-function getProcessoBadgeClass(p: any): string {
-  if (p.encerrado == 1) return 'badge-muted'
-  if (p.arquived_at) return 'badge-warning'
-  return p.ativo == 1 ? 'badge-success' : 'badge-secondary'
-}
-
-function getProcessoStatusLabel(p: any): string {
-  if (p.encerrado == 1) return 'Encerrado'
-  if (p.arquived_at) return 'Arquivado'
-  return p.ativo == 1 ? 'Ativo' : 'Inativo'
-}
-
-function getCasoBadgeClass(status: string): string {
-  const norm = (status || '').toLowerCase()
-  if (norm === 'ativo' || norm === 'concluido' || norm === 'concluído') return 'badge-success'
-  if (norm === 'encerrado' || norm === 'arquivado') return 'badge-muted'
-  return 'badge-warning'
 }
 
 function getFinanceiroHref(m: any): string {
@@ -842,22 +570,6 @@ function openFinanceiro(m: any) {
   const idReceita = m.id_receita || m.id
   if (idReceita) {
     emit('open-receita-detail', Number(idReceita))
-  }
-}
-
-function getNotaHref(n: any): string {
-  if (!n.entidade_id) return ''
-  return n.tipo === 'caso'
-    ? `#/casos/detalhes/${n.entidade_id}`
-    : `#/processos/detalhes/${n.entidade_id}`
-}
-
-function openNotaEntidade(n: any) {
-  if (!n.entidade_id) return
-  if (n.tipo === 'caso') {
-    emit('open-caso-detail', Number(n.entidade_id))
-  } else {
-    emit('open-process-detail', Number(n.entidade_id))
   }
 }
 
@@ -917,38 +629,26 @@ async function loadDetails() {
         ehFornecedor.value = Number(res.data.eh_fornecedor) === 1
         responsavelSalvo.value = form.responsavel_id
 
-        // Sub lists from primary response
-        processes.value = res.processos || []
-        cases.value = res.casos || []
       }
     }
 
     if (isNew.value) return // Do not load other stats for new client
 
     // Load extra subresources in parallel
-    const [statsRes, notesRes, financialRes, intimacoesRes] = await Promise.all([
+    const [statsRes, financialRes] = await Promise.all([
       apiFetch(`clientes/estatisticasCliente/${props.clientId}`),
-      apiFetch(`clientes/anotacoes/${props.clientId}`),
       // Endpoints de outros módulos: não chama sem acesso (a API devolveria 403).
-      abaLiberada('financeiro') ? apiFetch(`clientes/movimentacoes/${props.clientId}`) : Promise.resolve(null),
-      abaLiberada('intimacoes') ? apiFetch(`clientes/intimacoes/${props.clientId}`) : Promise.resolve(null)
+      abaLiberada('financeiro') ? apiFetch(`clientes/movimentacoes/${props.clientId}`) : Promise.resolve(null)
     ])
 
     if (statsRes && statsRes.success) {
       Object.assign(clientStats, statsRes.data)
     }
 
-    if (notesRes && notesRes.success) {
-      notes.value = notesRes.data || []
-    }
-
     if (financialRes && financialRes.success) {
       financial.value = financialRes.data || []
     }
 
-    if (intimacoesRes && intimacoesRes.success) {
-      intimacoes.value = intimacoesRes.data || []
-    }
   } catch (err) {
     if (err instanceof ApiError && err.status === 404) {
       semAcesso.value = true
@@ -1272,14 +972,6 @@ onMounted(() => {
   text-decoration: underline;
 }
 
-.intimacao-excerpt {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  line-height: 1.45;
-  font-size: 0.82rem;
-}
 
 .table-empty {
   padding: 36px 20px !important;

@@ -6,7 +6,6 @@ namespace App\Services;
 
 use App\Libraries\Email\EmailMarca;
 use App\Repositories\CrmContactRepository;
-use App\Repositories\RamosDireitoRepository;
 use App\Repositories\ClienteRepository;
 use App\Models\ClientesModel;
 
@@ -18,11 +17,6 @@ use App\Models\ClientesModel;
 class CrmContactService extends BaseService
 {
     /**
-     * Repositório de ramos do direito.
-     */
-    protected RamosDireitoRepository $ramosDireitoRepository;
-
-    /**
      * Repositório de clientes.
      */
     protected ClienteRepository $clienteRepository;
@@ -33,31 +27,20 @@ class CrmContactService extends BaseService
     protected CrmService $crmService;
 
     /**
-     * Serviço de Processos.
-     */
-    protected ProcessosService $processosService;
-
-    /**
      * Construtor com injeção de dependência.
      *
      * @param CrmContactRepository|null $repository
-     * @param RamosDireitoRepository|null $ramosDireitoRepository
      * @param ClienteRepository|null $clienteRepository
      * @param CrmService|null $crmService
-     * @param ProcessosService|null $processosService
      */
     public function __construct(
         ?CrmContactRepository $repository = null,
-        ?RamosDireitoRepository $ramosDireitoRepository = null,
         ?ClienteRepository $clienteRepository = null,
-        ?CrmService $crmService = null,
-        ?ProcessosService $processosService = null
+        ?CrmService $crmService = null
     ) {
         $this->repository = $repository ?? new CrmContactRepository();
-        $this->ramosDireitoRepository = $ramosDireitoRepository ?? new RamosDireitoRepository();
         $this->clienteRepository = $clienteRepository ?? new ClienteRepository();
         $this->crmService = $crmService ?? new CrmService();
-        $this->processosService = $processosService ?? new ProcessosService();
     }
 
     #################################################################
@@ -100,14 +83,7 @@ class CrmContactService extends BaseService
             // Define o destinatário. Tenta pegar do .env, se não houver, usa o e-mail padrão do $from
             $to = env('CONTACT_MAIL_TO', $from);
 
-            // Pega o nome do ramo do direito se houver area_interesse
-            $areaTitle = '';
-            if (!empty($data['area_interesse'])) {
-                $ramo = $this->getRamoDireitoById((int) $data['area_interesse']);
-                if ($ramo) {
-                    $areaTitle = is_object($ramo) ? ($ramo->nome ?? '') : ($ramo['nome'] ?? '');
-                }
-            }
+            $areaTitle = (string) ($data['area_interesse'] ?? '');
 
             EmailMarca::montar($emailService, 'emails/contato_site', [
                 'contact'   => $data,
@@ -133,37 +109,12 @@ class CrmContactService extends BaseService
     /**
      * Retorna contatos filtrados por área de interesse.
      *
-     * @param int $areaId
+     * @param string $area
      * @return array
      */
-    public function getContactsByArea(int $areaId): array
+    public function getContactsByArea(string $area): array
     {
-        return $this->repository->getContactsByArea($areaId);
-    }
-
-    #################################################################
-    #                      Ramos do Direito                         #
-    #################################################################
-
-    /**
-     * Retorna todos os ramos do direito em estrutura hierárquica.
-     *
-     * @return array
-     */
-    public function getRamosDireito(): array
-    {
-        return $this->ramosDireitoRepository->listarTodosHierarquico();
-    }
-
-    /**
-     * Retorna um ramo do direito pelo ID.
-     *
-     * @param int $id
-     * @return array|null
-     */
-    public function getRamoDireitoById(int $id): ?array
-    {
-        return $this->ramosDireitoRepository->findById($id);
+        return $this->repository->getContactsByArea($area);
     }
 
     /**
@@ -173,7 +124,7 @@ class CrmContactService extends BaseService
      * @param int $perPage
      * @param int $page
      * @param string|null $status
-     * @param int|null $areaId
+     * @param int|null $area
      * @return array
      */
     public function buscarContatos(
@@ -181,9 +132,9 @@ class CrmContactService extends BaseService
         int $perPage = 20,
         int $page = 1,
         ?string $status = null,
-        ?int $areaId = null
+        ?string $area = null
     ): array {
-        return $this->repository->buscarContatos($search, $perPage, $page, $status, $areaId);
+        return $this->repository->buscarContatos($search, $perPage, $page, $status, $area);
     }
 
     /**
@@ -211,12 +162,6 @@ class CrmContactService extends BaseService
         $db->transStart();
 
         try {
-            // 0. Verificar conflito de interesse antes de prosseguir com a conversão
-            $conflito = $this->processosService->checkConflictOfInterest($contato['name']);
-            if ($conflito['has_conflict']) {
-                throw new \Exception('Conflito de Interesse detectado: ' . $conflito['message'] . ' Verifique os detalhes: ' . json_encode($conflito['conflicts']));
-            }
-
             // 1. Verificar se o cliente já existe por email ou telefone
             $clienteBase = $this->clienteRepository->getModel()
                 ->where('email', $contato['email'])
@@ -231,8 +176,8 @@ class CrmContactService extends BaseService
                     'nome' => $contato['name'],
                     'email' => $contato['email'],
                     'telefone' => $contato['phone'],
-                    'tipo' => 'PF',
-                    'status' => 'ativo',
+                    'tipo_cliente' => 'F',
+                    'ativo' => 1,
                     'observacoes' => 'Lead oriundo do site. Mensagem original: ' . $contato['message'],
                 ];
 

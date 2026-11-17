@@ -64,7 +64,7 @@ final class PushControllerTest extends CIUnitTestCase
         $this->config->vapidPrivateKey = Base64Url::codificar($par['privada']);
         $this->repo = new PushRepository($this->db);
 
-        $this->actingAs(new User(['id' => 7, 'username' => 'advogada', 'email' => 'a@exemplo.com']));
+        $this->actingAs(new User(['id' => 7, 'username' => 'profissional', 'email' => 'a@exemplo.com']));
     }
 
     private function executar(string $metodo, ?array $json = null, array $get = []): TestResponse
@@ -121,17 +121,17 @@ final class PushControllerTest extends CIUnitTestCase
         $navegador = new NavegadorFalso('https://fcm.googleapis.com/fcm/send/abc');
         $r = $this->executar('inscrever', [
             'subscription' => $navegador->inscricao(),
-            'preferencias' => ['intimacoes' => false, 'prazos' => true],
+            'preferencias' => ['prazos' => false],
         ]);
 
         $this->assertSame(200, $r->response()->getStatusCode());
-        $this->assertSame(['intimacoes' => false, 'prazos' => true], self::json($r)['data']);
+        $this->assertSame(['prazos' => false], self::json($r)['data']);
 
         [$linha] = $this->repo->inscricoesDoUsuario(7);
         $this->assertSame($navegador->endpoint, $linha['endpoint']);
 
         $dados = self::json($this->executar('config', null, ['endpoint' => $navegador->endpoint]))['data'];
-        $this->assertSame(['intimacoes' => false, 'prazos' => true], $dados['inscricao']);
+        $this->assertSame(['prazos' => false], $dados['inscricao']);
     }
 
     public function testRecusaInscricaoComEndpointInterno(): void

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://ordojuris/schemas/documentacao-pagina.schema.json",
-  "title": "Cabeçalho (frontmatter) de uma página da documentação interna do OrdoJuris",
+  "$id": "https://clinica/schemas/documentacao-pagina.schema.json",
+  "title": "Cabeçalho (frontmatter) de uma página da documentação interna do sistema",
   "description": "Descrição para editores/IDEs. A validação oficial é App\\Libraries\\Documentacao\\Frontmatter (docs/documentacao-formato.md).",
   "type": "object",
   "required": ["titulo"],

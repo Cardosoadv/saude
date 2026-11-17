@@ -132,11 +132,11 @@ class SiteMidiaTest extends CIUnitTestCase
 
     public function testEnviaImagemSalvaComNomeAleatorioEExtensaoDoTipoReal(): void
     {
-        $m = $this->servico()->enviar($this->arquivo($this->imagem('png', 40, 20)), '../../Fachada do Escritório.JPG', '  Fachada  ');
+        $m = $this->servico()->enviar($this->arquivo($this->imagem('png', 40, 20)), '../../Fachada do Clínica.JPG', '  Fachada  ');
 
         $this->assertMatchesRegularExpression('#^\d{4}/\d{2}/[0-9a-f]{32}\.png$#', $m['arquivo'], 'extensão vem do conteúdo, não do nome informado');
         $this->assertFileExists($this->config->diretorioUploads . '/' . $m['arquivo']);
-        $this->assertSame('Fachada do Escritório.JPG', $m['nome_original'], 'só o nome do arquivo, sem caminho');
+        $this->assertSame('Fachada do Clínica.JPG', $m['nome_original'], 'só o nome do arquivo, sem caminho');
         $this->assertSame('image/png', $m['mime']);
         $this->assertSame([40, 20], [(int) $m['largura'], (int) $m['altura']]);
         $this->assertSame('Fachada', $m['alt']);
@@ -242,7 +242,7 @@ class SiteMidiaTest extends CIUnitTestCase
     {
         $m = $this->servico()->enviar($this->arquivo($this->imagem('png', 1000, 500)), 'logo.png');
         $id = $m['id'];
-        $pagina = $this->db->table('site_paginas')->where('slug', 'direito-civil')->get()->getRow()->id;
+        $pagina = $this->db->table('site_paginas')->where('slug', 'consultas')->get()->getRow()->id;
 
         $this->db->table('site_configuracoes')->insert(['chave' => 'identidade.logo', 'valor' => (string) $id, 'tipo' => 'imagem', 'grupo' => 'identidade']);
         $this->db->table('site_paginas')->where('id', $pagina)->update(['og_image_id' => $id]);
@@ -255,7 +255,7 @@ class SiteMidiaTest extends CIUnitTestCase
 
         $erros = $this->erros(fn () => $this->servico()->excluir($id));
         $this->assertStringContainsString('identidade.logo', $erros['midia']);
-        $this->assertStringContainsString('Direito Civil', $erros['midia']);
+        $this->assertStringContainsString('Consultas', $erros['midia']);
         $this->assertFileExists($this->config->diretorioUploads . '/' . $m['arquivo']);
 
         $this->db->table('site_configuracoes')->where('chave', 'identidade.logo')->delete();

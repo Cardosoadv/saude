@@ -19,10 +19,10 @@ use CodeIgniter\Router\RouteCollection;
 // aceitá-lo.
 // ============================================================================
 //
-// Quando o site roda em subcaminho (ex.: issuer https://dominio/ordojuris),
+// Quando o site roda em subcaminho (ex.: issuer https://dominio/clinica),
 // as RFCs 8414 §3.1 e 9728 §3.1 inserem o caminho DEPOIS do well-known:
-// /.well-known/oauth-authorization-server/ordojuris e
-// /.well-known/oauth-protected-resource/ordojuris/mcp. O Claude.ai segue o
+// /.well-known/oauth-authorization-server/clinica e
+// /.well-known/oauth-protected-resource/clinica/mcp. O Claude.ai segue o
 // `resource_metadata` do WWW-Authenticate e nunca precisou disso; o Gemini
 // monta a URL pela RFC e, sem resposta ali, recusa o servidor como "sem
 // OAuth padrão". Por isso o sufixo é aceito em qualquer forma.

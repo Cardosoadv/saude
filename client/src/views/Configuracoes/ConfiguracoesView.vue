@@ -2,7 +2,7 @@
   <div class="page-content animate-fade-in">
     <!-- Breadcrumb -->
     <div class="breadcrumb">
-      <a href="#" @click.prevent="$emit('set-view', 'list')">Ordo Juris</a>
+      <a href="#" @click.prevent="$emit('set-view', 'list')">Saúde</a>
       <i class="bi bi-chevron-right"></i>
       <span>Configurações</span>
     </div>
@@ -65,18 +65,6 @@
             <i class="bi bi-grid-3x3-gap me-1"></i> Módulos
           </button>
           <button
-            v-if="podeGerirCalendario"
-            id="tab-calendario"
-            class="filter-tab"
-            :class="{ active: activeTab === 'calendario' }"
-            @click="setTab('calendario')"
-            role="tab"
-            :aria-selected="activeTab === 'calendario'"
-            :tabindex="activeTab === 'calendario' ? 0 : -1"
-          >
-            <i class="bi bi-calendar-check me-1"></i> Calendário forense
-          </button>
-          <button
             id="tab-migracoes"
             class="filter-tab"
             :class="{ active: activeTab === 'migracoes' }"
@@ -86,18 +74,6 @@
             :tabindex="activeTab === 'migracoes' ? 0 : -1"
           >
             <i class="bi bi-database me-1"></i> Banco de Dados
-          </button>
-          <button
-            v-if="podeGerirCalendario"
-            id="tab-indices"
-            class="filter-tab"
-            :class="{ active: activeTab === 'indices' }"
-            @click="setTab('indices')"
-            role="tab"
-            :aria-selected="activeTab === 'indices'"
-            :tabindex="activeTab === 'indices' ? 0 : -1"
-          >
-            <i class="bi bi-graph-up me-1"></i> Índices econômicos
           </button>
           <button
             v-if="podeGerirDrive"
@@ -116,7 +92,7 @@
 
       <!-- Action Button based on active tab -->
       <div class="toolbar-right">
-        <button v-if="activeTab === 'sistema' && subTabSistema === 'geral'" class="btn btn-primary" @click="openConfigModal()">
+        <button v-if="activeTab === 'sistema'" class="btn btn-primary" @click="openConfigModal()">
           <i class="bi bi-plus-circle"></i> Nova Configuração
         </button>
         <button v-if="activeTab === 'usuarios'" class="btn btn-primary" @click="openUserModal()">
@@ -133,54 +109,7 @@
 
         <!-- ================= SYSTEM TAB ================= -->
         <div v-if="activeTab === 'sistema'">
-          <!-- Sub-guias: Geral (parâmetros avulsos) + uma por grupo de integração (API CNJ, IA, APIBrasil, Google) -->
-          <div
-            class="filter-tabs"
-            role="tablist"
-            aria-label="Sub-guias do sistema"
-            style="margin-bottom: 1rem; flex-wrap: wrap;"
-            data-testid="subguias-sistema"
-          >
-            <button
-              id="subtab-geral"
-              class="filter-tab"
-              :class="{ active: subTabSistema === 'geral' }"
-              role="tab"
-              type="button"
-              :aria-selected="subTabSistema === 'geral'"
-              @click="setSubTabSistema('geral')"
-            >
-              <i class="bi bi-sliders me-1"></i> Geral
-            </button>
-            <button
-              v-for="grupo in gruposIntegracao"
-              :id="'subtab-' + grupo.slug"
-              :key="grupo.slug"
-              class="filter-tab"
-              :class="{ active: subTabSistema === grupo.slug }"
-              role="tab"
-              type="button"
-              :aria-selected="subTabSistema === grupo.slug"
-              @click="setSubTabSistema(grupo.slug)"
-            >
-              <i :class="['bi', grupo.icone, 'me-1']"></i> {{ grupo.titulo }}
-            </button>
-            <!-- NFS-e: emitente, certificado e padrões fiscais (mesma API do módulo Financeiro) -->
-            <button
-              v-if="podeConfigurarNfse"
-              id="subtab-nfse"
-              class="filter-tab"
-              :class="{ active: subTabSistema === 'nfse' }"
-              role="tab"
-              type="button"
-              :aria-selected="subTabSistema === 'nfse'"
-              @click="setSubTabSistema('nfse')"
-            >
-              <i class="bi bi-receipt me-1"></i> NFS-e
-            </button>
-          </div>
-
-          <div v-if="subTabSistema === 'geral'">
+          <div>
           <!-- Loading state -->
           <div v-if="loadingConfigs" class="process-list">
             <div class="skeleton-card" v-for="i in 3" :key="i">
@@ -233,33 +162,6 @@
             </table>
           </div>
           </div>
-
-          <!-- NFS-e -->
-          <template v-if="subTabSistema === 'nfse' && podeConfigurarNfse">
-            <div class="card animate-fade-in" style="margin-bottom: 1.5rem; padding: 20px;">
-              <h3 style="margin: 0 0 6px 0; display: flex; align-items: center; gap: 8px;">
-                <i class="bi bi-receipt" style="color: var(--accent);"></i> NFS-e
-              </h3>
-              <p style="font-size: 0.85rem; color: var(--ink-muted); margin: 0; line-height: 1.4;">
-                Emitente cadastrado na API Brasil, certificado digital A1 e padrões fiscais do serviço. Estas configurações valem só
-                para este escritório.
-              </p>
-            </div>
-            <div class="card animate-fade-in" style="padding: 20px;">
-              <NotaFiscalConfigForm @toast="(payload) => emit('toast', payload)" />
-            </div>
-          </template>
-
-          <!-- Uma sub-guia por grupo de integração -->
-          <template v-for="grupo in gruposIntegracao" :key="grupo.slug">
-            <IntegracoesPanel
-              v-if="subTabSistema === grupo.slug"
-              :grupo="grupo"
-              :criptografia="integracoes?.criptografia ?? true"
-              @toast="(payload) => emit('toast', payload)"
-              @salvo="fetchIntegracoes"
-            />
-          </template>
         </div>
 
         <!-- ================= USERS TAB ================= -->
@@ -322,8 +224,8 @@
                     <span class="process-cnj" style="font-size: 1.1rem; font-weight: 600; color: var(--ink);">
                       {{ user.username }}
                     </span>
-                    <span v-if="user.is_lawyer == 1" class="badge bg-secondary" style="font-size: 0.72rem; padding: 2px 6px;">
-                      Advogado <span v-if="user.oab_numero">({{ user.oab_uf }}-{{ user.oab_numero }})</span>
+                    <span v-if="user.is_profissional == 1" class="badge bg-secondary" style="font-size: 0.72rem; padding: 2px 6px;">
+                      Profissional <span v-if="user.registro_numero">({{ user.registro_uf }}-{{ user.registro_numero }})</span>
                     </span>
                     <span v-if="!user.active" class="badge bg-danger" style="font-size: 0.72rem; padding: 2px 6px;">
                       Inativo
@@ -394,7 +296,7 @@
               Para usar em <strong>claude.ai</strong> (Configurações &rsaquo; Conectores &rsaquo; Adicionar conector
               personalizado), não é preciso gerar nenhum token abaixo: cole apenas a URL do endpoint MCP no
               campo "URL do servidor MCP remoto" e deixe "ID do Cliente OAuth" e "Client Secret" em branco.
-              O Claude se registra e faz login sozinho, abrindo uma tela de autorização do OrdoJuris — a IA
+              O Claude se registra e faz login sozinho, abrindo uma tela de autorização do sistema — a IA
               passará a agir estritamente como você, respeitando suas permissões.
             </p>
             <div style="display: flex; gap: 8px;">
@@ -539,15 +441,10 @@
         <!-- ================= MÓDULOS TAB ================= -->
         <ModulosPanel v-if="activeTab === 'modulos' && podeGerirModulos" @toast="(payload) => emit('toast', payload)" />
 
-        <!-- ================= CALENDÁRIO FORENSE TAB ================= -->
-        <CalendarioForensePanel v-if="activeTab === 'calendario' && podeGerirCalendario" @toast="(payload) => emit('toast', payload)" />
-
         <!-- ================= MIGRATIONS TAB ================= -->
         <MigracoesPanel v-if="activeTab === 'migracoes'" @toast="(payload) => emit('toast', payload)" />
 
         <!-- ================= GOOGLE DRIVE TAB ================= -->
-        <IndicesEconomicosPanel v-if="activeTab === 'indices' && podeGerirCalendario" @toast="(payload) => emit('toast', payload)" />
-
         <DriveSyncPanel v-if="activeTab === 'drive' && podeGerirDrive" @toast="(payload) => emit('toast', payload)" />
 
       </div>
@@ -606,7 +503,7 @@
                 <i class="bi bi-check2-circle text-success me-1"></i> Apenas administradores podem criar e modificar usuários do sistema.
               </li>
               <li style="font-size: 0.85rem; color: var(--ink-muted); margin-bottom: 8px;">
-                <i class="bi bi-check2-circle text-success me-1"></i> Advogados exigem preenchimento obrigatório da UF e do número da OAB.
+                <i class="bi bi-check2-circle text-success me-1"></i> Profissionais exigem preenchimento obrigatório da UF e do número do registro profissional (CRM, CRO, CRMV...).
               </li>
               <li style="font-size: 0.85rem; color: var(--ink-muted);">
                 <i class="bi bi-check2-circle text-success me-1"></i> O rateio de sócios determina quais usuários aparecem nos repasses de receitas e despesas.
@@ -668,13 +565,8 @@ import McpTokenModal from '../../components/modals/Configuracoes/McpTokenModal.v
 import OAuthClienteModal from '../../components/modals/Configuracoes/OAuthClienteModal.vue'
 import MigracoesPanel from '../../components/Configuracoes/MigracoesPanel.vue'
 import ModulosPanel from '../../components/Configuracoes/ModulosPanel.vue'
-import CalendarioForensePanel from '../../components/Configuracoes/CalendarioForensePanel.vue'
-import IndicesEconomicosPanel from '../../components/Configuracoes/IndicesEconomicosPanel.vue'
 import DriveSyncPanel from '../../components/Configuracoes/DriveSyncPanel.vue'
-import IntegracoesPanel from '../../components/Configuracoes/IntegracoesPanel.vue'
-import NotaFiscalConfigForm from '../../components/Financeiro/NotaFiscalConfigForm.vue'
-import { listarIntegracoes, type CatalogoIntegracoes } from '../../services/integracoesApi'
-import { pode, liberado } from '../../composables/useAcesso'
+import { pode } from '../../composables/useAcesso'
 
 const emit = defineEmits(['toast', 'set-view'])
 
@@ -682,18 +574,8 @@ const emit = defineEmits(['toast', 'set-view'])
 const activeTab = ref('sistema')
 // Ativar/desativar módulos exige module.edit (mesma permissão de modulos/toggleStatus).
 const podeGerirModulos = computed(() => pode('module.edit'))
-// O CRUD do calendário forense exige admin.settings (rotas api/v2/calendario-forense/feriados e /suspensoes).
-const podeGerirCalendario = computed(() => pode('admin.settings'))
 // A API de sincronização do Drive é restrita a administradores (admin.access).
 const podeGerirDrive = computed(() => pode('admin.access'))
-
-// Sub-guias da aba Sistema: 'geral' (parâmetros avulsos) ou o slug de um grupo de integração.
-const subTabSistema = ref('geral')
-const integracoes = ref<CatalogoIntegracoes | null>(null)
-// A sub-guia NFS-e usa a API do Financeiro: precisa do módulo ativo e de financeiro.nfse_configurar.
-const podeConfigurarNfse = computed(() => liberado('financeiro', 'financeiro.nfse_configurar'))
-// Sem permissão (ou servidor antigo) a lista vem vazia e a aba mostra só "Geral".
-const gruposIntegracao = computed(() => integracoes.value?.grupos ?? [])
 
 // System settings states
 const configs = ref([])
@@ -732,7 +614,6 @@ function setTab(tab) {
   activeTab.value = tab
   if (tab === 'sistema') {
     fetchConfigs()
-    fetchIntegracoes()
   } else if (tab === 'usuarios') {
     fetchUsers()
   } else if (tab === 'mcp') {
@@ -748,8 +629,6 @@ function setTab(tab) {
 
 function onTabKeydown(e) {
   const tabs = ['sistema', 'usuarios', 'mcp', 'migracoes']
-  if (podeGerirCalendario.value) tabs.splice(3, 0, 'calendario')
-  if (podeGerirCalendario.value) tabs.push('indices')
   if (podeGerirDrive.value) tabs.push('drive')
   const currentIdx = tabs.indexOf(activeTab.value)
   let nextIdx
@@ -776,22 +655,6 @@ function onTabKeydown(e) {
       setTab(tabs[tabs.length - 1])
       break
   }
-}
-
-// ── Integrações por escritório (sub-guias) ───────────────────
-async function fetchIntegracoes() {
-  try {
-    integracoes.value = await listarIntegracoes()
-  } catch (err) {
-    // Sem permissão ou servidor sem o recurso: a aba continua só com a sub-guia Geral.
-    integracoes.value = null
-    if (subTabSistema.value !== 'nfse') subTabSistema.value = 'geral'
-  }
-}
-
-function setSubTabSistema(slug) {
-  subTabSistema.value = slug
-  nextTick(() => document.getElementById('subtab-' + slug)?.focus())
 }
 
 // ── Configurations ──────────────────────────────────────────
@@ -944,7 +807,7 @@ async function handleUserSubmit(formData) {
       bodyFormData.append('pass_confirm', formData.pass_confirm)
     }
 
-    bodyFormData.append('is_lawyer', formData.is_lawyer ? '1' : '0')
+    bodyFormData.append('is_profissional', formData.is_profissional ? '1' : '0')
     bodyFormData.append('rateio_ativo', formData.rateio_ativo ? '1' : '0')
     bodyFormData.append('active', formData.active ? '1' : '0')
     bodyFormData.append('responsavel_tarefas', formData.responsavel_tarefas ? '1' : '0')
@@ -954,8 +817,8 @@ async function handleUserSubmit(formData) {
       bodyFormData.append(campo, formData[campo] || '')
     }
 
-    if (formData.oab_numero) bodyFormData.append('oab_numero', formData.oab_numero)
-    if (formData.oab_uf) bodyFormData.append('oab_uf', formData.oab_uf)
+    if (formData.registro_numero) bodyFormData.append('registro_numero', formData.registro_numero)
+    if (formData.registro_uf) bodyFormData.append('registro_uf', formData.registro_uf)
 
     if (formData.groups && formData.groups.length) {
       bodyFormData.append('groups', JSON.stringify(formData.groups))
@@ -1176,7 +1039,6 @@ function showToastWarning(msg) {
 // Init
 onMounted(() => {
   fetchConfigs()
-  fetchIntegracoes()
   fetchGroupsMatrix()
 
   // Verificar parâmetros de redirecionamento do Google Auth

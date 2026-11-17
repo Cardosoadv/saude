@@ -16,7 +16,7 @@ use App\Services\NewsService;
  * Monta o /llms-full.txt: o texto integral das páginas publicadas e dos artigos mais recentes em
  * markdown limpo, para modelos de linguagem. Reaproveita o cabeçalho e as regras de exclusão do
  * LlmsTxtService (rascunhos, páginas noindex, área/painel do cliente) e nunca lê dados de clientes
- * ou de processos: só configurações públicas do site, páginas e notícias publicadas.
+ * ou de atendimentos: só configurações públicas do site, páginas e notícias publicadas.
  */
 class LlmsFullService extends LlmsTxtService
 {
@@ -76,7 +76,7 @@ class LlmsFullService extends LlmsTxtService
 
         $campo('Razão social', (string) ($this->configuracoes->obter('identidade.razao_social', '') ?: $this->configuracoes->obter('identidade.nome', '')));
         $campo('CNPJ', Cnpj::formatar((string) $this->configuracoes->obter('identidade.cnpj', '')));
-        $campo('Registro na OAB', (string) ($this->configuracoes->obter('identidade.registro_oab', '') ?: $this->configuracoes->obter('identidade.oab', '')));
+        $campo('Registro profissional', (string) $this->configuracoes->obter('identidade.registro_profissional', ''));
         $enderecos = $this->configuracoes->obter('contato.enderecos', []);
         foreach (is_array($enderecos) ? $enderecos : [] as $endereco) {
             $campo('Endereço', (string) ($endereco['resumo'] ?? ''));
@@ -84,7 +84,16 @@ class LlmsFullService extends LlmsTxtService
         $campo('Telefone', (string) $this->configuracoes->obter('contato.telefone', ''));
         $campo('Telefone', (string) $this->configuracoes->obter('contato.telefone2', ''));
         $campo('E-mail', (string) $this->configuracoes->obter('contato.email', ''));
-        $campo('Horário de atendimento', (string) $this->configuracoes->obter('contato.horario', ''));
+        $horario = $this->configuracoes->obter('contato.horario', '');
+        if (is_array($horario)) {
+            $horario = implode('; ', array_map(
+                static fn ($faixa) => is_array($faixa)
+                    ? implode(', ', (array) ($faixa['dias'] ?? [])) . ' ' . ($faixa['abre'] ?? '') . '–' . ($faixa['fecha'] ?? '')
+                    : (string) $faixa,
+                $horario
+            ));
+        }
+        $campo('Horário de atendimento', (string) $horario);
         $campo('Site', site_url_publica());
         $areas = array_column(array_filter($paginas, static fn (array $p) => $p['tipo'] === 'area'), 'titulo');
         $campo('Áreas atendidas', implode(', ', $areas));

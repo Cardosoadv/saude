@@ -288,7 +288,7 @@ class SiteMidiaService
         // Nada que seja script roda a partir daqui, mesmo que alguém consiga gravar um.
         $raiz = rtrim($this->config->diretorioUploads, '/\\');
         $htaccess = $raiz . '/.htaccess';
-        $conteudo = "# Gerado pelo OrdoJuris: envios do site não executam scripts.\n"
+        $conteudo = "# Gerado pelo sistema: envios do site não executam scripts.\n"
             . "Options -Indexes -ExecCGI\n"
             . "<IfModule mod_php.c>\n  php_flag engine off\n</IfModule>\n"
             . "RemoveHandler .php .phtml .php3 .php4 .php5 .php7 .php8 .phar\n"

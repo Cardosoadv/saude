@@ -62,8 +62,8 @@ class TemplateManifestValidatorTest extends CIUnitTestCase
             'sem nome'                => [function (&$m) { unset($m['nome']); }, 'nome'],
             'versão fora de semver'   => [function (&$m) { $m['versao'] = '1.0'; }, 'versao'],
             'motor desconhecido'      => [function (&$m) { $m['motor'] = 'blade'; }, 'motor'],
-            'ordojuris malformado'    => [function (&$m) { $m['ordojuris'] = '^6.0'; }, 'ordojuris'],
-            'ordojuris mais novo'     => [function (&$m) { $m['ordojuris'] = '>=99.0.0'; }, 'ordojuris'],
+            'sistema malformado'    => [function (&$m) { $m['sistema'] = '^6.0'; }, 'sistema'],
+            'sistema mais novo'     => [function (&$m) { $m['sistema'] = '>=99.0.0'; }, 'sistema'],
             'sem layouts'             => [function (&$m) { $m['layouts'] = []; }, 'layouts'],
             'cor inválida'            => [function (&$m) { $m['tema']['cores']['gold'] = 'dourado'; }, 'tema.cores.gold'],
             'fonte com símbolos'      => [function (&$m) { $m['tema']['fontes']['sans'] = 'x;}body{'; }, 'tema.fontes.sans'],
@@ -84,11 +84,11 @@ class TemplateManifestValidatorTest extends CIUnitTestCase
     public function testSemVersaoMinimaGeraApenasAviso(): void
     {
         $m = $this->base();
-        unset($m['ordojuris']);
+        unset($m['sistema']);
 
         $r = $this->validator->validar($m);
 
         $this->assertTrue($r->valido());
-        $this->assertArrayHasKey('ordojuris', $r->avisos());
+        $this->assertArrayHasKey('sistema', $r->avisos());
     }
 }

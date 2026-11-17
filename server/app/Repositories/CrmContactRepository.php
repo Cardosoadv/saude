@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Models\CrmContactModel;
-use App\Models\RamosDireitoModel;
 
 /**
  * Repositório para gerenciamento de contatos do CRM.
@@ -15,28 +14,21 @@ use App\Models\RamosDireitoModel;
 class CrmContactRepository extends BaseRepository
 {
     /**
-     * @var RamosDireitoModel Instância do model de ramos do direito.
-     */
-    protected RamosDireitoModel $ramosDireitoModel;
-
-    /**
      * Construtor do repositório de contatos CRM.
      *
      * @param CrmContactModel|null $model Instância do model de contatos.
-     * @param RamosDireitoModel|null $ramosDireitoModel Instância do model de ramos do direito.
      */
-    public function __construct(?CrmContactModel $model = null, ?RamosDireitoModel $ramosDireitoModel = null)
+    public function __construct(?CrmContactModel $model = null)
     {
         parent::__construct();
         $this->model = $model ?? new CrmContactModel();
         $this->cacheKey = 'crm_contacts';
-        $this->ramosDireitoModel = $ramosDireitoModel ?? new RamosDireitoModel();
     }
 
     /**
      * Retorna contatos filtrados por área.
      *
-     * @param int $areaId ID da área.
+     * @param string $area Serviço/especialidade de interesse.
      * @param string|array $select Campos a selecionar.
      * @param array $where Condições adicionais.
      * @param string|null $orderBy Campo de ordenação.
@@ -45,16 +37,16 @@ class CrmContactRepository extends BaseRepository
      * @return array
      */
     public function getContactsByArea(
-        int $areaId,
+        string $area,
         string|array $select = '*',
         array $where = [],
         ?string $orderBy = null,
         ?string $direction = null,
         array $joins = []
     ): array {
-        $where['area_id'] = $areaId;
+        $where["area_interesse"] = $area;
 
-        return $this->remember("contacts_area_{$areaId}", function () use ($select, $where, $orderBy, $direction, $joins) {
+        return $this->remember("contacts_area_{$area}", function () use ($select, $where, $orderBy, $direction, $joins) {
             $builder = $this->model->select($select);
 
             foreach ($joins as $join) {
@@ -74,40 +66,13 @@ class CrmContactRepository extends BaseRepository
     }
 
     /**
-     * Retorna todos os ramos do direito ordenados por nome.
-     *
-     * @return array
-     */
-    public function getRamosDireito(): array
-    {
-        return $this->remember('ramos_direito_all', function () {
-            return $this->ramosDireitoModel
-                ->orderBy('nome', 'ASC')
-                ->findAll();
-        });
-    }
-
-    /**
-     * Retorna um ramo do direito pelo ID.
-     *
-     * @param int $id ID do ramo.
-     * @return array|null
-     */
-    public function getRamoDireitoById(int $id): ?array
-    {
-        return $this->remember("ramo_direito_{$id}", function () use ($id) {
-            return $this->ramosDireitoModel->find($id);
-        });
-    }
-
-    /**
      * Busca contatos por nome, e-mail ou telefone com paginação e filtros.
      *
      * @param string $search Termo de busca.
      * @param int $perPage Registros por página.
      * @param int $page Página atual.
      * @param string|null $status Filtro por status (new, contacted, qualified, converted, lost).
-     * @param int|null $areaId Filtro por área de interesse (ramo do direito).
+     * @param int|null $area Filtro por serviço/especialidade de interesse.
      * @return array ['data' => ..., 'pager' => ..., 'stats' => ...]
      */
     public function buscarContatos(
@@ -115,16 +80,15 @@ class CrmContactRepository extends BaseRepository
         int $perPage = 20,
         int $page = 1,
         ?string $status = null,
-        ?int $areaId = null
+        ?string $area = null
     ): array {
         $statusKey = $status ?? 'all';
-        $areaKey = $areaId ?? 'all';
+        $areaKey = $area ?? 'all';
         $cacheKey = "buscar_search_" . md5($search) . "_st_{$statusKey}_area_{$areaKey}_per_{$perPage}_page_{$page}";
 
-        return $this->remember($cacheKey, function () use ($search, $perPage, $page, $status, $areaId) {
+        return $this->remember($cacheKey, function () use ($search, $perPage, $page, $status, $area) {
             $builder = $this->model
-                ->select('site_crm_contacts.*, juris_ramos_direito.nome as area_interesse_nome')
-                ->join('juris_ramos_direito', 'juris_ramos_direito.id = site_crm_contacts.area_interesse', 'left')
+                ->select('site_crm_contacts.*, site_crm_contacts.area_interesse as area_interesse_nome')
                 ->orderBy('site_crm_contacts.created_at', 'DESC');
 
             if ($search !== '') {
@@ -141,8 +105,8 @@ class CrmContactRepository extends BaseRepository
                 $builder = $builder->where('site_crm_contacts.status', $status);
             }
 
-            if (!empty($areaId)) {
-                $builder = $builder->where('site_crm_contacts.area_interesse', $areaId);
+            if (!empty($area)) {
+                $builder = $builder->where('site_crm_contacts.area_interesse', $area);
             }
 
             $items = $builder->paginate($perPage, 'default', $page);

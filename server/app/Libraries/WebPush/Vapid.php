@@ -6,7 +6,7 @@ namespace App\Libraries\WebPush;
 
 /**
  * Identificação do servidor perante o serviço de push (VAPID, RFC 8292):
- * um JWT ES256 assinado com a chave privada do escritório.
+ * um JWT ES256 assinado com a chave privada da clínica.
  */
 final class Vapid
 {

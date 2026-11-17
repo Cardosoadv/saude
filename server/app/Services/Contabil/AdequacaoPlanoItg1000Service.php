@@ -14,8 +14,8 @@ use RuntimeException;
 use Throwable;
 
 /**
- * Converte o plano de contas anterior do escritório para o plano padrão
- * (ITG 1000, `app/Database/PlanosModelo/itg-1000-advocacia.json`) sem perder
+ * Converte o plano de contas anterior da clínica para o plano padrão
+ * (ITG 1000, `app/Database/PlanosModelo/itg-1000-clinica.json`) sem perder
  * lançamentos.
  *
  * Cada conta analítica antiga é reaproveitada no mesmo registro (mesmo `id`):
@@ -34,15 +34,15 @@ class AdequacaoPlanoItg1000Service
 {
     /**
      * Plano anterior: código antigo => [nome antigo, código novo, manter o nome atual].
-     * O nome atual é mantido onde carrega informação do escritório (banco, sócios);
+     * O nome atual é mantido onde carrega informação da clínica (banco, sócios);
      * nesses casos o nome esperado termina em `*` e basta o início bater.
      */
     public const MAPA = [
         '1.1.01' => ['Caixa Geral', '1.1.1.01.01', false],
         '1.1.02' => ['Banco *', '1.1.1.02.01', true],
         '1.1.03' => ['Aplicação - CDB', '1.1.1.03.01', true],
-        '1.1.04' => ['Clientes - Honorários a Receber', '1.1.2.01.01', false],
-        '1.1.05' => ['Custas Adiantadas a Reembolsar', '1.1.2.07.01', false],
+        '1.1.04' => ['Clientes - Atendimentos a Receber', '1.1.2.01.01', false],
+        '1.1.05' => ['Despesas Adiantadas a Reembolsar', '1.1.2.07.01', false],
         '1.2.01' => ['Conta Bancária de Clientes', '1.3.1.01.01', false],
         '1.3.01' => ['Direitos Creditórios', '1.2.1.01.06', false],
         '1.3.02' => ['Móveis e Equipamentos', '1.2.3.01.50', true],
@@ -52,19 +52,19 @@ class AdequacaoPlanoItg1000Service
         '2.1.03' => ['Pró-Labore a Pagar', '2.1.1.01.12', false],
         '2.1.04' => ['Simples Nacional a Recolher', '2.1.4.02.10', false],
         '2.1.05' => ['Empréstimos de Sócios', '2.1.6.01.03', false],
-        '2.1.06' => ['Honorários Recebidos Antecipadamente', '2.1.2.02.02', false],
+        '2.1.06' => ['Atendimentos Recebidos Antecipadamente', '2.1.2.02.02', false],
         '2.2.01' => ['Valores de Clientes a Repassar', '2.3.1.01.01', false],
-        '2.2.02' => ['Depósitos de Clientes para Custas', '2.3.1.01.02', false],
+        '2.2.02' => ['Depósitos de Clientes para Despesas', '2.3.1.01.02', false],
         '3.1.01' => ['Capital Social', '3.1.01.01', false],
         '3.2.01' => ['Lucros Acumulados', '3.8.01.01', false],
         '3.2.02' => ['(-) Prejuízos Acumulados', '3.8.02.01', false],
         '3.3.01' => ['Lucro Distribuído - *', '3.9.01.01', true],
         '3.3.02' => ['Lucro Distribuído - *', '3.9.01.02', true],
-        '4.1.01' => ['Honorários - Mercado Interno', '4.1.01.01', true],
-        '4.1.02' => ['Honorários de Êxito', '4.1.01.02', false],
+        '4.1.01' => ['Receita de Serviços - Mercado Interno', '4.1.01.01', true],
+        '4.1.02' => ['Convênios e Planos de Saúde', '4.1.01.02', false],
         '4.2.01' => ['(-) Simples Nacional', '4.2.01.05', false],
         '4.3.01' => ['Rendimentos de Renda Fixa', '4.3.01.01', false],
-        '4.3.02' => ['Custas Reembolsadas', '4.4.01.01', false],
+        '4.3.02' => ['Despesas Reembolsadas', '4.4.01.01', false],
         '5.1.01' => ['Pró-Labore', '5.3.01.12', false],
         '5.1.02' => ['INSS', '5.3.01.05', false],
         '5.1.03' => ['Bolsa Estágio', '5.3.01.13', false],
@@ -72,7 +72,7 @@ class AdequacaoPlanoItg1000Service
         '5.2.02' => ['Serviços Prestados por Terceiros - PJ', '5.3.02.06', false],
         '5.2.03' => ['Certificado Digital', '5.3.02.16', false],
         '5.2.04' => ['Despesas Cartorárias', '5.3.02.17', false],
-        '5.2.05' => ['Custas Processuais', '5.3.02.18', false],
+        '5.2.05' => ['Materiais e Insumos Clínicos', '5.3.02.18', false],
         '5.2.06' => ['Taxas Municipais', '5.3.03.01', false],
         '5.2.07' => ['Depreciação', '5.3.02.04', false],
         '5.3.01' => ['Viagens e Hospedagem', '5.3.02.19', false],

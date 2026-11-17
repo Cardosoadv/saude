@@ -41,7 +41,7 @@ class CreateClientes extends Migration
         $this->forge->addKey('nome');
         $this->forge->addKey('deleted_at', false, false, 'idx_clientes_deleted');
         $this->forge->addForeignKey('usuario_id', 'users', 'id', 'SET NULL', 'CASCADE');
-        $this->forge->createTable('clientes');
+        $this->forge->createTable('clientes', true);
     }
 
     public function down()

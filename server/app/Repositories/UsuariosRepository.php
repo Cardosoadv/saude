@@ -189,10 +189,10 @@ class UsuariosRepository extends BaseRepository
 
             // 2. Atualizar campos customizados diretamente no Model
             $updateData = [
-                'is_lawyer' => isset($data['is_lawyer']) ? 1 : 0,
-                'rateio_ativo' => isset($data['rateio_ativo']) ? 1 : 0,
-                'oab_numero' => $data['oab_numero'] ?? null,
-                'oab_uf' => $data['oab_uf'] ?? null,
+                'is_profissional' => !empty($data['is_profissional']) ? 1 : 0,
+                'rateio_ativo' => !empty($data['rateio_ativo']) ? 1 : 0,
+                'registro_numero' => $data['registro_numero'] ?? null,
+                'registro_uf' => $data['registro_uf'] ?? null,
                 'active' => isset($data['active']) ? (int) $data['active'] : 1,
             ] + $this->camposPerfil($data);
 
@@ -261,10 +261,10 @@ class UsuariosRepository extends BaseRepository
 
             // 2. Atualizar campos customizados diretamente no Model
             $updateData = [
-                'is_lawyer' => isset($data['is_lawyer']) ? 1 : 0,
-                'rateio_ativo' => isset($data['rateio_ativo']) ? 1 : 0,
-                'oab_numero' => $data['oab_numero'] ?? null,
-                'oab_uf' => $data['oab_uf'] ?? null,
+                'is_profissional' => !empty($data['is_profissional']) ? 1 : 0,
+                'rateio_ativo' => !empty($data['rateio_ativo']) ? 1 : 0,
+                'registro_numero' => $data['registro_numero'] ?? null,
+                'registro_uf' => $data['registro_uf'] ?? null,
                 'active' => isset($data['active']) ? (int) $data['active'] : 1,
             ] + $this->camposPerfil($data);
 
@@ -567,14 +567,14 @@ class UsuariosRepository extends BaseRepository
 
     // Mantido para compatibilidade
     /**
-     * Retorna uma lista de advogados com cache versionado.
+     * Retorna uma lista de profissionais com cache versionado.
      *
      * @return array
      */
-    public function getAdvogados(): array
+    public function getProfissionais(): array
     {
-        return $this->remember('advogados', function () {
-            return $this->model->getAdvogados();
+        return $this->remember('profissionais', function () {
+            return $this->model->getProfissionais();
         });
     }
 
@@ -686,7 +686,7 @@ class UsuariosRepository extends BaseRepository
      */
     public function getEquipeSite(): array
     {
-        $usuarios = $this->model->select('id, username, cargo, formacao, especializacoes, areas_atuacao, curriculo, lattes_url, linkedin_url, oab_numero, oab_uf, avatar, is_lawyer')
+        $usuarios = $this->model->select('id, username, cargo, formacao, especializacoes, areas_atuacao, curriculo, lattes_url, linkedin_url, registro_numero, registro_uf, avatar, is_profissional')
             ->where('exibir_site', 1)
             ->where('active', 1)
             ->orderBy('site_ordem', 'ASC')
@@ -694,15 +694,15 @@ class UsuariosRepository extends BaseRepository
             ->findAll();
 
         return array_map(static function (array $u): array {
-            $oab = ($u['is_lawyer'] ?? 0) && !empty($u['oab_numero'])
-                ? trim($u['oab_numero'] . (!empty($u['oab_uf']) ? '/' . strtoupper($u['oab_uf']) : ''))
+            $registro = ($u['is_profissional'] ?? 0) && !empty($u['registro_numero'])
+                ? trim($u['registro_numero'] . (!empty($u['registro_uf']) ? '/' . strtoupper($u['registro_uf']) : ''))
                 : '';
 
             return [
                 'id'              => (int) $u['id'],
                 'nome'            => (string) $u['username'],
                 'cargo'           => (string) ($u['cargo'] ?? ''),
-                'oab'             => $oab,
+                'registro' => $registro,
                 'formacao'        => (string) ($u['formacao'] ?? ''),
                 'especializacoes' => (string) ($u['especializacoes'] ?? ''),
                 'areas'           => (string) ($u['areas_atuacao'] ?? ''),

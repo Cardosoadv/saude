@@ -156,7 +156,7 @@ if (!function_exists('site_imagem')) {
 }
 
 if (!function_exists('site_jsonld')) {
-    /** `<script type="application/ld+json">` do escritório (já seguro para imprimir sem escape). */
+    /** `<script type="application/ld+json">` da clínica (já seguro para imprimir sem escape). */
     function site_jsonld(array $seo = [], array $pagina = [], ?array $artigo = null): string
     {
         return SiteContexto::atual()->jsonLd($seo, $pagina, $artigo);

@@ -79,7 +79,7 @@ class AdequacaoPlanoItg1000ServiceTest extends CIUnitTestCase
     private function criarPlanoAnterior(): void
     {
         $agora = date('Y-m-d H:i:s');
-        $this->db->table('acc_entities')->insert(['id' => 1, 'name' => 'Escritório de teste', 'currency' => 'BRL', 'default_basis' => 'ACCRUAL', 'created_at' => $agora, 'updated_at' => $agora]);
+        $this->db->table('acc_entities')->insert(['id' => 1, 'name' => 'Clínica de teste', 'currency' => 'BRL', 'default_basis' => 'ACCRUAL', 'created_at' => $agora, 'updated_at' => $agora]);
 
         $tipos  = ['1' => 'ASSET', '2' => 'LIABILITY', '3' => 'EQUITY', '4' => 'REVENUE', '5' => 'EXPENSE'];
         $linhas = [];
@@ -118,7 +118,7 @@ class AdequacaoPlanoItg1000ServiceTest extends CIUnitTestCase
 
     public function testPlanoPadraoEhConsistenteEImportaSemErro(): void
     {
-        $linhas = ChartFormat::parse((string) file_get_contents(APPPATH . 'Database/PlanosModelo/itg-1000-advocacia.json'), ChartFormat::JSON);
+        $linhas = ChartFormat::parse((string) file_get_contents(APPPATH . 'Database/PlanosModelo/itg-1000-clinica.json'), ChartFormat::JSON);
         $codigos = array_column($linhas, 'code');
 
         $this->assertSame(count($codigos), count(array_unique($codigos)), 'Códigos repetidos no plano.');
@@ -130,7 +130,7 @@ class AdequacaoPlanoItg1000ServiceTest extends CIUnitTestCase
         $contasFolha = $this->db->table('acc_accounts')->where('accepts_entries', 1)->countAllResults();
         $this->assertGreaterThan(100, $contasFolha);
 
-        // Contas específicas da advocacia ficam fora da árvore das contas próprias.
+        // Contas específicas da clínica ficam fora da árvore das contas próprias.
         $clientes = $this->db->table('acc_accounts')->where('code', '1.3.1.01.01')->get()->getRowArray();
         $this->assertSame('ASSET', $clientes['type']);
         $this->assertSame(1, (int) $clientes['is_cash_account']);
@@ -170,7 +170,7 @@ class AdequacaoPlanoItg1000ServiceTest extends CIUnitTestCase
         // Mesmas contas (mesmo id), código e grupo novos; lançamentos intactos.
         $contaBanco = $this->db->table('acc_accounts')->where('id', $banco)->get()->getRowArray();
         $this->assertSame('1.1.1.02.01', $contaBanco['code']);
-        $this->assertSame('Banco Teste', $contaBanco['name'], 'Nome com informação do escritório é mantido.');
+        $this->assertSame('Banco Teste', $contaBanco['name'], 'Nome com informação da clínica é mantido.');
         $this->assertSame('1.1.1.02.01', $contaBanco['reference_code']);
         $this->assertSame($this->idPorCodigo('1.1.1.02'), (int) $contaBanco['parent_id']);
         $this->assertSame(5, (int) $contaBanco['level']);
@@ -184,7 +184,7 @@ class AdequacaoPlanoItg1000ServiceTest extends CIUnitTestCase
 
         // Nada do plano anterior sobra e o plano fica igual ao modelo.
         $this->assertSame(0, $this->db->table('acc_accounts')->like('code', 'ANTIGA-', 'after')->countAllResults());
-        $modelo = ChartFormat::parse((string) file_get_contents(APPPATH . 'Database/PlanosModelo/itg-1000-advocacia.json'), ChartFormat::JSON);
+        $modelo = ChartFormat::parse((string) file_get_contents(APPPATH . 'Database/PlanosModelo/itg-1000-clinica.json'), ChartFormat::JSON);
         $this->assertSame(count($modelo), $this->db->table('acc_accounts')->where('entity_id', 1)->countAllResults());
         $this->assertSame(0, $this->db->table('acc_accounts')->where('code', '1.1.02')->countAllResults());
     }

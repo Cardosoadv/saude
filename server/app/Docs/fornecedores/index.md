@@ -7,7 +7,7 @@ telas: [fornecedores, fornecedor-detail]
 palavras_chave: [fornecedor, parceiro, PIX, dados bancários]
 ---
 
-Em **Gestão › Fornecedores** ficam os fornecedores e parceiros do escritório, usados nas
+Em **Gestão › Fornecedores** ficam os fornecedores e parceiros da clínica, usados nas
 [despesas](../financeiro/despesas.md). A lista abre nas abas **Ativos**, **Inativos** e **Todos** (nessa ordem,
 começando por **Ativos**); use as setas do teclado para trocar de aba. Filtre também por categoria.
 
@@ -25,7 +25,7 @@ Clique em **Novo Fornecedor**:
 
 ## Transformar em Cliente
 
-Caso um fornecedor passe a ser cliente do escritório (ou tenha sido cadastrado na categoria errada), você pode transformá-lo diretamente:
+Caso um fornecedor passe a ser cliente da clínica (ou tenha sido cadastrado na categoria errada), você pode transformá-lo diretamente:
 
 1. Na listagem de fornecedores ou nos detalhes do fornecedor, clique no botão **Transformar em Cliente** (<i class="bi bi-arrow-left-right"></i>).
 2. O sistema copia automaticamente todos os dados cadastrais (nome, razão social, documento, contatos e endereço).

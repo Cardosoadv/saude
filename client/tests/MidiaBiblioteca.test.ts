@@ -276,7 +276,7 @@ describe('MidiaPicker', () => {
   });
 
   it('exigir-alt: imagem sem descrição só é usada depois de descrita', async () => {
-    api.atualizarAltMidia.mockResolvedValue({ data: midia(2, { alt: 'Recepção do escritório' }) });
+    api.atualizarAltMidia.mockResolvedValue({ data: midia(2, { alt: 'Recepção da clínica' }) });
     const { raiz, eventos } = montar(MidiaPicker, { modelValue: null, exigirAlt: true });
     await espera();
     (raiz.querySelector('[data-abrir]') as HTMLButtonElement).click();
@@ -294,12 +294,12 @@ describe('MidiaPicker', () => {
     expect(api.atualizarAltMidia).not.toHaveBeenCalled();
 
     const campo = raiz.querySelector('[data-alt-obrigatorio] [data-alt-input]') as HTMLInputElement;
-    campo.value = 'Recepção do escritório';
+    campo.value = 'Recepção da clínica';
     campo.dispatchEvent(new Event('input', { bubbles: true }));
     (raiz.querySelector('[data-usar]') as HTMLButtonElement).click();
     await espera();
 
-    expect(api.atualizarAltMidia).toHaveBeenCalledWith(2, 'Recepção do escritório');
+    expect(api.atualizarAltMidia).toHaveBeenCalledWith(2, 'Recepção da clínica');
     expect(eventos.modelValue).toEqual([2]);
   });
 

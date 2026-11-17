@@ -17,7 +17,7 @@ status. O ícone do WhatsApp ao lado do telefone abre a conversa com o lead.
 
 - **Abas de status**: as mesmas da faixa de totais, com **Todos** por último.
 - **Busca**: por nome, e-mail ou telefone.
-- **Todas as Áreas**: filtra pela área de interesse (ramo do direito) escolhida no formulário do site.
+- **Serviço de interesse**: filtra pelo serviço de interesse escolhido no formulário do site.
 - **Mais recentes / Mais antigos**: muda a ordem da lista.
 - **Limpar filtros**: volta à lista de leads **Novos**.
 - **Atualizar** recarrega a lista; **Funil de Vendas** volta ao Pipeline.

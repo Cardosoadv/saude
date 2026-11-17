@@ -7,9 +7,8 @@
 
     <div class="card-body">
       <p class="push-texto">
-        Receba um aviso no celular ou no computador quando chegar uma intimação nova
-        ou quando o prazo de uma tarefa sua estiver vencendo, mesmo com o Ordo Juris fechado.
-        Os avisos não trazem o texto da intimação, só o número do processo.
+        Receba um aviso no celular ou no computador quando o prazo de uma tarefa sua estiver vencendo,
+        mesmo com o sistema fechado.
       </p>
 
       <div v-if="situacao === 'carregando'" class="push-aviso"><span class="spinner-sm"></span> Verificando…</div>
@@ -18,18 +17,18 @@
         <i class="bi bi-phone"></i>
         <span>No iPhone e no iPad, as notificações só funcionam com o app instalado: toque em
           <i class="bi bi-box-arrow-up" aria-label="Compartilhar"></i>, depois em <strong>Adicionar à Tela de Início</strong>,
-          e abra o Ordo Juris pelo ícone criado.</span>
+          e abra o Saúde pelo ícone criado.</span>
       </div>
 
       <div v-else-if="situacao === 'sem-suporte'" class="push-aviso">
         <i class="bi bi-info-circle"></i>
-        <span>Este navegador não oferece notificações para o Ordo Juris. Use o Chrome, o Edge ou o Firefox
+        <span>Este navegador não oferece notificações para o Saúde. Use o Chrome, o Edge ou o Firefox
           atualizados, ou o app instalado.</span>
       </div>
 
       <div v-else-if="situacao === 'servidor-off'" class="push-aviso">
         <i class="bi bi-info-circle"></i>
-        <span>As notificações ainda não foram configuradas no servidor do escritório. Fale com o administrador.</span>
+        <span>As notificações ainda não foram configuradas no servidor da clínica. Fale com o administrador.</span>
       </div>
 
       <div v-else-if="situacao === 'erro'" class="push-aviso">
@@ -47,10 +46,6 @@
       <template v-else>
         <fieldset class="push-preferencias" :disabled="ocupado">
           <legend class="form-label">Quero ser avisado sobre</legend>
-          <label class="push-opcao">
-            <input type="checkbox" v-model="escolha.intimacoes" @change="aoMudarPreferencia" />
-            <span><strong>Intimações novas</strong><small>Assim que forem capturadas, sem repetir as já avisadas.</small></span>
-          </label>
           <label class="push-opcao">
             <input type="checkbox" v-model="escolha.prazos" @change="aoMudarPreferencia" />
             <span><strong>Prazos das minhas tarefas</strong><small>No dia e na véspera do prazo.</small></span>
@@ -71,7 +66,7 @@
           <i class="bi bi-send"></i> Enviar teste
         </button>
       </template>
-      <button v-else class="btn btn-primary" type="button" :disabled="ocupado || (!escolha.intimacoes && !escolha.prazos)" @click="ativar">
+      <button v-else class="btn btn-primary" type="button" :disabled="ocupado || !escolha.prazos" @click="ativar">
         <i class="bi bi-bell"></i> {{ ocupado ? 'Ativando…' : 'Ativar notificações' }}
       </button>
     </div>
@@ -91,7 +86,7 @@ import {
 const emit = defineEmits(['toast'])
 const { situacao, preferencias, ocupado, horario } = usePush()
 
-const escolha = reactive({ intimacoes: true, prazos: true })
+const escolha = reactive({ prazos: true })
 watch(preferencias, (p) => Object.assign(escolha, p), { immediate: true })
 
 function erro(e: unknown, padrao: string) {
@@ -118,10 +113,10 @@ async function desativar() {
 
 async function aoMudarPreferencia() {
   if (situacao.value !== 'ativado') return
-  if (!escolha.intimacoes && !escolha.prazos) {
+  if (!escolha.prazos) {
     // Nada marcado = desativar de vez neste aparelho.
     await desativar()
-    Object.assign(escolha, { intimacoes: true, prazos: true })
+    Object.assign(escolha, { prazos: true })
     return
   }
   try {

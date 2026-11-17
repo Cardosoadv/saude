@@ -9,8 +9,7 @@ import { REGRAS_TELAS, telaLiberada } from '../src/utils/acessoTelas';
 
 /** Telas sem módulo próprio: as rotas da API delas não têm filtro de módulo. */
 const TELAS_LIVRES = [
-  'dashboard', 'configuracoes', 'etiquetas', 'mensagens', 'mensagem-detail',
-  'timbrado', 'perfil',
+  'dashboard', 'configuracoes', 'perfil',
 ];
 
 describe('acessoTelas', () => {
@@ -27,31 +26,18 @@ describe('acessoTelas', () => {
     expect(semDecisao).toEqual([]);
   });
 
-  it('objetos some com o módulo desativado, mesmo com permissão', () => {
-    aplicarAcesso({ permissoes: ['objetos.access'], modulos_ativos: ['processos'] });
+  it('clientes some com o módulo desativado, mesmo com permissão', () => {
+    aplicarAcesso({ permissoes: ['clientes.access'], modulos_ativos: ['financeiro'] });
 
-    expect(telaLiberada('objetos')).toBe(false);
-    expect(telaLiberada('objeto-detail')).toBe(false);
+    expect(telaLiberada('clientes')).toBe(false);
+    expect(telaLiberada('cliente-detail')).toBe(false);
   });
 
-  it('objetos some sem permissão, mesmo com o módulo ativo', () => {
-    aplicarAcesso({ permissoes: ['processos.access'], modulos_ativos: ['objetos', 'processos'] });
+  it('clientes some sem permissão, mesmo com o módulo ativo', () => {
+    aplicarAcesso({ permissoes: ['tarefas.access'], modulos_ativos: ['clientes', 'tarefas'] });
 
-    expect(telaLiberada('objetos')).toBe(false);
-    expect(telaLiberada('list')).toBe(true);
-  });
-
-  it('processos aceita processos.exclusive', () => {
-    aplicarAcesso({ permissoes: ['processos.exclusive'], modulos_ativos: ['processos'] });
-
-    expect(telaLiberada('detail')).toBe(true);
-    expect(telaLiberada('busca-automatica')).toBe(false);
-  });
-
-  it('checklists dependem só do módulo', () => {
-    aplicarAcesso({ permissoes: [], modulos_ativos: ['checklist'] });
-
-    expect(telaLiberada('checklists')).toBe(true);
+    expect(telaLiberada('clientes')).toBe(false);
+    expect(telaLiberada('tarefas')).toBe(true);
   });
 
   it('telas do site seguem o módulo site e a permissão de cada grupo de rotas', () => {

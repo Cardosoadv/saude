@@ -12,8 +12,8 @@ class CrmSeeder extends Seeder
         $etapas = [
             ['nome' => 'Novo Lead', 'cor' => '#0dcaf0', 'ordem' => 1],
             ['nome' => 'Contato Feito', 'cor' => '#ffc107', 'ordem' => 2],
-            ['nome' => 'Reunião Agendada', 'cor' => '#6610f2', 'ordem' => 3],
-            ['nome' => 'Proposta Enviada', 'cor' => '#0d6efd', 'ordem' => 4],
+            ['nome' => 'Avaliação Agendada', 'cor' => '#6610f2', 'ordem' => 3],
+            ['nome' => 'Orçamento Enviado', 'cor' => '#0d6efd', 'ordem' => 4],
             ['nome' => 'Em Negociação', 'cor' => '#fd7e14', 'ordem' => 5],
         ];
 
@@ -30,7 +30,7 @@ class CrmSeeder extends Seeder
             ['nome' => 'Facebook', 'icone' => 'bi-facebook'],
             ['nome' => 'LinkedIn', 'icone' => 'bi-linkedin'],
             ['nome' => 'Site / Orgânico', 'icone' => 'bi-globe'],
-            ['nome' => 'Evento / Networking', 'icone' => 'bi-people'],
+            ['nome' => 'Evento / Parceria', 'icone' => 'bi-people'],
         ];
 
         foreach ($origens as $origem) {

@@ -58,7 +58,7 @@
               <button type="button" class="btn btn-ghost btn-sm" data-restaurar-fonte :disabled="atual.fontes[token] === info.padrao" @click="definirFonte(String(token), info.padrao)">Padrão</button>
             </div>
             <p class="amostra-texto" :style="{ fontFamily: `'${atual.fontes[token]}', ${token === 'sans' ? 'sans-serif' : 'serif'}` }" data-amostra>
-              A advocacia exige rigor e clareza — 0123456789
+              O cuidado exige clareza e acolhimento — 0123456789
             </p>
             <p v-if="erros['fontes.' + token]" class="erro" role="alert">{{ erros['fontes.' + token] }}</p>
           </div>

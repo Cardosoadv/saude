@@ -9,7 +9,6 @@ use App\Repositories\BaseRepository;
 
 /**
  * Repository de Categorias
- * @author Cardoso
  * @version 0.9.1
  * @since 2026-01-01
  *

@@ -10,7 +10,7 @@ use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
 
 /**
- * Gera o par de chaves VAPID das notificações push. Rode uma vez por tenant e copie as
+ * Gera o par de chaves VAPID das notificações push. Rode uma vez por instalação e copie as
  * linhas para o .env. Trocar as chaves invalida todas as inscrições existentes.
  */
 class PushVapid extends BaseCommand
@@ -32,7 +32,7 @@ class PushVapid extends BaseCommand
         CLI::write('# Notificações push (PWA)');
         CLI::write('push.vapidPublicKey = "' . Base64Url::codificar($par['publica']) . '"');
         CLI::write('push.vapidPrivateKey = "' . Base64Url::codificar($par['privada']) . '"');
-        CLI::write('push.contato = "mailto:SEU-EMAIL@cardosoebruno.adv.br"');
+        CLI::write('push.contato = "mailto:contato@seudominio.com.br"');
 
         return EXIT_SUCCESS;
     }

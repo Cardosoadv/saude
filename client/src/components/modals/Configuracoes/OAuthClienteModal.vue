@@ -20,7 +20,7 @@
 
         <p class="mcp-hint">
           Preencha a tela de conector personalizado (ex.: Gemini) com os valores abaixo. Ao conectar, o
-          Gemini abrirá a tela de autorização do OrdoJuris.
+          Gemini abrirá a tela de autorização do sistema.
         </p>
 
         <div class="form-group" v-for="campo in campos" :key="campo.label">

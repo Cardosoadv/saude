@@ -11,7 +11,7 @@ use CodeIgniter\Exceptions\PageNotFoundException;
 use Config\SiteTemplate;
 
 /**
- * GET /llms.txt na raiz do site: resumo do escritório em markdown para assistentes de IA.
+ * GET /llms.txt na raiz do site: resumo da clínica em markdown para assistentes de IA.
  * O texto fica no cache das páginas do site e é descartado junto com o sitemap, sempre que o conteúdo muda.
  */
 class LlmsTxt extends BaseController

@@ -7,13 +7,13 @@
     <div class="container d-flex justify-content-center p-5">
         <div class="card col-12 col-md-6 shadow-sm">
             <div class="card-body">
-                <img src="<?= shared_asset('dist/assets/img/Ordo.png', true) ?>" alt="Logo" class="img-fluid mb-4" style="max-height: 60px;">
+                <img src="<?= shared_asset('assets/img/logo-login.png') ?>" alt="Logo" class="img-fluid mb-4" style="max-height: 60px;">
 
                 <h5 class="card-title mb-3">Autorizar acesso de IA externa</h5>
 
                 <p class="mb-1">
                     <strong><?= esc($client['client_name'] ?: 'Um cliente MCP externo') ?></strong>
-                    quer se conectar ao OrdoJuris em nome de
+                    quer se conectar ao sistema em nome de
                     <strong><?= esc($usuario->email ?? $usuario->username ?? '') ?></strong>.
                 </p>
 

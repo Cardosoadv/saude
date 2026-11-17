@@ -1,6 +1,6 @@
 # Documentação interna: formato das páginas
 
-Formato das páginas do manual do Ordo Juris, lido dentro do próprio sistema (épico #699, issue #700).
+Formato das páginas do manual do sistema, lido dentro do próprio sistema (épico #699, issue #700).
 O backend converte o Markdown em HTML e a SPA só exibe o resultado.
 
 ## Onde ficam
@@ -12,15 +12,15 @@ app/Docs/
     navegacao.md           # página
     img/                   # imagens da seção
       menu-lateral.webp
-  processos/
+  clientes/
     index.md
     cadastro.md
 ```
 
 - Só existem **dois níveis**: seção (pasta) e página (arquivo `.md`). Subpastas, além de `img/`, não são lidas.
 - Nomes de pasta e de arquivo: minúsculas, números e hífen (`busca-automatica.md`).
-- O **slug** vem do caminho, sem `.md`: `processos/cadastro.md` vira `processos/cadastro`.
-  A capa `processos/index.md` vira `processos`.
+- O **slug** vem do caminho, sem `.md`: `clientes/cadastro.md` vira `clientes/cadastro`.
+  A capa `clientes/index.md` vira `processos`.
 - Seção sem `index.md` aparece no índice com o nome da pasta, e as páginas dela continuam acessíveis.
 
 **Páginas criadas pela interface**: quem tem a permissão `documentacao.editar` também cria e edita páginas pela
@@ -34,15 +34,15 @@ Toda página começa com um cabeçalho entre linhas `---`:
 
 ```markdown
 ---
-titulo: Cadastro de processos
-resumo: Como cadastrar um processo, preencher as partes e vincular o cliente.
+titulo: Cadastro de clientes
+resumo: Como cadastrar um cliente e preencher os dados de contato.
 ordem: 10
-modulo: processos
-permissao: processos.access
+modulo: clientes
+permissao: clientes.access
 telas: [list, process-form]
 palavras_chave:
-  - novo processo
-  - CNJ
+  - novo cliente
+  - cadastro
 ---
 
 Texto da página em Markdown...
@@ -79,8 +79,8 @@ CommonMark com as extensões do GitHub: tabelas, listas de tarefas, tachado e li
   Evite `#` no corpo.
 - **HTML cru não é aceito**: aparece como texto. O HTML gerado passa por uma lista branca de tags.
 - **Links para outra página**: use o caminho relativo do arquivo `.md`, com âncora opcional:
-  `[cadastro](../processos/cadastro.md#partes)`. O backend reescreve para `#/documentacao/processos/cadastro#partes`.
-- **Links para telas do sistema**: use o hash da SPA, como `[abrir processos](#/processos)`.
+  `[cadastro](../clientes/cadastro.md#partes)`. O backend reescreve para `#/documentacao/clientes/cadastro#partes`.
+- **Links para telas do sistema**: use o hash da SPA, como `[abrir clientes](#/clientes)`.
 - **Links externos**: só `https://` e `mailto:`.
 - **Imagens**: guarde em `img/` da seção e use caminho relativo: `![Menu lateral aberto](img/menu-lateral.webp)`.
   O texto alternativo é obrigatório. Prefira WebP, com no máximo 1600 px de largura; o backend põe `width` e `height`
@@ -113,7 +113,7 @@ Use `--raiz <pasta>` para conferir outra pasta.
 
 ## Estilo de escrita
 
-- Escreva para o usuário do escritório, não para o desenvolvedor: diga onde clicar e o que acontece.
+- Escreva para o usuário da clínica, não para o desenvolvedor: diga onde clicar e o que acontece.
 - Frases curtas, na segunda pessoa ("clique em **Salvar**"). Nomes de botões e menus em **negrito**.
 - Uma página por tarefa. Se passar de umas três telas de texto, divida.
-- Capturas de tela só com dados fictícios. **Nunca** use dados reais de clientes ou processos.
+- Capturas de tela só com dados fictícios. **Nunca** use dados reais de clientes.

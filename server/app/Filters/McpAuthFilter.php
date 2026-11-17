@@ -113,9 +113,9 @@ class McpAuthFilter implements FilterInterface
 
         // Assume a sessão Shield do usuário aqui, não só nas Tools de
         // escrita: várias Services/Repositories usados por Tools de leitura
-        // (ex.: anotações de um processo) dependem de auth()->id() para
+        // (ex.: tarefas de um cliente) dependem de auth()->id() para
         // filtrar o que pertence a esse usuário. Sem isso, um chat de IA
-        // externo via token pessoal via `obter_processo`/`obter_cliente`
+        // externo via token pessoal via `obter_cliente`
         // enxergaria menos dados do que o próprio usuário veria logado no
         // sistema.
         AtorMcp::assumir((int) $usuario->id);

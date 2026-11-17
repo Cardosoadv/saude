@@ -7,7 +7,7 @@ namespace App\Libraries\Site;
 /**
  * Decide para onde uma requisição do site público deve ser redirecionada (301)
  * para chegar ao endereço canônico: o host e o protocolo de `App::$publicURL`,
- * sem a subpasta da instalação (`/ordojuris/`) quando a baseURL a tem.
+ * sem a subpasta da instalação (`/clinica/`) quando a baseURL a tem.
  *
  * É a rede de segurança em PHP das regras do .htaccess: vale também quando o
  * servidor ignora o .htaccess ou termina o TLS antes da aplicação.
@@ -15,8 +15,8 @@ namespace App\Libraries\Site;
 final class HostCanonico
 {
     /**
-     * @param string $publicUrl  `App::$publicURL` (ex.: https://cardosoebruno.adv.br/); vazio desliga o redirecionamento
-     * @param string $baseUrl    `App::$baseURL` (ex.: https://cardosoebruno.adv.br/ordojuris/)
+     * @param string $publicUrl  `App::$publicURL` (ex.: https://exemplo.com.br/); vazio desliga o redirecionamento
+     * @param string $baseUrl    `App::$baseURL` (ex.: https://exemplo.com.br/clinica/)
      * @param bool   $https      a requisição chegou por HTTPS
      * @param string $host       cabeçalho Host da requisição (pode trazer porta)
      * @param string $requestUri caminho e query originais (`REQUEST_URI`)

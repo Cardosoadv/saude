@@ -580,21 +580,21 @@ class ReceitasRepository extends BaseRepository
     }
 
     /**
-     * Obtém o total de receitas pagas agrupadas por ramo do direito (via contrato vinculado).
-     * Receitas sem contrato ou cujo contrato não tem ramo definido caem no bucket "0" (Sem Ramo).
+     * Obtém o total de receitas pagas agrupadas por área/especialidade (via contrato vinculado).
+     * Receitas sem contrato ou cujo contrato não tem área definida caem no bucket vazio (Sem área).
      * Otimizado para dashboard.
      *
      * @param string|null $dataInicio Data inicial opcional (filtra pela data de pagamento).
      * @param string|null $dataFim Data final opcional (filtra pela data de pagamento).
-     * @return array Lista de [ramo_id, receitas]
+     * @return array Lista de [area, receitas]
      */
-    public function getReceitasPagasAgrupadasPorRamo(?string $dataInicio = null, ?string $dataFim = null): array
+    public function getReceitasPagasAgrupadasPorArea(?string $dataInicio = null, ?string $dataFim = null): array
     {
-        $cacheSuffix = 'pagas_agrupadas_ramo_' . ($dataInicio ?? 'all') . '_' . ($dataFim ?? 'all');
+        $cacheSuffix = 'pagas_agrupadas_area_' . ($dataInicio ?? 'all') . '_' . ($dataFim ?? 'all');
 
         return $this->remember($cacheSuffix, function () use ($dataInicio, $dataFim) {
             $builder = $this->pagtoReceitasModel
-                ->select('contratos.area_atuacao as ramo_id, SUM(fin_pgto_receitas.valor) as receitas', false)
+                ->select('contratos.area_atuacao as area, SUM(fin_pgto_receitas.valor) as receitas', false)
                 ->join('fin_receitas', 'fin_receitas.id_receita = fin_pgto_receitas.receita_id')
                 ->join('contratos', 'contratos.id_contrato = fin_receitas.contrato_id', 'left')
                 ->where('fin_receitas.deleted_at IS NULL')

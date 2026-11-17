@@ -9,8 +9,7 @@
 ?>
 <p style="margin:0 0 6px;">Olá, <strong style="color:#0f1923;"><?= esc($nomeCliente) ?></strong>,</p>
 <p style="margin:0;">
-    Você solicitou acesso à sua <strong>Área do Cliente</strong>, onde pode acompanhar seus processos,
-    visualizar movimentações e enviar mensagens ao advogado responsável.
+    Você solicitou acesso à sua <strong>Área do Cliente</strong>, onde pode consultar os seus dados cadastrais.
 </p>
 
 <?= email_botao($linkAcesso, 'Acessar Área do Cliente') ?>

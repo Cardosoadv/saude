@@ -6,7 +6,7 @@ import {
 import type { SitePagina } from '../src/types/site';
 
 const pagina = (extra: Partial<SitePagina> = {}): SitePagina => ({
-  id: 2, slug: 'direito-civil', titulo: 'Direito Civil', tipo: 'area', layout: 'area', meta_title: 'Civil | Escritório',
+  id: 2, slug: 'direito-civil', titulo: 'Direito Civil', tipo: 'area', layout: 'area', meta_title: 'Civil | Clínica',
   meta_description: 'Descrição', og_image_id: 4, status: 'publicado', publicado_em: '2026-10-08 10:00:00', ordem: 1,
   exibir_sitemap: 1, prioridade_sitemap: 0.8, changefreq: 'monthly', url: 'http://localhost/processos/pagina/direito-civil', ...extra,
 });

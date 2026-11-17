@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Support;
 
-use App\Libraries\Importacao\NormalizadorFontesProcesso as Fontes;
 use Mcp\Exception\ToolCallException;
 
 /**
@@ -44,9 +43,9 @@ final class EntradaMcp
             return null;
         }
 
-        $chave = Fontes::comparavel($valor);
+        $chave = self::comparavel($valor);
         foreach ($opcoes as $opcao) {
-            if (Fontes::comparavel($opcao) === $chave) {
+            if (self::comparavel($opcao) === $chave) {
                 return $opcao;
             }
         }
@@ -63,7 +62,7 @@ final class EntradaMcp
     }
 
     /**
-     * Responsável informado: precisa ser advogado ativo; null mantém o padrão
+     * Responsável informado: precisa ser profissional ativo; null mantém o padrão
      * do cadastro (quem cria).
      */
     public static function responsavel(?int $responsavelId): ?int
@@ -71,10 +70,25 @@ final class EntradaMcp
         if ($responsavelId === null) {
             return null;
         }
-        if (!(new \App\Services\AcessoEntidadeService())->ehAdvogadoAtivo($responsavelId)) {
-            throw new ToolCallException('Responsável: informe um advogado ativo.');
+        if (!(new \App\Services\AcessoEntidadeService())->ehProfissionalAtivo($responsavelId)) {
+            throw new ToolCallException('Responsável: informe um profissional ativo.');
         }
 
         return $responsavelId;
+    }
+
+    /** Texto em forma comparável: minúsculas, sem acento e com espaços simples. */
+    public static function comparavel(?string $texto): string
+    {
+        $texto     = mb_strtolower(trim((string) $texto));
+        $semAcento = class_exists(\Transliterator::class)
+            ? \Transliterator::create('NFD; [:Nonspacing Mark:] Remove; NFC')?->transliterate($texto)
+            : null;
+        $texto = $semAcento ?? strtr($texto, [
+            'á' => 'a', 'à' => 'a', 'â' => 'a', 'ã' => 'a', 'ä' => 'a', 'é' => 'e', 'ê' => 'e', 'è' => 'e',
+            'í' => 'i', 'ì' => 'i', 'ó' => 'o', 'ô' => 'o', 'õ' => 'o', 'ò' => 'o', 'ú' => 'u', 'ü' => 'u', 'ç' => 'c',
+        ]);
+
+        return trim((string) preg_replace('/\s+/', ' ', $texto));
     }
 }

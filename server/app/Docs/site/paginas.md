@@ -32,7 +32,7 @@ No template Clássico, além de banner, texto e cartões, há duas seções de c
 - **Carrossel de imagens**: cada item tem **imagem**, título, texto e um link opcional (com o texto do botão).
   Defina se passa sozinho (**autoplay**) e o intervalo, de 4 a 10 segundos. As setas e os pontos permitem
   navegar à mão.
-- **Carrossel de textos (cards)**: cartões com ícone, título e texto, como os pilares do escritório, que o
+- **Carrossel de textos (cards)**: cartões com ícone, título e texto, como os pilares da clínica, que o
   visitante percorre lateralmente. O autoplay vem desligado.
 
 Se a publicação for recusada, o sistema lista a seção e o campo que precisam ser corrigidos.

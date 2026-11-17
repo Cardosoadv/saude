@@ -86,11 +86,7 @@ class Filters extends BaseFilters
                     'oauth/register',
                 ]
             ],
-            'invalidchars' => [
-                'except' => [
-                    'api/v2/intimacoes/processarIntimacoes'
-                ]
-            ],
+            'invalidchars',
             'session' => [
                 'except' => [
                     '',
@@ -100,12 +96,7 @@ class Filters extends BaseFilters
                     'auth/a/*',
                     'logout',
                     '*/v2/logout*',
-                    'exportacao/*',
-                    'importacao/*',
                     'api/*',
-                    'processos/adicionar/',
-                    'intimacoes/adicionar/',
-                    'movimentos/adicionar/',
                     'cron*',
                     'sitemap.xml',
                     'robots.txt',

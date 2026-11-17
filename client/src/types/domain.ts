@@ -9,83 +9,6 @@
 /** ID vindo do backend: número ou string numérica. */
 export type Id = number | string
 
-export interface Etiqueta {
-  id?: Id
-  id_etiqueta?: Id
-  nome: string
-  /** Cor em hexadecimal, sem `#`. */
-  cor: string
-}
-
-export interface Anotacao {
-  id?: Id
-  id_anotacao?: Id
-  titulo: string
-  anotacao?: string
-  conteudo?: string
-  privacidade?: Id
-  nivel_privacidade?: Id
-}
-
-export interface ChecklistItem {
-  id?: Id
-  id_item?: Id
-  titulo: string
-  descricao?: string
-  observacao?: string
-  cumprido?: Id
-  concluido?: Id
-}
-
-export interface Checklist {
-  id: Id
-  titulo: string
-  status?: string
-  itens: ChecklistItem[]
-  itens_cumpridos?: number
-  total_itens?: number
-}
-
-export interface HistoricoCaso {
-  acao: string
-  descricao?: string
-  created_at: string
-}
-
-export interface Movimentacao {
-  id?: Id
-  nome: string
-  dataHora: string
-  observacao?: string
-  sentiment?: string
-  sentiment_rationale?: string
-}
-
-export interface Intimacao {
-  numero_processo: string
-  tipoComunicacao?: string
-  data_disponibilizacao: string
-}
-
-export interface Parte {
-  id?: Id
-  id_parte?: Id
-  nome: string
-  /** 'A' | 'P' | 'Ativo' | 'Passivo' */
-  polo: string
-  is_represented?: Id
-}
-
-export interface VinculoProcesso {
-  id_vinculo: Id
-  id_processo_vinculado: Id
-  numeroprocessocommascara?: string
-  titulo_processo?: string
-  tipo_vinculo?: string
-  descricao_vinculo?: string
-  is_arquivado?: Id
-}
-
 export interface Tarefa {
   id?: Id
   id_tarefa?: Id
@@ -98,15 +21,6 @@ export interface Usuario {
   id: Id
   nome?: string
   username?: string
-}
-
-/** Item das listas de "últimos movimentados" do dashboard. */
-export interface ProcessoResumo {
-  id?: Id
-  id_processo?: Id
-  numero_processo?: string
-  nome?: string
-  titulo_processo?: string
 }
 
 /** Mensagem exibida pelo ToastContainer. */
@@ -140,7 +54,7 @@ export interface MigracoesResultado {
   mensagens: string[];
 }
 
-/** Contagem de clientes ou processos por situação de pasta no Drive. */
+/** Contagem de clientes por situação de pasta no Drive. */
 export interface DriveSyncEntidadeResumo {
   total: number;
   com_pasta: number;
@@ -154,7 +68,6 @@ export interface DriveSyncResumo {
   configurado: boolean;
   fila: { pending: number; processing: number; completed: number; failed: number; travados: number };
   clientes: DriveSyncEntidadeResumo;
-  processos: DriveSyncEntidadeResumo;
 }
 
 /** Resultado de POST drive/processar. */
@@ -166,12 +79,12 @@ export interface DriveSyncLote {
   itens: { id: number; status: 'completed' | 'failed'; pasta?: string; erro?: string }[];
 }
 
-/** Privacidade granular de processos, clientes e contratos. */
+/** Privacidade granular de clientes e contratos. */
 export type Visibilidade = 'publico' | 'restrito'
 
-export type TipoEntidadeAcesso = 'processo' | 'cliente' | 'contrato'
+export type TipoEntidadeAcesso = 'cliente' | 'contrato'
 
-/** Advogado com acesso (leitura e edição) a um registro restrito. */
+/** Profissional com acesso (leitura e edição) a um registro restrito. */
 export interface AcessoUsuario {
   user_id: Id
   username: string

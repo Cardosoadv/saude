@@ -38,7 +38,7 @@ class App extends BaseConfig
      *
      * Sobrescrito via variável de ambiente `app.frontURL` no arquivo .env.
      *
-     * E.g., https://www.cardosoebruno.adv.br/sistema/#/
+     * E.g., https://www.exemplo.com.br/sistema/#/
      */
     public string $frontURL = 'http://localhost/#/';
 

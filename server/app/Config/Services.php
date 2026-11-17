@@ -40,12 +40,6 @@ class Services extends BaseService
     }
 
     /**
-     * Retorna o serviço de Inteligência Artificial.
-     *
-     * @param bool $getShared
-     * @return \App\Interfaces\AIServiceInterface
-     */
-    /**
      * Leitura da documentação interna (épico #699). Registrado como serviço para
      * os testes trocarem as dependências (módulos, permissões do usuário).
      */
@@ -58,22 +52,13 @@ class Services extends BaseService
         return new \App\Services\Documentacao\DocumentacaoService();
     }
 
-    public static function AIService($getShared = true)
-    {
-        if ($getShared) {
-            return static::getSharedInstance('AIService');
-        }
-
-        return new \App\Services\AIManagerService();
-    }
-
     public static function contabilAuthorizer(bool $getShared = true): \CognitioTechny\Contabil\Application\Ports\AuthorizerInterface
     {
         if ($getShared) {
             return static::getSharedInstance('contabilAuthorizer');
         }
 
-        return new \App\Libraries\Contabil\OrdoJurisContabilAuthorizer();
+        return new \App\Libraries\Contabil\SaudeContabilAuthorizer();
     }
 
     public static function contabilCurrentUser(bool $getShared = true): \CognitioTechny\Contabil\Application\Ports\CurrentUserInterface
@@ -82,7 +67,7 @@ class Services extends BaseService
             return static::getSharedInstance('contabilCurrentUser');
         }
 
-        return new \App\Libraries\Contabil\OrdoJurisContabilCurrentUser();
+        return new \App\Libraries\Contabil\SaudeContabilCurrentUser();
     }
 
     public static function contabilCurrentEntity(bool $getShared = true): \CognitioTechny\Contabil\Application\Ports\CurrentEntityInterface
@@ -91,7 +76,7 @@ class Services extends BaseService
             return static::getSharedInstance('contabilCurrentEntity');
         }
 
-        return new \App\Libraries\Contabil\OrdoJurisContabilCurrentEntity();
+        return new \App\Libraries\Contabil\SaudeContabilCurrentEntity();
     }
 
     public static function contabilPdfRenderer(bool $getShared = true): \CognitioTechny\Contabil\Application\Ports\PdfRendererInterface
@@ -100,7 +85,7 @@ class Services extends BaseService
             return static::getSharedInstance('contabilPdfRenderer');
         }
 
-        return new \App\Libraries\Contabil\OrdoJurisContabilPdfRenderer();
+        return new \App\Libraries\Contabil\SaudeContabilPdfRenderer();
     }
 }
 

@@ -10,7 +10,6 @@ use App\Repositories\BaseRepository;
 /**
  * ContasRepository
  *
- * @author Cardoso
  * @version 1.0.0 Beta
  * @since 2026-01-03
  */

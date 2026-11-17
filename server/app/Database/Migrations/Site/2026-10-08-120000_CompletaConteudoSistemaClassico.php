@@ -13,7 +13,7 @@ use CodeIgniter\Database\Migration;
  * existirem, as páginas de sistema `noticias`, `area-cliente` e
  * `painel-cliente` e a configuração `noticias.filtros`. Em instalações que já
  * tinham o seed da #646 essas peças não existiam; nas novas elas já vêm
- * no seed e nada é alterado. Nunca sobrescreve conteúdo do escritório.
+ * no seed e nada é alterado. Nunca sobrescreve conteúdo da clínica.
  */
 class CompletaConteudoSistemaClassico extends Migration
 {
@@ -38,6 +38,6 @@ class CompletaConteudoSistemaClassico extends Migration
 
     public function down()
     {
-        // Intencionalmente vazio: remover apagaria conteúdo do escritório.
+        // Intencionalmente vazio: remover apagaria conteúdo da clínica.
     }
 }

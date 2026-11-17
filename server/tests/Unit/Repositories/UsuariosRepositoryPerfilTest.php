@@ -45,7 +45,7 @@ class UsuariosRepositoryPerfilTest extends CIUnitTestCase
 
     public function testIgnoraCamposForaDaListaDePerfil(): void
     {
-        $campos = $this->repo->camposPerfil(['password' => 'x', 'is_lawyer' => 1, 'cargo' => 'Sócio']);
+        $campos = $this->repo->camposPerfil(['password' => 'x', 'is_profissional' => 1, 'cargo' => 'Sócio']);
 
         $this->assertSame(['cargo' => 'Sócio'], $campos);
     }

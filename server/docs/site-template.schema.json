@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://ordojuris/schemas/site-template.schema.json",
-  "title": "template.json do site OrdoJuris",
+  "$id": "https://clinica/schemas/site-template.schema.json",
+  "title": "template.json do site Saúde",
   "description": "Descrição para editores/IDEs. A validação oficial é App\\Libraries\\Site\\Template\\ManifestValidator.",
   "type": "object",
   "required": ["slug", "nome", "versao", "motor", "layouts", "secoes", "paginas_obrigatorias"],
@@ -11,7 +11,7 @@
     "versao": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
     "autor": { "type": "string", "maxLength": 100 },
     "descricao": { "type": "string", "maxLength": 255 },
-    "ordojuris": { "type": "string", "pattern": "^>=\\s*\\d+\\.\\d+\\.\\d+$" },
+    "sistema": { "type": "string", "pattern": "^>=\\s*\\d+\\.\\d+\\.\\d+$" },
     "motor": { "enum": ["php", "twig"] },
     "layouts": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/chave" } },
     "menus": { "type": "array", "items": { "$ref": "#/$defs/chave" } },

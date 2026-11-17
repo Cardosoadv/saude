@@ -9,8 +9,8 @@ use App\Services\Contabil\PlanoContasModeloService;
 
 /**
  * Seeder de inicialização do módulo Contábil.
- * Cria a entidade principal (Cardoso & Bruno Advogados), importa o plano de contas
- * padrão (ITG 1000, escritório de advocacia) e abre o exercício fiscal corrente.
+ * Cria a entidade principal (Clínica Saúde), importa o plano de contas
+ * padrão (ITG 1000, clínica) e abre o exercício fiscal corrente.
  *
  * @version 1.1.0
  */
@@ -25,7 +25,7 @@ class ContabilSeeder extends Seeder
         if (! $entity) {
             $db->table('acc_entities')->insert([
                 'id'            => 1,
-                'name'          => 'Cardoso & Bruno Advogados',
+                'name'          => 'Clínica Saúde',
                 'currency'      => 'BRL',
                 'default_basis' => 'ACCRUAL',
                 'created_at'    => date('Y-m-d H:i:s'),

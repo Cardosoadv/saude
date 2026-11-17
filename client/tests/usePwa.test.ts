@@ -131,10 +131,10 @@ describe('navegarPara (clique em notificação com o painel aberto)', () => {
     window.location.hash = '#/dashboard';
     const base = window.location.href.split('#')[0];
 
-    navegarPara(base + '#/intimacoes/detalhes/10');
-    expect(window.location.hash).toBe('#/intimacoes/detalhes/10');
+    navegarPara(base + '#/tarefas');
+    expect(window.location.hash).toBe('#/tarefas');
 
     navegarPara('https://outro-site.com/#/tarefas');
-    expect(window.location.hash).toBe('#/intimacoes/detalhes/10');
+    expect(window.location.hash).toBe('#/tarefas');
   });
 });

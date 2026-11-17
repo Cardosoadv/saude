@@ -1,6 +1,6 @@
 <?php
 /**
- * Corpo do e-mail enviado ao escritório quando alguém preenche o formulário do site.
+ * Corpo do e-mail enviado a clínica quando alguém preenche o formulário do site.
  *
  * @var array  $contact   name, email, phone, message, area_interesse
  * @var string $areaTitle Nome da área de interesse (pode ser vazio).

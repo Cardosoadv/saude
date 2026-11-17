@@ -185,11 +185,11 @@ class SiteAdminConteudoTest extends CIUnitTestCase
 
     public function testTrocarOSlugDePaginaPublicadaAvisaEDeSistemaNaoPode(): void
     {
-        $civil = $this->idDe('direito-civil');
+        $civil = $this->idDe('consultas');
 
         $r = $this->paginas()->atualizar($civil, ['slug' => 'civil']);
         $this->assertSame('civil', $r['pagina']['slug']);
-        $this->assertStringContainsString('/pagina/direito-civil', $r['avisos'][0]);
+        $this->assertStringContainsString('/pagina/consultas', $r['avisos'][0]);
 
         $rascunho = $this->paginas()->criar(['slug' => 'rasc', 'titulo' => 'R']);
         $this->assertSame([], $this->paginas()->atualizar($rascunho['id'], ['slug' => 'rasc-2'])['avisos'], 'rascunho não avisa');
@@ -255,17 +255,17 @@ class SiteAdminConteudoTest extends CIUnitTestCase
 
     public function testDuplicarCopiaSecoesEGeraSlugsLivres(): void
     {
-        $civil = $this->idDe('direito-civil');
+        $civil = $this->idDe('consultas');
         $original = $this->paginas()->obter($civil);
 
         $c1 = $this->paginas()->duplicar($civil);
         $c2 = $this->paginas()->duplicar($civil);
         $deHome = $this->paginas()->duplicar($this->idDe('inicio'));
 
-        $this->assertSame('direito-civil-copia', $c1['slug']);
-        $this->assertSame('direito-civil-copia-2', $c2['slug']);
+        $this->assertSame('consultas-copia', $c1['slug']);
+        $this->assertSame('consultas-copia-2', $c2['slug']);
         $this->assertSame('rascunho', $c1['status']);
-        $this->assertSame('Direito Civil (cópia)', $c1['titulo']);
+        $this->assertSame('Consultas (cópia)', $c1['titulo']);
         $this->assertCount(count($original['secoes']), $c1['secoes']);
         $this->assertSame($original['secoes'][2]['dados'], $c1['secoes'][2]['dados']);
         $this->assertSame('pagina', $deHome['tipo'], 'cópia da home é página comum');
@@ -335,7 +335,7 @@ class SiteAdminConteudoTest extends CIUnitTestCase
     public function testCriarSecaoDevolveErrosPorCaminhoDeCampo(): void
     {
         $p = $this->paginas()->criar(['slug' => 'nova', 'titulo' => 'Nova']);
-        $civil = $this->idDe('direito-civil');
+        $civil = $this->idDe('consultas');
 
         $erros = $this->erros(fn () => $this->secoes()->criar($p['id'], ['tipo' => 'hero', 'dados' => [
             'botoes' => [
@@ -435,7 +435,7 @@ class SiteAdminConteudoTest extends CIUnitTestCase
 
     public function testSubstituirMenuGravaArvoreEApagaOAntigo(): void
     {
-        $civil = $this->idDe('direito-civil');
+        $civil = $this->idDe('consultas');
         $rasc = $this->paginas()->criar(['slug' => 'rasc', 'titulo' => 'R'])['id'];
 
         $r = $this->menus()->substituir('rodape', [
@@ -500,18 +500,18 @@ class SiteAdminConteudoTest extends CIUnitTestCase
     public function testConfiguracoesAgrupadasEAtualizacaoParcial(): void
     {
         $grupos = $this->config()->agrupadas();
-        $this->assertSame('(31) 9.9224-6996', $this->valorDe($grupos, 'contato.telefone'));
+        $this->assertSame('', $this->valorDe($grupos, 'contato.telefone'));
 
         $novo = $this->config()->atualizar([
             'contato.telefone' => '(11) 1111-1111',
-            'redes.instagram'  => 'https://instagram.com/escritorio',
+            'redes.instagram'  => 'https://instagram.com/clinica',
             'integracoes.ga_id' => 'G-ABCD1234',
             'noticias.filtros' => ['Tributário'],
         ]);
 
         $this->assertSame('(11) 1111-1111', $this->valorDe($novo, 'contato.telefone'));
         $this->assertSame('seo', $this->db->table('site_configuracoes')->where('chave', 'seo.sufixo_titulo')->get()->getRow()->grupo);
-        $this->assertSame('Cardoso & Bruno Sociedade de Advogados', $this->valorDe($novo, 'identidade.nome'), 'o que não foi enviado não muda');
+        $this->assertSame('Clínica Saúde', $this->valorDe($novo, 'identidade.nome'), 'o que não foi enviado não muda');
         $this->assertSame(['Tributário'], $this->valorDe($novo, 'noticias.filtros'));
         $this->assertSame('json', $this->db->table('site_configuracoes')->where('chave', 'noticias.filtros')->get()->getRow()->tipo);
     }
@@ -538,7 +538,7 @@ class SiteAdminConteudoTest extends CIUnitTestCase
             'Chave Ruim', 'sistema.senha', 'integracoes.ga_id', 'contato.email', 'redes.facebook', 'seo.descricao_padrao',
             'textos.nao.existe', 'identidade.logo', 'identidade.nome', 'noticias.filtros', 'contato.enderecos', 'seo.sufixo_titulo',
         ], array_keys($erros));
-        $this->assertSame('(31) 9.9224-6996', $this->valorDe($this->config()->agrupadas(), 'contato.telefone'), 'nada foi gravado');
+        $this->assertSame('', $this->valorDe($this->config()->agrupadas(), 'contato.telefone'), 'nada foi gravado');
     }
 
     public function testCnpjDaIdentidadeEValidadoEGravadoSoComDigitos(): void
@@ -548,8 +548,8 @@ class SiteAdminConteudoTest extends CIUnitTestCase
 
         $novo = $this->config()->atualizar([
             'identidade.cnpj'         => '11.222.333/0001-81',
-            'identidade.razao_social' => 'Cardoso & Bruno Sociedade de Advogados',
-            'identidade.registro_oab' => 'OAB/MG nº 1234',
+            'identidade.razao_social' => 'Clínica Saúde',
+            'identidade.registro_profissional' => 'CRM/MG nº 1234',
         ]);
         $this->assertSame('11222333000181', $this->valorDe($novo, 'identidade.cnpj'));
 
@@ -564,16 +564,16 @@ class SiteAdminConteudoTest extends CIUnitTestCase
             'contato.mapa_url'     => 'javascript:alert(1)',
             'contato.horario'      => [['dias' => ['Funday'], 'abre' => '09:00', 'fecha' => '18:00']],
             'contato.area_atendida' => ['ok', ''],
-            'identidade.advogados' => [['nome' => '', 'oab' => 'x']],
+            'identidade.profissionais' => [['nome' => '', 'registro' => 'x']],
         ]));
-        $this->assertEqualsCanonicalizing(['contato.latitude', 'contato.mapa_url', 'contato.horario', 'contato.area_atendida', 'identidade.advogados'], array_keys($erros));
+        $this->assertEqualsCanonicalizing(['contato.latitude', 'contato.mapa_url', 'contato.horario', 'contato.area_atendida', 'identidade.profissionais'], array_keys($erros));
 
         $novo = $this->config()->atualizar([
             'contato.latitude'     => '-19.93',
             'contato.longitude'    => '-43.94',
             'contato.mapa_url'     => 'https://maps.google.com/?q=x',
             'contato.horario'      => [['dias' => ['Monday', 'Friday'], 'abre' => '09:00', 'fecha' => '18:00']],
-            'identidade.advogados' => [['nome' => 'Fulana', 'oab' => 'OAB/MG 1']],
+            'identidade.profissionais' => [['nome' => 'Fulana', 'registro' => 'CRM/MG 1']],
         ]);
         $this->assertSame('09:00', $this->valorDe($novo, 'contato.horario')[0]['abre']);
     }
@@ -723,7 +723,7 @@ class SiteAdminConteudoTest extends CIUnitTestCase
         $r = $this->json(Paginas::class, 'destroy', null, [$this->idDe('inicio')]);
         $this->assertSame(422, $r->response()->getStatusCode(), 'a home não sai');
 
-        $r = $this->json(Paginas::class, 'update', ['slug' => 'inicio-novo'], [$this->idDe('direito-civil')]);
+        $r = $this->json(Paginas::class, 'update', ['slug' => 'inicio-novo'], [$this->idDe('consultas')]);
         $this->assertSame(200, $r->response()->getStatusCode());
         $this->assertCount(1, $this->corpo($r)['avisos'], 'aviso de troca de slug');
     }

@@ -11,11 +11,9 @@ use CodeIgniter\HTTP\ResponseInterface;
 use Throwable;
 
 /**
- * Controller API V2 da sincronização de pastas do Google Drive (clientes e
- * processos): resumo, fila de jobs, entidades, enfileiramento e processamento.
+ * Controller API V2 da sincronização de pastas do Google Drive (clientes): resumo, fila de jobs, entidades, enfileiramento e processamento.
  * Restrito a administradores.
  *
- * @author Cardoso
  * @version 2.0.0
  * @since 2026-10-17
  */
@@ -54,7 +52,7 @@ class SincronizacaoDrive extends BaseController
         ]);
     }
 
-    /** GET drive/entidades?tipo=cliente|processo&situacao=&busca=&pagina=&por_pagina= */
+    /** GET drive/entidades?tipo=cliente&situacao=&busca=&pagina=&por_pagina= */
     public function entidades(): ResponseInterface
     {
         return $this->executar('listar as entidades do Drive', fn () => [
@@ -80,7 +78,6 @@ class SincronizacaoDrive extends BaseController
             return [
                 'message'                => 'Sincronização retroativa agendada.',
                 'jobs_criados_clientes'  => $r['clientes'],
-                'jobs_criados_processos' => $r['processos'],
                 'data'                   => $r,
             ];
         });

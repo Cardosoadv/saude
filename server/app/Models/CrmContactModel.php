@@ -42,7 +42,7 @@ class CrmContactModel extends Model
         'email'          => 'required|valid_email|max_length[100]',
         'phone'          => 'max_length[20]',
         'message'        => 'required',
-        'area_interesse' => 'required|integer',
+        'area_interesse' => 'permit_empty|max_length[150]',
         'status'         => 'in_list[new,contacted,qualified,converted,lost]',
         'privacidade_aceite_em' => 'permit_empty|valid_date[Y-m-d H:i:s]',
         'privacidade_versao'    => 'permit_empty|max_length[20]',

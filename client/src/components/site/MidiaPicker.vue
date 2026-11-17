@@ -39,7 +39,7 @@
             <img :src="pendente.miniatura_url" :alt="pendente.nome_original" />
             <div>
               <p><strong>Descreva a imagem</strong> para quem não consegue vê-la (leitores de tela e buscadores). Esta descrição é obrigatória.</p>
-              <input class="form-control" v-model="altRascunho" maxlength="255" placeholder="Ex.: Fachada do escritório em Belo Horizonte" aria-label="Texto alternativo" data-alt-input @keyup.enter="confirmarAlt" />
+              <input class="form-control" v-model="altRascunho" maxlength="255" placeholder="Ex.: Fachada da clínica em Belo Horizonte" aria-label="Texto alternativo" data-alt-input @keyup.enter="confirmarAlt" />
               <p v-if="erroAlt" class="picker-erro" role="alert">{{ erroAlt }}</p>
               <div class="picker-alt-acoes">
                 <button type="button" class="btn btn-ghost btn-sm" data-voltar @click="pendente = null">Voltar</button>

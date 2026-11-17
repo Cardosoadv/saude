@@ -1,12 +1,7 @@
 <template>
   <div id="app">
-    <TenantBloqueadoView
-      v-if="tenantBloqueio"
-      :codigo="tenantBloqueio.codigo"
-      :mensagem="tenantBloqueio.mensagem"
-    />
 
-    <div v-else-if="authChecking" class="app-loading">
+    <div v-if="authChecking" class="app-loading">
       <div class="spinner"></div>
     </div>
 
@@ -48,57 +43,6 @@
           <DashboardView
             v-if="currentView === 'dashboard'"
             @set-view="setView"
-            @open-detail="openDetail"
-            @toast="triggerToast"
-          />
-          <ProcessList
-            v-else-if="currentView === 'list'"
-            :search-query="searchQuery"
-            @open-detail="openDetail"
-            @toast="triggerToast"
-            @set-view="setView"
-          />
-          <ProcessDetail
-            v-else-if="currentView === 'detail'"
-            :process-id="selectedProcessId"
-            @back="setView('list')"
-            @toast="triggerToast"
-            @process-deleted="handleProcessDeleted"
-            @open-detail="openDetail"
-            @open-documento-gerado="openDocumentoGerado"
-            @open-liquidacao="openLiquidacaoDetail"
-            @set-view="setView"
-          />
-          <LiquidacoesList
-            v-else-if="currentView === 'liquidacoes'"
-            :search-query="searchQuery"
-            @open-detail="openLiquidacaoDetail"
-            @toast="triggerToast"
-            @set-view="setView"
-          />
-          <LiquidacaoDetail
-            v-else-if="currentView === 'liquidacao-detail'"
-            :liquidacao-id="selectedLiquidacaoId"
-            @set-view="setView"
-            @toast="triggerToast"
-          />
-          <ProcessForm
-            v-else-if="currentView === 'process-form'"
-            @set-view="setView"
-            @toast="triggerToast"
-          />
-          <BuscaAutomatica
-            v-else-if="currentView === 'busca-automatica'"
-            :search-query="searchQuery"
-            @clear-search="searchQuery = ''"
-            @set-view="setView"
-            @open-detail="openDetail"
-            @toast="triggerToast"
-          />
-          <ImportacaoProcessos
-            v-else-if="currentView === 'importacao-processos'"
-            @set-view="setView"
-            @open-detail="openDetail"
             @toast="triggerToast"
           />
           <ClientList
@@ -113,28 +57,10 @@
             v-else-if="currentView === 'cliente-detail'"
             :client-id="selectedClientId"
             @set-view="setView"
-            @open-process-detail="openDetail"
-            @open-caso-detail="openCasoDetail"
             @open-supplier-detail="openSupplierDetail"
             @open-receita-detail="openReceitaDetail"
             @open-receita-recebida-detail="openReceitaRecebidaDetail"
-            @open-intimacao-detail="openSubpoenaDetail"
             @toast="triggerToast"
-          />
-          <CasoList
-            v-else-if="currentView === 'casos'"
-            :search-query="searchQuery"
-            @open-detail="openCasoDetail"
-            @toast="triggerToast"
-            @set-view="setView"
-          />
-          <CasoDetail
-            v-else-if="currentView === 'caso-detail'"
-            :caso-id="selectedCasoId"
-            @set-view="setView"
-            @toast="triggerToast"
-            @open-processo-detail="openDetail"
-            @open-documento-gerado="openDocumentoGerado"
           />
           <ContractList
             v-else-if="currentView === 'contratos'"
@@ -162,33 +88,6 @@
             :supplier-id="selectedSupplierId"
             @set-view="setView"
             @open-client-detail="openClientDetail"
-            @toast="triggerToast"
-          />
-          <ObjetosList
-            v-else-if="currentView === 'objetos'"
-            :search-query="searchQuery"
-            @open-detail="openObjetoDetail"
-            @toast="triggerToast"
-            @set-view="setView"
-          />
-          <ObjetoDetail
-            v-else-if="currentView === 'objeto-detail'"
-            :objeto-id="selectedObjetoId"
-            @set-view="setView"
-            @toast="triggerToast"
-          />
-          <IntimacoesList
-            v-else-if="currentView === 'intimacoes'"
-            :search-query="searchQuery"
-            @open-detail="openSubpoenaDetail"
-            @toast="triggerToast"
-            @set-view="setView"
-          />
-          <IntimacoesDetail
-            v-else-if="currentView === 'intimacao-detail'"
-            :subpoena-id="selectedSubpoenaId"
-            @set-view="setView"
-            @open-process-detail="openDetail"
             @toast="triggerToast"
           />
           <DespesasList
@@ -304,8 +203,6 @@
             v-else-if="currentView === 'tarefas'"
             :search-query="searchQuery"
             @toast="triggerToast"
-            @open-process="openDetail"
-            @open-caso="openCasoDetail"
             @open-cliente="openClientDetail"
           />
           <CrmPipeline
@@ -318,42 +215,8 @@
             @toast="triggerToast"
             @set-view="setView"
           />
-          <MensagensList
-            v-else-if="currentView === 'mensagens'"
-            @toast="triggerToast"
-            @set-view="setView"
-          />
-          <MensagemDetail
-            v-else-if="currentView === 'mensagem-detail'"
-            :mensagem-id="selectedMensagemId"
-            @set-view="setView"
-            @toast="triggerToast"
-          />
-          <EtiquetasList
-            v-else-if="currentView === 'etiquetas'"
-            :search-query="searchQuery"
-            @toast="triggerToast"
-            @set-view="setView"
-          />
-          <ChecklistsList
-            v-else-if="currentView === 'checklists'"
-            :search-query="searchQuery"
-            @toast="triggerToast"
-            @set-view="setView"
-          />
-          <ChecklistDetail
-            v-else-if="currentView === 'checklist-detail'"
-            :template-id="selectedTemplateId"
-            @set-view="setView"
-            @toast="triggerToast"
-          />
           <BusinessCanvasView
             v-else-if="currentView === 'business-canvas'"
-            @toast="triggerToast"
-            @set-view="setView"
-          />
-          <LegalOpsBI
-            v-else-if="currentView === 'legal-ops'"
             @toast="triggerToast"
             @set-view="setView"
           />
@@ -376,6 +239,7 @@
           />
           <NoticiasForm
             v-else-if="currentView === 'noticias-form'"
+            :key="noticiaFormKey"
             @toast="triggerToast"
             @set-view="setView"
           />
@@ -440,57 +304,6 @@
             @abrir-documentacao="abrirDocumentacao"
             @toast="triggerToast"
           />
-          <ConhecimentoView
-            v-else-if="currentView === 'conhecimento'"
-            @toast="triggerToast"
-            @set-view="setView"
-            @open-detail="openDetail"
-            @open-caso-detail="openCasoDetail"
-            @open-modelo-detail="openModeloDetail"
-          />
-          <ModelosList
-            v-else-if="currentView === 'modelos'"
-            @toast="triggerToast"
-            @set-view="setView"
-            @open-modelo-detail="openModeloDetail"
-            @open-documento-gerado="openDocumentoGerado"
-          />
-          <ModeloEditor
-            v-else-if="currentView === 'modelo-editor'"
-            :modelo-id="selectedModeloId"
-            @toast="triggerToast"
-            @set-view="setView"
-          />
-          <GeracaoDocumentoView
-            v-else-if="currentView === 'gerar-documento'"
-            :documento-gerado-id="selectedDocumentoGeradoId"
-            @toast="triggerToast"
-            @set-view="setView"
-            @open-detail="openDetail"
-            @open-caso-detail="openCasoDetail"
-          />
-          <Timbrado
-            v-else-if="currentView === 'timbrado'"
-            @toast="triggerToast"
-            @set-view="setView"
-          />
-          <ConsultaCpf
-            v-else-if="currentView === 'consulta-cpf'"
-            @toast="triggerToast"
-            @open-client-detail="openClientDetail"
-            @open-supplier-detail="openSupplierDetail"
-            @set-view="setView"
-          />
-          <ConsultaProcessos
-            v-else-if="currentView === 'consulta-processos'"
-            @toast="triggerToast"
-            @set-view="setView"
-          />
-          <ConsultaVeiculo
-            v-else-if="currentView === 'consulta-veiculo'"
-            @toast="triggerToast"
-            @set-view="setView"
-          />
           <ContabilView
             v-else-if="currentView.startsWith('contabil')"
             :initial-view="currentView"
@@ -501,12 +314,6 @@
       </div>
     </template>
 
-    <!-- Copiloto Jurídico & Financeiro (painel lateral, Ctrl+K) -->
-    <CopilotoDrawer
-      v-if="isAuthenticated && !tenantBloqueio && podeCopiloto"
-      :contexto="contextoCopiloto"
-      @navegar="navegarPeloCopiloto"
-    />
 
     <!-- Toast Notifications overlay -->
     <ToastContainer :toasts="toasts" />
@@ -521,12 +328,10 @@
  * Componente Raiz - Central de Rotas Leves
  * @version 1.9.20
  */
-import { ref, reactive, computed, onMounted, watch } from 'vue'
+import { ref, reactive, onMounted, watch } from 'vue'
 import { apiFetch, BASE_URL, EVENTO_MODULO_INATIVO, MENSAGEM_MODULO_INATIVO } from './services/api'
 import { getCurrentUser } from './services/auth'
-import { aplicarAcesso, limparAcesso, recarregarAcesso, pode } from './composables/useAcesso'
-import { limpar as limparCopiloto, fechar as fecharCopiloto } from './composables/useCopiloto'
-import type { ContextoCopiloto, TipoEntidadeCopiloto } from './services/copilotoApi'
+import { aplicarAcesso, limparAcesso, recarregarAcesso } from './composables/useAcesso'
 import { telaLiberada } from './utils/acessoTelas'
 import { confirmarSaida } from './composables/useSaidaProtegida'
 import { sincronizarPush } from './composables/usePush'
@@ -536,34 +341,18 @@ import Sidebar from './components/layout/Sidebar.vue'
 import Topbar from './components/layout/Topbar.vue'
 import ToastContainer from './components/layout/ToastContainer.vue'
 import PwaAvisos from './components/layout/PwaAvisos.vue'
-import CopilotoDrawer from './components/copiloto/CopilotoDrawer.vue'
 
 // Import views
 import LoginView from './views/LoginView.vue'
-import TenantBloqueadoView from './views/TenantBloqueadoView.vue'
-import { EVENTO_TENANT_ERRO, sincronizarTenantLocal, definirTenantSessao, type CodigoTenantBloqueio } from './services/tenant'
 import RedefinirSenhaView from './views/RedefinirSenhaView.vue'
 import PerfilView from './views/Perfil/PerfilView.vue'
 import DashboardView from './views/Dashboard/DashboardView.vue'
-import ProcessList from './views/Processos/ProcessList.vue'
-import ProcessDetail from './views/Processos/ProcessDetail.vue'
-import ProcessForm from './views/Processos/ProcessForm.vue'
-import BuscaAutomatica from './views/Processos/BuscaAutomatica.vue'
-import ImportacaoProcessos from './views/Processos/ImportacaoProcessos.vue'
 import ClientList from './views/Clientes/ClientList.vue'
 import ClientDetail from './views/Clientes/ClientDetail.vue'
-import CasoList from './views/Casos/CasoList.vue'
-import CasoDetail from './views/Casos/CasoDetail.vue'
-import LiquidacoesList from './views/Liquidacoes/LiquidacoesList.vue'
-import LiquidacaoDetail from './views/Liquidacoes/LiquidacaoDetail.vue'
 import ContractList from './views/Contratos/ContractList.vue'
 import ContractDetail from './views/Contratos/ContractDetail.vue'
 import SupplierList from './views/Fornecedores/SupplierList.vue'
 import SupplierDetail from './views/Fornecedores/SupplierDetail.vue'
-import ObjetosList from './views/Objetos/ObjetosList.vue'
-import ObjetoDetail from './views/Objetos/ObjetoDetail.vue'
-import IntimacoesList from './views/Intimacoes/IntimacoesList.vue'
-import IntimacoesDetail from './views/Intimacoes/IntimacoesDetail.vue'
 import ExtratoList from './views/Financeiro/ExtratoList.vue'
 import RelatorioCategorias from './views/Financeiro/RelatorioCategorias.vue'
 import BalancoView from './views/Financeiro/BalancoView.vue'
@@ -586,13 +375,7 @@ import TransferenciaDetail from './views/Financeiro/TransferenciaDetail.vue'
 import TarefasList from './views/Tarefas/TarefasList.vue'
 import CrmPipeline from './views/CRM/CrmPipeline.vue'
 import CrmLeads from './views/CRM/CrmLeads.vue'
-import MensagensList from './views/Mensagens/MensagensList.vue'
-import MensagemDetail from './views/Mensagens/MensagemDetail.vue'
-import EtiquetasList from './views/Etiquetas/EtiquetasList.vue'
-import ChecklistsList from './views/Checklists/ChecklistsList.vue'
-import ChecklistDetail from './views/Checklists/ChecklistDetail.vue'
 import BusinessCanvasView from './views/BusinessCanvas/BusinessCanvasView.vue'
-import LegalOpsBI from './views/LegalOps/LegalOpsBI.vue'
 import ConfiguracoesView from './views/Configuracoes/ConfiguracoesView.vue'
 import NoticiasList from './views/Noticias/NoticiasList.vue'
 import NoticiasForm from './views/Noticias/NoticiasForm.vue'
@@ -608,42 +391,25 @@ import DocumentacaoView from './views/Documentacao/DocumentacaoView.vue'
 import DocumentacaoAdminView from './views/Documentacao/DocumentacaoAdminView.vue'
 import DocumentacaoEditorView from './views/Documentacao/DocumentacaoEditorView.vue'
 import { hashDaDocumentacao, hashDaEdicao, lerHashDaDocumentacao, lerHashDaEdicao } from './utils/rotasDocumentacao'
-import ConhecimentoView from './views/Conhecimento/Conhecimento.vue'
-import ModelosList from './views/Conhecimento/ModelosList.vue'
-import ModeloEditor from './views/Conhecimento/ModeloEditor.vue'
-import GeracaoDocumentoView from './views/Documentos/GeracaoDocumentoView.vue'
-import Timbrado from './components/reports/Timbrado.vue'
-import ConsultaCpf from './views/Consultas/ConsultaCpf.vue'
-import ConsultaProcessos from './views/Consultas/ConsultaProcessos.vue'
-import ConsultaVeiculo from './views/Consultas/ConsultaVeiculo.vue'
 import ContabilView from './views/Contabil/ContabilView.vue'
 
 // Reactive global states
 const isAuthenticated = ref(false)
-// Acesso bloqueado por causa do escritório da URL (inativo, não encontrado...): troca a tela inteira.
-const tenantBloqueio = ref<{ codigo: CodigoTenantBloqueio; mensagem?: string } | null>(null)
 const currentUser = ref(null)
 const authChecking = ref(true)
 // Link "Esqueci minha senha" do e-mail: `#/redefinir-senha?token=…&email=…` (vale com ou sem sessão).
 const hashDeRedefinicao = () => window.location.hash.startsWith('#/redefinir-senha')
 const emRedefinicaoSenha = ref(hashDeRedefinicao())
 const currentView = ref('dashboard')
-const selectedProcessId = ref(null)
 const selectedClientId = ref(null)
-const selectedCasoId = ref(null)
 const selectedContractId = ref(null)
-const selectedLiquidacaoId = ref(null)
 const selectedSupplierId = ref(null)
-const selectedObjetoId = ref(null)
-const selectedSubpoenaId = ref(null)
 const selectedDespesaId = ref(null)
 const selectedDespesaPagaId = ref(null)
 const selectedReceitaId = ref(null)
 const selectedReceitaRecebidaId = ref(null)
 const selectedTransferenciaId = ref(null)
-const selectedMensagemId = ref(null)
-const selectedTemplateId = ref(null)
-// Editor do site (ordojuris#641): hash ↔ tela. O editor de uma página usa `#/site/paginas/{id}`.
+// Editor do site: hash ↔ tela. O editor de uma página usa `#/site/paginas/{id}`.
 const ROTAS_SITE = {
   '#/site/configuracoes': 'site-configuracoes',
   '#/site/paginas': 'site-paginas',
@@ -654,13 +420,13 @@ const ROTAS_SITE = {
 }
 const hashDoSite = (view) => Object.keys(ROTAS_SITE).find((hash) => ROTAS_SITE[hash] === view) || ''
 
-const selectedModeloId = ref(null)
 const selectedSitePaginaId = ref(null)
-const selectedDocumentoGeradoId = ref(null)
-// Documentação interna (ordojuris#699): `#/documentacao/{slug}#{ancora}`.
+// O formulário de notícia lê o id do hash; a chave o recria a cada notícia aberta.
+const noticiaFormKey = ref('')
+// Documentação interna: `#/documentacao/{slug}#{ancora}`.
 const selectedDocSlug = ref(null)
 const selectedDocAncora = ref(null)
-// Edição da documentação (ordojuris#711): `#/documentacao-admin` e `#/documentacao-admin/{id|nova}`.
+// Edição da documentação: `#/documentacao-admin` e `#/documentacao-admin/{id|nova}`.
 const selectedDocEdicaoId = ref(null)
 const sidebarOpen = ref(false)
 const searchQuery = ref('')
@@ -668,13 +434,10 @@ const toasts = ref([])
 
 // Navigation Global Statistics State
 const globalStats = reactive({
-  qteMensagensNaoLidas: 0,
   notificacoes: 0,
   qteTarefas: 0,
   qteDespesasNaoPagas: 0,
-  qteIntimacoesNaoTratadas: 0,
   qteReceitasNaoRecebidas: 0,
-  mensagensNaoLidas: []
 })
 
 const cacheKey = 'global_stats'
@@ -682,15 +445,7 @@ const cacheKey = 'global_stats'
 // Hash-routing simple system to synchronize view state with URL address bar
 function parseHash() {
   const hash = window.location.hash
-  if (hash.startsWith('#/processos/detalhes/')) {
-    const id = parseInt(hash.replace('#/processos/detalhes/', ''))
-    if (!isNaN(id)) {
-      selectedProcessId.value = id
-      currentView.value = 'detail'
-    } else {
-      currentView.value = 'list'
-    }
-  } else if (hash.startsWith('#/clientes/editar/')) {
+  if (hash.startsWith('#/clientes/editar/')) {
     const id = parseInt(hash.replace('#/clientes/editar/', ''))
     if (!isNaN(id)) {
       selectedClientId.value = id
@@ -716,52 +471,6 @@ function parseHash() {
     currentView.value = 'fornecedor-detail'
   } else if (hash === '#/fornecedores') {
     currentView.value = 'fornecedores'
-  } else if (hash.startsWith('#/objetos/editar/')) {
-    const id = parseInt(hash.replace('#/objetos/editar/', ''))
-    if (!isNaN(id)) {
-      selectedObjetoId.value = id
-      currentView.value = 'objeto-detail'
-    } else {
-      currentView.value = 'objetos'
-    }
-  } else if (hash === '#/objetos/novo') {
-    selectedObjetoId.value = null
-    currentView.value = 'objeto-detail'
-  } else if (hash === '#/objetos') {
-    currentView.value = 'objetos'
-  } else if (hash.startsWith('#/intimacoes/detalhes/')) {
-    const id = parseInt(hash.replace('#/intimacoes/detalhes/', ''))
-    if (!isNaN(id)) {
-      selectedSubpoenaId.value = id
-      currentView.value = 'intimacao-detail'
-    } else {
-      currentView.value = 'intimacoes'
-    }
-  } else if (hash === '#/intimacoes') {
-    currentView.value = 'intimacoes'
-  } else if (hash.startsWith('#/casos/detalhes/')) {
-    const id = parseInt(hash.replace('#/casos/detalhes/', ''))
-    if (!isNaN(id)) {
-      selectedCasoId.value = id
-      currentView.value = 'caso-detail'
-    } else {
-      currentView.value = 'casos'
-    }
-  } else if (hash === '#/casos/novo') {
-    selectedCasoId.value = null
-    currentView.value = 'caso-detail'
-  } else if (hash === '#/casos') {
-    currentView.value = 'casos'
-  } else if (hash.startsWith('#/liquidacoes/detalhes/')) {
-    const id = parseInt(hash.replace('#/liquidacoes/detalhes/', ''))
-    if (!isNaN(id)) {
-      selectedLiquidacaoId.value = id
-      currentView.value = 'liquidacao-detail'
-    } else {
-      currentView.value = 'liquidacoes'
-    }
-  } else if (hash === '#/liquidacoes') {
-    currentView.value = 'liquidacoes'
   } else if (hash.startsWith('#/contratos/detalhes/')) {
     const id = parseInt(hash.replace('#/contratos/detalhes/', ''))
     if (!isNaN(id)) {
@@ -839,42 +548,8 @@ function parseHash() {
     currentView.value = 'receitas-recebidas'
   } else if (hash === '#/receitas') {
     currentView.value = 'receitas'
-  } else if (hash.startsWith('#/jurisprudencias') || hash.startsWith('#/jurisprudencia')) {
-    triggerToast({ msg: 'O módulo de Jurisprudência foi descontinuado.', type: 'warning' })
-    currentView.value = 'list'
-    window.location.hash = '#/processos'
-  } else if (hash.startsWith('#/mensagens/detalhes/')) {
-    const id = parseInt(hash.replace('#/mensagens/detalhes/', ''))
-    if (!isNaN(id)) {
-      selectedMensagemId.value = id
-      currentView.value = 'mensagem-detail'
-    } else {
-      currentView.value = 'mensagens'
-    }
-  } else if (hash === '#/mensagens/nova') {
-    selectedMensagemId.value = 'nova'
-    currentView.value = 'mensagem-detail'
-  } else if (hash === '#/mensagens') {
-    currentView.value = 'mensagens'
-  } else if (hash.startsWith('#/checklists/editar/')) {
-    const id = parseInt(hash.replace('#/checklists/editar/', ''))
-    if (!isNaN(id)) {
-      selectedTemplateId.value = id
-      currentView.value = 'checklist-detail'
-    } else {
-      currentView.value = 'checklists'
-    }
-  } else if (hash === '#/checklists/novo') {
-    selectedTemplateId.value = null
-    currentView.value = 'checklist-detail'
-  } else if (hash === '#/checklists') {
-    currentView.value = 'checklists'
-  } else if (hash === '#/etiquetas') {
-    currentView.value = 'etiquetas'
   } else if (hash === '#/business-canvas') {
     currentView.value = 'business-canvas'
-  } else if (hash === '#/legal-ops') {
-    currentView.value = 'legal-ops'
   } else if (hash === '#/perfil') {
     currentView.value = 'perfil'
   } else if (hash.startsWith('#/configuracoes')) {
@@ -885,23 +560,15 @@ function parseHash() {
     currentView.value = 'crm'
   } else if (hash === '#/tarefas') {
     currentView.value = 'tarefas'
-  } else if (hash === '#/processos/novo') {
-    selectedProcessId.value = null
-    currentView.value = 'process-form'
-  } else if (hash === '#/processos/busca-automatica') {
-    currentView.value = 'busca-automatica'
-  } else if (hash === '#/processos/importacao') {
-    currentView.value = 'importacao-processos'
-  } else if (hash === '#/processos' || hash === '#/list') {
-    currentView.value = 'list'
   } else if (hash === '#/dashboard') {
     currentView.value = 'dashboard'
   } else if (hash.startsWith('#/noticias/editar/') || hash === '#/noticias/nova') {
+    noticiaFormKey.value = hash
     currentView.value = 'noticias-form'
-  } else if (hash === '#/noticias') {
-    currentView.value = 'noticias'
   } else if (hash === '#/noticias/categorias') {
     currentView.value = 'noticias-categorias'
+  } else if (hash === '#/noticias') {
+    currentView.value = 'noticias'
   } else if (hash.startsWith('#/site/paginas/')) {
     const id = parseInt(hash.replace('#/site/paginas/', ''))
     if (!isNaN(id)) {
@@ -925,37 +592,6 @@ function parseHash() {
     selectedDocSlug.value = rota.slug
     selectedDocAncora.value = rota.ancora
     currentView.value = 'documentacao'
-  } else if (hash.startsWith('#/conhecimento/modelos/editar/')) {
-    const id = parseInt(hash.replace('#/conhecimento/modelos/editar/', ''))
-    if (!isNaN(id)) {
-      selectedModeloId.value = id
-      currentView.value = 'modelo-editor'
-    } else {
-      currentView.value = 'modelos'
-    }
-  } else if (hash === '#/conhecimento/modelos/novo') {
-    selectedModeloId.value = null
-    currentView.value = 'modelo-editor'
-  } else if (hash === '#/conhecimento/modelos') {
-    currentView.value = 'modelos'
-  } else if (hash.startsWith('#/conhecimento/documentos/')) {
-    const id = parseInt(hash.replace('#/conhecimento/documentos/', ''))
-    if (!isNaN(id)) {
-      selectedDocumentoGeradoId.value = id
-      currentView.value = 'gerar-documento'
-    } else {
-      currentView.value = 'conhecimento'
-    }
-  } else if (hash === '#/conhecimento') {
-    currentView.value = 'conhecimento'
-  } else if (hash === '#/timbrado') {
-    currentView.value = 'timbrado'
-  } else if (hash === '#/consulta-cpf' || hash === '#/pesquisa-endereco') {
-    currentView.value = 'consulta-cpf'
-  } else if (hash === '#/consulta-processos') {
-    currentView.value = 'consulta-processos'
-  } else if (hash === '#/consulta-veiculo') {
-    currentView.value = 'consulta-veiculo'
   } else if (hash.startsWith('#/transferencias/editar/')) {
     const id = parseInt(hash.replace('#/transferencias/editar/', ''))
     if (!isNaN(id)) {
@@ -987,13 +623,12 @@ function parseHash() {
       currentView.value = 'dashboard'
     }
   }
+
 }
 
 function updateHash() {
-  let newHash = '#/processos'
-  if (currentView.value === 'detail' && selectedProcessId.value) {
-    newHash = `#/processos/detalhes/${selectedProcessId.value}`
-  } else if (currentView.value === 'cliente-detail') {
+  let newHash = '#/dashboard'
+  if (currentView.value === 'cliente-detail') {
     if (selectedClientId.value) {
       newHash = `#/clientes/editar/${selectedClientId.value}`
     } else {
@@ -1009,34 +644,6 @@ function updateHash() {
     }
   } else if (currentView.value === 'fornecedores') {
     newHash = '#/fornecedores'
-  } else if (currentView.value === 'objeto-detail') {
-    if (selectedObjetoId.value) {
-      newHash = `#/objetos/editar/${selectedObjetoId.value}`
-    } else {
-      newHash = '#/objetos/novo'
-    }
-  } else if (currentView.value === 'objetos') {
-    newHash = '#/objetos'
-  } else if (currentView.value === 'intimacao-detail') {
-    if (selectedSubpoenaId.value) {
-      newHash = `#/intimacoes/detalhes/${selectedSubpoenaId.value}`
-    } else {
-      newHash = '#/intimacoes'
-    }
-  } else if (currentView.value === 'intimacoes') {
-    newHash = '#/intimacoes'
-  } else if (currentView.value === 'caso-detail') {
-    if (selectedCasoId.value) {
-      newHash = `#/casos/detalhes/${selectedCasoId.value}`
-    } else {
-      newHash = '#/casos/novo'
-    }
-  } else if (currentView.value === 'casos') {
-    newHash = '#/casos'
-  } else if (currentView.value === 'liquidacao-detail' && selectedLiquidacaoId.value) {
-    newHash = `#/liquidacoes/detalhes/${selectedLiquidacaoId.value}`
-  } else if (currentView.value === 'liquidacoes') {
-    newHash = '#/liquidacoes'
   } else if (currentView.value === 'contrato-detail') {
     if (selectedContractId.value) {
       newHash = `#/contratos/detalhes/${selectedContractId.value}`
@@ -1095,30 +702,8 @@ function updateHash() {
     newHash = '#/receitas/recebidas'
   } else if (currentView.value === 'receitas') {
     newHash = '#/receitas'
-  } else if (currentView.value === 'mensagem-detail') {
-    if (selectedMensagemId.value === 'nova') {
-      newHash = '#/mensagens/nova'
-    } else if (selectedMensagemId.value) {
-      newHash = `#/mensagens/detalhes/${selectedMensagemId.value}`
-    } else {
-      newHash = '#/mensagens'
-    }
-  } else if (currentView.value === 'mensagens') {
-    newHash = '#/mensagens'
-  } else if (currentView.value === 'checklist-detail') {
-    if (selectedTemplateId.value) {
-      newHash = `#/checklists/editar/${selectedTemplateId.value}`
-    } else {
-      newHash = '#/checklists/novo'
-    }
-  } else if (currentView.value === 'checklists') {
-    newHash = '#/checklists'
-  } else if (currentView.value === 'etiquetas') {
-    newHash = '#/etiquetas'
   } else if (currentView.value === 'business-canvas') {
     newHash = '#/business-canvas'
-  } else if (currentView.value === 'legal-ops') {
-    newHash = '#/legal-ops'
   } else if (currentView.value === 'perfil') {
     newHash = '#/perfil'
   } else if (currentView.value === 'configuracoes') {
@@ -1129,20 +714,14 @@ function updateHash() {
     newHash = '#/crm'
   } else if (currentView.value === 'tarefas') {
     newHash = '#/tarefas'
-  } else if (currentView.value === 'process-form') {
-    newHash = '#/processos/novo'
-  } else if (currentView.value === 'busca-automatica') {
-    newHash = '#/processos/busca-automatica'
-  } else if (currentView.value === 'importacao-processos') {
-    newHash = '#/processos/importacao'
-  } else if (currentView.value === 'list') {
-    newHash = '#/processos'
   } else if (currentView.value === 'dashboard') {
     newHash = '#/dashboard'
   } else if (currentView.value === 'noticias') {
     newHash = '#/noticias'
   } else if (currentView.value === 'noticias-categorias') {
     newHash = '#/noticias/categorias'
+  } else if (currentView.value === 'noticias-form') {
+    newHash = window.location.hash.startsWith('#/noticias/editar/') ? window.location.hash : '#/noticias/nova'
   } else if (currentView.value === 'site-pagina-editor') {
     newHash = selectedSitePaginaId.value ? `#/site/paginas/${selectedSitePaginaId.value}` : '#/site/paginas'
   } else if (hashDoSite(currentView.value)) {
@@ -1153,34 +732,6 @@ function updateHash() {
     newHash = hashDaEdicao({ tela: 'lista' })
   } else if (currentView.value === 'documentacao-editor') {
     newHash = hashDaEdicao({ tela: 'editor', id: selectedDocEdicaoId.value })
-  } else if (currentView.value === 'noticias-form') {
-    if (window.location.hash.startsWith('#/noticias/editar/')) {
-      newHash = window.location.hash
-    } else {
-      newHash = '#/noticias/nova'
-    }
-  } else if (currentView.value === 'modelo-editor') {
-    if (selectedModeloId.value) {
-      newHash = `#/conhecimento/modelos/editar/${selectedModeloId.value}`
-    } else {
-      newHash = '#/conhecimento/modelos/novo'
-    }
-  } else if (currentView.value === 'modelos') {
-    newHash = '#/conhecimento/modelos'
-  } else if (currentView.value === 'gerar-documento') {
-    if (selectedDocumentoGeradoId.value) {
-      newHash = `#/conhecimento/documentos/${selectedDocumentoGeradoId.value}`
-    }
-  } else if (currentView.value === 'conhecimento') {
-    newHash = '#/conhecimento'
-  } else if (currentView.value === 'timbrado') {
-    newHash = '#/timbrado'
-  } else if (currentView.value === 'consulta-cpf') {
-    newHash = '#/consulta-cpf'
-  } else if (currentView.value === 'consulta-processos') {
-    newHash = '#/consulta-processos'
-  } else if (currentView.value === 'consulta-veiculo') {
-    newHash = '#/consulta-veiculo'
   } else if (currentView.value === 'transferencia-detail') {
     if (selectedTransferenciaId.value) {
       newHash = `#/transferencias/editar/${selectedTransferenciaId.value}`
@@ -1206,6 +757,7 @@ function updateHash() {
   if (window.location.hash !== newHash) {
     history.pushState(null, '', newHash)
   }
+
 }
 
 /** Momento do último aviso de módulo desativado vindo da API (ms). */
@@ -1225,7 +777,7 @@ watch(
   { immediate: true }
 )
 
-watch([currentView, selectedProcessId, selectedClientId, selectedCasoId, selectedContractId, selectedLiquidacaoId, selectedSupplierId, selectedSubpoenaId, selectedDespesaId, selectedDespesaPagaId, selectedReceitaId, selectedReceitaRecebidaId, selectedMensagemId, selectedTemplateId, selectedModeloId, selectedSitePaginaId, selectedDocumentoGeradoId, selectedTransferenciaId, selectedDocSlug, selectedDocAncora, selectedDocEdicaoId], () => {
+watch([currentView, selectedClientId, selectedContractId, selectedSupplierId, selectedDespesaId, selectedDespesaPagaId, selectedReceitaId, selectedReceitaRecebidaId, selectedSitePaginaId, selectedTransferenciaId, selectedDocSlug, selectedDocAncora, selectedDocEdicaoId], () => {
   updateHash()
 })
 
@@ -1255,23 +807,6 @@ async function checkAuthentication() {
 }
 
 async function handleLoginSuccess(userData) {
-  // Conversa do Copiloto nunca passa de uma sessão (ou escritório) para outra.
-  limparCopiloto()
-  if (userData?.tenant?.slug) {
-    definirTenantSessao(userData.tenant.slug)
-  }
-  // Limpa o parâmetro de tenant da URL pós-login, já que a partir de agora fica mantido na sessão
-  if (typeof window !== 'undefined' && window.location?.search && (window.location.search.includes('tenant=') || window.location.search.includes('tenant_slug='))) {
-    try {
-      const url = new URL(window.location.href)
-      url.searchParams.delete('tenant')
-      url.searchParams.delete('tenant_slug')
-      window.history.replaceState({}, '', url.pathname + (url.search ? url.search : '') + url.hash)
-    } catch {
-      // ignore
-    }
-  }
-
   // A resposta do login não traz permissões/módulos: só o user/info traz.
   // Carrega antes de exibir a SPA para o menu não aparecer completo e encolher.
   if (userData && Array.isArray(userData.permissoes)) {
@@ -1301,8 +836,6 @@ function handleLogout() {
   isAuthenticated.value = false
   currentUser.value = null
   limparAcesso()
-  limparCopiloto()
-  fecharCopiloto()
   window.location.hash = '#/'
 }
 
@@ -1317,7 +850,7 @@ async function syncGlobalStats() {
   } else {
     // 2. Local fallback using sessionStorage directly
     try {
-      const cachedStr = sessionStorage.getItem('ordo_system_' + cacheKey)
+      const cachedStr = sessionStorage.getItem('saude_system_' + cacheKey)
       if (cachedStr) {
         const item = JSON.parse(cachedStr)
         if (Date.now() - item.timestamp < item.expiration) {
@@ -1344,7 +877,7 @@ async function syncGlobalStats() {
           expiration: 5 * 60 * 1000,
           version: '2.6.4'
         }
-        sessionStorage.setItem('ordo_system_' + cacheKey, JSON.stringify(item))
+        sessionStorage.setItem('saude_system_' + cacheKey, JSON.stringify(item))
       }
     }
   } catch (error) {
@@ -1353,13 +886,10 @@ async function syncGlobalStats() {
 }
 
 function applyGlobalStats(data) {
-  globalStats.qteMensagensNaoLidas = parseInt(data.qteMensagensNaoLidas, 10) || 0
   globalStats.notificacoes = parseInt(data.notificacoes, 10) || 0
   globalStats.qteTarefas = parseInt(data.qteTarefas, 10) || 0
   globalStats.qteDespesasNaoPagas = parseInt(data.qteDespesasNaoPagas, 10) || 0
-  globalStats.qteIntimacoesNaoTratadas = parseInt(data.qteIntimacoesNaoTratadas, 10) || 0
   globalStats.qteReceitasNaoRecebidas = parseInt(data.qteReceitasNaoRecebidas, 10) || 0
-  globalStats.mensagensNaoLidas = data.mensagensNaoLidas || []
 }
 
 function setView(view) {
@@ -1402,11 +932,6 @@ function abrirSitePagina(id) {
   currentView.value = 'site-pagina-editor'
 }
 
-function openDetail(id) {
-  selectedProcessId.value = id
-  currentView.value = 'detail'
-}
-
 function openClientDetail(id) {
   selectedClientId.value = id
   currentView.value = 'cliente-detail'
@@ -1415,16 +940,6 @@ function openClientDetail(id) {
 function openSupplierDetail(id) {
   selectedSupplierId.value = id
   currentView.value = 'fornecedor-detail'
-}
-
-function openObjetoDetail(id) {
-  selectedObjetoId.value = id
-  currentView.value = 'objeto-detail'
-}
-
-function openSubpoenaDetail(id) {
-  selectedSubpoenaId.value = id
-  currentView.value = 'intimacao-detail'
 }
 
 function openDespesaDetail(id) {
@@ -1462,71 +977,11 @@ function openReceitaDetail(id) {
   currentView.value = 'receita-detail'
 }
 
-function openCasoDetail(id) {
-  selectedCasoId.value = id
-  currentView.value = 'caso-detail'
-}
-
-function openLiquidacaoDetail(id) {
-  selectedLiquidacaoId.value = id
-  currentView.value = 'liquidacao-detail'
-}
-
 function openContractDetail(id) {
   selectedContractId.value = id
   currentView.value = 'contrato-detail'
 }
 
-function openModeloDetail(id) {
-  selectedModeloId.value = id
-  currentView.value = 'modelo-editor'
-}
-
-function openDocumentoGerado(id) {
-  selectedDocumentoGeradoId.value = id
-  currentView.value = 'gerar-documento'
-}
-
-// ─── Copiloto ───────────────────────────────────────────────
-const podeCopiloto = computed(() => pode('copiloto.access'))
-
-/** Registro aberto na tela, enviado como contexto a cada pergunta ao Copiloto. */
-const contextoCopiloto = computed<ContextoCopiloto>(() => {
-  const entidades: Record<string, [TipoEntidadeCopiloto, unknown]> = {
-    'detail': ['processo', selectedProcessId.value],
-    'cliente-detail': ['cliente', selectedClientId.value],
-    'caso-detail': ['caso', selectedCasoId.value],
-    'contrato-detail': ['contrato', selectedContractId.value],
-    'liquidacao-detail': ['liquidacao', selectedLiquidacaoId.value],
-    'intimacao-detail': ['intimacao', selectedSubpoenaId.value],
-  }
-  const entidade = entidades[currentView.value]
-  const id = Number(entidade?.[1])
-  return entidade && Number.isInteger(id) && id > 0
-    ? { entidade_tipo: entidade[0], entidade_id: id, tela: currentView.value }
-    : { tela: currentView.value }
-})
-
-/** Links das respostas do Copiloto (`ordo://tipo/id`) abrem a tela correspondente. */
-function navegarPeloCopiloto({ tipo, id }: { tipo: TipoEntidadeCopiloto; id: number }) {
-  if (!confirmarSaida()) return
-  const abrir: Record<TipoEntidadeCopiloto, (id: number) => void> = {
-    processo: openDetail,
-    cliente: openClientDetail,
-    caso: openCasoDetail,
-    contrato: openContractDetail,
-    liquidacao: openLiquidacaoDetail,
-    intimacao: openSubpoenaDetail,
-    tarefa: () => { currentView.value = 'tarefas' },
-  }
-  abrir[tipo]?.(id)
-  // Em telas estreitas o painel cobre a tela: fecha para mostrar o registro.
-  if (window.innerWidth < 768) fecharCopiloto()
-}
-
-function handleProcessDeleted(id) {
-  setView('list')
-}
 
 // Toast notification service
 function triggerToast({ msg, type = 'success', duration = 3500 }) {
@@ -1538,13 +993,6 @@ function triggerToast({ msg, type = 'success', duration = 3500 }) {
 }
 
 onMounted(async () => {
-  // Antes de qualquer requisição: o listener precisa existir para a primeira resposta `tenant_*`, e o
-  // armazenamento local de outro escritório (mesmo navegador) não pode vazar para este.
-  window.addEventListener(EVENTO_TENANT_ERRO, (evento) => {
-    tenantBloqueio.value = (evento as CustomEvent).detail
-  })
-  sincronizarTenantLocal()
-
   await checkAuthentication()
 
   // Synchronize periodically every 2.5 minutes
@@ -1570,7 +1018,7 @@ onMounted(async () => {
 
   // Listen to treatment events to clear cache and refresh stats immediately
   window.addEventListener('sync-global-stats', () => {
-    sessionStorage.removeItem('ordo_system_' + cacheKey)
+    sessionStorage.removeItem('saude_system_' + cacheKey)
     syncGlobalStats()
   })
 })

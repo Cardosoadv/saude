@@ -16,7 +16,6 @@ use Throwable;
  * as migrations do Shield/Settings no vendor não entram, pois o projeto
  * mantém as próprias versões dessas tabelas em app/Database/Migrations.
  *
- * @author Cardoso
  * @version 1.0.0
  * @since 2026-09-19
  */

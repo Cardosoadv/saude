@@ -1,7 +1,7 @@
 <?php
 /**
  * Estrutura HTML comum do template Clássico (cabeçalho, menu, rodapé).
- * Nada do escritório fica aqui: nome, contatos, menus e textos vêm do banco
+ * Nada da clínica fica aqui: nome, contatos, menus e textos vêm do banco
  * (site_config, site_menu, site_texto).
  *
  * @var array  $seo
@@ -22,10 +22,10 @@ $unidades  = (array) site_config('contato.enderecos', []);
 $telefone  = (string) site_config('contato.telefone', '');
 $razaoSocial = trim((string) site_config('identidade.razao_social', ''));
 $cnpj      = \App\Libraries\Site\Cnpj::formatar((string) site_config('identidade.cnpj', ''));
-$registroOab = trim((string) site_config('identidade.registro_oab', ''));
+$registroProfissional = trim((string) site_config('identidade.registro_profissional', ''));
 $registros = array_values(array_filter([
     $cnpj !== '' ? 'CNPJ ' . $cnpj : '',
-    $registroOab !== '' ? 'Registro ' . $registroOab : '',
+    $registroProfissional !== '' ? 'Registro ' . $registroProfissional : '',
 ]));
 $gaId      = (string) site_config('integracoes.ga_id', '');
 $gaId      = preg_match('/^[A-Za-z0-9-]+$/', $gaId) ? $gaId : '';
@@ -148,9 +148,6 @@ $ativo     = static function (string $href) use ($atual): bool {
     </script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=<?= esc($tagId, 'url') ?>"></script>
 <?php endif ?>
-
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3608319869645064"
-     crossorigin="anonymous"></script>
 
 </head>
 <body>

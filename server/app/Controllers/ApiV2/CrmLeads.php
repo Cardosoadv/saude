@@ -23,21 +23,11 @@ class CrmLeads extends BaseController
         $page = (int) ($this->request->getGet('page') ?? 1);
         $perPage = (int) ($this->request->getGet('limit') ?? 20);
         $status = $this->request->getGet('status') ?? null;
-        $areaId = $this->request->getGet('area_id') ? (int) $this->request->getGet('area_id') : null;
+        $areaId = $this->request->getGet('area') ?: null;
 
         try {
             $data = $this->service->buscarContatos($search, $perPage, $page, $status, $areaId);
             return $this->respond($data);
-        } catch (\Exception $e) {
-            return $this->fail($e->getMessage());
-        }
-    }
-
-    public function ramos()
-    {
-        try {
-            $ramos = $this->service->getRamosDireito();
-            return $this->respond($ramos);
         } catch (\Exception $e) {
             return $this->fail($e->getMessage());
         }

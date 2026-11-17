@@ -12,71 +12,6 @@ service('auth')->routes($routes);
 // ============================================================================
 // OPTIONS preflight – rota catch-all para CORS (sem filtro de permissão, pois preflight não envia cookies/auth)
 // ============================================================================
-$routes->options('api/v2/processos', static function () {});
-$routes->options('api/v2/processos/(:any)', static function () {});
-$routes->options('api/v2/tarefas', static function () {});
-$routes->options('api/v2/tarefas/(:any)', static function () {});
-$routes->options('api/v2/usuarios', static function () {});
-$routes->options('api/v2/usuarios/(:any)', static function () {});
-$routes->options('api/v2/configuracoes', static function () {});
-$routes->options('api/v2/configuracoes/(:any)', static function () {});
-$routes->options('api/v2/integracao-ia', static function () {});
-$routes->options('api/v2/integracao-ia/(:any)', static function () {});
-$routes->options('api/v2/argumentos', static function () {});
-$routes->options('api/v2/argumentos/(:any)', static function () {});
-$routes->options('api/v2/template', static function () {});
-$routes->options('api/v2/template/(:any)', static function () {});
-$routes->options('api/v2/checklist', static function () {});
-$routes->options('api/v2/checklist/(:any)', static function () {});
-$routes->options('api/v2/checklist-templates', static function () {});
-$routes->options('api/v2/checklist-templates/(:any)', static function () {});
-$routes->options('api/v2/procedimentos', static function () {});
-$routes->options('api/v2/procedimentos/(:any)', static function () {});
-$routes->options('api/v2/clientes', static function () {});
-$routes->options('api/v2/clientes/(:any)', static function () {});
-$routes->options('api/v2/financeiro', static function () {});
-$routes->options('api/v2/financeiro/(:any)', static function () {});
-$routes->options('api/v2/contratos', static function () {});
-$routes->options('api/v2/contratos/(:any)', static function () {});
-$routes->options('api/v2/acessos/(:any)', static function () {});
-$routes->options('api/v2/casos', static function () {});
-$routes->options('api/v2/casos/(:any)', static function () {});
-$routes->options('api/v2/fornecedores', static function () {});
-$routes->options('api/v2/fornecedores/(:any)', static function () {});
-$routes->options('api/v2/liquidacoes', static function () {});
-$routes->options('api/v2/liquidacoes/(:any)', static function () {});
-$routes->options('api/v2/indices', static function () {});
-$routes->options('api/v2/indices/(:any)', static function () {});
-$routes->options('api/v2/objetos', static function () {});
-$routes->options('api/v2/objetos/(:any)', static function () {});
-$routes->options('api/v2/etiquetas', static function () {});
-$routes->options('api/v2/etiquetas/(:any)', static function () {});
-$routes->options('api/v2/mensagens', static function () {});
-$routes->options('api/v2/mensagens/(:any)', static function () {});
-$routes->options('api/v2/anotacoes', static function () {});
-$routes->options('api/v2/anotacoes/(:any)', static function () {});
-$routes->options('api/v2/calendario-forense', static function () {});
-$routes->options('api/v2/calendario-forense/(:any)', static function () {});
-$routes->options('api/v2/intimacoes', static function () {});
-$routes->options('api/v2/intimacoes/(:any)', static function () {});
-$routes->options('api/v2/login', static function () {});
-$routes->options('api/v2/esqueci-senha', static function () {});
-$routes->options('api/v2/redefinir-senha', static function () {});
-$routes->options('api/v2/perfil', static function () {});
-$routes->options('api/v2/perfil/(:any)', static function () {});
-$routes->options('api/v2/push', static function () {});
-$routes->options('api/v2/push/(:any)', static function () {});
-$routes->options('api/v2/user/info', static function () {});
-$routes->options('api/v2/site', static function () {});
-$routes->options('api/v2/site/(:any)', static function () {});
-$routes->options('api/v2/contabil', static function () {});
-$routes->options('api/v2/contabil/(:any)', static function () {});
-$routes->options('api/v2/legal-ops', static function () {});
-$routes->options('api/v2/legal-ops/(:any)', static function () {});
-$routes->options('api/v2/consultas', static function () {});
-$routes->options('api/v2/consultas/(:any)', static function () {});
-$routes->options('api/v2/modulos', static function () {});
-$routes->options('api/v2/modulos/(:any)', static function () {});
 
 // ============================================================================
 // ROTAS API V2 - AUTH
@@ -107,87 +42,6 @@ $routes->group('api/v2/push', ['namespace' => 'App\Controllers\ApiV2', 'filter' 
     $routes->post('teste', 'Push::teste');
 });
 
-// ============================================================================
-// ROTAS API V2 - PROCESSOS
-// ============================================================================
-$routes->group('api/v2/processos', ['namespace' => 'App\Controllers\ApiV2', 'filter' => ['permission:processos.access,processos.exclusive', 'modulo:processos']], function ($routes) {
-    $routes->get('/', 'Processos::listarJson');
-    $routes->get('listarJson', 'Processos::listarJson');
-    $routes->get('ids', 'Processos::listarIdsJson');
-
-    // Importação em lote com conferência (DJEN + DataJud + carteira)
-    $routes->post('importacao/ler', 'ProcessosImportacao::ler', ['filter' => 'permission:processos.create']);
-    $routes->post('importacao/consultar', 'ProcessosImportacao::consultar', ['filter' => 'permission:processos.create']);
-    $routes->post('importacao/pesquisar-parte', 'ProcessosImportacao::pesquisarParte', ['filter' => 'permission:processos.create']);
-    $routes->post('importacao/confirmar', 'ProcessosImportacao::confirmar', ['filter' => 'permission:processos.create']);
-    $routes->get('importacao/modelo', 'ProcessosImportacao::modelo', ['filter' => 'permission:processos.create']);
-
-    $routes->get('detalhes/(:num)', 'Processos::detalhesJson/$1');
-    $routes->post('(:num)/sincronizar', 'Processos::sincronizarJson/$1');
-    $routes->get('(:num)/arquivos-drive', 'Processos::arquivosDrive/$1');
-    $routes->get('buscar', 'Processos::buscar');
-    $routes->get('buscar/(:any)', 'Processos::buscar/$1');
-    $routes->get('stats', 'Processos::statsJson');
-    $routes->get('widgets-sidebar', 'Processos::widgetsSidebar');
-    $routes->get('etiquetas', 'Processos::etiquetas');
-    $routes->get('ramos', 'Processos::ramos');
-    $routes->get('clientes-busca', 'Processos::clientesBusca');
-    $routes->get('contratos-busca', 'Processos::contratosBusca');
-    $routes->get('processosdocliente/(:num)', 'Processos::processosDoCliente/$1');
-    $routes->get('processosDoObjeto/(:num)', 'Processos::processosDoObjeto/$1', ['filter' => ['modulo:objetos', 'permission:objetos.access']]);
-    $routes->get('processosmovimentados/(:num)', 'Processos::processosMovimentados/$1');
-    $routes->get('gerarPeticao/(:num)', 'Processos::gerarPeticao/$1');
-    $routes->get('exportarPDF/(:num)', 'Processos::exportarPDF/$1');
-    $routes->get('exportarCSV', 'Processos::exportarCSV');
-    $routes->get('relatorioCPC25', 'Processos::relatorioCPC25');
-    $routes->get('relatorioValorCausa', 'Processos::relatorioValorCausa');
-    $routes->get('subestabelecimento/(:num)', 'Processos::subestabelecimento/$1');
-    $routes->get('subestabelecimentoLote', 'Processos::subestabelecimentoLote');
-
-    $routes->post('salvar', 'Processos::salvar');
-    $routes->post('adicionarEtiqueta', 'Processos::adicionarEtiqueta');
-    $routes->post('removerEtiqueta', 'Processos::removerEtiqueta');
-    $routes->post('adicionarParte', 'Processos::adicionarParte');
-    $routes->post('removerParte', 'Processos::removerParte');
-    $routes->post('adicionarAnotacao', 'Processos::adicionarAnotacao');
-    $routes->post('removerAnotacao', 'Processos::removerAnotacao');
-    $routes->post('salvarMovimento', 'Processos::salvarMovimento');
-    $routes->post('atualizarParteRepresentada', 'Processos::atualizarParteRepresentada');
-    $routes->post('salvarVinculo', 'Processos::salvarVinculo');
-    $routes->post('removerVinculo/(:num)', 'Processos::removerVinculo/$1');
-    $routes->post('excluir/(:num)', 'Processos::excluir/$1');
-    $routes->post('excluirEmLote', 'Processos::excluirEmLote');
-    $routes->post('arquivarEmLote', 'Processos::arquivarEmLote');
-    $routes->post('desarquivarEmLote', 'Processos::desarquivarEmLote');
-    $routes->post('arquivar/(:num)', 'Processos::arquivar/$1');
-    $routes->post('desarquivar/(:num)', 'Processos::desarquivar/$1');
-    $routes->post('encerrar/(:num)', 'Processos::encerrar/$1');
-    $routes->post('reabrir/(:num)', 'Processos::reabrir/$1');
-    $routes->post('edicaorapida/(:num)', 'Processos::edicaorapida/$1');
-    $routes->post('uploadDrive/(:num)', 'Processos::uploadDrive/$1');
-    $routes->post('etiquetaemlote', 'Processos::etiquetaEmLote');
-    $routes->post('vincularcontrato', 'Processos::vincularContrato');
-    $routes->post('desvincularcontrato', 'Processos::desvincularContrato');
-    $routes->patch('atribuir/(:num)', 'Processos::atribuir/$1');
-
-
-    $routes->post('vincularObjeto', 'Processos::vincularObjeto', ['filter' => ['modulo:objetos', 'permission:objetos.edit']]);
-    $routes->post('salvarObjeto', 'Processos::salvarObjeto', ['filter' => ['modulo:objetos', 'permission:objetos.edit']]);
-    $routes->post('desvincularObjeto/(:num)/(:num)', 'Processos::desvincularObjeto/$1/$2', ['filter' => ['modulo:objetos', 'permission:objetos.edit']]);
-
-    // Davinci - IA & Discovery
-    $routes->get('analiseIA/(:num)', 'Processos::analiseIA/$1');
-    $routes->get('sugerirArgumentos/(:num)', 'Processos::sugerirArgumentos/$1');
-    $routes->get('interpretarMovimento', 'Processos::interpretarMovimento');
-    $routes->get('analisarSentimentoMovimento/(:num)', 'Processos::analisarSentimentoMovimento/$1');
-    $routes->get('verificarConflito', 'Processos::verificarConflito');
-
-    // Relatório Final de Encerramento (IA)
-    $routes->get('relatorioFinal/(:num)', 'ProcessoRelatorioController::get/$1');
-    $routes->post('relatorioFinal/(:num)/save', 'ProcessoRelatorioController::save/$1');
-    $routes->post('relatorioFinal/(:num)/regenerate', 'ProcessoRelatorioController::regenerate/$1');
-
-});
 
 // ============================================================================
 // ROTAS API V2 - TAREFAS
@@ -205,38 +59,12 @@ $routes->group('api/v2/tarefas', ['namespace' => 'App\Controllers\ApiV2', 'filte
     $routes->delete('excluir/(:num)', 'Tarefas::excluir/$1', ['filter' => 'permission:tarefas.delete']);
 });
 
-// ============================================================================
-// ROTAS API V2 - CALENDÁRIO FORENSE (contagem de prazos em dias úteis)
-// ============================================================================
-$routes->group('api/v2/calendario-forense', ['namespace' => 'App\Controllers\ApiV2', 'filter' => 'auth'], function ($routes) {
-    $routes->get('calcular', 'CalendarioForense::calcular');
-    $routes->get('memoria/tarefa/(:num)', 'CalendarioForense::memoriaTarefa/$1', ['filter' => ['permission:tarefas.access', 'modulo:tarefas']]);
-    $routes->get('memoria/intimacao/(:num)', 'CalendarioForense::memoriaIntimacao/$1', ['filter' => ['permission:intimacoes.access', 'modulo:intimacoes']]);
-
-    $routes->group('', ['filter' => 'permission:admin.settings'], function ($routes) {
-        $routes->get('feriados', 'CalendarioForense::listarFeriados');
-        $routes->post('feriados', 'CalendarioForense::salvarFeriado');
-        $routes->put('feriados/(:num)', 'CalendarioForense::salvarFeriado/$1');
-        $routes->delete('feriados/(:num)', 'CalendarioForense::excluirFeriado/$1');
-        $routes->get('suspensoes', 'CalendarioForense::listarSuspensoes');
-        $routes->post('suspensoes', 'CalendarioForense::salvarSuspensao');
-        $routes->put('suspensoes/(:num)', 'CalendarioForense::salvarSuspensao/$1');
-        $routes->delete('suspensoes/(:num)', 'CalendarioForense::excluirSuspensao/$1');
-    });
-});
 
 // ============================================================================
-// ROTAS API V2 - ARGUMENTOS SUGERIDOS
+// ROTAS API V2 - CONTADORES GLOBAIS (MENU / BARRA SUPERIOR)
 // ============================================================================
-$routes->group('api/v2/argumentos', ['namespace' => 'App\Controllers\ApiV2', 'filter' => ['permission:processos.access', 'modulo:processos']], function ($routes) {
-    $routes->get('/', 'Argumentos::index');
-    $routes->get('ramos-options', 'Argumentos::ramosOptions');
-    $routes->get('processo/(:num)', 'Argumentos::porProcesso/$1');
-    $routes->get('caso/(:num)', 'Argumentos::porCaso/$1');
-    $routes->post('lote', 'Argumentos::salvarLote');
-    $routes->post('/', 'Argumentos::criar');
-    $routes->put('(:num)', 'Argumentos::atualizar/$1');
-    $routes->patch('(:num)/avaliar', 'Argumentos::avaliar/$1');
+$routes->group('api/v2/template', ['namespace' => 'App\Controllers\ApiV2', 'filter' => 'auth'], function ($routes) {
+    $routes->get('notifications', 'TemplateData::notifications');
 });
 
 // ============================================================================
@@ -257,7 +85,7 @@ $routes->group('api/v2/usuarios', ['namespace' => 'App\Controllers\ApiV2', 'filt
     $routes->get('buscarUsuario/(:any)', 'Usuarios::buscar/$1');
     $routes->get('exibirFoto/(:num)', 'Usuarios::exibirFoto/$1');
     $routes->get('participa-rateio', 'Usuarios::participaRateio');
-    $routes->get('getAdvogados', 'Usuarios::getAdvogados');
+    $routes->get('getProfissionais', 'Usuarios::getProfissionais');
 });
 
 // ============================================================================
@@ -287,77 +115,6 @@ $routes->group('api/v2/integracao-ia', ['namespace' => 'App\Controllers\ApiV2', 
     $routes->delete('clientes-oauth/(:num)', 'McpClientesOAuth::excluir/$1');
 });
 
-// ============================================================================
-// ROTAS API V2 - TEMPLATE
-// ============================================================================
-$routes->group('api/v2/template', ['namespace' => 'App\Controllers\ApiV2'], function ($routes) {
-    $routes->get('index', 'TemplateData::index');
-    $routes->get('messages', 'TemplateData::messages');
-    $routes->get('tasks', 'TemplateData::tasks');
-    $routes->get('expenses', 'TemplateData::expenses');
-    $routes->get('notifications', 'TemplateData::notifications');
-});
-
-// ============================================================================
-// ROTAS API V2 - CHECKLISTS
-// ============================================================================
-$routes->group('api/v2/checklist', ['namespace' => 'App\Controllers\ApiV2', 'filter' => ['auth', 'modulo:checklist']], function ($routes) {
-    $routes->get('getByEntidade/(:any)/(:num)', 'Checklist::getByEntidade/$1/$2');
-    $routes->get('entidade/(:any)/(:num)', 'Checklist::getByEntidade/$1/$2');
-    $routes->post('aplicarTemplate', 'Checklist::aplicarTemplate');
-    $routes->post('aplicar', 'Checklist::aplicarTemplate');
-    $routes->post('marcarItem', 'Checklist::marcarItem');
-    $routes->post('marcar-item', 'Checklist::marcarItem');
-    $routes->post('adicionarItemAvulso', 'Checklist::adicionarItemAvulso');
-    $routes->post('adicionar-item-avulso', 'Checklist::adicionarItemAvulso');
-    $routes->post('concluir/(:num)', 'Checklist::concluir/$1');
-    $routes->get('getTemplatesDisponiveis/(:any)/(:num)', 'Checklist::getTemplatesDisponiveis/$1/$2');
-    $routes->get('templates/(:any)/(:num)', 'Checklist::getTemplatesDisponiveis/$1/$2');
-    $routes->post('excluir/(:num)', 'Checklist::excluir/$1');
-    $routes->delete('excluir/(:num)', 'Checklist::excluir/$1');
-    $routes->get('sugerirIA', 'Checklist::sugerirIA');
-    $routes->get('sugerirComIA/(:any)/(:num)', 'Checklist::sugerirIA/$1/$2');
-    $routes->post('toggleItem/(:num)', 'Checklist::toggleItem/$1');
-    $routes->post('salvarSugestoesIA', 'Checklist::salvarSugestoesIA');
-    $routes->post('remover/(:num)', 'Checklist::excluir/$1');
-
-    // Edição Inline
-    $routes->post('criarAvulso', 'Checklist::criarAvulso');
-    $routes->post('atualizar/(:num)', 'Checklist::atualizar/$1');
-    $routes->post('atualizarItem/(:num)', 'Checklist::atualizarItem/$1');
-    $routes->delete('excluirItem/(:num)', 'Checklist::excluirItem/$1');
-});
-
-// ============================================================================
-// ROTAS API V2 - CHECKLIST TEMPLATES
-// ============================================================================
-$routes->group('api/v2/checklist-templates', ['namespace' => 'App\Controllers\ApiV2', 'filter' => ['auth', 'modulo:checklist']], function ($routes) {
-    $routes->get('/', 'ChecklistTemplates::listar');
-    $routes->get('detalhes/(:num)', 'ChecklistTemplates::detalhes/$1');
-    $routes->post('salvar', 'ChecklistTemplates::salvar');
-    $routes->delete('excluir/(:num)', 'ChecklistTemplates::excluir/$1');
-    $routes->post('excluir/(:num)', 'ChecklistTemplates::excluir/$1');
-    $routes->post('duplicar/(:num)', 'ChecklistTemplates::duplicar/$1');
-
-    $routes->post('adicionarSecao/(:num)', 'ChecklistTemplates::adicionarSecao/$1');
-    $routes->post('adicionarItem/(:num)', 'ChecklistTemplates::adicionarItem/$1');
-
-    $routes->post('reordenarSecoes', 'ChecklistTemplates::reordenarSecoes');
-    $routes->post('reordenarItens', 'ChecklistTemplates::reordenarItens');
-
-    $routes->get('procedimentos', 'ChecklistTemplates::getProcedimentos');
-});
-
-// ============================================================================
-// ROTAS API V2 - PROCEDIMENTOS (CHECKLIST)
-// ============================================================================
-$routes->group('api/v2/procedimentos', ['namespace' => 'App\Controllers\ApiV2', 'filter' => ['auth', 'modulo:checklist']], function ($routes) {
-    $routes->get('/', 'Procedimentos::listar');
-    $routes->get('detalhes/(:num)', 'Procedimentos::detalhes/$1');
-    $routes->post('salvar', 'Procedimentos::salvar');
-    $routes->delete('excluir/(:num)', 'Procedimentos::excluir/$1');
-    $routes->post('excluir/(:num)', 'Procedimentos::excluir/$1');
-});
 
 
 // ============================================================================
@@ -370,9 +127,7 @@ $routes->group('api/v2/clientes', ['namespace' => 'App\Controllers\ApiV2', 'filt
     $routes->get('recentes', 'Clientes::recentes');
     $routes->get('aniversariantes', 'Clientes::aniversariantes');
     $routes->get('estatisticasCliente/(:num)', 'Clientes::estatisticasCliente/$1');
-    $routes->get('anotacoes/(:num)', 'Clientes::anotacoes/$1');
     $routes->get('movimentacoes/(:num)', 'Clientes::movimentacoes/$1', ['filter' => ['modulo:financeiro', 'permission:financeiro.access']]);
-    $routes->get('intimacoes/(:num)', 'Clientes::intimacoes/$1', ['filter' => ['modulo:intimacoes', 'permission:intimacoes.access']]);
     $routes->get('buscar', 'Clientes::buscar');
     $routes->post('salvar', 'Clientes::salvar');
     $routes->post('transformar-em-fornecedor/(:num)', 'Clientes::transformarEmFornecedor/$1', ['filter' => ['permission:fornecedores.create', 'modulo:fornecedores']]);
@@ -414,7 +169,6 @@ $routes->group('api/v2/crm', ['namespace' => 'App\Controllers\ApiV2', 'filter' =
 
     // Leads (Contatos do Site)
     $routes->get('leads', 'CrmLeads::listar');
-    $routes->get('leads/ramos', 'CrmLeads::ramos');
     $routes->post('leads/converter/(:num)', 'CrmLeads::converter/$1');
     $routes->put('leads/status/(:num)', 'CrmLeads::atualizarStatus/$1');
 });
@@ -614,7 +368,6 @@ $routes->group('api/v2/contratos', ['namespace' => 'App\Controllers\ApiV2', 'fil
     $routes->get('listarJson', 'Contratos::listarJson');
     $routes->get('detalhes/(:num)', 'Contratos::detalhes/$1');
     $routes->get('buscar', 'Contratos::buscar');
-    $routes->get('ramos', 'Contratos::ramos');
     $routes->get('estatisticas', 'Contratos::estatisticas');
     $routes->get('rentabilidade', 'Contratos::rentabilidade');
     $routes->get('proximosAVencer', 'Contratos::proximosAVencer');
@@ -624,8 +377,6 @@ $routes->group('api/v2/contratos', ['namespace' => 'App\Controllers\ApiV2', 'fil
     $routes->post('atualizar/(:num)', 'Contratos::atualizar/$1', ['filter' => 'permission:contratos.edit']);
     $routes->delete('excluir/(:num)', 'Contratos::excluir/$1', ['filter' => 'permission:contratos.delete']);
     $routes->post('excluir/(:num)', 'Contratos::excluir/$1', ['filter' => 'permission:contratos.delete']);
-    $routes->post('vincularProcesso', 'Contratos::vincularProcesso', ['filter' => 'permission:contratos.edit']);
-    $routes->post('desvincularProcesso', 'Contratos::desvincularProcesso', ['filter' => 'permission:contratos.edit']);
     // Arquivos do contrato no Google Drive (subpasta Contratos da pasta do cliente)
     $routes->get('(:num)/arquivos', 'ContratosArquivos::listar/$1');
     $routes->post('(:num)/arquivos', 'ContratosArquivos::enviar/$1', ['filter' => 'permission:contratos.edit']);
@@ -635,10 +386,10 @@ $routes->group('api/v2/contratos', ['namespace' => 'App\Controllers\ApiV2', 'fil
 });
 
 // ============================================================================
-// ROTAS API V2 - PRIVACIDADE GRANULAR (acessos a processos, clientes e contratos)
+// ROTAS API V2 - PRIVACIDADE GRANULAR (acessos a clientes e contratos)
 // ============================================================================
-$routes->group('api/v2/acessos', ['namespace' => 'App\Controllers\ApiV2', 'filter' => 'permission:processos.access,clientes.access,contratos.access'], function ($routes) {
-    $routes->get('advogados', 'Acessos::advogados');
+$routes->group('api/v2/acessos', ['namespace' => 'App\Controllers\ApiV2', 'filter' => 'permission:clientes.access,contratos.access'], function ($routes) {
+    $routes->get('profissionais', 'Acessos::profissionais');
     $routes->post('cliente/(:num)/propagar', 'Acessos::propagar/$1');
     $routes->get('(:segment)/(:num)', 'Acessos::listar/$1/$2');
     $routes->post('(:segment)/(:num)/visibilidade', 'Acessos::visibilidade/$1/$2');
@@ -646,36 +397,6 @@ $routes->group('api/v2/acessos', ['namespace' => 'App\Controllers\ApiV2', 'filte
     $routes->delete('(:segment)/(:num)/usuarios/(:num)', 'Acessos::revogar/$1/$2/$3');
 });
 
-// ============================================================================
-// ROTAS API V2 - CASOS
-// ============================================================================
-$routes->group('api/v2/casos', ['namespace' => 'App\Controllers\ApiV2', 'filter' => ['permission:casos.access', 'modulo:casos']], function ($routes) {
-    $routes->get('/', 'Casos::listar');
-    $routes->get('detalhes/(:num)', 'Casos::detalhes/$1');
-    $routes->get('recentes', 'Casos::recentes');
-    $routes->get('estatisticas', 'Casos::estatisticas');
-    $routes->get('porCliente/(:num)', 'Casos::porCliente/$1');
-    $routes->get('timeline/(:num)', 'Casos::timeline/$1');
-    $routes->get('buscar', 'Casos::buscar');
-    $routes->post('salvar', 'Casos::salvar', ['filter' => 'permission:casos.create']);
-    $routes->post('atualizar/(:num)', 'Casos::atualizar/$1', ['filter' => 'permission:casos.edit']);
-    $routes->delete('excluir/(:num)', 'Casos::excluir/$1', ['filter' => 'permission:casos.delete']);
-    $routes->post('excluirEmLote', 'Casos::excluirEmLote', ['filter' => 'permission:casos.delete']);
-    $routes->post('acaoEmLote', 'Casos::acaoEmLote', ['filter' => 'permission:casos.edit']);
-    $routes->post('atualizarStatus', 'Casos::atualizarStatus', ['filter' => 'permission:casos.edit']);
-    $routes->post('duplicar/(:num)', 'Casos::duplicar/$1', ['filter' => 'permission:casos.create']);
-    $routes->post('transformar/(:num)', 'Casos::transformar/$1', ['filter' => 'permission:casos.edit']);
-    $routes->post('vincularProcessoExistente/(:num)', 'Casos::vincularProcessoExistente/$1', ['filter' => 'permission:casos.edit']);
-    $routes->post('gerarEstudoCaso/(:num)', 'Casos::gerarEstudoCaso/$1');
-    $routes->post('salvarEstudoCaso/(:num)', 'Casos::salvarEstudoCaso/$1', ['filter' => 'permission:casos.edit']);
-    $routes->post('validarNumeroProcesso', 'Casos::validarNumeroProcesso');
-    $routes->get('exportarCsv', 'Casos::exportarCsv');
-    $routes->post('uploadDrive/(:num)', 'Casos::uploadDrive/$1', ['filter' => 'permission:casos.edit']);
-    $routes->post('vincular-contrato/(:num)', 'Casos::vincularContrato/$1', ['filter' => 'permission:casos.edit']);
-    $routes->delete('vincular-contrato/(:num)', 'Casos::desvincularContrato/$1', ['filter' => 'permission:casos.edit']);
-    $routes->post('vincular-processo/(:num)', 'Casos::vincularProcesso/$1', ['filter' => 'permission:casos.edit']);
-    $routes->post('historico/(:num)', 'Casos::adicionarHistorico/$1', ['filter' => 'permission:casos.edit']);
-});
 
 // ============================================================================
 // ROTAS API V2 - FORNECEDORES
@@ -692,119 +413,6 @@ $routes->group('api/v2/fornecedores', ['namespace' => 'App\Controllers\ApiV2', '
     $routes->delete('excluir/(:num)', 'Fornecedores::excluir/$1', ['filter' => 'permission:fornecedores.delete']);
 });
 
-// ============================================================================
-// ROTAS API V2 - LIQUIDAÇÕES
-// ============================================================================
-$routes->group('api/v2/liquidacoes', ['namespace' => 'App\Controllers\ApiV2', 'filter' => ['permission:liquidacoes.access,liquidacoes.exclusive', 'modulo:processos']], function ($routes) {
-    $routes->get('/', 'Liquidacoes::index');
-    $routes->get('processo/(:num)', 'Liquidacoes::porProcesso/$1');
-    $routes->get('show/(:num)', 'Liquidacoes::show/$1');
-    $routes->get('historico/(:num)', 'Liquidacoes::historico/$1');
-    $routes->get('memoria/(:num)', 'Liquidacoes::memoria/$1');
-    $routes->get('pdf/(:num)', 'Liquidacoes::pdf/$1');
-    $routes->get('exportar/(:num)', 'Liquidacoes::exportar/$1');
-    $routes->post('sugerirCriterio/(:num)', 'Liquidacoes::sugerirCriterio/$1', ['filter' => 'permission:liquidacoes.edit']);
-    $routes->post('simular', 'Liquidacoes::simular');
-    $routes->post('recalcular/(:num)', 'Liquidacoes::recalcular/$1', ['filter' => 'permission:liquidacoes.edit']);
-    $routes->post('store', 'Liquidacoes::store', ['filter' => 'permission:liquidacoes.create']);
-    $routes->put('update/(:num)', 'Liquidacoes::update/$1', ['filter' => 'permission:liquidacoes.edit']);
-    $routes->delete('delete/(:num)', 'Liquidacoes::delete/$1', ['filter' => 'permission:liquidacoes.delete']);
-
-    // Items
-    $routes->post('storeItem', 'Liquidacoes::storeItem', ['filter' => 'permission:liquidacoes.edit']);
-    $routes->put('updateItem/(:num)', 'Liquidacoes::updateItem/$1', ['filter' => 'permission:liquidacoes.edit']);
-    $routes->delete('deleteItem/(:num)', 'Liquidacoes::deleteItem/$1', ['filter' => 'permission:liquidacoes.edit']);
-
-    // Pagamentos
-    $routes->post('storePagamento', 'Liquidacoes::storePagamento', ['filter' => 'permission:liquidacoes.edit']);
-    $routes->put('updatePagamento/(:num)', 'Liquidacoes::updatePagamento/$1', ['filter' => 'permission:liquidacoes.edit']);
-    $routes->delete('deletePagamento/(:num)', 'Liquidacoes::deletePagamento/$1', ['filter' => 'permission:liquidacoes.edit']);
-    $routes->post('gerarParcelas/(:num)', 'Liquidacoes::gerarParcelas/$1', ['filter' => 'permission:liquidacoes.edit']);
-    $routes->post('baixarPagamento/(:num)', 'Liquidacoes::baixarPagamento/$1', ['filter' => 'permission:liquidacoes.edit']);
-    $routes->post('cancelarPagamento/(:num)', 'Liquidacoes::cancelarPagamento/$1', ['filter' => 'permission:liquidacoes.edit']);
-
-    // Documentos
-    $routes->post('storeDocumento', 'Liquidacoes::storeDocumento', ['filter' => 'permission:liquidacoes.edit']);
-    $routes->post('uploadDocumento/(:num)', 'Liquidacoes::uploadDocumento/$1', ['filter' => 'permission:liquidacoes.edit']);
-    $routes->delete('deleteDocumento/(:num)', 'Liquidacoes::deleteDocumento/$1', ['filter' => 'permission:liquidacoes.edit']);
-});
-
-// ============================================================================
-// ROTAS API V2 - ÍNDICES ECONÔMICOS (liquidação)
-// ============================================================================
-$routes->group('api/v2/indices', ['namespace' => 'App\Controllers\ApiV2', 'filter' => ['permission:liquidacoes.access,liquidacoes.exclusive', 'modulo:processos']], function ($routes) {
-    $routes->get('/', 'Indices::index');
-    $routes->get('fator', 'Indices::fator');
-    $routes->get('(:segment)/valores', 'Indices::valores/$1');
-    $routes->get('(:segment)/lacunas', 'Indices::lacunas/$1');
-
-    $routes->group('', ['filter' => 'permission:admin.settings'], function ($routes) {
-        $routes->post('/', 'Indices::salvar');
-        $routes->put('(:num)', 'Indices::salvar/$1');
-        $routes->post('atualizar', 'Indices::atualizar');
-        $routes->post('(:segment)/valores', 'Indices::lancarValor/$1');
-        $routes->post('(:segment)/csv', 'Indices::importarCsv/$1');
-    });
-});
-
-// ============================================================================
-// ROTAS API V2 - OBJETOS
-// ============================================================================
-$routes->group('api/v2/objetos', ['namespace' => 'App\Controllers\ApiV2', 'filter' => ['permission:objetos.access', 'modulo:objetos']], function ($routes) {
-    $routes->get('/', 'Objetos::index');
-    $routes->get('detalhes/(:num)', 'Objetos::detalhes/$1');
-    $routes->get('buscar', 'Objetos::buscar');
-    $routes->get('existeObjetoCodInterno/(:any)', 'Objetos::existeObjetoCodInterno/$1');
-    $routes->get('existeObjetoInscricao/(:any)', 'Objetos::existeObjetoInscricao/$1');
-    $routes->post('salvar', 'Objetos::salvar', ['filter' => 'permission:objetos.create,objetos.edit']);
-    $routes->put('atualizar/(:num)', 'Objetos::atualizar/$1', ['filter' => 'permission:objetos.edit']);
-    $routes->delete('excluir/(:num)', 'Objetos::excluir/$1', ['filter' => 'permission:objetos.delete']);
-    $routes->get('exportar', 'Objetos::exportar');
-    $routes->get('relatorioProcessosVinculados', 'Objetos::relatorioProcessosVinculados');
-});
-
-// ============================================================================
-// ROTAS API V2 - ETIQUETAS
-// ============================================================================
-$routes->group('api/v2/etiquetas', ['namespace' => 'App\Controllers\ApiV2', 'filter' => 'permission:etiquetas.access'], function ($routes) {
-    $routes->get('/', 'Etiquetas::index');
-    $routes->get('listar', 'Etiquetas::listar');
-    $routes->get('detalhes/(:num)', 'Etiquetas::detalhes/$1');
-    $routes->post('salvar', 'Etiquetas::store', ['filter' => 'permission:etiquetas.create']);
-    $routes->put('atualizar/(:num)', 'Etiquetas::update/$1', ['filter' => 'permission:etiquetas.edit']);
-    $routes->delete('excluir/(:num)', 'Etiquetas::delete/$1', ['filter' => 'permission:etiquetas.delete']);
-    $routes->post('adicionar', 'Etiquetas::adicionar', ['filter' => 'permission:etiquetas.create']);
-    $routes->post('adicionarEmLote', 'Etiquetas::adicionarEmLote', ['filter' => 'permission:etiquetas.edit']);
-    $routes->post('removerEmLote', 'Etiquetas::removerEmLote', ['filter' => 'permission:etiquetas.edit']);
-});
-
-// ============================================================================
-// ROTAS API V2 - MENSAGENS / NOTIFICAÇÕES
-// ============================================================================
-$routes->group('api/v2/mensagens', ['namespace' => 'App\Controllers\ApiV2', 'filter' => 'permission:mensagens.access'], function ($routes) {
-    $routes->get('/', 'Mensagens::index');
-    $routes->get('naoLidas', 'Mensagens::naoLidas');
-    $routes->get('detalhes/(:num)', 'Mensagens::detalhes/$1');
-    $routes->get('classificarUrgencia/(:num)', 'Mensagens::classificarUrgencia/$1');
-    $routes->get('sugerirResposta/(:num)', 'Mensagens::sugerirResposta/$1');
-    $routes->post('salvar', 'Mensagens::salvar', ['filter' => 'permission:mensagens.create']);
-    $routes->post('marcarLida/(:num)', 'Mensagens::marcarLida/$1', ['filter' => 'permission:mensagens.edit']);
-    $routes->post('marcarTodasLidas', 'Mensagens::marcarTodasLidas', ['filter' => 'permission:mensagens.edit']);
-    $routes->delete('excluir/(:num)', 'Mensagens::excluir/$1', ['filter' => 'permission:mensagens.delete']);
-});
-
-// ============================================================================
-// ROTAS API V2 - ANOTAÇÕES
-// ============================================================================
-$routes->group('api/v2/anotacoes', ['namespace' => 'App\Controllers\ApiV2', 'filter' => 'permission:anotacoes.access'], function ($routes) {
-    $routes->get('/', 'Anotacoes::index');
-    $routes->get('listar', 'Anotacoes::listar');
-    $routes->get('listar/(:any)', 'Anotacoes::listar/$1');
-    $routes->get('detalhes/(:num)', 'Anotacoes::detalhes/$1');
-    $routes->post('salvar', 'Anotacoes::salvar', ['filter' => 'permission:anotacoes.create']);
-    $routes->put('atualizar/(:num)', 'Anotacoes::atualizar/$1', ['filter' => 'permission:anotacoes.edit']);
-    $routes->delete('excluir/(:num)', 'Anotacoes::excluir/$1', ['filter' => 'permission:anotacoes.delete']);
-});
 
 // ============================================================================
 // ROTAS API V2 - DASHBOARD
@@ -814,19 +422,11 @@ $routes->group('api/v2/dashboard', ['namespace' => 'App\Controllers\ApiV2', 'fil
     $routes->get('sidebar-counts', 'Dashboard::getSidebarCounts');
 });
 
-// ============================================================================
-// ROTAS API V2 - LEGAL OPS
-// ============================================================================
-$routes->group('api/v2/legal-ops', ['namespace' => 'App\Controllers\ApiV2', 'filter' => ['auth', 'modulo:gestao']], function ($routes) {
-    $routes->get('dashboard', 'LegalOps::dashboard');
-    $routes->get('export', 'LegalOps::export');
-});
 
 // ============================================================================
 // ROTAS API V2 - BUSINESS CANVAS
 // ============================================================================
 $routes->group('api/v2/business-canvas', ['namespace' => 'App\Controllers\ApiV2', 'filter' => 'modulo:gestao'], function ($routes) {
-    $routes->get('/', 'BusinessCanvas::index');
     $routes->get('get-canvases', 'BusinessCanvas::ajaxGetCanvases');
     $routes->get('get-canvas/(:num)', 'BusinessCanvas::ajaxGetCanvas/$1');
     $routes->post('create-canvas', 'BusinessCanvas::ajaxCreateCanvas');
@@ -842,119 +442,6 @@ $routes->group('api/v2/utils', ['namespace' => 'App\Controllers\ApiV2', 'filter'
     $routes->get('consultaCep/(:any)', 'Utils::consultaCep/$1');
 });
 
-// ============================================================================
-// ROTAS API V2 - CONSULTAS (CPF / ENDEREÇO - API BRASIL)
-// ============================================================================
-$routes->group('api/v2/consultas', ['namespace' => 'App\Controllers\ApiV2', 'filter' => ['permission:consultas.access', 'modulo:gestao']], function ($routes) {
-    $routes->post('cpf', 'Consultas::cpf');
-    $routes->get('cpf/(:any)', 'Consultas::cpf/$1');
-});
-
-// ============================================================================
-// ROTAS API V2 - EXPORTAÇÃO / SINCRONIZAÇÃO
-// ============================================================================
-$routes->group('api/v2/exportacao', ['namespace' => 'App\Controllers\ApiV2', 'filter' => ['permission:exportacao.access', 'modulo:exportacao']], function ($routes) {
-    $routes->get('/', 'Exportacao::index');
-    $routes->post('sincronizarProcessos', 'Exportacao::sincronizarProcessos', ['filter' => 'permission:exportacao.create']);
-    $routes->post('sincronizarIntimacoes', 'Exportacao::sincronizarIntimacoes', ['filter' => 'permission:exportacao.create']);
-    $routes->post('sincronizarMovimentos', 'Exportacao::sincronizarMovimentos', ['filter' => 'permission:exportacao.create']);
-    $routes->get('exportarListaDeProcessos', 'Exportacao::exportarListaDeProcessos');
-});
-
-// ============================================================================
-// ROTAS API V2 - INTIMAÇÕES
-// ============================================================================
-$routes->group('api/v2/intimacoes', ['namespace' => 'App\Controllers\ApiV2', 'filter' => ['permission:intimacoes.access', 'modulo:intimacoes']], function ($routes) {
-    $routes->get('/', 'Intimacoes::listar');
-    $routes->get('processo/(:any)', 'Intimacoes::processo/$1');
-    $routes->get('detalhes/(:num)', 'Intimacoes::detalhes/$1');
-    $routes->get('navegacao/(:num)', 'Intimacoes::navegacao/$1');
-    $routes->get('tipos-tratamento', 'Intimacoes::tiposTratamento');
-    $routes->post('tratar', 'Intimacoes::tratar', ['filter' => 'permission:intimacoes.edit']);
-    $routes->post('tratarEmLote', 'Intimacoes::tratarEmLote', ['filter' => 'permission:intimacoes.edit']);
-    $routes->post('adicionar', 'Intimacoes::adicionar', ['filter' => 'permission:intimacoes.create']);
-    $routes->post('sincronizar', 'Intimacoes::sincronizar', ['filter' => 'permission:intimacoes.create']);
-    $routes->get('urlsSincronizacao', 'Intimacoes::urlsSincronizacao', ['filter' => 'permission:intimacoes.create']);
-    $routes->post('processarIntimacoes', 'Intimacoes::processarIntimacoes', ['filter' => 'permission:intimacoes.create']);
-    $routes->get('receberIntimacoes', 'Intimacoes::receberIntimacoes', ['filter' => 'permission:intimacoes.create']);
-    $routes->get('intimacoesporperiodo/(:num)', 'Intimacoes::intimacoesPorPeriodo/$1');
-});
-
-// ============================================================================
-// ROTAS API V2 - MOVIMENTOS
-// ============================================================================
-$routes->group('api/v2/movimentos', ['namespace' => 'App\Controllers\ApiV2', 'filter' => ['permission:movimentos.access', 'modulo:processos']], function ($routes) {
-    $routes->post('receberMovimentos/(:any)', 'Movimentos::receberMovimentos/$1', ['filter' => 'permission:movimentos.create']);
-    $routes->post('adicionar', 'Movimentos::adicionar', ['filter' => 'permission:movimentos.create']);
-    $routes->post('processarMovimentosDatajud', 'Movimentos::processarMovimentosDatajud', ['filter' => 'permission:movimentos.create']);
-    $routes->post('receberLocal', 'Movimentos::receberLocal', ['filter' => 'permission:movimentos.create']);
-});
-
-// ============================================================================
-// ROTAS API V2 - MONITORAR
-// ============================================================================
-$routes->group('api/v2/monitorar', ['namespace' => 'App\Controllers\ApiV2', 'filter' => ['permission:monitorar.access', 'modulo:processos']], function ($routes) {
-    $routes->get('/', 'Monitorar::index');
-    $routes->post('receberMovimentos', 'Monitorar::ReceberMovimentos', ['filter' => 'permission:monitorar.create']);
-    $routes->post('monitorarProcessos', 'Monitorar::MonitorarProcessos', ['filter' => 'permission:monitorar.create']);
-    $routes->post('incluirProcessos', 'Monitorar::incluirProcessos', ['filter' => 'permission:monitorar.create']);
-});
-
-// ============================================================================
-// ROTAS API V2 - BUSCA AUTOMÁTICA
-// ============================================================================
-$routes->group('api/v2/buscarProcessos', ['namespace' => 'App\Controllers\ApiV2', 'filter' => ['permission:processos.access', 'modulo:processos']], function ($routes) {
-    $routes->get('/', 'BuscarProcessos::index');
-    $routes->post('salvar', 'BuscarProcessos::salvar', ['filter' => 'permission:processos.create,processos.edit']);
-    $routes->post('receberLocal', 'BuscarProcessos::receberLocal', ['filter' => 'permission:processos.create']);
-    $routes->post('importar', 'BuscarProcessos::importar', ['filter' => 'permission:processos.create']);
-});
-
-// ============================================================================
-// ROTAS API V2 - CONHECIMENTO (KNOWLEDGE HUB)
-// ============================================================================
-$routes->group('api/v2/conhecimento', ['namespace' => 'App\Controllers\ApiV2', 'filter' => ['permission:conhecimento.access', 'modulo:conhecimento']], function ($routes) {
-    $routes->get('/', 'Conhecimento::index');
-    $routes->get('buscar', 'Conhecimento::buscar');
-
-    // Banco de Argumentos IA (mesmo controller usado por api/v2/argumentos, exposto aqui
-    // para que o hub de Conhecimento funcione inteiramente com conhecimento.access,
-    // sem depender de processos.access - ver issue #603)
-    $routes->get('argumentos', 'Argumentos::index');
-
-    // Favoritos
-    $routes->get('favoritos', 'Conhecimento::favoritos');
-    $routes->get('favoritos/status', 'Conhecimento::favoritoStatus');
-    $routes->post('favoritos', 'Conhecimento::favoritar');
-    $routes->put('favoritos/(:num)', 'Conhecimento::atualizarFavorito/$1');
-    $routes->delete('favoritos/(:num)', 'Conhecimento::desfavoritar/$1');
-
-    // Ramos do Direito
-    $routes->get('ramos', 'RamosDireito::index');
-    $routes->post('ramos/salvar', 'RamosDireito::salvar', ['filter' => 'permission:conhecimento.edit']);
-    $routes->put('ramos/atualizar/(:num)', 'RamosDireito::atualizar/$1', ['filter' => 'permission:conhecimento.edit']);
-    $routes->delete('ramos/deletar/(:num)', 'RamosDireito::deletar/$1', ['filter' => 'permission:conhecimento.delete']);
-
-    // Modelos de Documentos
-    $routes->get('modelos', 'Modelos::index');
-    $routes->get('modelos/placeholders', 'Modelos::placeholders');
-    $routes->get('modelos/ramos-options', 'Modelos::ramosOptions');
-    $routes->get('modelos/(:num)', 'Modelos::exibir/$1');
-    $routes->post('modelos/salvar', 'Modelos::salvar', ['filter' => 'permission:conhecimento.edit']);
-    $routes->put('modelos/atualizar/(:num)', 'Modelos::atualizar/$1', ['filter' => 'permission:conhecimento.edit']);
-    $routes->delete('modelos/deletar/(:num)', 'Modelos::deletar/$1', ['filter' => 'permission:conhecimento.delete']);
-
-    // Documentos Gerados a partir de Modelos
-    $routes->group('documentos-gerados', function ($routes) {
-        $routes->get('/', 'DocumentosGerados::index');
-        $routes->get('entidade/(processo|caso)/(:num)', 'DocumentosGerados::porEntidade/$1/$2');
-        $routes->get('(:num)', 'DocumentosGerados::exibir/$1');
-        $routes->post('iniciar', 'DocumentosGerados::iniciar', ['filter' => 'permission:conhecimento.modelos.gerar']);
-        $routes->put('(:num)', 'DocumentosGerados::salvar/$1', ['filter' => 'permission:conhecimento.modelos.gerar']);
-        $routes->post('(:num)/finalizar', 'DocumentosGerados::finalizar/$1', ['filter' => 'permission:conhecimento.modelos.gerar']);
-        $routes->delete('(:num)', 'DocumentosGerados::deletar/$1', ['filter' => 'permission:conhecimento.modelos.gerar']);
-    });
-});
 
 // ============================================================================
 // ROTAS API V2 - MÓDULOS

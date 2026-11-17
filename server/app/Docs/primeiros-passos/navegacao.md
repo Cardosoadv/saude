@@ -10,19 +10,19 @@ palavras_chave:
 
 ## Menu lateral
 
-O menu à esquerda agrupa as telas por assunto: **Principal**, **Processos**, **Financeiro**,
+O menu à esquerda agrupa as telas por assunto: **Principal**, **Financeiro**, **Contábil**,
 **Gestão** e **Site**. Só aparecem os grupos e as telas a que o seu perfil tem acesso.
 
 Para esconder ou mostrar o menu, clique no botão de três linhas no canto superior esquerdo.
 
 ## Barra superior
 
-Na barra superior ficam a **busca**, as **notificações**, as **mensagens** e o menu do seu usuário,
+Na barra superior ficam a **busca**, as **notificações** e o menu do seu usuário,
 onde está a opção de sair do sistema.
 
 ## Endereço de cada tela
 
-Cada tela tem um endereço próprio no navegador (por exemplo, `#/processos`). Você pode:
+Cada tela tem um endereço próprio no navegador (por exemplo, `#/clientes`). Você pode:
 
 - usar os botões **voltar** e **avançar** do navegador;
 - salvar uma tela nos favoritos;

@@ -6,7 +6,7 @@
         <i class="bi bi-cloud-arrow-up" style="color: var(--accent);"></i> Sincronização de pastas do Google Drive
       </h3>
       <p style="font-size: 0.85rem; color: var(--ink-muted); margin: 0 0 14px 0; line-height: 1.4;">
-        Cada cliente tem uma pasta na raiz do Drive e cada processo, uma subpasta dentro da pasta do cliente.
+        Cada cliente tem uma pasta na raiz do Drive.
         Os pedidos de criação ficam numa fila e são processados em lotes, aqui ou pelo comando
         <code>php spark drive:sync</code> (agende no cron para rodar sozinho).
       </p>
@@ -80,11 +80,6 @@
           <option value="completed">Concluídos</option>
           <option value="failed">Com falha</option>
         </select>
-        <select v-model="filtroTipo" class="form-control" style="width:auto;" aria-label="Tipo" @change="irParaPagina(1)">
-          <option value="">Clientes e processos</option>
-          <option value="cliente">Só clientes</option>
-          <option value="processo">Só processos</option>
-        </select>
       </template>
       <select v-else v-model="filtroSituacao" class="form-control" style="width:auto;" aria-label="Situação" @change="irParaPagina(1)">
         <option value="">Todos</option>
@@ -129,7 +124,7 @@
               <th style="padding: 12px 16px;"></th>
             </template>
             <template v-else>
-              <th style="padding: 12px 16px;">{{ aba === 'clientes' ? 'Cliente' : 'Processo' }}</th>
+              <th style="padding: 12px 16px;">Cliente</th>
               <th style="padding: 12px 16px;">Pasta</th>
               <th style="padding: 12px 16px;">Último job</th>
               <th style="padding: 12px 16px;"></th>
@@ -140,7 +135,7 @@
           <template v-if="aba === 'fila'">
             <tr v-for="j in itens" :key="j.id" style="border-bottom: 1px solid var(--border);">
               <td style="padding: 12px 16px;"><input type="checkbox" :checked="selecionados.has(Number(j.id))" @change="alternar(Number(j.id))" :aria-label="'Selecionar job ' + j.id" /></td>
-              <td style="padding: 12px 16px; color: var(--ink-muted);">{{ j.entity_type === 'cliente' ? 'Cliente' : 'Processo' }}</td>
+              <td style="padding: 12px 16px; color: var(--ink-muted);">Cliente</td>
               <td style="padding: 12px 16px; font-weight: 600; color: var(--ink);">
                 <a v-if="j.entidade_nome" class="entidade-link" :href="linkEntidade(j.entity_type, j.entity_id)" target="_blank" rel="noopener" title="Abrir em nova guia">{{ j.entidade_nome }} <i class="bi bi-box-arrow-up-right"></i></a>
                 <template v-else>{{ '#' + j.entity_id + ' (removido)' }}</template>
@@ -162,7 +157,7 @@
             <tr v-for="e in itens" :key="e.id" style="border-bottom: 1px solid var(--border);">
               <td style="padding: 12px 16px;"><input type="checkbox" :checked="selecionados.has(Number(e.id))" @change="alternar(Number(e.id))" :aria-label="'Selecionar ' + e.nome" /></td>
               <td style="padding: 12px 16px; font-weight: 600; color: var(--ink);">
-                <a class="entidade-link" :href="linkEntidade(aba === 'clientes' ? 'cliente' : 'processo', e.id)" target="_blank" rel="noopener" title="Abrir em nova guia">{{ e.nome }} <i class="bi bi-box-arrow-up-right"></i></a>
+                <a class="entidade-link" :href="linkEntidade('cliente', e.id)" target="_blank" rel="noopener" title="Abrir em nova guia">{{ e.nome }} <i class="bi bi-box-arrow-up-right"></i></a>
               </td>
               <td style="padding: 12px 16px; font-size: 0.88rem;">
                 <a v-if="e.pasta" :href="e.pasta" target="_blank" rel="noopener"><i class="bi bi-folder2-open"></i> Abrir pasta</a>
@@ -199,7 +194,7 @@
 <script setup lang="ts">
 /**
  * Painel de sincronização de pastas do Google Drive: resumo da fila, jobs,
- * clientes e processos (com/sem pasta), enfileiramento, processamento em lote
+ * clientes (com/sem pasta), enfileiramento, processamento em lote
  * e reprocessamento.
  * @version 1.0.0
  */
@@ -215,12 +210,11 @@ const emit = defineEmits<{
 const PROCESSAR_TIMEOUT_MS = 5 * 60 * 1000
 const POR_PAGINA = 25
 
-type Aba = 'fila' | 'clientes' | 'processos'
+type Aba = 'fila' | 'clientes'
 
 const subAbas: { id: Aba; rotulo: string; icone: string }[] = [
   { id: 'fila', rotulo: 'Fila de sincronização', icone: 'bi bi-list-task' },
   { id: 'clientes', rotulo: 'Clientes', icone: 'bi bi-person' },
-  { id: 'processos', rotulo: 'Processos', icone: 'bi bi-folder' }
 ]
 
 const resumo = ref<DriveSyncResumo | null>(null)
@@ -245,7 +239,7 @@ let timerBusca: ReturnType<typeof setTimeout> | undefined
 let requisicao = 0
 
 const ocupado = computed(() => processando.value || acaoEmCurso.value)
-const temSemPasta = computed(() => !!resumo.value && (resumo.value.clientes.sem_job + resumo.value.processos.sem_job) > 0)
+const temSemPasta = computed(() => !!resumo.value && resumo.value.clientes.sem_job > 0)
 const todosMarcados = computed(() => itens.value.length > 0 && itens.value.every(i => selecionados.value.has(Number(chave(i)))))
 
 const cartoes = computed(() => {
@@ -256,8 +250,7 @@ const cartoes = computed(() => {
     { rotulo: 'Concluídos', valor: r.fila.completed },
     { rotulo: 'Com falha', valor: r.fila.failed, cor: r.fila.failed ? 'var(--danger)' : undefined },
     { rotulo: 'Clientes sem pasta', valor: `${r.clientes.sem_pasta} / ${r.clientes.total}` },
-    { rotulo: 'Processos sem pasta', valor: `${r.processos.sem_pasta} / ${r.processos.total}` },
-    { rotulo: 'Sem job na fila', valor: r.clientes.sem_job + r.processos.sem_job }
+    { rotulo: 'Sem job na fila', valor: r.clientes.sem_job }
   ]
 })
 
@@ -267,7 +260,7 @@ function chave(i: any): number {
 
 /** Link (hash) para a tela da entidade; abre em outra guia. */
 function linkEntidade(tipo: string, id: number | string): string {
-  return tipo === 'cliente' ? `#/clientes/editar/${id}` : `#/processos/detalhes/${id}`
+  return `#/clientes/editar/${id}`
 }
 
 function rotuloStatus(s: string): string {
@@ -307,7 +300,7 @@ async function carregarLista() {
     if (filtroTipo.value) params.set('tipo', filtroTipo.value)
     endpoint = 'drive/jobs'
   } else {
-    params.set('tipo', aba.value === 'clientes' ? 'cliente' : 'processo')
+    params.set('tipo', 'cliente')
     if (filtroSituacao.value) params.set('situacao', filtroSituacao.value)
     endpoint = 'drive/entidades'
   }
@@ -380,7 +373,7 @@ async function executar(endpoint: string, body: Record<string, unknown>, erroPad
 }
 
 async function enfileirarPendentes() {
-  if (!confirm('Enfileirar todos os clientes e processos que ainda não têm pasta?')) return
+  if (!confirm('Enfileirar todos os clientes que ainda não têm pasta?')) return
   await executar('drive/sincronizar-retroativo', {}, 'Erro ao enfileirar pendências.')
 }
 
@@ -420,7 +413,7 @@ const reprocessarSelecionados = () => reprocessarIds([...selecionados.value])
 const excluirSelecionados = () => excluirIds([...selecionados.value])
 
 async function enfileirarIds(ids: number[]) {
-  await executar('drive/enfileirar', { tipo: aba.value === 'clientes' ? 'cliente' : 'processo', ids }, 'Erro ao enfileirar.')
+  await executar('drive/enfileirar', { tipo: 'cliente', ids }, 'Erro ao enfileirar.')
 }
 
 const enfileirarSelecionados = () => enfileirarIds([...selecionados.value])

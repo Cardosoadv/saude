@@ -15,7 +15,7 @@ class NormalizeClientesDocumentoNulo extends Migration
      */
     public function up()
     {
-        $this->db->query("UPDATE `clientes` SET `documento` = NULL WHERE `documento` = ''");
+        $this->db->table('clientes')->where('documento', '')->update(['documento' => null]);
     }
 
     public function down()

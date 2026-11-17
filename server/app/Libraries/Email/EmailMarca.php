@@ -8,15 +8,15 @@ use App\Libraries\Site\SiteContexto;
 use CodeIgniter\Email\Email;
 
 /**
- * Monta e-mails HTML com a identidade visual do escritório.
+ * Monta e-mails HTML com a identidade visual da clínica.
  *
  * O logo vai como anexo inline (cid:), porque Gmail e Outlook bloqueiam imagens em data URI.
  */
 class EmailMarca
 {
     /**
-     * Nome e arquivo de logo do escritório (configurações do site: o logo de e-mail, ou o logo
-     * do escritório; o logo do .env como reserva).
+     * Nome e arquivo de logo da clínica (configurações do site: o logo de e-mail, ou o logo
+     * da clínica; o logo do .env como reserva).
      *
      * @return array{nome: string, logo: ?string}
      */
@@ -46,7 +46,7 @@ class EmailMarca
             }
         }
 
-        return ['nome' => $nome !== '' ? $nome : 'Ordojuris', 'logo' => $logo];
+        return ['nome' => $nome !== '' ? $nome : 'Saúde', 'logo' => $logo];
     }
 
     /**
@@ -79,7 +79,7 @@ class EmailMarca
         $email->setMessage(view('emails/layout', $moldura + [
             'conteudo'       => $conteudo,
             'logoSrc'        => $logoSrc,
-            'nomeEscritorio' => $marca['nome'],
+            'nomeClinica' => $marca['nome'],
         ], ['saveData' => false]));
     }
 }

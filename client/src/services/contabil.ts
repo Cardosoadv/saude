@@ -1,7 +1,7 @@
 /**
  * Serviço de Integração do Módulo Contábil - Front-End SPA
  *
- * Conecta a SPA aos endpoints RESTful do OrdoJuris e do pacote cognitiotechny/contabil.
+ * Conecta a SPA aos endpoints RESTful do sistema e do pacote cognitiotechny/contabil.
  *
  * @version 1.0.0
  */

@@ -4,57 +4,61 @@ namespace App\Database\Seeds;
 
 use CodeIgniter\Database\Seeder;
 
+/**
+ * Artigos de exemplo (substitua pelos da sua clínica no painel).
+ * Requer ao menos um usuário (author_id = 1) e as categorias de SiteNewsCategoriesSeeder.
+ */
 class SiteNewsSeeder extends Seeder
 {
     public function run()
     {
         $data = [
             [
-                'category_id'       => 6,
+                'category_id'       => 1,
                 'author_id'         => 1,
-                'title'             => 'Teste',
-                'slug'              => 'teste',
-                'summary'           => 'Aqui fica o resumo das noticias',
-                'content'           => 'Aqui vai todo o conteúdo não sei ao certo como vai funcionar, mas é isso.',
+                'title'             => 'Check-up anual: por que fazer e o que esperar',
+                'slug'              => 'check-up-anual-por-que-fazer-e-o-que-esperar',
+                'summary'           => 'Entenda a importância das avaliações periódicas e como se preparar para a consulta.',
+                'content'           => '<p>O check-up anual permite identificar riscos precocemente e acompanhar a evolução da sua saúde. Converse com o seu profissional sobre quais exames fazem sentido para a sua idade e histórico.</p><p>Este conteúdo é informativo e não substitui a avaliação de um profissional de saúde.</p>',
                 'featured_image'    => null,
                 'meta_title'        => '',
                 'meta_description'  => '',
                 'status'            => 'published',
-                'published_at'      => '2026-03-12 10:21:54',
-                'created_at'        => '2026-03-12 10:21:54',
-                'updated_at'        => '2026-03-12 10:21:54',
+                'published_at'      => date('Y-m-d H:i:s'),
+                'created_at'        => date('Y-m-d H:i:s'),
+                'updated_at'        => date('Y-m-d H:i:s'),
                 'deleted_at'        => null,
             ],
             [
                 'category_id'       => 2,
                 'author_id'         => 1,
-                'title'             => 'Tendências do Contencioso Administrativo em 2026',
-                'slug'              => 'tendencias-do-contencioso-administrativo-em-2026',
-                'summary'           => 'Uma análise profunda sobre como as novas tecnologias estão moldando a relação entre o Estado e os particulares no âmbito judicial.',
-                'content'           => 'Uma análise profunda sobre como as novas tecnologias estão moldando a relação entre o Estado e os particulares no âmbito judicial.',
-                'featured_image'    => null,
-                'meta_title'        => 'metadados para o titulo',
-                'meta_description'  => 'sdf',
-                'status'            => 'published',
-                'published_at'      => '2026-03-12 10:26:09',
-                'created_at'        => '2026-03-12 10:26:09',
-                'updated_at'        => '2026-03-12 10:26:09',
-                'deleted_at'        => null,
-            ],
-            [
-                'category_id'       => 1,
-                'author_id'         => 1,
-                'title'             => 'Entendimento do STJ sobre a legalidade da locação por temporada',
-                'slug'              => 'entendimento-do-stj-sobre-a-legalidade-da-locacao-por-temporada',
-                'summary'           => '',
-                'content'           => '<p>🏢📱 <b>Você aluga seu imóvel por aplicativos de temporada? Saiba o que o condomínio pode (e o que não pode) proibir.</b></p><p>O aluguel por curta temporada (estilo Airbnb) é uma excelente fonte de renda, mas costuma gerar atritos em condomínios. Em 2026, a justiça brasileira já possui critérios claros sobre esse tema.</p>',
+                'title'             => 'Hábitos simples que ajudam na prevenção',
+                'slug'              => 'habitos-simples-que-ajudam-na-prevencao',
+                'summary'           => 'Sono, alimentação e atividade física: pequenas mudanças fazem diferença.',
+                'content'           => '<p>Manter uma rotina de sono regular, alimentação equilibrada e atividade física frequente contribui para a prevenção de diversas condições.</p><p>Este conteúdo é informativo e não substitui a avaliação de um profissional de saúde.</p>',
                 'featured_image'    => null,
                 'meta_title'        => '',
                 'meta_description'  => '',
                 'status'            => 'published',
-                'published_at'      => '2026-03-25 16:41:04',
-                'created_at'        => '2026-03-25 16:41:04',
-                'updated_at'        => '2026-03-25 16:41:04',
+                'published_at'      => date('Y-m-d H:i:s'),
+                'created_at'        => date('Y-m-d H:i:s'),
+                'updated_at'        => date('Y-m-d H:i:s'),
+                'deleted_at'        => null,
+            ],
+            [
+                'category_id'       => 4,
+                'author_id'         => 1,
+                'title'             => 'Novo canal de agendamento',
+                'slug'              => 'novo-canal-de-agendamento',
+                'summary'           => 'Agora você pode solicitar seu atendimento pelo site.',
+                'content'           => '<p>Preencha o formulário de contato e a nossa equipe retornará para confirmar o melhor horário.</p>',
+                'featured_image'    => null,
+                'meta_title'        => '',
+                'meta_description'  => '',
+                'status'            => 'published',
+                'published_at'      => date('Y-m-d H:i:s'),
+                'created_at'        => date('Y-m-d H:i:s'),
+                'updated_at'        => date('Y-m-d H:i:s'),
                 'deleted_at'        => null,
             ],
         ];

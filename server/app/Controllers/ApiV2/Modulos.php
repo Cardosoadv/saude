@@ -39,7 +39,7 @@ class Modulos extends BaseController
 
     /**
      * POST api/v2/modulos/toggleStatus
-     * Corpo (JSON ou form): { "slug": "objetos", "ativo": false }
+     * Corpo (JSON ou form): { "slug": "contratos", "ativo": false }
      */
     public function toggleStatus()
     {

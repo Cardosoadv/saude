@@ -59,17 +59,14 @@ class ContratosRepository extends BaseRepository
     public function findById(int $id): ?array
     {
         $contrato = $this->model
-            ->select('contratos.*, clientes.nome as cliente_nome, clientes.nome as nome_cliente, clientes.id_cliente as cliente_id, juris_ramos_direito.nome as ramo_nome, COALESCE(juris_ramos_direito.nome, contratos.area_atuacao) as ramo_direito, responsavel.username as responsavel_nome')
+            ->select('contratos.*, clientes.nome as cliente_nome, clientes.nome as nome_cliente, clientes.id_cliente as cliente_id, contratos.area_atuacao as ramo_nome, contratos.area_atuacao as ramo_direito, responsavel.username as responsavel_nome')
             ->join('clientes', 'clientes.id_cliente = contratos.cliente_id', 'left')
-            ->join('juris_ramos_direito', 'juris_ramos_direito.id = contratos.area_atuacao', 'left')
             ->join('users as responsavel', 'responsavel.id = contratos.responsavel_id', 'left')
             ->where('contratos.id_contrato', $id)
             ->where('contratos.deleted_at', null)
             ->first();
 
         if ($contrato) {
-            $contrato['processos'] = $this->getProcessos($id);
-            $contrato['casos']     = $this->getCasos($id);
             $contrato['receitas']  = $this->getReceitas($id);
             $contrato['despesas']  = $this->getDespesas($id);
         }
@@ -123,9 +120,8 @@ class ContratosRepository extends BaseRepository
     protected function filtrarContratos(array $filtros): object // Returns Builder instance
     {
         $builder = $this->model
-            ->select('contratos.*, clientes.nome as cliente_nome, clientes.nome as nome_cliente, juris_ramos_direito.nome as ramo_nome, COALESCE(juris_ramos_direito.nome, contratos.area_atuacao) as ramo_direito, responsavel.username as responsavel_nome')
+            ->select('contratos.*, clientes.nome as cliente_nome, clientes.nome as nome_cliente, contratos.area_atuacao as ramo_nome, contratos.area_atuacao as ramo_direito, responsavel.username as responsavel_nome')
             ->join('clientes', 'clientes.id_cliente = contratos.cliente_id', 'left')
-            ->join('juris_ramos_direito', 'juris_ramos_direito.id = contratos.area_atuacao', 'left')
             ->join('users as responsavel', 'responsavel.id = contratos.responsavel_id', 'left');
 
         $builder->where('contratos.deleted_at', null);
@@ -141,17 +137,12 @@ class ContratosRepository extends BaseRepository
                 ->like('clientes.nome', $termo)
                 ->orLike('contratos.numero_contrato', $termo)
                 ->orLike('contratos.objeto', $termo)
-                ->orLike('juris_ramos_direito.nome', $termo)
                 ->orLike('contratos.area_atuacao', $termo)
                 ->groupEnd();
         }
 
         if (!empty($filtros['ramo_id'])) {
-            $builder->groupStart()
-                ->where('contratos.area_atuacao', $filtros['ramo_id'])
-                ->orWhere('juris_ramos_direito.id', $filtros['ramo_id'])
-                ->orWhere('juris_ramos_direito.pai_id', $filtros['ramo_id'])
-                ->groupEnd();
+            $builder->where('contratos.area_atuacao', $filtros['ramo_id']);
         }
 
         if (!empty($filtros['status'])) {
@@ -260,29 +251,6 @@ class ContratosRepository extends BaseRepository
             ->find();
     }
 
-    public function getProcessos(int $contratoId): array
-    {
-        $builder = $this->db->table('processos')
-            ->select('id_processo, numeroprocessocommascara as numero_processo, titulo_processo')
-            ->where('contrato_id', $contratoId)
-            ->where('deleted_at', null);
-        $this->escopo($builder, 'processo');
-
-        return $builder
-            ->get()
-            ->getResultArray();
-    }
-
-    public function getCasos(int $contratoId): array
-    {
-        return $this->db->table('casos')
-            ->select('id_caso, titulo')
-            ->where('contrato_id', $contratoId)
-            ->where('deleted_at', null)
-            ->get()
-            ->getResultArray();
-    }
-
     public function getReceitas(int $contratoId): array
     {
         return $this->db->table('fin_receitas')
@@ -336,34 +304,6 @@ class ContratosRepository extends BaseRepository
             ->orderBy('data_aditivo', 'DESC')
             ->get()
             ->getResultArray();
-    }
-
-    public function vincularProcesso(int $contratoId, int $processoId): bool
-    {
-        return $this->db->table('processos')
-            ->where('id_processo', $processoId)
-            ->update(['contrato_id' => $contratoId]);
-    }
-
-    public function vincularCaso(int $contratoId, int $casoId): bool
-    {
-        return $this->db->table('casos')
-            ->where('id_caso', $casoId)
-            ->update(['contrato_id' => $contratoId]);
-    }
-
-    public function desvincularProcesso(int $processoId): bool
-    {
-        return $this->db->table('processos')
-            ->where('id_processo', $processoId)
-            ->update(['contrato_id' => null]);
-    }
-
-    public function desvincularCaso(int $casoId): bool
-    {
-        return $this->db->table('casos')
-            ->where('id_caso', $casoId)
-            ->update(['contrato_id' => null]);
     }
 
     /**

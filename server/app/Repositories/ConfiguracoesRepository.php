@@ -9,7 +9,6 @@ use App\Models\ConfiguracoesModel;
 /**
  * Repositório para gerenciar configurações com suporte a cache.
  * 
- * @author Cardoso
  * @version 1.0.0
  * @since 2026-05-09
  */

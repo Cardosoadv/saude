@@ -144,7 +144,7 @@ class ConciliacaoExtratoServiceTest extends CIUnitTestCase
     public function testNomeQueBateAumentaAPontuacao(): void
     {
         $m = $this->movimento(1, '2026-10-10', -15000, 'PIX ENVIADO Papelaria Modelo');
-        $this->pagtoDespesa(11, 1, '2026-10-10', 15000, 'Material de escritório', 'Papelaria Modelo Ltda');
+        $this->pagtoDespesa(11, 1, '2026-10-10', 15000, 'Material de clínica', 'Papelaria Modelo Ltda');
         $this->pagtoDespesa(12, 1, '2026-10-10', 15000, 'Outra despesa', 'Fornecedor Qualquer');
 
         $s = $this->servico()->sugestoes($m);

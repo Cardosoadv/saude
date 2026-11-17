@@ -7,8 +7,7 @@
  * @var string|null $detalhes       Descrição da tarefa.
  * @var string      $prazoFormatado dd/mm/aaaa.
  * @var string|null $situacaoPrazo  Ex.: "vence em 2 dias".
- * @var array|null  $processo       Resumo do processo vinculado (ver NotificacaoRepository::resumoProcesso).
- * @var array|null  $vinculo        Link para cliente/caso vinculado: rotulo, url, info.
+ * @var array|null  $vinculo        Link para o cliente vinculado: rotulo, url, info.
  * @var string      $urlSistema
  */
 ?>
@@ -28,15 +27,11 @@
     'Detalhes' => $detalhes,
 ]) ?>
 
-<?php if (!empty($processo)): ?>
-    <?= email_cartao_processo($processo) ?>
-<?php endif; ?>
-
 <?php if (!empty($vinculo)): ?>
     <?= email_detalhes([$vinculo['rotulo'] => $vinculo['info']]) ?>
 <?php endif; ?>
 
-<?= email_botao($processo['url'] ?? $vinculo['url'] ?? $urlSistema, !empty($processo) ? 'Abrir processo' : (!empty($vinculo) ? $vinculo['acao'] : 'Acessar o sistema')) ?>
+<?= email_botao($vinculo['url'] ?? $urlSistema, !empty($vinculo) ? $vinculo['acao'] : 'Acessar o sistema') ?>
 
 <?php if ($modo === 'prazo'): ?>
     <p style="margin:22px 0 0;font-size:13px;color:#6b7280;">Verifique a tarefa e tome as providências necessárias antes do vencimento.</p>

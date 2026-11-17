@@ -6,22 +6,20 @@ namespace App\Services;
 
 use App\Models\ClientesModel;
 use App\Models\DriveSyncJobModel;
-use App\Models\ProcessosModel;
 use Exception;
 
 /**
- * Regras da sincronização de pastas do Google Drive (clientes e processos).
+ * Regras da sincronização de pastas do Google Drive (clientes).
  *
  * Centraliza a fila `drive_sync_jobs` para ser usada tanto pelo comando
  * `php spark drive:sync` quanto pela tela de Configurações.
  *
- * @author Cardoso
  * @version 1.0.0
  * @since 2026-10-17
  */
 class DriveSyncService
 {
-    public const TIPOS = ['cliente', 'processo'];
+    public const TIPOS = ['cliente'];
 
     public const STATUS = ['pending', 'processing', 'completed', 'failed'];
 
@@ -30,17 +28,14 @@ class DriveSyncService
 
     private DriveSyncJobModel $jobModel;
     private ClientesModel $clientesModel;
-    private ProcessosModel $processosModel;
     private $db;
 
     public function __construct(
         ?DriveSyncJobModel $jobModel = null,
-        ?ClientesModel $clientesModel = null,
-        ?ProcessosModel $processosModel = null
+        ?ClientesModel $clientesModel = null
     ) {
         $this->jobModel       = $jobModel ?? new DriveSyncJobModel();
         $this->clientesModel  = $clientesModel ?? new ClientesModel();
-        $this->processosModel = $processosModel ?? new ProcessosModel();
         $this->db             = \Config\Database::connect();
     }
 
@@ -71,7 +66,6 @@ class DriveSyncService
             'configurado' => $this->pastaRaiz() !== '',
             'fila'        => $fila + ['travados' => $travados],
             'clientes'    => $this->contarEntidade('cliente'),
-            'processos'   => $this->contarEntidade('processo'),
         ];
     }
 
@@ -113,11 +107,8 @@ class DriveSyncService
 
         $builder = $this->db->table('drive_sync_jobs j')
             ->select("j.id, j.entity_type, j.entity_id, j.status, j.error_message, j.created_at, j.updated_at,
-                      CASE j.entity_type WHEN 'cliente' THEN c.nome
-                           ELSE CONCAT_WS(' - ', NULLIF(p.numero_processo, ''), NULLIF(p.titulo_processo, '')) END AS entidade_nome,
-                      CASE j.entity_type WHEN 'cliente' THEN c.pasta ELSE p.pasta END AS pasta", false)
-            ->join('clientes c', "c.id_cliente = j.entity_id AND j.entity_type = 'cliente'", 'left')
-            ->join('processos p', "p.id_processo = j.entity_id AND j.entity_type = 'processo'", 'left');
+                      c.nome AS entidade_nome, c.pasta AS pasta", false)
+            ->join('clientes c', "c.id_cliente = j.entity_id AND j.entity_type = 'cliente'", 'left');
 
         if (!empty($filtros['status']) && in_array($filtros['status'], self::STATUS, true)) {
             $builder->where('j.status', $filtros['status']);
@@ -128,8 +119,6 @@ class DriveSyncService
         if (!empty($filtros['busca'])) {
             $builder->groupStart()
                 ->like('c.nome', $filtros['busca'])
-                ->orLike('p.numero_processo', $filtros['busca'])
-                ->orLike('p.titulo_processo', $filtros['busca'])
                 ->orLike('j.error_message', $filtros['busca'])
                 ->groupEnd();
         }
@@ -143,7 +132,7 @@ class DriveSyncService
     }
 
     /**
-     * Lista paginada de clientes ou processos com a situação da pasta e do último job.
+     * Lista paginada de clientes com a situação da pasta e do último job.
      *
      * @param array{situacao?:string,busca?:string} $filtros situacao: com_pasta|sem_pasta
      */
@@ -156,9 +145,7 @@ class DriveSyncService
         $pagina    = max(1, $pagina);
         [$tabela, $pk] = $this->tabelaDe($tipo);
 
-        $nome = $tipo === 'cliente'
-            ? "{$tabela}.nome"
-            : "CONCAT_WS(' - ', NULLIF({$tabela}.numero_processo, ''), NULLIF({$tabela}.titulo_processo, ''))";
+        $nome = "{$tabela}.nome";
 
         $builder = $this->entidadesBase($tipo)
             ->select("{$tabela}.{$pk} AS id, {$nome} AS nome, {$tabela}.pasta,
@@ -172,14 +159,7 @@ class DriveSyncService
         }
 
         if (!empty($filtros['busca'])) {
-            $builder->groupStart();
-            if ($tipo === 'cliente') {
-                $builder->like("{$tabela}.nome", $filtros['busca']);
-            } else {
-                $builder->like("{$tabela}.numero_processo", $filtros['busca'])
-                        ->orLike("{$tabela}.titulo_processo", $filtros['busca']);
-            }
-            $builder->groupEnd();
+            $builder->like("{$tabela}.nome", $filtros['busca']);
         }
 
         $total = (clone $builder)->countAllResults(false);
@@ -195,13 +175,13 @@ class DriveSyncService
     // ------------------------------------------------------------------
 
     /**
-     * Enfileira todos os clientes e processos que ainda não têm pasta.
+     * Enfileira todos os clientes que ainda não têm pasta.
      *
-     * @return array{clientes:int,processos:int}
+     * @return array{clientes:int}
      */
     public function enfileirarPendentes(): array
     {
-        $resultado = ['clientes' => 0, 'processos' => 0];
+        $resultado = ['clientes' => 0];
 
         foreach (self::TIPOS as $tipo) {
             [$tabela, $pk] = $this->tabelaDe($tipo);
@@ -210,7 +190,7 @@ class DriveSyncService
                 ->groupStart()->where("{$tabela}.pasta", null)->orWhere("{$tabela}.pasta", '')->groupEnd()
                 ->get()->getResultArray();
 
-            $chave = $tipo === 'cliente' ? 'clientes' : 'processos';
+            $chave = 'clientes';
             foreach ($ids as $linha) {
                 if ($this->enfileirar($tipo, (int) $linha['id'])) {
                     $resultado[$chave]++;
@@ -326,7 +306,7 @@ class DriveSyncService
     // ------------------------------------------------------------------
 
     /**
-     * Processa até $limite jobs pendentes (clientes primeiro, depois processos).
+     * Processa até $limite jobs pendentes .
      *
      * @param callable|null $log function(string $mensagem, string $nivel): void
      * @return array{processados:int,sucesso:int,falhas:int,restantes:int,itens:array}
@@ -341,7 +321,6 @@ class DriveSyncService
 
         $limite = max(1, min(100, $limite));
         $jobs = $this->jobModel->where('status', 'pending')
-            ->orderBy('entity_type', 'ASC') // 'cliente' vem antes de 'processo'
             ->orderBy('id', 'ASC')
             ->findAll($limite);
 
@@ -394,32 +373,6 @@ class DriveSyncService
             return $pasta['link'];
         }
 
-        if ($job['entity_type'] === 'processo') {
-            $processo = $this->processosModel->find($job['entity_id']);
-            if (!$processo) {
-                throw new Exception('Processo não encontrado.');
-            }
-
-            $cliente = $this->clientesModel->find($processo['cliente_id']);
-            if (!$cliente) {
-                throw new Exception('Cliente associado não encontrado.');
-            }
-            if (empty($cliente['pasta'])) {
-                throw new Exception("Cliente {$cliente['id_cliente']} ainda não tem pasta gerada.");
-            }
-
-            $clientePastaId = $drive->extractFolderIdFromUrl($cliente['pasta']);
-            if (!$clientePastaId) {
-                throw new Exception('ID da pasta do Cliente inválido.');
-            }
-
-            $nome = ltrim(($processo['numero_processo'] ?? '') . ' - ' . ($processo['titulo_processo'] ?? ''), ' -');
-            $pasta = $drive->getOrCreateFolder($nome !== '' ? $nome : 'Processo ' . $processo['id_processo'], $clientePastaId);
-            $this->processosModel->update($processo['id_processo'], ['pasta' => $pasta['link']]);
-
-            return $pasta['link'];
-        }
-
         throw new Exception("Tipo de entidade desconhecido: {$job['entity_type']}");
     }
 
@@ -440,19 +393,15 @@ class DriveSyncService
     /** @return array{0:string,1:string} [tabela, chave primária] */
     private function tabelaDe(string $tipo): array
     {
-        return $tipo === 'cliente' ? ['clientes', 'id_cliente'] : ['processos', 'id_processo'];
+        return ['clientes', 'id_cliente'];
     }
 
-    /** Builder base da entidade, respeitando soft delete dos processos. */
+    /** Builder base da entidade. */
     private function entidadesBase(string $tipo)
     {
         [$tabela] = $this->tabelaDe($tipo);
-        $builder = $this->db->table($tabela);
-        if ($tipo === 'processo') {
-            $builder->where('processos.deleted_at', null);
-        }
 
-        return $builder;
+        return $this->db->table($tabela);
     }
 
     private function paginado(array $itens, int $total, int $pagina, int $porPagina): array

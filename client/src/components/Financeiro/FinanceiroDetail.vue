@@ -2,7 +2,7 @@
   <div class="page-content animate-fade-in pb-5">
     <!-- Breadcrumb -->
     <div class="breadcrumb">
-      <a href="#" @click.prevent="$emit('set-view', 'list')">Ordo Juris</a>
+      <a href="#" @click.prevent="$emit('set-view', 'list')">Saúde</a>
       <i class="bi bi-chevron-right"></i>
       <a href="#" @click.prevent="$emit('set-view', config.viewName)">{{ config.listLabel }}</a>
       <i class="bi bi-chevron-right"></i>
@@ -177,23 +177,6 @@
               <div class="form-group">
                 <label for="comentario"><i class="bi bi-chat-left-text"></i> Comentário / Observações</label>
                 <textarea class="form-control" id="comentario" v-model="form.comentario" rows="3" placeholder="Anotações internas sobre essa receita..."></textarea>
-              </div>
-            </div>
-
-            <div class="form-row col-1">
-              <div class="form-group">
-                <label><i class="bi bi-briefcase"></i> Caso / Processo</label>
-                <VinculoJuridicoCampo
-                  v-model:caso-id="form.caso_id"
-                  v-model:processo-id="form.processo_id"
-                  v-model:caso-rotulo="casoRotulo"
-                  v-model:processo-rotulo="processoRotulo"
-                  :cliente-id="type === 'receita' ? form.cliente_id : null"
-                  :cliente-nome="type === 'receita' ? partyBusca : null"
-                  :contrato-id="form.contrato_id"
-                  @cliente="onClienteDoVinculo"
-                  @toast="t => emit('toast', t)"
-                />
               </div>
             </div>
 
@@ -375,13 +358,6 @@
           </div>
         </div>
 
-        <!-- Nota fiscal de serviço (NFS-e) da receita -->
-        <NotaFiscalReceita
-          v-if="type === 'receita' && isEdit"
-          :receita-id="transactionId"
-          @toast="(payload) => emit('toast', payload)"
-        />
-
         <!-- Info Widget -->
         <div class="card" style="margin-bottom:16px;">
           <div class="card-header">
@@ -400,14 +376,6 @@
               <span class="process-date" style="font-size:.82rem;"><i class="bi bi-link"></i> Vínculo (Contrato)</span>
               <span class="process-num" style="font-size:.82rem; color:var(--accent);">#{{ form.contrato_id }}</span>
             </li>
-            <li v-if="form.caso_id" style="cursor:default; display:flex; justify-content:space-between; align-items:center;">
-              <span class="process-date" style="font-size:.82rem;"><i class="bi bi-briefcase"></i> Caso</span>
-              <span class="process-num" style="font-size:.82rem; color:var(--accent);">#{{ form.caso_id }}</span>
-            </li>
-            <li v-if="form.processo_id" style="cursor:default; display:flex; justify-content:space-between; align-items:center;">
-              <span class="process-date" style="font-size:.82rem;"><i class="bi bi-bank"></i> Processo</span>
-              <span class="process-num" style="font-size:.82rem; color:var(--accent);">#{{ form.processo_id }}</span>
-            </li>
             <li v-if="!isEdit" style="cursor:default; color:var(--ink-muted); font-size:0.85rem; padding: 12px 18px;">
               {{ config.metaUnsavedText }}
             </li>
@@ -421,8 +389,6 @@
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted, onUnmounted, watch } from 'vue'
 import { apiFetch, debounce, formatDate, formatCurrency, formatNumberBr } from '../../services/api'
-import NotaFiscalReceita from './NotaFiscalReceita.vue'
-import VinculoJuridicoCampo from './VinculoJuridicoCampo.vue'
 
 const props = defineProps({
   type: {
@@ -469,7 +435,7 @@ const config = computed(() => {
       partyPlaceholder: 'Buscar fornecedor por nome ou CNPJ...',
       partyBuscaEndpoint: 'fornecedores/buscar',
 
-      rateioLabel: 'Rateio entre Advogados',
+      rateioLabel: 'Rateio entre Profissionais',
       rateioEmptyText: 'Nenhum rateio configurado. Esta despesa será cobrada integralmente de forma global, a menos que adicione sócios acima.',
       rateioFooterDiffLabel: 'O valor do rateio difere do valor total da despesa!',
       rateioToastDiffLabel: 'Valor do rateio difere do valor total da despesa!',
@@ -524,7 +490,7 @@ const config = computed(() => {
       partyPlaceholder: 'Buscar cliente por nome ou documento...',
       partyBuscaEndpoint: 'clientes/buscar',
 
-      rateioLabel: 'Repasse entre Advogados',
+      rateioLabel: 'Repasse entre Profissionais',
       rateioEmptyText: 'Nenhum repasse configurado. Esta receita será integralmente creditada ao caixa global, a menos que adicione sócios acima.',
       rateioFooterDiffLabel: 'O valor do repasse difere do valor total da receita!',
       rateioToastDiffLabel: 'Valor do repasse difere do valor total da receita!',
@@ -579,8 +545,6 @@ const form = reactive({
   cliente: '',
   cliente_id: '',
   contrato_id: '',
-  caso_id: null as number | null,
-  processo_id: null as number | null,
   comentario: '',
   rateio: [],
   conta_id: '',
@@ -624,18 +588,6 @@ const showParty = ref(false)
 const contratoBusca = ref('')
 const contratoOptions = ref([])
 const showContratos = ref(false)
-
-// Vínculo jurídico (caso / processo)
-const casoRotulo = ref<string | null>(null)
-const processoRotulo = ref<string | null>(null)
-
-/** Receita sem cliente herda o do caso/processo escolhido. */
-function onClienteDoVinculo(c: { id: number, nome: string | null }) {
-  if (props.type !== 'receita' || form.cliente_id) return
-  form.cliente = String(c.id)
-  form.cliente_id = String(c.id)
-  partyBusca.value = c.nome || ''
-}
 
 // Init fetch
 onMounted(async () => {
@@ -716,8 +668,6 @@ async function loadTransaction() {
         contratoBusca.value = res.data.contrato_nome || res.data.numero_contrato
       }
 
-      casoRotulo.value = res.data.caso_titulo || null
-      processoRotulo.value = [res.data.processo_numero, res.data.processo_titulo].filter(Boolean).join(' - ') || null
 
       if (!form.rateio) {
         form.rateio = []

@@ -4,7 +4,7 @@ if (!function_exists('modulo_ativo')) {
     /**
      * Verifica se um módulo está ativo
      *
-     * @param string $slug Slug do módulo (ex.: 'objetos')
+     * @param string $slug Slug do módulo (ex.: 'contratos')
      * @return bool
      */
     function modulo_ativo(string $slug): bool

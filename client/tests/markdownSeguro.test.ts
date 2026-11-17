@@ -11,9 +11,9 @@ describe('renderizarMarkdown', () => {
     expect(html).toContain('<strong>&lt;b&gt;x&lt;/b&gt;</strong>')
   })
 
-  it('só transforma links ordo:// de tipo conhecido em botões', () => {
-    const html = renderizarMarkdown('[P](ordo://processo/12) [J](javascript:alert(1)) [S](https://mal.example) [U](ordo://usuario/3) [X](ordo://processo/12" onclick="x)')
-    expect(html).toContain('<button type="button" class="copiloto-ref" data-tipo="processo" data-id="12">P</button>')
+  it('só transforma links app:// de tipo conhecido em botões', () => {
+    const html = renderizarMarkdown('[P](app://cliente/12) [J](javascript:alert(1)) [S](https://mal.example) [U](app://usuario/3) [X](app://cliente/12" onclick="x)')
+    expect(html).toContain('<button type="button" class="copiloto-ref" data-tipo="cliente" data-id="12">P</button>')
     expect(html).not.toContain('javascript:')
     expect(html).not.toContain('href')
     expect(html).not.toContain('mal.example')
@@ -31,6 +31,6 @@ describe('renderizarMarkdown', () => {
   })
 
   it('não aplica formatação dentro de código', () => {
-    expect(renderizarMarkdown('`**x** [a](ordo://processo/1)`')).toBe('<p><code>**x** [a](ordo://processo/1)</code></p>')
+    expect(renderizarMarkdown('`**x** [a](app://cliente/1)`')).toBe('<p><code>**x** [a](app://cliente/1)</code></p>')
   })
 })

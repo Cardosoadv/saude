@@ -188,7 +188,7 @@ class SiteRenderServiceTest extends CIUnitTestCase
     {
         $this->templatesPhp();
         $render = $this->ambiente();
-        $this->model(SiteConfiguracaoModel::class)->insert(['chave' => 'identidade.nome', 'valor' => 'Escritório X', 'tipo' => 'string', 'grupo' => 'identidade']);
+        $this->model(SiteConfiguracaoModel::class)->insert(['chave' => 'identidade.nome', 'valor' => 'Clínica X', 'tipo' => 'string', 'grupo' => 'identidade']);
         $this->model(SiteConfiguracaoModel::class)->insert(['chave' => 'seo.sufixo_titulo', 'valor' => ' | X', 'tipo' => 'string', 'grupo' => 'seo']);
 
         $p = $this->pagina('inicio', tipo: 'home');
@@ -205,7 +205,7 @@ class SiteRenderServiceTest extends CIUnitTestCase
         $this->assertStringNotContainsString('oculta', $html);
         $this->assertStringContainsString('<li>Civil &amp; Família</li>', $html, 'campo dinâmico vem do provedor');
         $this->assertLessThan(strpos($html, '<ul>'), strpos($html, '<h1>'), 'ordem das seções');
-        $this->assertStringContainsString('Direitos (padrão do template) | Escritório X', $html);
+        $this->assertStringContainsString('Direitos (padrão do template) | Clínica X', $html);
     }
 
     public function testTextoEditadoSobrepoeOPadraoDoTemplate(): void

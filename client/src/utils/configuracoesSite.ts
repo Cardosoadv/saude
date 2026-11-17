@@ -31,7 +31,7 @@ export const ABAS: AbaConfiguracao[] = [
   {
     id: 'identidade', rotulo: 'Identidade', icone: 'bi-building',
     campos: [
-      { chave: 'identidade.nome', rotulo: 'Nome do escritório', ui: 'texto', tipo: 'string', placeholder: 'Silva & Souza Advogados Associados' },
+      { chave: 'identidade.nome', rotulo: 'Nome da clínica', ui: 'texto', tipo: 'string', placeholder: 'Silva & Souza Profissionais Associados' },
       { chave: 'identidade.nome_curto', rotulo: 'Nome curto', ui: 'texto', tipo: 'string', placeholder: 'Silva & Souza', ajuda: 'Usado em títulos, metadados e no papel timbrado.' },
       { chave: 'identidade.logo', rotulo: 'Logo', ui: 'imagem', tipo: 'imagem', ajuda: 'Cabeçalho do site e documentos; também nos e-mails, se não houver logo próprio para eles.' },
       { chave: 'identidade.logo_rodape', rotulo: 'Logo do rodapé', ui: 'imagem', tipo: 'imagem' },
@@ -48,8 +48,8 @@ export const ABAS: AbaConfiguracao[] = [
       { chave: 'contato.telefone', rotulo: 'Telefone', ui: 'texto', tipo: 'string', placeholder: '(31) 9.9999-9999' },
       { chave: 'contato.telefone2', rotulo: 'WhatsApp / segundo telefone', ui: 'texto', tipo: 'string', placeholder: '(31) 9.9999-9999' },
       { chave: 'contato.telefone_whatsapp', rotulo: 'Transformar os telefones em link do WhatsApp', ui: 'checkbox', tipo: 'bool', ajuda: 'No site, os telefones passam a abrir uma conversa no WhatsApp (wa.me).' },
-      { chave: 'contato.email', rotulo: 'E-mail', ui: 'email', tipo: 'string', placeholder: 'contato@escritorio.adv.br' },
-      { chave: 'contato.site', rotulo: 'Endereço do site', ui: 'texto', tipo: 'string', placeholder: 'www.escritorio.adv.br', ajuda: 'Aparece no rodapé dos documentos. Vazio usa o endereço do sistema.' },
+      { chave: 'contato.email', rotulo: 'E-mail', ui: 'email', tipo: 'string', placeholder: 'contato@clinica.com.br' },
+      { chave: 'contato.site', rotulo: 'Endereço do site', ui: 'texto', tipo: 'string', placeholder: 'www.clinica.com.br', ajuda: 'Aparece no rodapé dos documentos. Vazio usa o endereço do sistema.' },
       { chave: 'contato.enderecos', rotulo: 'Unidades', ui: 'enderecos', tipo: 'json' },
     ],
   },
@@ -85,7 +85,7 @@ export const ABAS: AbaConfiguracao[] = [
     id: 'lgpd', rotulo: 'Privacidade (LGPD)', icone: 'bi-shield-check',
     campos: [
       { chave: 'lgpd.encarregado_nome', rotulo: 'Encarregado (DPO)', ui: 'texto', tipo: 'string', placeholder: 'Nome completo', ajuda: 'Divulgado na Política de Privacidade (LGPD, art. 41, § 1º).' },
-      { chave: 'lgpd.encarregado_email', rotulo: 'E-mail do encarregado', ui: 'email', tipo: 'string', placeholder: 'privacidade@escritorio.adv.br', ajuda: 'Canal para os titulares exercerem seus direitos.' },
+      { chave: 'lgpd.encarregado_email', rotulo: 'E-mail do encarregado', ui: 'email', tipo: 'string', placeholder: 'privacidade@clinica.com.br', ajuda: 'Canal para os titulares exercerem seus direitos.' },
       { chave: 'lgpd.politica_versao', rotulo: 'Versão da Política de Privacidade', ui: 'texto', tipo: 'string', max: 20, placeholder: 'AAAA-MM-DD', ajuda: 'Gravada com cada aceite do formulário de contato. Atualize sempre que mudar o texto da política.' },
     ],
   },

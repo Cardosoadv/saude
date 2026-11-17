@@ -9,25 +9,12 @@
         currentView === 'dashboard' ? 'Dashboard' :
         currentView === 'crm' ? 'Pipeline CRM' :
         currentView === 'crm-leads' ? 'Leads CRM' :
-        currentView === 'list' ? 'Processos' :
-        currentView === 'detail' ? 'Detalhes do Processo' :
-        currentView === 'process-form' ? 'Novo Processo' :
-        currentView === 'busca-automatica' ? 'Busca Automática' :
-        currentView === 'importacao-processos' ? 'Importar Processos' :
-        currentView === 'liquidacoes' ? 'Liquidações' :
-        currentView === 'liquidacao-detail' ? 'Detalhes da Liquidação' :
         currentView === 'clientes' ? 'Clientes' :
         currentView === 'cliente-detail' ? 'Detalhes do Cliente' :
-        currentView === 'casos' ? 'Casos Extrajudiciais' :
-        currentView === 'caso-detail' ? 'Detalhes do Caso' :
         currentView === 'contratos' ? 'Contratos' :
         currentView === 'contrato-detail' ? 'Detalhes do Contrato' :
         currentView === 'fornecedores' ? 'Fornecedores' :
         currentView === 'fornecedor-detail' ? 'Detalhes do Fornecedor' :
-        currentView === 'objetos' ? 'Objetos' :
-        currentView === 'objeto-detail' ? 'Detalhes do Objeto' :
-        currentView === 'intimacoes' ? 'Intimações' :
-        currentView === 'intimacao-detail' ? 'Detalhes da Intimação' :
         currentView === 'despesas' ? 'Despesas' :
         currentView === 'extrato' ? 'Extrato' :
         currentView === 'contas' ? 'Contas Bancárias' :
@@ -50,25 +37,16 @@
         currentView === 'receita-detail' ? 'Detalhes da Receita' :
         currentView === 'receita-recebida-detail' ? 'Detalhes da Receita Recebida' :
         currentView === 'tarefas' ? 'Tarefas' :
-        currentView === 'mensagens' ? 'Mensagens' :
-        currentView === 'mensagem-detail' ? 'Detalhes da Mensagem' :
-        currentView === 'etiquetas' ? 'Etiquetas' :
-        currentView === 'checklists' ? 'Checklists' :
-        currentView === 'checklist-detail' ? 'Detalhes do Checklist' :
         currentView === 'business-canvas' ? 'Business Canvas' :
         currentView === 'perfil' ? 'Meu Perfil' :
         currentView === 'configuracoes' ? 'Configurações' :
+        currentView === 'transferencias' ? 'Lista de Transferências' :
+        currentView === 'transferencia-detail' ? 'Editar Transferência' :
+        currentView === 'previsao-fluxo-caixa' ? 'Previsão de Fluxo de Caixa' :
+        currentView === 'relatorio-categorias' ? 'Relatório por Categorias' :
         currentView === 'noticias' ? 'Notícias' :
         currentView === 'noticias-form' ? 'Editor de Notícia' :
         currentView === 'noticias-categorias' ? 'Categorias das Notícias' :
-        currentView === 'legal-ops' ? 'Legal Ops BI' :
-        currentView === 'conhecimento' ? 'Base de Conhecimento' :
-        currentView === 'modelos' ? 'Modelos de Documentos' :
-        currentView === 'modelo-editor' ? 'Editor de Modelo' :
-        currentView === 'gerar-documento' ? 'Documento Gerado' :
-        currentView === 'timbrado' ? 'Papel Timbrado' :
-        currentView === 'transferencias' ? 'Lista de Transferências' :
-        currentView === 'transferencia-detail' ? 'Editar Transferência' :
         currentView === 'site-paginas' ? 'Páginas do Site' :
         currentView === 'site-pagina-editor' ? 'Editor de Página' :
         currentView === 'site-menus' ? 'Menus do Site' :
@@ -76,16 +54,18 @@
         currentView === 'site-configuracoes' ? 'Configurações do Site' :
         currentView === 'site-aparencia' ? 'Aparência do Site' :
         currentView === 'site-templates' ? 'Templates do Site' :
-        currentView === 'documentacao' ? 'Documentação' : currentView === 'documentacao-admin' ? 'Edição da Documentação' : currentView === 'documentacao-editor' ? 'Editor da Documentação' :
-        'Processos'
+        currentView === 'documentacao' ? 'Documentação' :
+        currentView === 'documentacao-admin' ? 'Edição da Documentação' :
+        currentView === 'documentacao-editor' ? 'Editor da Documentação' :
+        'Saúde'
       }}
     </div> 
  
-    <div class="topbar-search" v-if="currentView !== 'dashboard' && currentView !== 'crm' && (currentView === 'list' || currentView === 'clientes' || currentView === 'intimacoes' || currentView === 'casos' || currentView === 'contratos' || currentView === 'fornecedores' || currentView === 'objetos' || currentView === 'etiquetas' || currentView === 'noticias' || currentView === 'crm-leads' || currentView === 'liquidacoes' || currentView === 'busca-automatica')">
+    <div class="topbar-search" v-if="currentView !== 'dashboard' && currentView !== 'crm' && ['clientes', 'contratos', 'fornecedores', 'crm-leads', 'tarefas', 'noticias'].includes(currentView)">
       <i class="bi bi-search" aria-hidden="true"></i>
       <input
         type="text"
-        :placeholder="currentView === 'list' ? 'Buscar processo, cliente, número...' : currentView === 'busca-automatica' ? 'Buscar por número ou observação...' : currentView === 'intimacoes' ? 'Processo, OAB, termo...' : currentView === 'casos' ? 'Buscar caso, cliente...' : currentView === 'contratos' ? 'Buscar contrato, cliente...' : currentView === 'fornecedores' ? 'Buscar fornecedor...' : currentView === 'objetos' ? 'Buscar por cidade, bairro, código...' : currentView === 'etiquetas' ? 'Buscar etiqueta...' : currentView === 'noticias' ? 'Buscar notícia...' : currentView === 'crm-leads' ? 'Buscar lead por nome, e-mail, telefone...' : currentView === 'liquidacoes' ? 'Buscar liquidação por processo ou cliente...' : 'Buscar cliente...'"
+        :placeholder="currentView === 'contratos' ? 'Buscar contrato, cliente...' : currentView === 'fornecedores' ? 'Buscar fornecedor...' : currentView === 'crm-leads' ? 'Buscar lead por nome, e-mail, telefone...' : currentView === 'tarefas' ? 'Buscar tarefa...' : currentView === 'noticias' ? 'Buscar notícia...' : 'Buscar cliente...'"
         :value="modelValue"
         @input="onInput"
         @keyup.enter="$emit('do-search')"
@@ -98,18 +78,6 @@
  
     <div class="topbar-actions">
       <AjudaContextual :current-view="currentView" @abrir-documentacao="(d) => $emit('abrir-documentacao', d)" />
-      <button
-        v-if="podeCopiloto"
-        type="button"
-        class="topbar-icon-btn copiloto-btn"
-        :class="{ ativo: copiloto.estado.aberto }"
-        title="Copiloto (Ctrl+K)"
-        aria-label="Abrir Copiloto"
-        :aria-expanded="copiloto.estado.aberto"
-        @click="copiloto.alternar()"
-      >
-        <i class="bi bi-stars"></i>
-      </button>
       <div class="notifications-menu-wrapper">
         <button
           class="topbar-icon-btn"
@@ -150,50 +118,6 @@
           </div>
         </div>
       </div>
-      <!-- Mensagens Menu -->
-      <div class="messages-menu-wrapper" v-if="currentUser">
-        <button 
-          class="topbar-icon-btn" 
-          title="Mensagens" 
-          aria-label="Ver Mensagens" 
-          @click="toggleMessagesMenu"
-          :aria-expanded="messagesMenuOpen"
-          aria-haspopup="true"
-        >
-          <i class="bi bi-envelope"></i>
-          <span :class="['topbar-badge', { 'badge-pulse': pulseMessages }]" style="background:var(--accent);" v-if="globalStats.qteMensagensNaoLidas > 0">{{ globalStats.qteMensagensNaoLidas }}</span>
-        </button>
-        <div v-if="messagesMenuOpen" class="messages-dropdown card" role="menu">
-          <div class="messages-dropdown-header" role="none">
-            <strong role="none">Mensagens Recentes</strong>
-          </div>
-          <div class="messages-dropdown-body" role="none">
-            <template v-if="globalStats.mensagensNaoLidas && globalStats.mensagensNaoLidas.length > 0">
-              <a 
-                href="#" 
-                class="dropdown-item message-item" 
-                v-for="msg in globalStats.mensagensNaoLidas.slice(0, 5)" 
-                :key="msg.id"
-                @click.prevent="openMessage(msg)"
-                role="menuitem"
-                tabindex="0"
-                @keydown.enter="openMessage(msg)"
-                @keydown.space.prevent="openMessage(msg)"
-              >
-                <div class="message-sender" role="none">{{ msg.remetente_nome || 'Usuário' }}</div>
-                <div class="message-subject" role="none">{{ msg.assunto || 'Sem assunto' }}</div>
-              </a>
-            </template>
-            <div v-else class="dropdown-item text-muted" style="text-align: center; padding: 12px;">
-              Nenhuma mensagem nova.
-            </div>
-          </div>
-          <div class="messages-dropdown-footer" role="none">
-            <a href="#/mensagens" class="btn btn-sm btn-primary w-100" @click="messagesMenuOpen = false" role="menuitem">Ver Todas as Mensagens</a>
-          </div>
-        </div>
-      </div>
-
       <!-- User Menu -->
       <div class="user-menu-wrapper" v-if="currentUser">
         <button 
@@ -250,8 +174,6 @@ import { logout, getUserPhotoUrl } from '../../services/auth'
 import { telaLiberada } from '../../utils/acessoTelas'
 import { usePwa } from '../../composables/usePwa'
 import { encerrarPushAoSair } from '../../composables/usePush'
-import { pode } from '../../composables/useAcesso'
-import { useCopiloto } from '../../composables/useCopiloto'
 
 const props = defineProps({
   currentView: String,
@@ -260,7 +182,6 @@ const props = defineProps({
   globalStats: {
     type: Object,
     default: () => ({
-      qteMensagensNaoLidas: 0,
       notificacoes: 0,
       qteTarefas: 0,
       qteDespesasNaoPagas: 0
@@ -270,8 +191,6 @@ const props = defineProps({
  
 const emit = defineEmits(['toggle-sidebar', 'update:modelValue', 'do-search', 'clear-search', 'logout', 'abrir-documentacao'])
 
-const copiloto = useCopiloto()
-const podeCopiloto = computed(() => pode('copiloto.access'))
  
 function onInput(e) {
   emit('update:modelValue', e.target.value)
@@ -286,16 +205,12 @@ async function instalar() {
   userMenuOpen.value = false
   await instalarApp()
 }
-const messagesMenuOpen = ref(false)
 const notificationsMenuOpen = ref(false)
 const avatarLoadError = ref(false)
 const podeConfigurar = computed(() => telaLiberada('configuracoes'))
 
 const notificationItems = computed(() => {
   const items = []
-  if (props.globalStats.qteIntimacoesNaoTratadas > 0) {
-    items.push({ key: 'intimacoes', icon: 'bi-envelope', label: 'Intimações não tratadas', count: props.globalStats.qteIntimacoesNaoTratadas, hash: '#/intimacoes' })
-  }
   if (props.globalStats.qteTarefas > 0) {
     items.push({ key: 'tarefas', icon: 'bi-check2-square', label: 'Tarefas pendentes', count: props.globalStats.qteTarefas, hash: '#/tarefas' })
   }
@@ -316,25 +231,12 @@ const userInitials = computed(() => {
 
 function toggleUserMenu() {
   userMenuOpen.value = !userMenuOpen.value
-  messagesMenuOpen.value = false
-  notificationsMenuOpen.value = false
-}
-
-function toggleMessagesMenu() {
-  messagesMenuOpen.value = !messagesMenuOpen.value
-  userMenuOpen.value = false
   notificationsMenuOpen.value = false
 }
 
 function toggleNotificationsMenu() {
   notificationsMenuOpen.value = !notificationsMenuOpen.value
   userMenuOpen.value = false
-  messagesMenuOpen.value = false
-}
-
-function openMessage(msg) {
-  messagesMenuOpen.value = false
-  window.location.hash = `#/mensagens/detalhes/${msg.id}`
 }
 
 function goToNotification(item) {
@@ -371,9 +273,6 @@ function handleClickOutside(event) {
   if (userMenuOpen.value && !event.target.closest('.user-menu-wrapper')) {
     userMenuOpen.value = false
   }
-  if (messagesMenuOpen.value && !event.target.closest('.messages-menu-wrapper')) {
-    messagesMenuOpen.value = false
-  }
   if (notificationsMenuOpen.value && !event.target.closest('.notifications-menu-wrapper')) {
     notificationsMenuOpen.value = false
   }
@@ -389,7 +288,6 @@ onUnmounted(() => {
 
 // Badge Pulse Triggers
 const pulseNotifications = ref(false)
-const pulseMessages = ref(false)
 
 watch(() => props.globalStats.notificacoes, (newVal, oldVal) => {
   if (oldVal !== undefined && newVal !== oldVal) {
@@ -398,12 +296,6 @@ watch(() => props.globalStats.notificacoes, (newVal, oldVal) => {
   }
 })
 
-watch(() => props.globalStats.qteMensagensNaoLidas, (newVal, oldVal) => {
-  if (oldVal !== undefined && newVal !== oldVal) {
-    pulseMessages.value = true
-    setTimeout(() => { pulseMessages.value = false }, 1800)
-  }
-})
 </script>
  
 <style scoped>

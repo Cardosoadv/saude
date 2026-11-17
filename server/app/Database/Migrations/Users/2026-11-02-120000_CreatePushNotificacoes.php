@@ -21,7 +21,6 @@ class CreatePushNotificacoes extends Migration
             'p256dh'               => ['type' => 'VARCHAR', 'constraint' => 120],
             'auth'                 => ['type' => 'VARCHAR', 'constraint' => 40],
             'user_agent'           => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => true],
-            'notificar_intimacoes' => ['type' => 'TINYINT', 'constraint' => 1, 'unsigned' => true, 'default' => 1],
             'notificar_prazos'     => ['type' => 'TINYINT', 'constraint' => 1, 'unsigned' => true, 'default' => 1],
             'falhas'               => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'default' => 0],
             'ultimo_envio_em'      => ['type' => 'DATETIME', 'null' => true],

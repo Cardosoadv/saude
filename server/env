@@ -1,0 +1,35 @@
+#--------------------------------------------------------------------
+# Saúde — exemplo de configuração. Copie para .env e ajuste.
+#--------------------------------------------------------------------
+
+CI_ENVIRONMENT = development
+
+app.baseURL = 'http://localhost:8080/'
+# URL do painel (usada em links de e-mails e notificações)
+app.frontURL = 'http://localhost:5173/#/'
+
+database.default.hostname = 127.0.0.1
+database.default.database = saude
+database.default.username = saude
+database.default.password = saude
+database.default.DBDriver = MySQLi
+database.default.port = 3306
+
+# Chave de criptografia (php spark key:generate não existe aqui: gere 32 bytes em hex)
+# encryption.key = hex2bin:...
+
+# E-mail (recuperação de senha, avisos, contato do site)
+# email.protocol = smtp
+# email.SMTPHost = smtp.exemplo.com.br
+# email.SMTPUser = usuario
+# email.SMTPPass = senha
+# email.SMTPPort = 587
+# CONTACT_MAIL_TO = contato@exemplo.com.br
+
+# Notificações push (php spark push:vapid)
+# push.vapidPublicKey = ""
+# push.vapidPrivateKey = ""
+# push.contato = "mailto:contato@exemplo.com.br"
+
+# MCP / IA
+# mcp.baseUrl = 'http://localhost:8080/'

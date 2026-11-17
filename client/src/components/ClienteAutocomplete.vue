@@ -54,14 +54,13 @@ const props = withDefaults(defineProps<{
   rotulo?: string
   pequeno?: boolean
   disabled?: boolean
-  /** "processos" (padrão) não exige acesso ao módulo Clientes. */
   endpoint?: ClientEndpoint
 }>(), {
   placeholder: 'Buscar cliente pelo nome ou documento...',
   rotulo: 'Buscar cliente',
   pequeno: false,
   disabled: false,
-  endpoint: 'processos',
+  endpoint: 'clientes',
 })
 
 const emit = defineEmits<{ (e: 'select', cliente: ClientOption): void }>()

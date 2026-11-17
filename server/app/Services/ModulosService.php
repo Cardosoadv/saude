@@ -32,7 +32,7 @@ class ModulosService extends BaseService
      * Verifica se um módulo está ativo.
      * Otimizado: Realiza o carregamento de todos os módulos ativos uma única vez por requisição.
      *
-     * @param string $slug Slug do módulo (ex.: 'objetos').
+     * @param string $slug Slug do módulo (ex.: 'contratos').
      * @return bool
      */
     public function isActive(string $slug): bool

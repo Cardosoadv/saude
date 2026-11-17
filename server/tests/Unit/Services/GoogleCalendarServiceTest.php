@@ -130,7 +130,7 @@ class GoogleCalendarServiceTest extends CIUnitTestCase
     /**
      * Testa se o serviço busca ou cria o calendário corretamente.
      */
-    public function testGetOrCreateOrdoCalendarFetchesExisting()
+    public function testGetOrCreateCalendarFetchesExisting()
     {
         $db = \Config\Database::connect();
         $db->table('configuracoes')->insertBatch([
@@ -150,7 +150,7 @@ class GoogleCalendarServiceTest extends CIUnitTestCase
         // Se o calendário com o ID salvo for buscado, retorna um objeto de calendário válido
         $googleCalendar = new GoogleCalendarModel();
         $googleCalendar->setId('calendar_id_salvo');
-        $googleCalendar->setSummary('Ordo Juris');
+        $googleCalendar->setSummary('Saúde');
 
         $calendarsResourceMock->expects($this->once())
             ->method('get')
@@ -169,14 +169,14 @@ class GoogleCalendarServiceTest extends CIUnitTestCase
         $propClient->setAccessible(true);
         $propClient->setValue($service, $clientMock);
 
-        $calendarId = $service->getOrCreateOrdoCalendar();
+        $calendarId = $service->getOrCreateCalendar();
         $this->assertEquals('calendar_id_salvo', $calendarId);
     }
 
     /**
      * Testa se o serviço cria o calendário quando ele não existe no banco nem no Google.
      */
-    public function testGetOrCreateOrdoCalendarCreatesNewOne()
+    public function testGetOrCreateCalendarCreatesNewOne()
     {
         $db = \Config\Database::connect();
         $db->table('configuracoes')->insertBatch([
@@ -205,12 +205,12 @@ class GoogleCalendarServiceTest extends CIUnitTestCase
         // Deve chamar a criação do calendário
         $createdCalendar = new GoogleCalendarModel();
         $createdCalendar->setId('novo_calendar_id_google');
-        $createdCalendar->setSummary('Ordo Juris');
+        $createdCalendar->setSummary('Saúde');
 
         $calendarsResourceMock->expects($this->once())
             ->method('insert')
             ->with($this->callback(function ($arg) {
-                return $arg instanceof GoogleCalendarModel && $arg->getSummary() === 'Ordo Juris';
+                return $arg instanceof GoogleCalendarModel && $arg->getSummary() === 'Saúde';
             }))
             ->willReturn($createdCalendar);
 
@@ -225,7 +225,7 @@ class GoogleCalendarServiceTest extends CIUnitTestCase
         $propClient->setAccessible(true);
         $propClient->setValue($service, $clientMock);
 
-        $calendarId = $service->getOrCreateOrdoCalendar();
+        $calendarId = $service->getOrCreateCalendar();
         $this->assertEquals('novo_calendar_id_google', $calendarId);
 
         // Verifica se persistiu no banco de dados

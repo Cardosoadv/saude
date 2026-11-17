@@ -6,7 +6,7 @@ telas: [extrato-importacao, extrato-movimentos]
 palavras_chave: [OFX, importar extrato, conciliação, conciliar, lançar, movimentos, regras, conferência de saldo, extrato do banco]
 ---
 
-Esta página explica como trazer o extrato do banco para o sistema e casar cada linha com o que o escritório já
+Esta página explica como trazer o extrato do banco para o sistema e casar cada linha com o que a clínica já
 lançou. Não confunda com a tela **Extrato**, que mostra os lançamentos do próprio sistema
 ([Extrato e categorias](extrato.md)).
 
@@ -16,7 +16,7 @@ O caminho tem três etapas: **importar** o arquivo, **conciliar ou lançar** cad
 
 - O arquivo do extrato no formato **OFX**, baixado no internet banking (procure por "exportar extrato" e
   escolha OFX). PDF e planilha não servem.
-- As permissões do módulo Financeiro. Quem tem `financeiro.*` (administrador e advogado) já recebe todas; para
+- As permissões do módulo Financeiro. Quem tem `financeiro.*` (administrador e profissional) já recebe todas; para
   os demais perfis, o administrador concede em **Usuários**:
 
 | Para fazer | Permissão |
@@ -100,7 +100,7 @@ Cada movimento importado nasce **Pendente** e termina em um destes estados:
 
 ### Conciliar com um lançamento existente
 
-Use quando o escritório já lançou o pagamento ou o recebimento e falta só ligar à linha do banco.
+Use quando a clínica já lançou o pagamento ou o recebimento e falta só ligar à linha do banco.
 
 1. Em um movimento pendente, clique em **Conciliar**.
 2. O sistema lista os candidatos com o mesmo valor e data próxima (padrão de até 3 dias), com uma pontuação.

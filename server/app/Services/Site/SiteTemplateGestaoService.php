@@ -25,7 +25,7 @@ use Config\SiteTemplate;
  * listar, ativar, importar páginas de exemplo, exportar e remover.
  *
  * Princípios:
- *  - instalar NÃO ativa e ativar NÃO apaga nem sobrescreve conteúdo do escritório;
+ *  - instalar NÃO ativa e ativar NÃO apaga nem sobrescreve conteúdo da clínica;
  *  - pacote enviado pelo painel (`upload`) nunca traz PHP; por linha de comando (`cli`) pode;
  *  - nada é gravado se a validação do pacote falhar; a troca de arquivos é feita por renomeação.
  */
@@ -144,7 +144,7 @@ class SiteTemplateGestaoService
     // ------------------------------------------------------------------ ativar
 
     /**
-     * Ativa o template sem alterar o conteúdo do escritório.
+     * Ativa o template sem alterar o conteúdo da clínica.
      *
      * - Seções de tipo que o novo template não tem continuam no banco (e voltam a aparecer se o
      *   tipo voltar a existir); o relatório as lista como `incompativel`. O renderizador as ignora.

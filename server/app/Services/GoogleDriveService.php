@@ -29,7 +29,7 @@ class GoogleDriveService extends BaseService
     {
         $this->configuracoesService = $configuracoesService ?? new ConfiguracoesService();
         $this->client = $client ?? new Client();
-        $this->client->setApplicationName('Ordo');
+        $this->client->setApplicationName('Saude');
         // DRIVE_FILE: grava só o que o sistema cria. DRIVE_READONLY: lê também o que foi
         // colocado direto na pasta pelo Drive.
         $this->client->setScopes([Drive::DRIVE_FILE, Drive::DRIVE_READONLY]);
@@ -326,7 +326,7 @@ class GoogleDriveService extends BaseService
     {
         try {
             $arquivo = $this->service->files->create(
-                new DriveFile(['name' => '.teste-gravacao-ordojuris', 'parents' => [$folderId]]),
+                new DriveFile(['name' => '.teste-gravacao-saude', 'parents' => [$folderId]]),
                 ['data' => 'ok', 'mimeType' => 'text/plain', 'uploadType' => 'multipart', 'fields' => 'id']
             );
             $this->service->files->delete($arquivo->id);
