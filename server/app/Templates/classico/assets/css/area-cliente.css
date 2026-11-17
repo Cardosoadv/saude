@@ -1,0 +1,157 @@
+/* ==========================================================================
+   ESTILOS PREMIUM DA ÁREA DO CLIENTE
+   ========================================================================== */
+.area-cliente-view {
+  min-height: calc(100vh - 86px);
+  background-color: var(--navy-dark);
+}
+
+.page-header {
+  background: linear-gradient(180deg, var(--navy-medium) 0%, var(--navy-dark) 100%);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.page-title {
+  font-family: var(--font-serif);
+  color: var(--gold);
+  font-size: 3rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.page-subtitle {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  max-width: 600px;
+}
+
+/* O Bootstrap define .text-muted para tema claro (cinza escuro quase
+   invisível sobre o fundo navy do site) — sobrescrevemos com o token
+   de texto secundário do design system. */
+.area-cliente-view .text-muted {
+  color: var(--text-muted) !important;
+}
+
+.premium-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+.card-title {
+  font-family: var(--font-serif);
+  color: var(--gold);
+}
+
+.form-floating-custom {
+  position: relative;
+}
+
+.premium-input {
+  background-color: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: var(--cream) !important;
+  padding: 1.2rem 1rem;
+  border-radius: 6px;
+  transition: var(--transition-smooth);
+}
+
+.premium-input:focus {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  border-color: var(--gold) !important;
+  box-shadow: 0 0 0 0.25rem rgba(var(--gold-rgb), 0.1) !important;
+}
+
+.premium-input::placeholder {
+  color: var(--text-muted);
+  opacity: 1;
+}
+
+.form-floating-custom label {
+  position: absolute;
+  top: 50%;
+  left: 1rem;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  transition: var(--transition-smooth);
+  pointer-events: none;
+}
+
+.premium-input:focus ~ label,
+.premium-input:not(:placeholder-shown) ~ label {
+  top: 0;
+  font-size: 0.8rem;
+  background-color: var(--navy-dark);
+  padding: 0 0.5rem;
+  color: var(--gold);
+}
+
+.btn-premium {
+  background: linear-gradient(135deg, var(--gold), var(--gold-deep));
+  color: var(--navy-dark);
+  border: none;
+  padding: 1rem;
+  font-weight: 600;
+  border-radius: 6px;
+  letter-spacing: 0.05em;
+  transition: var(--transition-smooth);
+}
+
+.btn-premium:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--gold-hover), var(--gold));
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(var(--gold-rgb), 0.3);
+}
+
+.btn-premium:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.custom-alert {
+  background-color: rgba(220, 53, 69, 0.1);
+  border: 1px solid rgba(220, 53, 69, 0.3);
+  color: #ff6b6b;
+  font-size: 0.9rem;
+}
+
+.btn-outline-gold {
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  background: transparent;
+  transition: var(--transition-smooth);
+}
+
+.btn-outline-gold:hover {
+  background: var(--gold);
+  color: var(--navy-dark);
+}
+
+.text-gold {
+  color: var(--gold);
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.5s ease-out forwards;
+}
+
+.animate-slide-up-delay {
+  animation: slideUp 0.5s ease-out 0.2s forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

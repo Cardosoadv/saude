@@ -1,0 +1,24 @@
+{
+  "processos": [
+    {
+      "numero_processo": "0801234-04.2025.8.26.0100",
+      "observacao": "Cliente em prospecção: ação de cobrança contra a empresa dele"
+    },
+    {
+      "numero_processo": "1004567-38.2024.5.02.0001",
+      "observacao": "Reclamação trabalhista da parte contrária; acompanhar a pedido do sócio"
+    },
+    {
+      "numero_processo": "5009876-08.2025.4.04.7100",
+      "observacao": "Processo conexo ao do cliente João (execução fiscal)"
+    },
+    {
+      "numero_processo": "00123450520238260224",
+      "observacao": "Indicação de parceiro; aguardando procuração"
+    },
+    {
+      "numero_processo": "0700321-14.2026.8.07.0001",
+      "observacao": "Possível habilitação como terceiro interessado"
+    }
+  ]
+}

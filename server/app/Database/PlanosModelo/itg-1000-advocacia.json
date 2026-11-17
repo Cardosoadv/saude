@@ -1,0 +1,1755 @@
+{
+  "model": "itg-1000-advocacia",
+  "description": "Plano de contas padrão para escritório de advocacia ME/EPP, estruturado conforme o Anexo 7 (plano de contas sugerido para pequena empresa) do roteiro da ITG 1000, com contas específicas da advocacia (valores de clientes em conta segregada, honorários, custas reembolsáveis, distribuição de lucros por sócio).",
+  "notice": "Estrutura de apoio: o código ITG 1000 de origem fica em reference_code; contas sem reference_code são específicas do escritório. A contabilidade responsável deve revisar antes de tratar como plano oficial.",
+  "accounts": [
+    {
+      "code": "1",
+      "name": "ATIVO",
+      "type": "ASSET",
+      "parent_code": null,
+      "reference_code": "1"
+    },
+    {
+      "code": "1.1",
+      "name": "ATIVO CIRCULANTE",
+      "type": null,
+      "parent_code": "1",
+      "reference_code": "1.1"
+    },
+    {
+      "code": "1.1.1",
+      "name": "Disponibilidades",
+      "type": null,
+      "parent_code": "1.1",
+      "reference_code": "1.1.1"
+    },
+    {
+      "code": "1.1.1.01",
+      "name": "Caixa",
+      "type": null,
+      "parent_code": "1.1.1",
+      "reference_code": "1.1.1.01"
+    },
+    {
+      "code": "1.1.1.01.01",
+      "name": "Caixa Geral",
+      "type": null,
+      "parent_code": "1.1.1.01",
+      "is_cash_account": true,
+      "reference_code": "1.1.1.01.01"
+    },
+    {
+      "code": "1.1.1.01.02",
+      "name": "Fundo Fixo de Caixa",
+      "type": null,
+      "parent_code": "1.1.1.01",
+      "is_cash_account": true,
+      "reference_code": "1.1.1.01.02"
+    },
+    {
+      "code": "1.1.1.02",
+      "name": "Depósitos Bancários à Vista",
+      "type": null,
+      "parent_code": "1.1.1",
+      "reference_code": "1.1.1.02"
+    },
+    {
+      "code": "1.1.1.02.01",
+      "name": "Bancos Conta Movimento",
+      "type": null,
+      "parent_code": "1.1.1.02",
+      "is_cash_account": true,
+      "reference_code": "1.1.1.02.01"
+    },
+    {
+      "code": "1.1.1.03",
+      "name": "Aplicações Financeiras",
+      "type": null,
+      "parent_code": "1.1.1",
+      "reference_code": "1.1.1.03"
+    },
+    {
+      "code": "1.1.1.03.01",
+      "name": "Aplicação Financeira de Liquidez Imediata",
+      "type": null,
+      "parent_code": "1.1.1.03",
+      "reference_code": "1.1.1.03.01"
+    },
+    {
+      "code": "1.1.2",
+      "name": "Créditos",
+      "type": null,
+      "parent_code": "1.1",
+      "reference_code": "1.1.2"
+    },
+    {
+      "code": "1.1.2.01",
+      "name": "Recebíveis de Clientes",
+      "type": null,
+      "parent_code": "1.1.2",
+      "reference_code": "1.1.2.01"
+    },
+    {
+      "code": "1.1.2.01.01",
+      "name": "Honorários a Receber",
+      "type": null,
+      "parent_code": "1.1.2.01",
+      "reference_code": "1.1.2.01.01"
+    },
+    {
+      "code": "1.1.2.01.02",
+      "name": "(-) PECLD",
+      "type": null,
+      "parent_code": "1.1.2.01",
+      "contra": true,
+      "reference_code": "1.1.2.01.02"
+    },
+    {
+      "code": "1.1.2.02",
+      "name": "Créditos de Colaboradores",
+      "type": null,
+      "parent_code": "1.1.2",
+      "reference_code": "1.1.2.02"
+    },
+    {
+      "code": "1.1.2.02.01",
+      "name": "Adiantamento Quinzenal",
+      "type": null,
+      "parent_code": "1.1.2.02",
+      "reference_code": "1.1.2.02.01"
+    },
+    {
+      "code": "1.1.2.02.02",
+      "name": "Empréstimos a Colaboradores",
+      "type": null,
+      "parent_code": "1.1.2.02",
+      "reference_code": "1.1.2.02.02"
+    },
+    {
+      "code": "1.1.2.02.03",
+      "name": "Antecipação de Salários",
+      "type": null,
+      "parent_code": "1.1.2.02",
+      "reference_code": "1.1.2.02.03"
+    },
+    {
+      "code": "1.1.2.02.04",
+      "name": "Antecipação de Férias",
+      "type": null,
+      "parent_code": "1.1.2.02",
+      "reference_code": "1.1.2.02.04"
+    },
+    {
+      "code": "1.1.2.02.05",
+      "name": "Antecipação de 13º Salário",
+      "type": null,
+      "parent_code": "1.1.2.02",
+      "reference_code": "1.1.2.02.05"
+    },
+    {
+      "code": "1.1.2.03",
+      "name": "Créditos de Fornecedores",
+      "type": null,
+      "parent_code": "1.1.2",
+      "reference_code": "1.1.2.03"
+    },
+    {
+      "code": "1.1.2.03.01",
+      "name": "Adiantamentos a Fornecedores",
+      "type": null,
+      "parent_code": "1.1.2.03",
+      "reference_code": "1.1.2.03.01"
+    },
+    {
+      "code": "1.1.2.04",
+      "name": "Tributos Retidos na Fonte",
+      "type": null,
+      "parent_code": "1.1.2",
+      "reference_code": "1.1.2.04"
+    },
+    {
+      "code": "1.1.2.04.01",
+      "name": "IRRF",
+      "type": null,
+      "parent_code": "1.1.2.04",
+      "reference_code": "1.1.2.04.01"
+    },
+    {
+      "code": "1.1.2.04.02",
+      "name": "CSLL Retida na Fonte",
+      "type": null,
+      "parent_code": "1.1.2.04",
+      "reference_code": "1.1.2.04.02"
+    },
+    {
+      "code": "1.1.2.04.03",
+      "name": "PIS Retido na Fonte",
+      "type": null,
+      "parent_code": "1.1.2.04",
+      "reference_code": "1.1.2.04.03"
+    },
+    {
+      "code": "1.1.2.04.04",
+      "name": "COFINS Retida na Fonte",
+      "type": null,
+      "parent_code": "1.1.2.04",
+      "reference_code": "1.1.2.04.04"
+    },
+    {
+      "code": "1.1.2.04.05",
+      "name": "INSS Retido na Fonte",
+      "type": null,
+      "parent_code": "1.1.2.04",
+      "reference_code": "1.1.2.04.05"
+    },
+    {
+      "code": "1.1.2.05",
+      "name": "Tributos a Recuperar",
+      "type": null,
+      "parent_code": "1.1.2",
+      "reference_code": "1.1.2.05"
+    },
+    {
+      "code": "1.1.2.05.08",
+      "name": "Outros Impostos e Contribuições a Recuperar",
+      "type": null,
+      "parent_code": "1.1.2.05",
+      "reference_code": "1.1.2.05.08"
+    },
+    {
+      "code": "1.1.2.06",
+      "name": "Tributos a Compensar",
+      "type": null,
+      "parent_code": "1.1.2",
+      "reference_code": "1.1.2.06"
+    },
+    {
+      "code": "1.1.2.06.06",
+      "name": "INSS a Compensar",
+      "type": null,
+      "parent_code": "1.1.2.06",
+      "reference_code": "1.1.2.06.06"
+    },
+    {
+      "code": "1.1.2.07",
+      "name": "Custas e Despesas de Clientes",
+      "type": null,
+      "parent_code": "1.1.2"
+    },
+    {
+      "code": "1.1.2.07.01",
+      "name": "Custas Adiantadas a Reembolsar",
+      "type": null,
+      "parent_code": "1.1.2.07"
+    },
+    {
+      "code": "1.1.4",
+      "name": "Despesas Pagas Antecipadamente",
+      "type": null,
+      "parent_code": "1.1",
+      "reference_code": "1.1.4"
+    },
+    {
+      "code": "1.1.4.01",
+      "name": "Despesas do Exercício Seguinte",
+      "type": null,
+      "parent_code": "1.1.4",
+      "reference_code": "1.1.4.01"
+    },
+    {
+      "code": "1.1.4.01.01",
+      "name": "Aluguéis Pagos Antecipadamente",
+      "type": null,
+      "parent_code": "1.1.4.01",
+      "reference_code": "1.1.4.01.01"
+    },
+    {
+      "code": "1.1.4.01.02",
+      "name": "Prêmios de Seguros a Apropriar",
+      "type": null,
+      "parent_code": "1.1.4.01",
+      "reference_code": "1.1.4.01.02"
+    },
+    {
+      "code": "1.1.4.01.99",
+      "name": "Outras Despesas Antecipadas",
+      "type": null,
+      "parent_code": "1.1.4.01",
+      "reference_code": "1.1.6.01.99"
+    },
+    {
+      "code": "1.2",
+      "name": "ATIVO NÃO CIRCULANTE",
+      "type": null,
+      "parent_code": "1",
+      "reference_code": "1.2"
+    },
+    {
+      "code": "1.2.1",
+      "name": "Realizável a Longo Prazo",
+      "type": null,
+      "parent_code": "1.2",
+      "reference_code": "1.2.1"
+    },
+    {
+      "code": "1.2.1.01",
+      "name": "Créditos de Longo Prazo",
+      "type": null,
+      "parent_code": "1.2.1",
+      "reference_code": "1.2.1.01"
+    },
+    {
+      "code": "1.2.1.01.01",
+      "name": "Clientes - Longo Prazo",
+      "type": null,
+      "parent_code": "1.2.1.01",
+      "reference_code": "1.2.1.01.01"
+    },
+    {
+      "code": "1.2.1.01.02",
+      "name": "(-) PCLD Longo Prazo",
+      "type": null,
+      "parent_code": "1.2.1.01",
+      "contra": true,
+      "reference_code": "1.2.1.01.02"
+    },
+    {
+      "code": "1.2.1.01.06",
+      "name": "Direitos Creditórios",
+      "type": null,
+      "parent_code": "1.2.1.01"
+    },
+    {
+      "code": "1.2.3",
+      "name": "Imobilizado",
+      "type": null,
+      "parent_code": "1.2",
+      "reference_code": "1.2.3"
+    },
+    {
+      "code": "1.2.3.01",
+      "name": "Imobilizado - Aquisição",
+      "type": null,
+      "parent_code": "1.2.3",
+      "reference_code": "1.2.3.01"
+    },
+    {
+      "code": "1.2.3.01.10",
+      "name": "Terrenos",
+      "type": null,
+      "parent_code": "1.2.3.01",
+      "reference_code": "1.2.3.01.10"
+    },
+    {
+      "code": "1.2.3.01.20",
+      "name": "Edifícios e Construções",
+      "type": null,
+      "parent_code": "1.2.3.01",
+      "reference_code": "1.2.3.01.20"
+    },
+    {
+      "code": "1.2.3.01.30",
+      "name": "Benfeitorias em Imóveis de Terceiros",
+      "type": null,
+      "parent_code": "1.2.3.01",
+      "reference_code": "1.2.3.01.30"
+    },
+    {
+      "code": "1.2.3.01.50",
+      "name": "Móveis, Utensílios e Instalações Comerciais",
+      "type": null,
+      "parent_code": "1.2.3.01",
+      "reference_code": "1.2.3.01.50"
+    },
+    {
+      "code": "1.2.3.01.60",
+      "name": "Veículos",
+      "type": null,
+      "parent_code": "1.2.3.01",
+      "reference_code": "1.2.3.01.60"
+    },
+    {
+      "code": "1.2.3.01.70",
+      "name": "Equipamentos de Informática",
+      "type": null,
+      "parent_code": "1.2.3.01"
+    },
+    {
+      "code": "1.2.3.02",
+      "name": "Imobilizado - Depreciação Acumulada",
+      "type": null,
+      "parent_code": "1.2.3",
+      "reference_code": "1.2.3.02"
+    },
+    {
+      "code": "1.2.3.02.20",
+      "name": "(-) Depreciação Acumulada - Edifícios e Construções",
+      "type": null,
+      "parent_code": "1.2.3.02",
+      "contra": true,
+      "reference_code": "1.2.3.02.20"
+    },
+    {
+      "code": "1.2.3.02.30",
+      "name": "(-) Depreciação Acumulada - Benfeitorias em Imóveis de Terceiros",
+      "type": null,
+      "parent_code": "1.2.3.02",
+      "contra": true,
+      "reference_code": "1.2.3.02.30"
+    },
+    {
+      "code": "1.2.3.02.50",
+      "name": "(-) Depreciação Acumulada - Móveis, Utensílios e Instalações Comerciais",
+      "type": null,
+      "parent_code": "1.2.3.02",
+      "contra": true,
+      "reference_code": "1.2.3.02.50"
+    },
+    {
+      "code": "1.2.3.02.51",
+      "name": "(-) Depreciação Acumulada - Veículos",
+      "type": null,
+      "parent_code": "1.2.3.02",
+      "contra": true,
+      "reference_code": "1.2.3.02.51"
+    },
+    {
+      "code": "1.2.3.02.70",
+      "name": "(-) Depreciação Acumulada - Equipamentos de Informática",
+      "type": null,
+      "parent_code": "1.2.3.02",
+      "contra": true
+    },
+    {
+      "code": "1.2.4",
+      "name": "Intangível",
+      "type": null,
+      "parent_code": "1.2",
+      "reference_code": "1.2.4"
+    },
+    {
+      "code": "1.2.4.01",
+      "name": "Intangível - Aquisição",
+      "type": null,
+      "parent_code": "1.2.4",
+      "reference_code": "1.2.4.01"
+    },
+    {
+      "code": "1.2.4.01.10",
+      "name": "Softwares",
+      "type": null,
+      "parent_code": "1.2.4.01",
+      "reference_code": "1.2.4.01.10"
+    },
+    {
+      "code": "1.2.4.01.20",
+      "name": "Marcas",
+      "type": null,
+      "parent_code": "1.2.4.01",
+      "reference_code": "1.2.4.01.20"
+    },
+    {
+      "code": "1.2.4.02",
+      "name": "Intangível - Amortização",
+      "type": null,
+      "parent_code": "1.2.4",
+      "reference_code": "1.2.4.02"
+    },
+    {
+      "code": "1.2.4.02.10",
+      "name": "(-) Amortização Acumulada - Softwares",
+      "type": null,
+      "parent_code": "1.2.4.02",
+      "contra": true,
+      "reference_code": "1.2.4.02.10"
+    },
+    {
+      "code": "1.2.4.02.20",
+      "name": "(-) Amortização Acumulada - Marcas",
+      "type": null,
+      "parent_code": "1.2.4.02",
+      "contra": true,
+      "reference_code": "1.2.4.02.20"
+    },
+    {
+      "code": "1.3",
+      "name": "VALORES DE CLIENTES (CONTA SEGREGADA)",
+      "type": null,
+      "parent_code": "1"
+    },
+    {
+      "code": "1.3.1",
+      "name": "Disponibilidades de Clientes",
+      "type": null,
+      "parent_code": "1.3"
+    },
+    {
+      "code": "1.3.1.01",
+      "name": "Contas Bancárias de Clientes",
+      "type": null,
+      "parent_code": "1.3.1"
+    },
+    {
+      "code": "1.3.1.01.01",
+      "name": "Conta Bancária de Clientes",
+      "type": null,
+      "parent_code": "1.3.1.01",
+      "is_cash_account": true
+    },
+    {
+      "code": "2",
+      "name": "PASSIVO",
+      "type": "LIABILITY",
+      "parent_code": null,
+      "reference_code": "2"
+    },
+    {
+      "code": "2.1",
+      "name": "PASSIVO CIRCULANTE",
+      "type": null,
+      "parent_code": "2",
+      "reference_code": "2.1"
+    },
+    {
+      "code": "2.1.1",
+      "name": "Obrigações Trabalhistas",
+      "type": null,
+      "parent_code": "2.1",
+      "reference_code": "2.1.1"
+    },
+    {
+      "code": "2.1.1.01",
+      "name": "Obrigações com Pessoal",
+      "type": null,
+      "parent_code": "2.1.1",
+      "reference_code": "2.1.1.01"
+    },
+    {
+      "code": "2.1.1.01.01",
+      "name": "Salários e Remunerações a Pagar",
+      "type": null,
+      "parent_code": "2.1.1.01",
+      "reference_code": "2.1.1.01.01"
+    },
+    {
+      "code": "2.1.1.01.02",
+      "name": "Participações no Resultado a Pagar",
+      "type": null,
+      "parent_code": "2.1.1.01",
+      "reference_code": "2.1.1.01.02"
+    },
+    {
+      "code": "2.1.1.01.03",
+      "name": "INSS a Recolher",
+      "type": null,
+      "parent_code": "2.1.1.01",
+      "reference_code": "2.1.1.01.03"
+    },
+    {
+      "code": "2.1.1.01.04",
+      "name": "FGTS a Recolher",
+      "type": null,
+      "parent_code": "2.1.1.01",
+      "reference_code": "2.1.1.01.04"
+    },
+    {
+      "code": "2.1.1.01.06",
+      "name": "Férias a Pagar",
+      "type": null,
+      "parent_code": "2.1.1.01",
+      "reference_code": "2.1.1.01.06"
+    },
+    {
+      "code": "2.1.1.01.07",
+      "name": "13º Salário a Pagar",
+      "type": null,
+      "parent_code": "2.1.1.01",
+      "reference_code": "2.1.1.01.07"
+    },
+    {
+      "code": "2.1.1.01.08",
+      "name": "INSS sobre Férias",
+      "type": null,
+      "parent_code": "2.1.1.01",
+      "reference_code": "2.1.1.01.08"
+    },
+    {
+      "code": "2.1.1.01.09",
+      "name": "FGTS sobre Férias",
+      "type": null,
+      "parent_code": "2.1.1.01",
+      "reference_code": "2.1.1.01.09"
+    },
+    {
+      "code": "2.1.1.01.10",
+      "name": "INSS sobre 13º Salário",
+      "type": null,
+      "parent_code": "2.1.1.01",
+      "reference_code": "2.1.1.01.10"
+    },
+    {
+      "code": "2.1.1.01.11",
+      "name": "FGTS sobre 13º Salário",
+      "type": null,
+      "parent_code": "2.1.1.01",
+      "reference_code": "2.1.1.01.11"
+    },
+    {
+      "code": "2.1.1.01.12",
+      "name": "Pró-Labore a Pagar",
+      "type": null,
+      "parent_code": "2.1.1.01"
+    },
+    {
+      "code": "2.1.2",
+      "name": "Obrigações com Terceiros",
+      "type": null,
+      "parent_code": "2.1",
+      "reference_code": "2.1.2"
+    },
+    {
+      "code": "2.1.2.01",
+      "name": "Fornecedores",
+      "type": null,
+      "parent_code": "2.1.2",
+      "reference_code": "2.1.2.01"
+    },
+    {
+      "code": "2.1.2.01.01",
+      "name": "Fornecedores Nacionais",
+      "type": null,
+      "parent_code": "2.1.2.01",
+      "reference_code": "2.1.2.01.01"
+    },
+    {
+      "code": "2.1.2.02",
+      "name": "Contas a Pagar",
+      "type": null,
+      "parent_code": "2.1.2",
+      "reference_code": "2.1.2.02"
+    },
+    {
+      "code": "2.1.2.02.01",
+      "name": "Aluguéis e Arrendamentos a Pagar",
+      "type": null,
+      "parent_code": "2.1.2.02",
+      "reference_code": "2.1.2.02.01"
+    },
+    {
+      "code": "2.1.2.02.02",
+      "name": "Adiantamento de Clientes (Honorários Recebidos Antecipadamente)",
+      "type": null,
+      "parent_code": "2.1.2.02",
+      "reference_code": "2.1.2.02.02"
+    },
+    {
+      "code": "2.1.2.02.03",
+      "name": "Outras Contas a Pagar",
+      "type": null,
+      "parent_code": "2.1.2.02",
+      "reference_code": "2.1.2.02.03"
+    },
+    {
+      "code": "2.1.3",
+      "name": "Empréstimos e Financiamentos (CP)",
+      "type": null,
+      "parent_code": "2.1",
+      "reference_code": "2.1.3"
+    },
+    {
+      "code": "2.1.3.01",
+      "name": "Empréstimos de Terceiros",
+      "type": null,
+      "parent_code": "2.1.3",
+      "reference_code": "2.1.3.01"
+    },
+    {
+      "code": "2.1.3.01.02",
+      "name": "Empréstimos e Financiamentos",
+      "type": null,
+      "parent_code": "2.1.3.01",
+      "reference_code": "2.1.3.01.02"
+    },
+    {
+      "code": "2.1.4",
+      "name": "Obrigações Fiscais",
+      "type": null,
+      "parent_code": "2.1",
+      "reference_code": "2.1.4"
+    },
+    {
+      "code": "2.1.4.01",
+      "name": "Retenções a Recolher",
+      "type": null,
+      "parent_code": "2.1.4",
+      "reference_code": "2.1.4.01"
+    },
+    {
+      "code": "2.1.4.01.01",
+      "name": "IRRF a Recolher",
+      "type": null,
+      "parent_code": "2.1.4.01",
+      "reference_code": "2.1.4.01.01"
+    },
+    {
+      "code": "2.1.4.01.02",
+      "name": "CSRF a Recolher",
+      "type": null,
+      "parent_code": "2.1.4.01",
+      "reference_code": "2.1.4.01.02"
+    },
+    {
+      "code": "2.1.4.01.03",
+      "name": "ISS Retido na Fonte",
+      "type": null,
+      "parent_code": "2.1.4.01",
+      "reference_code": "2.1.4.01.03"
+    },
+    {
+      "code": "2.1.4.01.04",
+      "name": "INSS Retido na Fonte",
+      "type": null,
+      "parent_code": "2.1.4.01",
+      "reference_code": "2.1.4.01.04"
+    },
+    {
+      "code": "2.1.4.02",
+      "name": "Impostos a Pagar",
+      "type": null,
+      "parent_code": "2.1.4",
+      "reference_code": "2.1.4.02"
+    },
+    {
+      "code": "2.1.4.02.01",
+      "name": "IRPJ a Pagar",
+      "type": null,
+      "parent_code": "2.1.4.02",
+      "reference_code": "2.1.4.02.01"
+    },
+    {
+      "code": "2.1.4.02.02",
+      "name": "CSLL a Pagar",
+      "type": null,
+      "parent_code": "2.1.4.02",
+      "reference_code": "2.1.4.02.02"
+    },
+    {
+      "code": "2.1.4.02.03",
+      "name": "PIS a Pagar",
+      "type": null,
+      "parent_code": "2.1.4.02",
+      "reference_code": "2.1.4.02.03"
+    },
+    {
+      "code": "2.1.4.02.04",
+      "name": "COFINS a Pagar",
+      "type": null,
+      "parent_code": "2.1.4.02",
+      "reference_code": "2.1.4.02.04"
+    },
+    {
+      "code": "2.1.4.02.07",
+      "name": "IOF a Pagar",
+      "type": null,
+      "parent_code": "2.1.4.02",
+      "reference_code": "2.1.4.02.07"
+    },
+    {
+      "code": "2.1.4.02.08",
+      "name": "ISS a Pagar",
+      "type": null,
+      "parent_code": "2.1.4.02",
+      "reference_code": "2.1.4.02.08"
+    },
+    {
+      "code": "2.1.4.02.09",
+      "name": "Tributos Municipais a Pagar",
+      "type": null,
+      "parent_code": "2.1.4.02",
+      "reference_code": "2.1.4.02.09"
+    },
+    {
+      "code": "2.1.4.02.10",
+      "name": "Simples Nacional a Recolher",
+      "type": null,
+      "parent_code": "2.1.4.02",
+      "reference_code": "2.1.4.02.10"
+    },
+    {
+      "code": "2.1.4.03",
+      "name": "Parcelamentos Fiscais",
+      "type": null,
+      "parent_code": "2.1.4",
+      "reference_code": "2.1.4.03"
+    },
+    {
+      "code": "2.1.4.03.01",
+      "name": "Parcelamento de Tributos Federais",
+      "type": null,
+      "parent_code": "2.1.4.03",
+      "reference_code": "2.1.4.03.01"
+    },
+    {
+      "code": "2.1.4.03.02",
+      "name": "Parcelamento de Tributos Estaduais e Municipais",
+      "type": null,
+      "parent_code": "2.1.4.03",
+      "reference_code": "2.1.4.03.02"
+    },
+    {
+      "code": "2.1.5",
+      "name": "Provisões",
+      "type": null,
+      "parent_code": "2.1",
+      "reference_code": "2.1.5"
+    },
+    {
+      "code": "2.1.5.01",
+      "name": "Provisões Tributárias",
+      "type": null,
+      "parent_code": "2.1.5",
+      "reference_code": "2.1.5.01"
+    },
+    {
+      "code": "2.1.5.01.01",
+      "name": "Provisão para IRPJ",
+      "type": null,
+      "parent_code": "2.1.5.01",
+      "reference_code": "2.1.5.01.01"
+    },
+    {
+      "code": "2.1.5.01.02",
+      "name": "Provisão para CSLL",
+      "type": null,
+      "parent_code": "2.1.5.01",
+      "reference_code": "2.1.5.01.02"
+    },
+    {
+      "code": "2.1.6",
+      "name": "Outras Obrigações",
+      "type": null,
+      "parent_code": "2.1",
+      "reference_code": "2.1.6"
+    },
+    {
+      "code": "2.1.6.01",
+      "name": "Obrigações com Sócios",
+      "type": null,
+      "parent_code": "2.1.6",
+      "reference_code": "2.1.6.01"
+    },
+    {
+      "code": "2.1.6.01.01",
+      "name": "Lucros a Pagar",
+      "type": null,
+      "parent_code": "2.1.6.01",
+      "reference_code": "2.1.6.01.01"
+    },
+    {
+      "code": "2.1.6.01.02",
+      "name": "Mútuo com Partes Relacionadas",
+      "type": null,
+      "parent_code": "2.1.6.01",
+      "reference_code": "2.1.6.01.02"
+    },
+    {
+      "code": "2.1.6.01.03",
+      "name": "Empréstimos de Sócios (Curto Prazo)",
+      "type": null,
+      "parent_code": "2.1.6.01"
+    },
+    {
+      "code": "2.2",
+      "name": "PASSIVO NÃO CIRCULANTE",
+      "type": null,
+      "parent_code": "2",
+      "reference_code": "2.2"
+    },
+    {
+      "code": "2.2.1",
+      "name": "Obrigações com Terceiros LP",
+      "type": null,
+      "parent_code": "2.2",
+      "reference_code": "2.2.1"
+    },
+    {
+      "code": "2.2.1.01",
+      "name": "Fornecedores LP",
+      "type": null,
+      "parent_code": "2.2.1",
+      "reference_code": "2.2.1.01"
+    },
+    {
+      "code": "2.2.1.01.01",
+      "name": "Fornecedores Nacionais LP",
+      "type": null,
+      "parent_code": "2.2.1.01",
+      "reference_code": "2.2.1.01.01"
+    },
+    {
+      "code": "2.2.1.02",
+      "name": "Empréstimos e Financiamentos LP",
+      "type": null,
+      "parent_code": "2.2.1",
+      "reference_code": "2.2.1.02"
+    },
+    {
+      "code": "2.2.1.02.01",
+      "name": "Empréstimos e Financiamentos LP",
+      "type": null,
+      "parent_code": "2.2.1.02",
+      "reference_code": "2.2.1.02.01"
+    },
+    {
+      "code": "2.2.2",
+      "name": "Obrigações Fiscais LP",
+      "type": null,
+      "parent_code": "2.2",
+      "reference_code": "2.2.2"
+    },
+    {
+      "code": "2.2.2.01",
+      "name": "Parcelamentos Fiscais LP",
+      "type": null,
+      "parent_code": "2.2.2",
+      "reference_code": "2.2.2.01"
+    },
+    {
+      "code": "2.2.2.01.01",
+      "name": "Tributos Federais LP",
+      "type": null,
+      "parent_code": "2.2.2.01",
+      "reference_code": "2.2.2.01.01"
+    },
+    {
+      "code": "2.2.2.01.02",
+      "name": "Tributos Estaduais e Municipais LP",
+      "type": null,
+      "parent_code": "2.2.2.01",
+      "reference_code": "2.2.2.01.02"
+    },
+    {
+      "code": "2.2.3",
+      "name": "Outras Obrigações LP",
+      "type": null,
+      "parent_code": "2.2",
+      "reference_code": "2.2.3"
+    },
+    {
+      "code": "2.2.3.01",
+      "name": "Obrigações com Partes Relacionadas",
+      "type": null,
+      "parent_code": "2.2.3",
+      "reference_code": "2.2.3.01"
+    },
+    {
+      "code": "2.2.3.01.01",
+      "name": "Empréstimos de Sócios",
+      "type": null,
+      "parent_code": "2.2.3.01",
+      "reference_code": "2.2.2.01.01"
+    },
+    {
+      "code": "2.2.3.01.02",
+      "name": "Mútuos com Partes Relacionadas",
+      "type": null,
+      "parent_code": "2.2.3.01",
+      "reference_code": "2.2.2.01.02"
+    },
+    {
+      "code": "2.3",
+      "name": "VALORES DE CLIENTES (CONTA SEGREGADA)",
+      "type": null,
+      "parent_code": "2"
+    },
+    {
+      "code": "2.3.1",
+      "name": "Obrigações com Clientes",
+      "type": null,
+      "parent_code": "2.3"
+    },
+    {
+      "code": "2.3.1.01",
+      "name": "Valores de Terceiros (Clientes)",
+      "type": null,
+      "parent_code": "2.3.1"
+    },
+    {
+      "code": "2.3.1.01.01",
+      "name": "Valores de Clientes a Repassar",
+      "type": null,
+      "parent_code": "2.3.1.01"
+    },
+    {
+      "code": "2.3.1.01.02",
+      "name": "Depósitos de Clientes para Custas",
+      "type": null,
+      "parent_code": "2.3.1.01"
+    },
+    {
+      "code": "3",
+      "name": "PATRIMÔNIO LÍQUIDO",
+      "type": "EQUITY",
+      "parent_code": null,
+      "reference_code": "2.3"
+    },
+    {
+      "code": "3.1",
+      "name": "Capital Social Integralizado",
+      "type": null,
+      "parent_code": "3",
+      "reference_code": "2.3.1"
+    },
+    {
+      "code": "3.1.01",
+      "name": "Capital Social Subscrito",
+      "type": null,
+      "parent_code": "3.1",
+      "reference_code": "2.3.1.01"
+    },
+    {
+      "code": "3.1.01.01",
+      "name": "Capital Social Subscrito",
+      "type": null,
+      "parent_code": "3.1.01",
+      "reference_code": "2.3.1.01.01"
+    },
+    {
+      "code": "3.1.02",
+      "name": "Capital Social a Integralizar",
+      "type": null,
+      "parent_code": "3.1",
+      "reference_code": "2.8.1.02"
+    },
+    {
+      "code": "3.1.02.01",
+      "name": "(-) Capital Social a Integralizar",
+      "type": null,
+      "parent_code": "3.1.02",
+      "contra": true,
+      "reference_code": "2.8.1.02.01"
+    },
+    {
+      "code": "3.2",
+      "name": "Reservas de Capital",
+      "type": null,
+      "parent_code": "3",
+      "reference_code": "2.3.2"
+    },
+    {
+      "code": "3.2.01",
+      "name": "Adiantamento de Capital",
+      "type": null,
+      "parent_code": "3.2",
+      "reference_code": "2.3.2.01"
+    },
+    {
+      "code": "3.2.01.01",
+      "name": "Adiantamento para Futuro Aumento de Capital",
+      "type": null,
+      "parent_code": "3.2.01",
+      "reference_code": "2.3.2.01.01"
+    },
+    {
+      "code": "3.3",
+      "name": "Reservas de Lucro",
+      "type": null,
+      "parent_code": "3",
+      "reference_code": "2.3.3"
+    },
+    {
+      "code": "3.3.01",
+      "name": "Lucros a Distribuir",
+      "type": null,
+      "parent_code": "3.3",
+      "reference_code": "2.3.3.01"
+    },
+    {
+      "code": "3.3.01.01",
+      "name": "Lucros a Distribuir",
+      "type": null,
+      "parent_code": "3.3.01",
+      "reference_code": "2.3.3.01.01"
+    },
+    {
+      "code": "3.8",
+      "name": "Resultados Acumulados",
+      "type": null,
+      "parent_code": "3",
+      "reference_code": "2.3.8"
+    },
+    {
+      "code": "3.8.01",
+      "name": "Lucros Acumulados",
+      "type": null,
+      "parent_code": "3.8",
+      "reference_code": "2.3.8.01"
+    },
+    {
+      "code": "3.8.01.01",
+      "name": "Lucros Acumulados",
+      "type": null,
+      "parent_code": "3.8.01",
+      "reference_code": "2.3.8.01.01"
+    },
+    {
+      "code": "3.8.02",
+      "name": "Prejuízos Acumulados",
+      "type": null,
+      "parent_code": "3.8",
+      "reference_code": "2.3.8.02"
+    },
+    {
+      "code": "3.8.02.01",
+      "name": "(-) Prejuízos Acumulados",
+      "type": null,
+      "parent_code": "3.8.02",
+      "contra": true,
+      "reference_code": "2.3.8.02.01"
+    },
+    {
+      "code": "3.9",
+      "name": "(-) DISTRIBUIÇÃO DE LUCROS",
+      "type": null,
+      "parent_code": "3"
+    },
+    {
+      "code": "3.9.01",
+      "name": "Lucros Distribuídos no Exercício",
+      "type": null,
+      "parent_code": "3.9"
+    },
+    {
+      "code": "3.9.01.01",
+      "name": "(-) Lucros Distribuídos - Sócio 1",
+      "type": null,
+      "parent_code": "3.9.01",
+      "contra": true
+    },
+    {
+      "code": "3.9.01.02",
+      "name": "(-) Lucros Distribuídos - Sócio 2",
+      "type": null,
+      "parent_code": "3.9.01",
+      "contra": true
+    },
+    {
+      "code": "4",
+      "name": "RECEITAS",
+      "type": "REVENUE",
+      "parent_code": null,
+      "reference_code": "3.1"
+    },
+    {
+      "code": "4.1",
+      "name": "Receita Bruta",
+      "type": null,
+      "parent_code": "4",
+      "reference_code": "3.1.1"
+    },
+    {
+      "code": "4.1.01",
+      "name": "Receita Bruta Operacional",
+      "type": null,
+      "parent_code": "4.1",
+      "reference_code": "3.1.1.01"
+    },
+    {
+      "code": "4.1.01.01",
+      "name": "Honorários Contratuais (Serviços Prestados)",
+      "type": null,
+      "parent_code": "4.1.01",
+      "reference_code": "3.1.1.01.01"
+    },
+    {
+      "code": "4.1.01.02",
+      "name": "Honorários de Êxito",
+      "type": null,
+      "parent_code": "4.1.01"
+    },
+    {
+      "code": "4.1.01.03",
+      "name": "Honorários de Sucumbência",
+      "type": null,
+      "parent_code": "4.1.01"
+    },
+    {
+      "code": "4.2",
+      "name": "Deduções da Receita Bruta",
+      "type": null,
+      "parent_code": "4",
+      "reference_code": "3.1.2"
+    },
+    {
+      "code": "4.2.01",
+      "name": "Impostos sobre Faturamento",
+      "type": null,
+      "parent_code": "4.2",
+      "reference_code": "3.1.2.01"
+    },
+    {
+      "code": "4.2.01.01",
+      "name": "(-) PIS",
+      "type": null,
+      "parent_code": "4.2.01",
+      "contra": true,
+      "reference_code": "3.1.2.01.01"
+    },
+    {
+      "code": "4.2.01.02",
+      "name": "(-) COFINS",
+      "type": null,
+      "parent_code": "4.2.01",
+      "contra": true,
+      "reference_code": "3.1.2.01.02"
+    },
+    {
+      "code": "4.2.01.03",
+      "name": "(-) ISS",
+      "type": null,
+      "parent_code": "4.2.01",
+      "contra": true,
+      "reference_code": "3.1.2.01.03"
+    },
+    {
+      "code": "4.2.01.05",
+      "name": "(-) Simples Nacional",
+      "type": null,
+      "parent_code": "4.2.01",
+      "contra": true,
+      "reference_code": "3.1.2.01.05"
+    },
+    {
+      "code": "4.2.02",
+      "name": "Outras Deduções da Receita Bruta",
+      "type": null,
+      "parent_code": "4.2",
+      "reference_code": "3.1.2.02"
+    },
+    {
+      "code": "4.2.02.01",
+      "name": "(-) Descontos e Abatimentos",
+      "type": null,
+      "parent_code": "4.2.02",
+      "contra": true,
+      "reference_code": "3.1.2.02.01"
+    },
+    {
+      "code": "4.2.02.02",
+      "name": "(-) Devoluções e Cancelamentos",
+      "type": null,
+      "parent_code": "4.2.02",
+      "contra": true,
+      "reference_code": "3.1.2.02.02"
+    },
+    {
+      "code": "4.3",
+      "name": "Receitas Financeiras",
+      "type": null,
+      "parent_code": "4",
+      "reference_code": "3.4.1.02"
+    },
+    {
+      "code": "4.3.01",
+      "name": "Receitas Financeiras",
+      "type": null,
+      "parent_code": "4.3",
+      "reference_code": "3.4.1.02"
+    },
+    {
+      "code": "4.3.01.01",
+      "name": "Rendimentos de Aplicação Financeira",
+      "type": null,
+      "parent_code": "4.3.01",
+      "reference_code": "3.4.1.02.01"
+    },
+    {
+      "code": "4.3.01.02",
+      "name": "Juros Ativos",
+      "type": null,
+      "parent_code": "4.3.01",
+      "reference_code": "3.4.1.02.02"
+    },
+    {
+      "code": "4.3.01.03",
+      "name": "Descontos Obtidos",
+      "type": null,
+      "parent_code": "4.3.01",
+      "reference_code": "3.4.1.02.03"
+    },
+    {
+      "code": "4.4",
+      "name": "Outras Receitas Operacionais",
+      "type": null,
+      "parent_code": "4"
+    },
+    {
+      "code": "4.4.01",
+      "name": "Reembolsos de Clientes",
+      "type": null,
+      "parent_code": "4.4"
+    },
+    {
+      "code": "4.4.01.01",
+      "name": "Custas Reembolsadas",
+      "type": null,
+      "parent_code": "4.4.01"
+    },
+    {
+      "code": "5",
+      "name": "CUSTOS E DESPESAS",
+      "type": "EXPENSE",
+      "parent_code": null,
+      "reference_code": "3.2"
+    },
+    {
+      "code": "5.1",
+      "name": "Custos dos Serviços Prestados",
+      "type": null,
+      "parent_code": "5",
+      "reference_code": "3.2"
+    },
+    {
+      "code": "5.1.01",
+      "name": "Custos dos Serviços",
+      "type": null,
+      "parent_code": "5.1",
+      "reference_code": "3.2.1.01"
+    },
+    {
+      "code": "5.1.01.01",
+      "name": "Custos dos Serviços Prestados",
+      "type": null,
+      "parent_code": "5.1.01",
+      "reference_code": "3.2.1.01.03"
+    },
+    {
+      "code": "5.2",
+      "name": "Despesas com Vendas",
+      "type": null,
+      "parent_code": "5",
+      "reference_code": "3.3.1"
+    },
+    {
+      "code": "5.2.01",
+      "name": "Outras Despesas com Vendas",
+      "type": null,
+      "parent_code": "5.2",
+      "reference_code": "3.3.1.02"
+    },
+    {
+      "code": "5.2.01.01",
+      "name": "Comissões sobre Vendas",
+      "type": null,
+      "parent_code": "5.2.01",
+      "reference_code": "3.3.1.02.01"
+    },
+    {
+      "code": "5.2.01.02",
+      "name": "Propaganda e Publicidade",
+      "type": null,
+      "parent_code": "5.2.01",
+      "reference_code": "3.3.1.02.02"
+    },
+    {
+      "code": "5.2.01.03",
+      "name": "Brindes e Material Promocional",
+      "type": null,
+      "parent_code": "5.2.01",
+      "reference_code": "3.3.1.02.03"
+    },
+    {
+      "code": "5.3",
+      "name": "Despesas Administrativas",
+      "type": null,
+      "parent_code": "5",
+      "reference_code": "3.3.2"
+    },
+    {
+      "code": "5.3.01",
+      "name": "Despesas com Pessoal",
+      "type": null,
+      "parent_code": "5.3",
+      "reference_code": "3.3.2.01"
+    },
+    {
+      "code": "5.3.01.01",
+      "name": "Salários",
+      "type": null,
+      "parent_code": "5.3.01",
+      "reference_code": "3.3.2.01.01"
+    },
+    {
+      "code": "5.3.01.02",
+      "name": "Gratificações",
+      "type": null,
+      "parent_code": "5.3.01",
+      "reference_code": "3.3.2.01.02"
+    },
+    {
+      "code": "5.3.01.03",
+      "name": "Férias",
+      "type": null,
+      "parent_code": "5.3.01",
+      "reference_code": "3.3.2.01.03"
+    },
+    {
+      "code": "5.3.01.04",
+      "name": "13º Salário",
+      "type": null,
+      "parent_code": "5.3.01",
+      "reference_code": "3.3.2.01.04"
+    },
+    {
+      "code": "5.3.01.05",
+      "name": "INSS",
+      "type": null,
+      "parent_code": "5.3.01",
+      "reference_code": "3.3.2.01.05"
+    },
+    {
+      "code": "5.3.01.06",
+      "name": "FGTS",
+      "type": null,
+      "parent_code": "5.3.01",
+      "reference_code": "3.3.2.01.06"
+    },
+    {
+      "code": "5.3.01.07",
+      "name": "Vale Refeição",
+      "type": null,
+      "parent_code": "5.3.01",
+      "reference_code": "3.3.2.01.07"
+    },
+    {
+      "code": "5.3.01.08",
+      "name": "Vale Transporte",
+      "type": null,
+      "parent_code": "5.3.01",
+      "reference_code": "3.3.2.01.08"
+    },
+    {
+      "code": "5.3.01.09",
+      "name": "Assistência Médica",
+      "type": null,
+      "parent_code": "5.3.01",
+      "reference_code": "3.3.2.01.09"
+    },
+    {
+      "code": "5.3.01.10",
+      "name": "Seguro de Vida",
+      "type": null,
+      "parent_code": "5.3.01",
+      "reference_code": "3.3.2.01.10"
+    },
+    {
+      "code": "5.3.01.11",
+      "name": "Treinamento",
+      "type": null,
+      "parent_code": "5.3.01",
+      "reference_code": "3.3.2.01.11"
+    },
+    {
+      "code": "5.3.01.12",
+      "name": "Pró-Labore",
+      "type": null,
+      "parent_code": "5.3.01",
+      "reference_code": "3.3.2.01.12"
+    },
+    {
+      "code": "5.3.01.13",
+      "name": "Bolsa Estágio",
+      "type": null,
+      "parent_code": "5.3.01"
+    },
+    {
+      "code": "5.3.02",
+      "name": "Despesas Gerais",
+      "type": null,
+      "parent_code": "5.3",
+      "reference_code": "3.3.2.02"
+    },
+    {
+      "code": "5.3.02.01",
+      "name": "Aluguéis e Arrendamentos",
+      "type": null,
+      "parent_code": "5.3.02",
+      "reference_code": "3.3.2.02.01"
+    },
+    {
+      "code": "5.3.02.02",
+      "name": "Condomínios e Estacionamentos",
+      "type": null,
+      "parent_code": "5.3.02",
+      "reference_code": "3.3.2.02.02"
+    },
+    {
+      "code": "5.3.02.03",
+      "name": "Despesas com Veículos",
+      "type": null,
+      "parent_code": "5.3.02",
+      "reference_code": "3.3.2.02.03"
+    },
+    {
+      "code": "5.3.02.04",
+      "name": "Depreciação",
+      "type": null,
+      "parent_code": "5.3.02",
+      "reference_code": "3.3.2.02.04"
+    },
+    {
+      "code": "5.3.02.05",
+      "name": "Amortização",
+      "type": null,
+      "parent_code": "5.3.02",
+      "reference_code": "3.3.2.02.05"
+    },
+    {
+      "code": "5.3.02.06",
+      "name": "Serviços Profissionais Contratados",
+      "type": null,
+      "parent_code": "5.3.02",
+      "reference_code": "3.3.2.02.06"
+    },
+    {
+      "code": "5.3.02.07",
+      "name": "Energia",
+      "type": null,
+      "parent_code": "5.3.02",
+      "reference_code": "3.3.2.02.07"
+    },
+    {
+      "code": "5.3.02.08",
+      "name": "Água e Esgoto",
+      "type": null,
+      "parent_code": "5.3.02",
+      "reference_code": "3.3.2.02.08"
+    },
+    {
+      "code": "5.3.02.09",
+      "name": "Telefone e Internet",
+      "type": null,
+      "parent_code": "5.3.02",
+      "reference_code": "3.3.2.02.09"
+    },
+    {
+      "code": "5.3.02.10",
+      "name": "Correios e Malotes",
+      "type": null,
+      "parent_code": "5.3.02",
+      "reference_code": "3.3.2.02.10"
+    },
+    {
+      "code": "5.3.02.11",
+      "name": "Seguros",
+      "type": null,
+      "parent_code": "5.3.02",
+      "reference_code": "3.3.2.02.11"
+    },
+    {
+      "code": "5.3.02.12",
+      "name": "Multas",
+      "type": null,
+      "parent_code": "5.3.02",
+      "reference_code": "3.3.2.02.12"
+    },
+    {
+      "code": "5.3.02.13",
+      "name": "Bens de Pequeno Valor",
+      "type": null,
+      "parent_code": "5.3.02",
+      "reference_code": "3.3.2.02.13"
+    },
+    {
+      "code": "5.3.02.14",
+      "name": "Material de Escritório",
+      "type": null,
+      "parent_code": "5.3.02",
+      "reference_code": "3.3.2.02.14"
+    },
+    {
+      "code": "5.3.02.15",
+      "name": "Assistência Contábil",
+      "type": null,
+      "parent_code": "5.3.02"
+    },
+    {
+      "code": "5.3.02.16",
+      "name": "Certificado Digital",
+      "type": null,
+      "parent_code": "5.3.02"
+    },
+    {
+      "code": "5.3.02.17",
+      "name": "Despesas Cartorárias",
+      "type": null,
+      "parent_code": "5.3.02"
+    },
+    {
+      "code": "5.3.02.18",
+      "name": "Custas Processuais",
+      "type": null,
+      "parent_code": "5.3.02"
+    },
+    {
+      "code": "5.3.02.19",
+      "name": "Viagens e Hospedagem",
+      "type": null,
+      "parent_code": "5.3.02"
+    },
+    {
+      "code": "5.3.02.20",
+      "name": "Softwares e Assinaturas",
+      "type": null,
+      "parent_code": "5.3.02"
+    },
+    {
+      "code": "5.3.02.21",
+      "name": "Anuidades OAB e Entidades de Classe",
+      "type": null,
+      "parent_code": "5.3.02"
+    },
+    {
+      "code": "5.3.03",
+      "name": "Tributos e Contribuições",
+      "type": null,
+      "parent_code": "5.3",
+      "reference_code": "3.3.2.03"
+    },
+    {
+      "code": "5.3.03.01",
+      "name": "Taxas e Tributos Municipais",
+      "type": null,
+      "parent_code": "5.3.03",
+      "reference_code": "3.3.2.03.01"
+    },
+    {
+      "code": "5.3.03.02",
+      "name": "PIS sobre Outras Receitas",
+      "type": null,
+      "parent_code": "5.3.03",
+      "reference_code": "3.3.2.03.02"
+    },
+    {
+      "code": "5.3.03.03",
+      "name": "COFINS sobre Outras Receitas",
+      "type": null,
+      "parent_code": "5.3.03",
+      "reference_code": "3.3.2.03.03"
+    },
+    {
+      "code": "5.4",
+      "name": "Outros Resultados Operacionais",
+      "type": null,
+      "parent_code": "5",
+      "reference_code": "3.3.9"
+    },
+    {
+      "code": "5.4.01",
+      "name": "Ganhos e Perdas de Capital",
+      "type": null,
+      "parent_code": "5.4",
+      "reference_code": "3.3.9.01"
+    },
+    {
+      "code": "5.4.01.01",
+      "name": "(-) Receita na Venda de Imobilizado",
+      "type": null,
+      "parent_code": "5.4.01",
+      "contra": true,
+      "reference_code": "3.3.9.01.01"
+    },
+    {
+      "code": "5.4.01.02",
+      "name": "Custo do Imobilizado Baixado",
+      "type": null,
+      "parent_code": "5.4.01",
+      "reference_code": "3.3.9.01.02"
+    },
+    {
+      "code": "5.4.02",
+      "name": "Perdas",
+      "type": null,
+      "parent_code": "5.4",
+      "reference_code": "3.3.9.02"
+    },
+    {
+      "code": "5.4.02.01",
+      "name": "PECLD (Despesa)",
+      "type": null,
+      "parent_code": "5.4.02",
+      "reference_code": "3.3.9.02.01"
+    },
+    {
+      "code": "5.5",
+      "name": "Despesas Financeiras",
+      "type": null,
+      "parent_code": "5",
+      "reference_code": "3.4.1.01"
+    },
+    {
+      "code": "5.5.01",
+      "name": "Despesas Financeiras",
+      "type": null,
+      "parent_code": "5.5",
+      "reference_code": "3.4.1.01"
+    },
+    {
+      "code": "5.5.01.01",
+      "name": "Juros e Multas Passivos",
+      "type": null,
+      "parent_code": "5.5.01",
+      "reference_code": "3.4.1.01.01"
+    },
+    {
+      "code": "5.5.01.02",
+      "name": "Despesas Bancárias",
+      "type": null,
+      "parent_code": "5.5.01",
+      "reference_code": "3.4.1.01.02"
+    },
+    {
+      "code": "5.5.01.03",
+      "name": "IOF",
+      "type": null,
+      "parent_code": "5.5.01",
+      "reference_code": "3.4.1.01.03"
+    },
+    {
+      "code": "5.5.01.04",
+      "name": "Descontos Concedidos",
+      "type": null,
+      "parent_code": "5.5.01",
+      "reference_code": "3.4.1.01.04"
+    },
+    {
+      "code": "5.6",
+      "name": "Tributos sobre o Lucro",
+      "type": null,
+      "parent_code": "5",
+      "reference_code": "3.8"
+    },
+    {
+      "code": "5.6.01",
+      "name": "Impostos sobre o Lucro",
+      "type": null,
+      "parent_code": "5.6",
+      "reference_code": "3.8.1.01"
+    },
+    {
+      "code": "5.6.01.01",
+      "name": "IRPJ Corrente",
+      "type": null,
+      "parent_code": "5.6.01",
+      "reference_code": "3.8.1.01.01"
+    },
+    {
+      "code": "5.6.01.02",
+      "name": "CSLL Corrente",
+      "type": null,
+      "parent_code": "5.6.01",
+      "reference_code": "3.8.1.01.02"
+    }
+  ]
+}

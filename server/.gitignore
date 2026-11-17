@@ -1,0 +1,82 @@
+#-------------------------
+# Operating Specific Junk Files
+#-------------------------
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+#-------------------------
+# Environment Files
+#-------------------------
+# These should never be under version control,
+# as it poses a security risk.
+.env
+
+#-------------------------
+# Credentials Files
+#-------------------------
+# These should never be under version control,
+# as it poses a security risk.
+credentials/*
+
+#-------------------------
+# Temporary Files
+#-------------------------
+writable/cache/*
+!writable/cache/index.html
+
+writable/logs/*
+!writable/logs/index.html
+
+writable/session/*
+!writable/session/index.html
+
+writable/uploads/*
+!writable/uploads/index.html
+
+writable/debugbar/*
+
+writable/jsons/*
+
+# Relatórios do privacidade:backfill (contêm nomes de clientes e processos)
+writable/privacidade/*
+
+# Estado de jobs em execução
+writable/jobs/*
+
+writable/tmp/*
+!writable/tmp/index.html
+
+writable/uploads/userImgs/*
+!writable/uploads/userImgs/index.html
+
+php_errors.log
+
+#-------------------------
+# Vendor Files
+#-------------------------
+vendor/*
+
+
+#-------------------------
+# Build Files
+#-------------------------
+
+build/*
+ 
+
+# Controle de jobs disparados pelo painel (importação STJ, migrations)
+writable/jobs/*
+writable/migrations.lock
+
+#-------------------------
+# Site público (gerado em tempo de execução)
+#-------------------------
+# Mídias enviadas pelo editor do site
+public/uploads/*
+# Templates publicados a partir dos pacotes .zip
+public/templates/*
+
+writable/backups/*

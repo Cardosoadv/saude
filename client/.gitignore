@@ -1,0 +1,40 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+
+dist/
+
+*.local
+
+# Build output (gerado pelo postbuild)
+config.js
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Env file
+.env
+
+
+# Build single-file (gerado pelo postbuild e enviado pelo CI)
+vue.html
+
+# PWA (gerados pelo postbuild a partir de public/)
+/sw.js
+/manifest.webmanifest
+/icons/

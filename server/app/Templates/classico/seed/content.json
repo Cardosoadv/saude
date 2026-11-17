@@ -1,0 +1,1179 @@
+{
+  "configuracoes": {
+    "identidade.nome": {
+      "valor": "Cardoso & Bruno Sociedade de Advogados",
+      "tipo": "string"
+    },
+    "identidade.nome_curto": {
+      "valor": "Cardoso & Bruno",
+      "tipo": "string"
+    },
+    "identidade.sobre_rodape": {
+      "valor": "Compromisso com a integridade, excelência técnica e resolução estratégica de litígios complexos. Advocacia de alto padrão corporativo e civil.",
+      "tipo": "text"
+    },
+    "contato.enderecos": {
+      "valor": [
+        {
+          "titulo": "Belo Horizonte / MG",
+          "linha1": "Rua Roberto Lúcio Aroeira, 417, Sala 01",
+          "linha2": "Bairro Itapoã — CEP 31710-055",
+          "resumo": "Rua Roberto Lúcio Aroeira, 417, Sala 01, Itapoã, Belo Horizonte / MG",
+          "rua": "Rua Roberto Lúcio Aroeira, 417, Sala 01",
+          "cidade": "Belo Horizonte",
+          "uf": "MG",
+          "cep": "31710-055"
+        }
+      ],
+      "tipo": "json"
+    },
+    "contato.telefone": {
+      "valor": "(31) 9.9224-6996",
+      "tipo": "string"
+    },
+    "contato.telefone2": {
+      "valor": "(31) 9.9217-4834",
+      "tipo": "string"
+    },
+    "contato.site": {
+      "valor": "www.cardosoebruno.adv.br",
+      "tipo": "string"
+    },
+    "contato.email": {
+      "valor": "contato@cardosoebruno.adv.br",
+      "tipo": "string"
+    },
+    "seo.sufixo_titulo": {
+      "valor": " | Cardoso & Bruno",
+      "tipo": "string"
+    },
+    "seo.titulo_padrao": {
+      "valor": "Cardoso & Bruno Sociedade de Advogados",
+      "tipo": "string"
+    },
+    "seo.descricao_padrao": {
+      "valor": "Assessoria de alto padrão especializada em Direito Civil, Administrativo e Contratos Complexos.",
+      "tipo": "text"
+    },
+    "seo.palavras_chave": {
+      "valor": "advogado belo horizonte, inventários, divórcios, advocacia juatuba, direito administrativo mg, consultoria jurídica civil, elaboração de contratos, advocacia colaborativa, Cardoso e Bruno Sociedade de Advogados, OAB MG",
+      "tipo": "text"
+    },
+    "integracoes.ga_id": {
+      "valor": "G-X56XSQ5ZB6",
+      "tipo": "string"
+    },
+    "integracoes.ads_id": {
+      "valor": "AW-861297936",
+      "tipo": "string"
+    },
+    "integracoes.ads_conversao_formulario": {
+      "valor": "5OWvCJPanZ4dEJC62ZoD",
+      "tipo": "string"
+    },
+    "integracoes.ads_conversao_whatsapp": {
+      "valor": "",
+      "tipo": "string"
+    },
+    "noticias.filtros": {
+      "valor": [
+        "Direito Civil",
+        "Administrativo",
+        "Contratos"
+      ],
+      "tipo": "json"
+    },
+    "identidade.razao_social": {
+      "valor": "",
+      "tipo": "string"
+    },
+    "identidade.cnpj": {
+      "valor": "",
+      "tipo": "string"
+    },
+    "identidade.registro_oab": {
+      "valor": "",
+      "tipo": "string"
+    },
+    "identidade.faixa_preco": {
+      "valor": "",
+      "tipo": "string"
+    },
+    "identidade.advogados": {
+      "valor": [],
+      "tipo": "json"
+    },
+    "contato.area_atendida": {
+      "valor": [
+        "Belo Horizonte",
+        "Juatuba",
+        "Minas Gerais"
+      ],
+      "tipo": "json"
+    },
+    "contato.horario": {
+      "valor": [],
+      "tipo": "json"
+    },
+    "contato.latitude": {
+      "valor": "",
+      "tipo": "string"
+    },
+    "contato.longitude": {
+      "valor": "",
+      "tipo": "string"
+    },
+    "contato.mapa_url": {
+      "valor": "",
+      "tipo": "string"
+    },
+    "lgpd.encarregado_nome": {
+      "valor": "Fabiano Dias Cardoso",
+      "tipo": "string"
+    },
+    "lgpd.encarregado_email": {
+      "valor": "fabiano@cardosoebruno.adv.br",
+      "tipo": "string"
+    },
+    "lgpd.politica_versao": {
+      "valor": "2026-10-13",
+      "tipo": "string"
+    }
+  },
+  "menus": {
+    "cabecalho": [
+      {
+        "rotulo": "Áreas de Atuação",
+        "tipo": "ancora",
+        "ancora": "expertise"
+      },
+      {
+        "rotulo": "Quem Somos",
+        "tipo": "pagina",
+        "pagina": "quem-somos"
+      },
+      {
+        "rotulo": "Direito Civil",
+        "tipo": "pagina",
+        "pagina": "direito-civil"
+      },
+      {
+        "rotulo": "Direito Administrativo",
+        "tipo": "pagina",
+        "pagina": "direito-administrativo"
+      },
+      {
+        "rotulo": "Notícias",
+        "tipo": "url",
+        "url": "/noticias"
+      },
+      {
+        "rotulo": "Contato",
+        "tipo": "ancora",
+        "ancora": "contato"
+      },
+      {
+        "rotulo": "Consulta Inicial",
+        "tipo": "ancora",
+        "ancora": "contato",
+        "destaque": true
+      }
+    ],
+    "rodape": [
+      {
+        "rotulo": "Início",
+        "tipo": "pagina",
+        "pagina": "inicio"
+      },
+      {
+        "rotulo": "Quem Somos",
+        "tipo": "pagina",
+        "pagina": "quem-somos"
+      },
+      {
+        "rotulo": "Áreas de Atuação",
+        "tipo": "ancora",
+        "ancora": "expertise"
+      },
+      {
+        "rotulo": "Notícias",
+        "tipo": "url",
+        "url": "/noticias"
+      },
+      {
+        "rotulo": "Contato",
+        "tipo": "ancora",
+        "ancora": "contato"
+      },
+      {
+        "rotulo": "Política de Privacidade",
+        "tipo": "pagina",
+        "pagina": "politica-de-privacidade"
+      },
+      {
+        "rotulo": "Termos de Uso",
+        "tipo": "pagina",
+        "pagina": "termos-de-uso"
+      }
+    ],
+    "lateral_areas": [
+      {
+        "rotulo": "Direito Civil",
+        "tipo": "pagina",
+        "pagina": "direito-civil"
+      },
+      {
+        "rotulo": "Direito Administrativo",
+        "tipo": "pagina",
+        "pagina": "direito-administrativo"
+      },
+      {
+        "rotulo": "Contratos e Negócios",
+        "tipo": "pagina",
+        "pagina": "contratos-negocios"
+      },
+      {
+        "rotulo": "Advocacia Colaborativa",
+        "tipo": "pagina",
+        "pagina": "advocacia-colaborativa"
+      }
+    ]
+  },
+  "paginas": [
+    {
+      "slug": "inicio",
+      "titulo": "Início",
+      "tipo": "home",
+      "layout": "main",
+      "ordem": 0,
+      "status": "publicado",
+      "meta_title": "Cardoso & Bruno Sociedade de Advogados | Excelência Jurídica",
+      "meta_description": "Cardoso & Bruno Sociedade de Advogados: Direito Civil, Administrativo e Contratos. Atendimento estratégico e advocacia colaborativa em Belo Horizonte e Juatuba.",
+      "exibir_sitemap": true,
+      "prioridade_sitemap": 1.0,
+      "changefreq": "daily",
+      "secoes": [
+        {
+          "tipo": "hero",
+          "dados": {
+            "sobretitulo": "Cardoso & Bruno Sociedade de Advogados",
+            "titulo": "Defesa Estratégica e <em>Excelência</em> Jurídica",
+            "subtitulo": "Assessoria de alto padrão especializada em Direito Civil, Administrativo e Contratos Complexos. Soluções jurídicas sob medida para empresas e indivíduos.",
+            "botoes": [
+              {
+                "rotulo": "Iniciar Consulta",
+                "link": {
+                  "tipo": "ancora",
+                  "ancora": "contato"
+                },
+                "estilo": "primario"
+              },
+              {
+                "rotulo": "Conhecer Áreas",
+                "link": {
+                  "tipo": "ancora",
+                  "ancora": "expertise"
+                },
+                "estilo": "contorno"
+              }
+            ]
+          }
+        },
+        {
+          "tipo": "pilares",
+          "dados": {
+            "itens": [
+              {
+                "icone": "bi-award",
+                "titulo": "Rigor Técnico",
+                "texto": "Análise aprofundada da legislação, doutrina e jurisprudência para construir defesas jurídicas sólidas e inovadoras."
+              },
+              {
+                "icone": "bi-shield-check",
+                "titulo": "Ética e Integridade",
+                "texto": "Relações baseadas na mais absoluta transparência, lealdade e compromisso ético na condução de cada demanda."
+              },
+              {
+                "icone": "bi-graph-up-arrow",
+                "titulo": "Foco em Resultados",
+                "texto": "Abordagem estratégica voltada a mitigar riscos e maximizar oportunidades, buscando a resolução célere de conflitos."
+              }
+            ]
+          }
+        },
+        {
+          "tipo": "cards_areas",
+          "ancora": "expertise",
+          "dados": {
+            "sobretitulo": "Áreas de Prática",
+            "titulo": "Especialidades de Atuação",
+            "itens": [
+              {
+                "titulo": "Direito Civil",
+                "texto": "Cobranças, indenizações por danos morais/materiais, direito de família, heranças e usucapião.",
+                "link": {
+                  "tipo": "pagina",
+                  "slug": "direito-civil"
+                }
+              },
+              {
+                "titulo": "Direito Administrativo",
+                "texto": "Assessoria em licitações, processos e sanções públicas, defesas regulatórias e servidores.",
+                "link": {
+                  "tipo": "pagina",
+                  "slug": "direito-administrativo"
+                }
+              },
+              {
+                "titulo": "Contratos",
+                "texto": "Elaboração, análise minuciosa, renegociação e revisão de pactos cíveis e comerciais complexos.",
+                "link": {
+                  "tipo": "pagina",
+                  "slug": "contratos-negocios"
+                }
+              },
+              {
+                "titulo": "Advocacia Colaborativa",
+                "texto": "Resolução consensual de conflitos de forma humanizada, reduzindo custos e litígios judiciais prolongados.",
+                "link": {
+                  "tipo": "pagina",
+                  "slug": "advocacia-colaborativa"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "tipo": "ultimas_noticias",
+          "ancora": "noticias",
+          "dados": {
+            "sobretitulo": "Conteúdo Jurídico",
+            "titulo": "Artigos Recentes"
+          }
+        },
+        {
+          "tipo": "contato",
+          "ancora": "contato",
+          "dados": {
+            "sobretitulo": "Contato",
+            "titulo": "Inicie sua Consulta Conosco",
+            "descricao": "Entre em contato para apresentar sua demanda jurídica. Nossa equipe retornará com presteza e o devido sigilo corporativo."
+          }
+        }
+      ]
+    },
+    {
+      "slug": "direito-civil",
+      "titulo": "Direito Civil",
+      "tipo": "area",
+      "layout": "area",
+      "ordem": 1,
+      "status": "publicado",
+      "meta_title": "Direito Civil | Cardoso & Bruno Sociedade de Advogados",
+      "meta_description": "Assessoria completa em Direito Civil: obrigações, contratos, responsabilidade civil, família e sucessões com foco em soluções eficientes.",
+      "exibir_sitemap": true,
+      "prioridade_sitemap": 0.8,
+      "changefreq": "monthly",
+      "secoes": [
+        {
+          "tipo": "hero_area",
+          "dados": {
+            "sobretitulo": "Áreas de Prática",
+            "titulo": "Direito <em>Civil</em>"
+          }
+        },
+        {
+          "tipo": "intro_area",
+          "dados": {
+            "lead": "Nós oferecemos assessoria jurídica completa e personalizada para empresas e pessoas físicas em todas as etapas de processos contenciosos cíveis.",
+            "corpo": "<p>Nossa equipe de experientes advogados especializados em contencioso cível está preparada para defendê-lo com afinco e profissionalismo em litígios judiciais e extrajudiciais, buscando a melhor solução para cada caso, seja através de acordos ou da tutela jurisdicional.</p>"
+          }
+        },
+        {
+          "tipo": "lista_destaque",
+          "dados": {
+            "titulo": "Nossos serviços em contencioso cível incluem:",
+            "marcador": "padrao",
+            "itens": [
+              {
+                "destaque": "Atuação em diversas áreas do direito civil:",
+                "texto": "Cobrança de dívidas, indenização por danos materiais e morais, contratos, responsabilidade civil, direito de propriedade, direito de família, sucessões, consumidor, entre outras."
+              },
+              {
+                "destaque": "Análise aprofundada do caso:",
+                "texto": "Realizamos um estudo minucioso do seu caso, identificando os pontos fortes e fracos, as melhores estratégias e os riscos envolvidos, para garantir uma defesa sólida e eficaz."
+              },
+              {
+                "destaque": "Negociação extrajudicial:",
+                "texto": "Buscamos a resolução do conflito por meio de acordos amigáveis, sempre que possível, visando minimizar custos e tempo de trâmite processual."
+              },
+              {
+                "destaque": "Atuação em processos judiciais:",
+                "texto": "Em casos que não sejam solucionados extrajudicialmente, patrocinamos nossos clientes em todas as fases do processo judicial, desde a citação até o trânsito em julgado da decisão, com recursos e acompanhamento constantes."
+              },
+              {
+                "destaque": "Recursos jurídicos:",
+                "texto": "Caso necessário, interpomos recursos para reverter decisões desfavoráveis, buscando sempre a melhor defesa dos interesses de nossos clientes."
+              },
+              {
+                "destaque": "Execução de decisões judiciais:",
+                "texto": "Cobramos judicialmente o cumprimento de decisões judiciais favoráveis, assegurando que nossos clientes obtenham o que lhes foi assegurado por lei."
+              }
+            ]
+          }
+        },
+        {
+          "tipo": "lista_destaque",
+          "dados": {
+            "titulo": "Nossos diferenciais:",
+            "marcador": "dourado",
+            "itens": [
+              {
+                "destaque": "Experiência e conhecimento:",
+                "texto": "Contamos com uma equipe de advogados experientes e com profundo conhecimento em contencioso cível, atualizados sobre as últimas legislações e jurisprudências."
+              },
+              {
+                "destaque": "Visão estratégica:",
+                "texto": "Analisamos cada caso de forma abrangente, considerando os aspectos jurídicos, fáticos e probatórios, para construir uma estratégia personalizada e eficaz de defesa."
+              },
+              {
+                "destaque": "Comunicação clara e objetiva:",
+                "texto": "Mantemos nossos clientes informados sobre o andamento processos de forma clara, objetiva e transparente, utilizando linguagem acessível e evitando termos jurídicos desnecessários."
+              },
+              {
+                "destaque": "Transparência e ética:",
+                "texto": "Atuamos com ética, profissionalismo e transparência, sempre informando nossos clientes sobre os custos e honorários advocatícios, e buscando a melhor solução para cada caso, dentro dos mais altos padrões de conduta."
+              },
+              {
+                "destaque": "Compromisso com a excelência:",
+                "texto": "Dedicação total ao seu caso, buscando sempre a melhor solução para você, com agilidade, eficiência e resultados concretos."
+              }
+            ]
+          }
+        },
+        {
+          "tipo": "lista_simples",
+          "dados": {
+            "titulo": "Áreas de atuação em contencioso cível:",
+            "colunas": "2",
+            "itens": [
+              {
+                "texto": "Cobrança de dívidas (Inadimplência contratual, cheques especiais, notas promissórias, etc.)"
+              },
+              {
+                "texto": "Indenização por danos materiais e morais (Acidentes de trânsito, erros médicos, produtos defeituosos)"
+              },
+              {
+                "texto": "Descumprimento de contrato (Quebra de contrato, vícios redibitórios, etc.)"
+              },
+              {
+                "texto": "Possessão e propriedade (Reintegração de posse, usucapião, etc.)"
+              },
+              {
+                "texto": "Direito de família (Divórcio, pensão alimentícia, guarda de filhos)"
+              },
+              {
+                "texto": "Sucessões (Inventário, testamento, herança, partilha de bens)"
+              },
+              {
+                "texto": "Direito do consumidor (Defesa do consumidor em compras, serviços bancários, planos de saúde)"
+              },
+              {
+                "texto": "E muito mais!"
+              }
+            ]
+          }
+        },
+        {
+          "tipo": "cta_box",
+          "dados": {
+            "texto": "Se você está enfrentando um litígio cível, nós podemos lhe ajudar.",
+            "botao_rotulo": "Agende uma Consulta",
+            "botao_link": {
+              "tipo": "ancora",
+              "ancora": "contato"
+            }
+          }
+        },
+        {
+          "tipo": "lateral_outras_areas",
+          "dados": {
+            "titulo": "Outras Áreas",
+            "menu": "lateral_areas"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "direito-administrativo",
+      "titulo": "Direito Administrativo",
+      "tipo": "area",
+      "layout": "area",
+      "ordem": 2,
+      "status": "publicado",
+      "meta_title": "Direito Administrativo | Cardoso & Bruno Sociedade de Advogados",
+      "meta_description": "Especialistas em Direito Administrativo, licitações, contratos públicos e defesa de interesses perante a administração pública.",
+      "exibir_sitemap": true,
+      "prioridade_sitemap": 0.8,
+      "changefreq": "monthly",
+      "secoes": [
+        {
+          "tipo": "hero_area",
+          "dados": {
+            "sobretitulo": "Áreas de Prática",
+            "titulo": "Direito <em>Administrativo</em>"
+          }
+        },
+        {
+          "tipo": "intro_area",
+          "dados": {
+            "lead": "Oferecemos assessoria jurídica especializada em direito administrativo, auxiliando pessoas físicas e jurídicas em suas relações com o poder público.",
+            "corpo": "<p>Nossa equipe de advogados experientes está preparada para defender seus direitos e interesses em processos administrativos, licitações, contratos administrativos, servidores públicos, entre outras questões.</p>"
+          }
+        },
+        {
+          "tipo": "lista_destaque",
+          "dados": {
+            "titulo": "Nossos serviços em direito administrativo incluem:",
+            "marcador": "padrao",
+            "itens": [
+              {
+                "destaque": "Defesa em processos administrativos:",
+                "texto": "Atuamos na defesa de seus direitos em processos administrativos perante órgãos públicos, oferecendo orientação, elaboração de defesas e recursos, acompanhamento processual e defesa em todas as fases do processo."
+              },
+              {
+                "destaque": "Licitações e contratos administrativos:",
+                "texto": "Auxiliamos na participação em licitações, elaboração de propostas, recursos administrativos, análise e elaboração de contratos administrativos, garantindo segurança jurídica e conformidade com a legislação vigente."
+              },
+              {
+                "destaque": "Servidores públicos:",
+                "texto": "Orientação e defesa de servidores públicos em questões relacionadas a concursos públicos, nomeação, posse, progressão na carreira, direitos e deveres, processos disciplinares, aposentadoria, entre outras questões."
+              },
+              {
+                "destaque": "Atuação perante órgãos públicos:",
+                "texto": "Representamos seus interesses perante órgãos públicos em todas as esferas, buscando soluções rápidas e eficazes para suas demandas."
+              },
+              {
+                "destaque": "Consultoria em direito administrativo:",
+                "texto": "Orientação sobre legislação, regulamentos e procedimentos administrativos, garantindo que suas atividades estejam em conformidade com a lei."
+              }
+            ]
+          }
+        },
+        {
+          "tipo": "lista_destaque",
+          "dados": {
+            "titulo": "Nossos diferenciais:",
+            "marcador": "dourado",
+            "itens": [
+              {
+                "destaque": "Experiência e conhecimento:",
+                "texto": "Contamos com uma equipe de advogados experientes e com profundo conhecimento em direito administrativo, atualizados sobre as últimas legislações e jurisprudências."
+              },
+              {
+                "destaque": "Visão estratégica:",
+                "texto": "Analisamos cada caso de forma abrangente, considerando os aspectos jurídicos, fáticos e probatórios, para construir uma estratégia personalizada e eficaz de defesa."
+              },
+              {
+                "destaque": "Comunicação clara e objetiva:",
+                "texto": "Mantemos nossos clientes informados sobre o andamento dos processos de forma clara, objetiva e transparente, utilizando linguagem acessível e evitando termos jurídicos desnecessários."
+              },
+              {
+                "destaque": "Transparência e ética:",
+                "texto": "Atuamos com ética, profissionalismo e transparência, sempre informando nossos clientes sobre os custos e honorários advocatícios, e buscando a melhor solução para cada caso, dentro dos mais altos padrões de conductas."
+              },
+              {
+                "destaque": "Compromisso com a excelência:",
+                "texto": "Dedicação total ao seu caso, buscando sempre a melhor solução para você, com agilidade, eficiência e resultados concretos."
+              }
+            ]
+          }
+        },
+        {
+          "tipo": "lista_simples",
+          "dados": {
+            "titulo": "Áreas de atuação em direito administrativo:",
+            "colunas": "1",
+            "itens": [
+              {
+                "texto": "Processos administrativos disciplinares;"
+              },
+              {
+                "texto": "Licitações e contratos administrativos;"
+              },
+              {
+                "texto": "Servidores públicos;"
+              },
+              {
+                "texto": "Atuação perante órgãos públicos;"
+              },
+              {
+                "texto": "Consultoria em direito administrativo;"
+              },
+              {
+                "texto": "E muito mais!"
+              }
+            ]
+          }
+        },
+        {
+          "tipo": "cta_box",
+          "dados": {
+            "texto": "Se você precisa de assessoria em direito administrativo, nós podemos orientá-lo.",
+            "botao_rotulo": "Agende uma Consulta",
+            "botao_link": {
+              "tipo": "ancora",
+              "ancora": "contato"
+            }
+          }
+        },
+        {
+          "tipo": "lateral_outras_areas",
+          "dados": {
+            "titulo": "Outras Áreas",
+            "menu": "lateral_areas"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "contratos-negocios",
+      "titulo": "Contratos e Negócios",
+      "tipo": "area",
+      "layout": "area",
+      "ordem": 3,
+      "status": "publicado",
+      "meta_title": "Contratos e Negócios | Cardoso & Bruno Sociedade de Advogados",
+      "meta_description": "Elaboração, análise e revisão de contratos empresariais e civis, garantindo segurança jurídica para seus negócios e parcerias.",
+      "exibir_sitemap": true,
+      "prioridade_sitemap": 0.8,
+      "changefreq": "monthly",
+      "secoes": [
+        {
+          "tipo": "hero_area",
+          "dados": {
+            "sobretitulo": "Áreas de Prática",
+            "titulo": "Contratos &amp; <em>Negócios</em>"
+          }
+        },
+        {
+          "tipo": "intro_area",
+          "dados": {
+            "lead": "Oferecemos assessoria jurídica completa e personalizada para empresas e pessoas físicas em todas as etapas de processos contenciosos cíveis.",
+            "corpo": "<p>Nossa equipe de experientes advogados especializados em contencioso cível está preparada para defendê-lo com afinco e profissionalismo em litígios judiciais e extrajudiciais, buscando a melhor solução para cada caso, seja através de acordos ou da tutela jurisdicional.</p>"
+          }
+        },
+        {
+          "tipo": "lista_destaque",
+          "dados": {
+            "titulo": "Nossos serviços em contencioso cível incluem:",
+            "marcador": "padrao",
+            "itens": [
+              {
+                "destaque": "Atuação em diversas áreas do direito civil:",
+                "texto": "Cobrança de dívidas, indenização por danos materiais e morais, contratos, responsabilidade civil, direito de propriedade, direito de família, sucessões, consumidor, entre outras."
+              },
+              {
+                "destaque": "Análise aprofundada do caso:",
+                "texto": "Realizamos um estudo minucioso do seu caso, identificando os pontos fortes e fracos, as melhores estratégias e os riscos envolvidos, para garantir uma defesa sólida e eficaz."
+              },
+              {
+                "destaque": "Negociação extrajudicial:",
+                "texto": "Buscamos a resolução do conflito por meio de acordos amigáveis, sempre que possível, visando minimizar custos e tempo de trâmite processual."
+              },
+              {
+                "destaque": "Atuação em processos judiciais:",
+                "texto": "Em casos que não sejam solucionados extrajudicialmente, patrocinamos nossos clientes em todas as fases do processo judicial, desde a citação até o trânsito em julgado da decisão, com recursos e acompanhamento constantes."
+              },
+              {
+                "destaque": "Recursos jurídicos:",
+                "texto": "Caso necessário, interpomos recursos para reverter decisões desfavoráveis, buscando sempre a melhor defesa dos interesses de nossos clientes."
+              },
+              {
+                "destaque": "Execução de decisões judiciais:",
+                "texto": "Cobramos judicialmente o cumprimento de decisões judiciais favoráveis, assegurando que nossos clientes obtenham o que lhes foi assegurado por lei."
+              }
+            ]
+          }
+        },
+        {
+          "tipo": "lista_destaque",
+          "dados": {
+            "titulo": "Nossos diferenciais:",
+            "marcador": "dourado",
+            "itens": [
+              {
+                "destaque": "Experiência e conhecimento:",
+                "texto": "Contamos com uma equipe de advogados experientes e com profundo conhecimento em contencioso cível, atualizados sobre as últimas legislações e jurisprudências."
+              },
+              {
+                "destaque": "Visão estratégica:",
+                "texto": "Analisamos cada caso de forma abrangente, considerando os aspectos jurídicos, fáticos e probatórios, para construir uma estratégia personalizada e eficaz de defesa."
+              },
+              {
+                "destaque": "Comunicação clara e objetiva:",
+                "texto": "Mantemos nossos clientes informados sobre o andamento dos processos de forma clara, objetiva e transparente, utilizando linguagem acessível e evitando termos jurídicos desnecessários."
+              },
+              {
+                "destaque": "Transparência e ética:",
+                "texto": "Atuamos com ética, profissionalismo e transparência, sempre informando nossos clientes sobre os custos e honorários advocatícios, e buscando a melhor solução para cada caso, dentro dos mais altos padrões de conduta."
+              },
+              {
+                "destaque": "Compromisso com a excelência:",
+                "texto": "Dedicação total ao seu caso, buscando sempre a melhor solução para você, com agilidade, eficiência e resultados concretos."
+              }
+            ]
+          }
+        },
+        {
+          "tipo": "lista_simples",
+          "dados": {
+            "titulo": "Áreas de atuação em contencioso cível:",
+            "colunas": "2",
+            "itens": [
+              {
+                "texto": "Cobrança de dívidas: Inadimplência contratual, cheques especiais, notas promissórias, duplicatas, etc."
+              },
+              {
+                "texto": "Indenização por danos materiais e morais: Acidentes de trânsito, erros médicos, produtos defeituosos, danos à imagem, etc."
+              },
+              {
+                "texto": "Descumprimento de contrato: Quebra de contrato, vícios redibitórios, rescisão contratual, etc."
+              },
+              {
+                "texto": "Possessão e propriedade: Reintegração de posse, usucapião, divórcio litigioso, partilha de bens, etc."
+              },
+              {
+                "texto": "Direito de família: Divórcio, pensão alimentícia, guarda e tutela de filhos, reconhecimento de paternidade, etc."
+              },
+              {
+                "texto": "Sucessões: Inventário, testamento, herança, partilha de bens, etc."
+              },
+              {
+                "texto": "Direito do consumidor: Defesa do consumidor em compras online, serviços bancários, planos de saúde, etc."
+              },
+              {
+                "texto": "E muito mais!"
+              }
+            ]
+          }
+        },
+        {
+          "tipo": "cta_box",
+          "dados": {
+            "texto": "Se você está enfrentando um litígio cível ou comercial, entre em contato e agende uma consulta.",
+            "botao_rotulo": "Agende uma Consulta",
+            "botao_link": {
+              "tipo": "ancora",
+              "ancora": "contato"
+            }
+          }
+        },
+        {
+          "tipo": "lateral_outras_areas",
+          "dados": {
+            "titulo": "Outras Áreas",
+            "menu": "lateral_areas"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "advocacia-colaborativa",
+      "titulo": "Advocacia Colaborativa",
+      "tipo": "area",
+      "layout": "area",
+      "ordem": 4,
+      "status": "publicado",
+      "meta_title": "Advocacia Colaborativa | Cardoso & Bruno Sociedade de Advogados",
+      "meta_description": "Resolução de conflitos de forma consensual e humanizada. Advocacia colaborativa para divórcios, inventários e questões empresariais.",
+      "exibir_sitemap": true,
+      "prioridade_sitemap": 0.8,
+      "changefreq": "monthly",
+      "secoes": [
+        {
+          "tipo": "hero_area",
+          "dados": {
+            "sobretitulo": "Áreas de Prática",
+            "titulo": "Advocacia <em>Colaborativa</em>"
+          }
+        },
+        {
+          "tipo": "intro_area",
+          "dados": {
+            "lead": "Oferecemos assessoria jurídica completa e inovadora em advocacia colaborativa, um método alternativo de resolução de conflitos que privilegia o diálogo, a cooperação e a busca por soluções consensuais.",
+            "corpo": "<p>Nossa equipe de experientes advogados especializados em advocacia colaborativa está preparada para auxiliar na resolução de diversos tipos de conflitos, desde questões familiares e de sucessões até litígios comerciais e societários, sempre com foco na preservação de relacionamentos e na construção de acordos duradouros.</p>"
+          }
+        },
+        {
+          "tipo": "lista_destaque",
+          "dados": {
+            "titulo": "A advocacia colaborativa é ideal para:",
+            "marcador": "dourado",
+            "itens": [
+              {
+                "texto": "Pessoas físicas e casais em divórcio, separação, inventário ou outros conflitos familiares;"
+              },
+              {
+                "texto": "Sócios em dissolução de sociedade ou litígios societários;"
+              },
+              {
+                "texto": "Empresas em conflitos comerciais, como cobranças, contratos, propriedade intelectual, etc.;"
+              },
+              {
+                "texto": "Herdeiros em inventário ou partilha de bens;"
+              },
+              {
+                "texto": "Vizinhos em conflitos imobiliários;"
+              },
+              {
+                "texto": "E em qualquer outro tipo de conflito em que as partes desejem uma resolução consensual e pacífica."
+              }
+            ]
+          }
+        },
+        {
+          "tipo": "lista_destaque",
+          "dados": {
+            "titulo": "Nossos serviços em advocacia colaborativa incluem:",
+            "marcador": "padrao",
+            "itens": [
+              {
+                "destaque": "Orientação sobre o método da advocacia colaborativa:",
+                "texto": "Explicamos os princípios, benefícios e etapas do processo de advocacia colaborativa, esclarecendo dúvidas e respondendo perguntas."
+              },
+              {
+                "destaque": "Auxílio na organização das reuniões colaborativas:",
+                "texto": "Facilitamos a comunicação entre as partes, definimos pautas de discussão, criamos um ambiente seguro e construtivo para o diálogo e a busca por soluções."
+              },
+              {
+                "destaque": "Elaboração de acordos colaborativos:",
+                "texto": "Redigimos acordos claros, objetivos e abrangentes que atendam às necessidades e interesses de todas as partes envolvidas, assegurando a efetividade e o cumprimento das decisões."
+              },
+              {
+                "destaque": "Mediação e facilitação do diálogo:",
+                "texto": "Atuamos como mediadores imparciais, ajudando as partes a se comunicarem de forma eficaz, identificarem pontos em comum e construírem soluções criativas em conjunto."
+              },
+              {
+                "destaque": "Negociação de interesses:",
+                "texto": "Auxiliamos na negociação dos termos do acordo, buscando soluções justas e equitativas para todas as partes, preservando o respeito mútuo e a colaboração."
+              },
+              {
+                "destaque": "Homologação do acordo em juízo:",
+                "texto": "Providenciamos a homologação do acordo colaborativo em juízo, conferindo-lhe força de título executivo judicial, garantindo sua validade e exigibilidade."
+              }
+            ]
+          }
+        },
+        {
+          "tipo": "lista_destaque",
+          "dados": {
+            "titulo": "Nossos diferenciais:",
+            "marcador": "dourado",
+            "itens": [
+              {
+                "destaque": "Equipe especializada:",
+                "texto": "Contamos com uma equipe de advogados experientes e certificados em advocacia colaborativa, com profundo conhecimento do método e das melhores práticas para resolução de conflitos de forma consensual."
+              },
+              {
+                "destaque": "Abordagem humanizada:",
+                "texto": "Acreditamos no poder do diálogo e da escuta ativa para a resolução de conflitos. Tratamos cada caso com atenção individualizada, empatia e respeito, buscando soluções que considerem as necessidades e emoções de todas as partes envolvidas."
+              },
+              {
+                "destaque": "Comunicação clara e transparente:",
+                "texto": "Mantemos as partes informadas sobre o andamento do processo de forma clara, objetiva e transparente, utilizando linguagem acessível e evitando termos jurídicos desnecessários."
+              },
+              {
+                "destaque": "Compromisso com a ética e a qualidade:",
+                "texto": "Atuamos com ética, profissionalismo e compromisso com a qualidade, buscando sempre a melhor solução para nossos clientes, dentro dos mais altos padrões de conduta."
+              },
+              {
+                "destaque": "Foco em resultados positivos:",
+                "texto": "Trabalhamos para alcançar acordos colaborativos que atendam às necessidades e interesses de todas as partes envolvidas, restaurando a harmonia, preservando relacionamentos e construindo um futuro mais positivo para todos."
+              }
+            ]
+          }
+        },
+        {
+          "tipo": "cta_box",
+          "dados": {
+            "texto": "Se você busca uma solução pacífica e duradoura para o seu conflito, entre em contato.",
+            "botao_rotulo": "Agende uma Consulta",
+            "botao_link": {
+              "tipo": "ancora",
+              "ancora": "contato"
+            }
+          }
+        },
+        {
+          "tipo": "lateral_outras_areas",
+          "dados": {
+            "titulo": "Outras Áreas",
+            "menu": "lateral_areas"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "noticias",
+      "titulo": "Artigos e Notícias",
+      "tipo": "sistema",
+      "layout": "main",
+      "ordem": 10,
+      "status": "publicado",
+      "exibir_sitemap": true,
+      "prioridade_sitemap": 0.9,
+      "changefreq": "daily",
+      "secoes": []
+    },
+    {
+      "slug": "area-cliente",
+      "titulo": "Área do Cliente",
+      "tipo": "sistema",
+      "layout": "main",
+      "ordem": 11,
+      "status": "publicado",
+      "exibir_sitemap": false,
+      "prioridade_sitemap": 0.5,
+      "changefreq": "monthly",
+      "secoes": []
+    },
+    {
+      "slug": "painel-cliente",
+      "titulo": "Painel do Cliente",
+      "tipo": "sistema",
+      "layout": "main",
+      "ordem": 12,
+      "status": "publicado",
+      "exibir_sitemap": false,
+      "prioridade_sitemap": 0.5,
+      "changefreq": "monthly",
+      "secoes": []
+    },
+    {
+      "slug": "politica-de-privacidade",
+      "titulo": "Política de Privacidade",
+      "tipo": "pagina",
+      "layout": "area",
+      "ordem": 20,
+      "status": "publicado",
+      "meta_title": "Política de Privacidade | Cardoso & Bruno Sociedade de Advogados",
+      "meta_description": "Como tratamos dados pessoais no site e na Área do Cliente, conforme a LGPD: finalidades, bases legais, cookies, direitos do titular e encarregado (DPO).",
+      "exibir_sitemap": true,
+      "prioridade_sitemap": 0.3,
+      "changefreq": "yearly",
+      "secoes": [
+        {
+          "tipo": "hero_area",
+          "dados": {
+            "sobretitulo": "Transparência e LGPD",
+            "titulo": "Política de <em>Privacidade</em>"
+          }
+        },
+        {
+          "tipo": "intro_area",
+          "dados": {
+            "lead": "Esta política explica, em linguagem direta, quais dados pessoais tratamos quando você usa este site, para quê, com quem os compartilhamos, por quanto tempo os guardamos e como você exerce os seus direitos.",
+            "corpo": "<p><strong>Última atualização:</strong> 13 de outubro de 2026 (versão 2026-10-13).</p><p>Ela segue a Lei nº 13.709/2018 (Lei Geral de Proteção de Dados Pessoais — LGPD). Vale para o site e para a Área do Cliente. Os dados tratados na prestação dos serviços jurídicos, depois da contratação, seguem também o contrato de honorários e as regras de sigilo profissional da advocacia.</p>"
+          }
+        },
+        {
+          "tipo": "dados_controlador",
+          "dados": {
+            "titulo": "1. Quem é o controlador e quem é o encarregado"
+          }
+        },
+        {
+          "tipo": "rich_text",
+          "dados": {
+            "titulo": "",
+            "corpo": "<p>O <strong>controlador</strong> é quem decide como e por que os dados são tratados — aqui, a sociedade de advogados identificada acima. O <strong>encarregado</strong> (também chamado de DPO) é a pessoa indicada para receber as suas solicitações e as comunicações da Autoridade Nacional de Proteção de Dados (ANPD), conforme o art. 41 da LGPD.</p>"
+          }
+        },
+        {
+          "tipo": "rich_text",
+          "dados": {
+            "titulo": "2. Quais dados tratamos e para quê",
+            "corpo": "<p><strong>a) Formulário de contato.</strong> Nome, e-mail, telefone (opcional), área de interesse e a mensagem que você escrever, além da data e hora do envio e da versão desta política que você declarou conhecer.</p><ul><li><strong>Finalidade:</strong> responder ao seu contato, entender a sua necessidade e, se for o caso, apresentar proposta de serviços.</li><li><strong>Base legal:</strong> procedimentos preliminares relacionados a contrato, a seu pedido (LGPD, art. 7º, V).</li></ul><p>Pedimos que não inclua na mensagem dados sensíveis (sobre saúde, origem racial ou étnica, religião, opinião política, vida sexual, dados genéticos ou biométricos, por exemplo) que não sejam necessários para o primeiro contato. Se forem indispensáveis para avaliar o seu caso, serão tratados apenas para essa finalidade, com base no exercício regular de direitos (LGPD, art. 11, II, \"d\").</p><p><strong>b) Área do Cliente.</strong> E-mail cadastrado (para enviar o link de acesso), registros de acesso (data, hora e endereço IP), as mensagens trocadas com o escritório e as informações dos seus processos que já constam do nosso sistema.</p><ul><li><strong>Finalidade:</strong> permitir que você acompanhe os seus processos e converse com o advogado responsável com segurança.</li><li><strong>Base legal:</strong> execução do contrato de prestação de serviços (LGPD, art. 7º, V) e exercício regular de direitos em processo judicial, administrativo ou arbitral (LGPD, art. 7º, VI).</li></ul><p><strong>c) Cookies e navegação.</strong> Usamos dois grupos de cookies:</p><ul><li><strong>Necessários:</strong> mantêm a sessão e protegem os formulários contra fraudes (por exemplo, <em>ci_session</em> e o token de segurança dos formulários). Sem eles o site não funciona corretamente, por isso não dependem de consentimento. Base legal: legítimo interesse em manter o site seguro e funcional (LGPD, art. 7º, IX).</li><li><strong>Estatística (Google Analytics 4):</strong> páginas visitadas, tempo de navegação, tipo de dispositivo e navegador, cidade ou região aproximada e identificadores do cookie. <strong>Só são gravados se você clicar em \"Aceitar estatísticas\"</strong> no aviso de cookies. Base legal: consentimento (LGPD, art. 7º, I).</li></ul><p>A sua escolha sobre cookies fica guardada no seu próprio navegador. Você pode mudá-la a qualquer momento pelo link \"Preferências de cookies\" no rodapé ou apagando os dados do site no navegador.</p>"
+          }
+        },
+        {
+          "tipo": "rich_text",
+          "dados": {
+            "titulo": "3. Com quem compartilhamos",
+            "corpo": "<p>Não vendemos nem alugamos dados pessoais. Compartilhamos apenas o necessário com:</p><ul><li><strong>Empresa de hospedagem</strong> do site e do sistema, onde os dados ficam armazenados;</li><li><strong>Provedor de e-mail</strong>, usado para avisar a equipe sobre novos contatos e para enviar o link de acesso à Área do Cliente;</li><li><strong>Google</strong> (Google Analytics), apenas se você aceitar os cookies de estatística;</li><li><strong>Autoridades públicas e Poder Judiciário</strong>, quando houver obrigação legal ou ordem judicial, ou quando necessário para defender os seus interesses em processo, nos limites do mandato.</li></ul><p>Alguns desses fornecedores podem armazenar dados em servidores fora do Brasil. Nesses casos, a transferência internacional segue as hipóteses do art. 33 da LGPD e as normas da ANPD.</p>"
+          }
+        },
+        {
+          "tipo": "rich_text",
+          "dados": {
+            "titulo": "4. Por quanto tempo guardamos",
+            "corpo": "<ul><li><strong>Contatos que não resultaram em contratação:</strong> até 2 (dois) anos depois do último contato. Depois disso, são excluídos ou anonimizados.</li><li><strong>Clientes:</strong> pelo tempo do contrato e, depois dele, pelo prazo necessário para cumprir obrigações legais e para o exercício regular de direitos, inclusive enquanto não prescritas as pretensões relacionadas ao serviço prestado.</li><li><strong>Registros de acesso à Área do Cliente:</strong> no mínimo 6 (seis) meses, como exige o art. 15 da Lei nº 12.965/2014 (Marco Civil da Internet).</li><li><strong>Google Analytics:</strong> pelo prazo de retenção configurado na ferramenta, nunca superior a 14 (quatorze) meses.</li></ul>"
+          }
+        },
+        {
+          "tipo": "rich_text",
+          "dados": {
+            "titulo": "5. Sigilo profissional e segurança",
+            "corpo": "<p>Tudo o que você nos conta é protegido pelo sigilo profissional do advogado, garantido pela Lei nº 8.906/1994 (Estatuto da Advocacia e da OAB) e pelo Código de Ética e Disciplina da OAB. O sigilo vale desde o primeiro contato, mesmo que não haja contratação.</p><p>Adotamos medidas técnicas e administrativas para proteger os dados contra acessos não autorizados, perda ou vazamento (LGPD, art. 46), entre elas: conexão criptografada (HTTPS), acesso ao sistema restrito à equipe e controlado por senha e permissões, link de acesso de uso único para a Área do Cliente e registro das ações feitas no sistema. Se ocorrer um incidente de segurança que possa causar risco ou dano relevante, comunicaremos os titulares afetados e a ANPD (LGPD, art. 48).</p>"
+          }
+        },
+        {
+          "tipo": "rich_text",
+          "dados": {
+            "titulo": "6. Seus direitos",
+            "corpo": "<p>A LGPD (art. 18) garante a você, a qualquer momento e mediante requisição:</p><ul><li>confirmar se tratamos dados seus;</li><li>acessar os seus dados;</li><li>corrigir dados incompletos, inexatos ou desatualizados;</li><li>pedir a anonimização, o bloqueio ou a eliminação de dados desnecessários, excessivos ou tratados em desconformidade com a lei;</li><li>pedir a portabilidade dos dados a outro fornecedor, conforme regulamentação da ANPD;</li><li>pedir a eliminação dos dados tratados com base no seu consentimento, ressalvadas as hipóteses de guarda previstas em lei;</li><li>saber com quais entidades públicas e privadas compartilhamos os seus dados;</li><li>ser informado sobre a possibilidade de não dar consentimento e sobre as consequências da recusa;</li><li>revogar o consentimento a qualquer momento (o que, no caso dos cookies, se faz pelo link \"Preferências de cookies\").</li></ul><p>Você também pode se opor a tratamento feito sem consentimento, se ele descumprir a LGPD (art. 18, § 2º), e apresentar reclamação à ANPD (<a href=\"https://www.gov.br/anpd\">www.gov.br/anpd</a>).</p><p><strong>Como exercer:</strong> envie um e-mail ao encarregado, no endereço indicado no item 1, com o seu nome e o pedido. Para proteger os seus dados, podemos pedir informações que confirmem a sua identidade. A confirmação de existência de tratamento e o acesso aos dados são atendidos em até 15 (quinze) dias, contados do pedido, quando completos (LGPD, art. 19, II). Alguns pedidos podem ser recusados de forma fundamentada, por exemplo quando a lei ou o sigilo profissional exigir a guarda dos dados.</p>"
+          }
+        },
+        {
+          "tipo": "rich_text",
+          "dados": {
+            "titulo": "7. Crianças e adolescentes",
+            "corpo": "<p>Este site não é dirigido a menores de 18 anos. Quando o atendimento envolver interesses de criança ou adolescente, os dados serão tratados no seu melhor interesse e fornecidos pelos pais ou responsáveis legais (LGPD, art. 14).</p>"
+          }
+        },
+        {
+          "tipo": "rich_text",
+          "dados": {
+            "titulo": "8. Alterações desta política",
+            "corpo": "<p>Podemos atualizar esta política para refletir mudanças na lei, nos serviços ou no site. A data e a versão no topo indicam a última alteração. Mudanças relevantes serão destacadas no site. Cada envio do formulário de contato registra a versão vigente naquele momento.</p>"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "termos-de-uso",
+      "titulo": "Termos de Uso",
+      "tipo": "pagina",
+      "layout": "area",
+      "ordem": 21,
+      "status": "publicado",
+      "meta_title": "Termos de Uso | Cardoso & Bruno Sociedade de Advogados",
+      "meta_description": "Condições de uso do site e da Área do Cliente da Cardoso & Bruno Sociedade de Advogados: conteúdo informativo, propriedade intelectual e foro.",
+      "exibir_sitemap": true,
+      "prioridade_sitemap": 0.3,
+      "changefreq": "yearly",
+      "secoes": [
+        {
+          "tipo": "hero_area",
+          "dados": {
+            "sobretitulo": "Condições de uso do site",
+            "titulo": "Termos de <em>Uso</em>"
+          }
+        },
+        {
+          "tipo": "intro_area",
+          "dados": {
+            "lead": "Ao navegar neste site ou usar a Área do Cliente, você concorda com as condições abaixo. Leia também a nossa Política de Privacidade.",
+            "corpo": "<p><strong>Última atualização:</strong> 13 de outubro de 2026.</p>"
+          }
+        },
+        {
+          "tipo": "rich_text",
+          "dados": {
+            "titulo": "1. Conteúdo informativo",
+            "corpo": "<p>Os textos, artigos e notícias publicados aqui têm caráter exclusivamente informativo e educativo, conforme as regras de publicidade da advocacia (Código de Ética e Disciplina da OAB e Provimento nº 205/2021 do Conselho Federal da OAB). Eles <strong>não constituem consultoria ou parecer jurídico</strong> e não substituem a análise de um advogado sobre o seu caso concreto.</p><p>As leis e a jurisprudência mudam. Embora busquemos manter o conteúdo atualizado, ele reflete o entendimento da data de publicação e pode não estar vigente no momento da leitura.</p>"
+          }
+        },
+        {
+          "tipo": "rich_text",
+          "dados": {
+            "titulo": "2. Contato pelo site não cria relação advogado–cliente",
+            "corpo": "<p>Enviar uma mensagem pelo formulário ou por e-mail não estabelece contrato de prestação de serviços nem obriga o escritório a aceitar o caso. A relação profissional só começa com a aceitação expressa e a assinatura do contrato de honorários.</p><p><strong>Não use o formulário para assuntos com prazo urgente.</strong> Não há garantia de resposta em prazo determinado; nesses casos, telefone para o escritório.</p>"
+          }
+        },
+        {
+          "tipo": "rich_text",
+          "dados": {
+            "titulo": "3. Área do Cliente",
+            "corpo": "<ul><li>O acesso é pessoal e feito por link enviado ao e-mail cadastrado. Não encaminhe o link a terceiros: quem o tiver poderá ver as informações dos seus processos.</li><li>As informações mostradas servem para acompanhamento e não substituem a consulta aos autos e às intimações oficiais. Em caso de divergência, prevalece o que consta no processo.</li><li>Mantenha o seu e-mail atualizado e avise o escritório se suspeitar de acesso indevido.</li><li>O escritório pode suspender o acesso em caso de uso indevido, suspeita de fraude ou encerramento do contrato.</li></ul>"
+          }
+        },
+        {
+          "tipo": "rich_text",
+          "dados": {
+            "titulo": "4. Propriedade intelectual",
+            "corpo": "<p>Textos, marca, logotipo, imagens e o layout do site pertencem ao escritório ou a seus licenciantes e são protegidos pela Lei nº 9.610/1998 (direitos autorais) e pela Lei nº 9.279/1996 (propriedade industrial). É permitido compartilhar o link das páginas e citar trechos curtos com indicação da fonte. Reproduzir o conteúdo integral ou usá-lo para fins comerciais depende de autorização por escrito.</p>"
+          }
+        },
+        {
+          "tipo": "rich_text",
+          "dados": {
+            "titulo": "5. Uso adequado",
+            "corpo": "<p>Não é permitido usar o site para enviar conteúdo ilícito, ofensivo ou enganoso, tentar acessar áreas restritas sem autorização, sobrecarregar o servidor, coletar dados de forma automatizada ou interferir no funcionamento do sistema.</p>"
+          }
+        },
+        {
+          "tipo": "rich_text",
+          "dados": {
+            "titulo": "6. Links externos e disponibilidade",
+            "corpo": "<p>O site pode ter links para páginas de terceiros (tribunais, órgãos públicos, redes sociais). Não respondemos pelo conteúdo nem pelas práticas de privacidade desses sites.</p><p>Buscamos manter o site disponível, mas podem ocorrer interrupções para manutenção ou por falhas técnicas alheias à nossa vontade.</p>"
+          }
+        },
+        {
+          "tipo": "rich_text",
+          "dados": {
+            "titulo": "7. Lei aplicável e foro",
+            "corpo": "<p>Estes termos são regidos pela legislação brasileira. Fica eleito o foro da Comarca de Belo Horizonte/MG para resolver qualquer controvérsia sobre eles, ressalvados os casos em que a lei assegure a você foro diverso.</p><p>Podemos alterar estes termos a qualquer momento; a versão publicada nesta página é a que vale.</p>"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "quem-somos",
+      "titulo": "Quem Somos",
+      "tipo": "pagina",
+      "layout": "area",
+      "ordem": 9,
+      "status": "publicado",
+      "meta_title": "Quem Somos | Cardoso & Bruno Sociedade de Advogados",
+      "meta_description": "Conheça a história, a equipe e os dados da Cardoso & Bruno Sociedade de Advogados, que atende clientes em Belo Horizonte e Juatuba, em Minas Gerais.",
+      "exibir_sitemap": true,
+      "prioridade_sitemap": 0.8,
+      "changefreq": "monthly",
+      "secoes": [
+        {
+          "tipo": "hero_area",
+          "dados": {
+            "sobretitulo": "O escritório",
+            "titulo": "Quem <em>Somos</em>"
+          }
+        },
+        {
+          "tipo": "intro_area",
+          "dados": {
+            "lead": "A Cardoso & Bruno Sociedade de Advogados atua em Direito Civil, Direito Administrativo e Contratos, com atendimento em Belo Horizonte e Juatuba, em Minas Gerais.",
+            "corpo": "<p>Nosso trabalho parte da análise técnica de cada caso e da conversa clara com o cliente sobre caminhos, prazos e riscos. Sempre que possível, buscamos a solução consensual, inclusive pela advocacia colaborativa.</p>"
+          }
+        },
+        {
+          "tipo": "equipe",
+          "dados": {
+            "titulo": "Nossa equipe",
+            "intro": "Advogados inscritos na Ordem dos Advogados do Brasil. Conheça a formação e as áreas de atuação de cada um.",
+            "membros": []
+          }
+        },
+        {
+          "tipo": "dados_institucionais",
+          "dados": {}
+        },
+        {
+          "tipo": "cta_box",
+          "dados": {
+            "texto": "Quer conversar sobre o seu caso? Fale com a nossa equipe.",
+            "botao_rotulo": "Entrar em contato",
+            "botao_link": {
+              "tipo": "ancora",
+              "ancora": "contato"
+            }
+          }
+        },
+        {
+          "tipo": "lateral_outras_areas",
+          "dados": {}
+        }
+      ]
+    }
+  ]
+}

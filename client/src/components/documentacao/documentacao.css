@@ -1,0 +1,126 @@
+/*
+ * Leitura da documentação interna (sistema#193). Global de propósito: o corpo
+ * das páginas chega como HTML (`v-html`) gerado pelo backend, e as classes
+ * `doc-aviso--*` fazem parte do contrato (ordojuris docs/api-documentacao.md).
+ */
+
+/* ─── Layout: índice | conteúdo | sumário ─────────────────── */
+.doc-layout {
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr) 210px;
+  gap: 24px;
+  align-items: start;
+}
+.doc-layout.sem-sumario { grid-template-columns: 250px minmax(0, 1fr); }
+.doc-layout.arvore-recolhida { grid-template-columns: minmax(0, 1fr) 210px; }
+.doc-layout.arvore-recolhida.sem-sumario { grid-template-columns: minmax(0, 1fr); }
+.doc-layout.arvore-recolhida .doc-lateral { display: none; }
+
+.doc-lateral,
+.doc-sumario {
+  position: sticky;
+  top: calc(var(--topbar-h) + 16px);
+  max-height: calc(100vh - var(--topbar-h) - 32px);
+  overflow-y: auto;
+}
+
+/* Fundo da gaveta do índice: só existe no celular (ver @media abaixo). */
+.doc-gaveta-fundo { display: none; }
+
+/* ─── Índice lateral ──────────────────────────────────────── */
+.doc-arvore { font-size: .9rem; }
+.doc-arvore a { color: var(--ink-dim); text-decoration: none; display: block; padding: 4px 8px; border-radius: 6px; }
+.doc-arvore a:hover { background: var(--surface); color: var(--ink); }
+.doc-arvore a.ativo { background: var(--primary); color: #fff; }
+.doc-arvore-inicio { font-weight: 600; margin-bottom: 8px; }
+.doc-arvore-secao { margin-bottom: 12px; }
+.doc-arvore-titulo { display: block; font-weight: 600; color: var(--ink); padding: 4px 8px; }
+.doc-arvore ul { list-style: none; margin: 0; padding: 0 0 0 8px; }
+.doc-arvore-rascunho { font-size: .75rem; color: var(--warning); font-style: italic; }
+
+/* ─── Sumário ─────────────────────────────────────────────── */
+.doc-sumario { font-size: .85rem; border-left: 1px solid var(--border); padding-left: 12px; }
+.doc-sumario-rotulo { font-weight: 600; color: var(--ink); margin: 0 0 6px; text-transform: uppercase; font-size: .75rem; letter-spacing: .04em; }
+.doc-sumario ul { list-style: none; margin: 0; padding: 0; }
+.doc-sumario li.nivel-3 { padding-left: 12px; }
+.doc-sumario a { display: block; padding: 3px 0; color: var(--ink-muted); text-decoration: none; }
+.doc-sumario a:hover { color: var(--ink); }
+.doc-sumario a.ativo { color: var(--primary); font-weight: 600; }
+
+/* ─── Conteúdo ────────────────────────────────────────────── */
+.doc-artigo { padding: 28px 36px; min-width: 0; }
+.doc-artigo > h1 { font-family: var(--font-head); font-size: 1.75rem; margin: 0 0 6px; color: var(--ink); }
+.doc-artigo .doc-resumo { color: var(--ink-muted); margin: 0 0 20px; font-size: 1.02rem; }
+.doc-atualizado { color: var(--ink-muted); font-size: .8rem; margin-top: 24px; }
+
+.doc-corpo { color: var(--ink); line-height: 1.65; font-size: .97rem; max-width: 78ch; }
+.doc-corpo h2, .doc-corpo h3, .doc-corpo h4 { font-family: var(--font-head); color: var(--ink); scroll-margin-top: calc(var(--topbar-h) + 16px); }
+.doc-corpo h2 { font-size: 1.3rem; margin: 2em 0 .6em; padding-bottom: .3em; border-bottom: 1px solid var(--border); }
+.doc-corpo h3 { font-size: 1.1rem; margin: 1.6em 0 .5em; }
+.doc-corpo h4 { font-size: 1rem; margin: 1.4em 0 .4em; }
+.doc-corpo > :first-child { margin-top: 0; }
+.doc-corpo p, .doc-corpo ul, .doc-corpo ol, .doc-corpo table, .doc-corpo pre, .doc-corpo blockquote, .doc-corpo aside { margin: 0 0 1em; }
+.doc-corpo ul, .doc-corpo ol { padding-left: 1.5em; }
+.doc-corpo li { margin: .25em 0; }
+.doc-corpo li > input[type="checkbox"] { margin-right: .4em; }
+.doc-corpo a { color: var(--primary); }
+.doc-corpo a:not([href]) { color: inherit; }
+.doc-corpo img { max-width: 100%; height: auto; border: 1px solid var(--border); border-radius: 6px; }
+.doc-corpo hr { border: 0; border-top: 1px solid var(--border); margin: 2em 0; }
+.doc-corpo code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .88em; background: var(--surface); padding: .1em .35em; border-radius: 4px; }
+.doc-corpo pre { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; overflow-x: auto; }
+.doc-corpo pre code { background: none; padding: 0; }
+.doc-corpo blockquote { border-left: 3px solid var(--border); padding: .2em 1em; color: var(--ink-dim); }
+.doc-corpo table { border-collapse: collapse; display: block; overflow-x: auto; max-width: 100%; }
+.doc-corpo th, .doc-corpo td { border: 1px solid var(--border); padding: 6px 10px; }
+.doc-corpo th { background: var(--surface); text-align: left; }
+.doc-corpo th[align="center"], .doc-corpo td[align="center"] { text-align: center; }
+.doc-corpo th[align="right"], .doc-corpo td[align="right"] { text-align: right; }
+
+/* Avisos: > [!NOTA], > [!DICA], > [!ATENCAO] */
+.doc-aviso { border-left: 4px solid var(--primary); background: var(--surface); border-radius: 0 6px 6px 0; padding: 10px 14px; }
+.doc-aviso > :last-child { margin-bottom: 0; }
+.doc-aviso-titulo { font-weight: 700; margin: 0 0 .3em !important; }
+.doc-aviso--nota { border-left-color: var(--primary); }
+.doc-aviso--nota .doc-aviso-titulo { color: var(--primary); }
+.doc-aviso--dica { border-left-color: var(--success); }
+.doc-aviso--dica .doc-aviso-titulo { color: var(--success); }
+.doc-aviso--atencao { border-left-color: var(--warning); }
+.doc-aviso--atencao .doc-aviso-titulo { color: var(--warning); }
+
+/* Anterior / próxima */
+.doc-vizinhas { display: flex; justify-content: space-between; gap: 12px; margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); }
+.doc-vizinhas a { display: flex; flex-direction: column; gap: 2px; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; text-decoration: none; color: var(--ink); max-width: 48%; }
+.doc-vizinhas a:hover { border-color: var(--primary); }
+.doc-vizinhas small { color: var(--ink-muted); }
+.doc-vizinhas .proxima { margin-left: auto; text-align: right; }
+
+/* ─── Telas menores ───────────────────────────────────────── */
+@media (max-width: 1200px) {
+  .doc-layout, .doc-layout.sem-sumario { grid-template-columns: 220px minmax(0, 1fr); }
+  .doc-layout.arvore-recolhida, .doc-layout.arvore-recolhida.sem-sumario { grid-template-columns: minmax(0, 1fr); }
+  .doc-layout > .doc-sumario { display: none; }
+}
+@media (max-width: 768px) {
+  .doc-layout, .doc-layout.sem-sumario { grid-template-columns: minmax(0, 1fr); }
+  /* No celular o índice vira gaveta, aberta pelo botão "Índice". */
+  .doc-lateral { display: none; }
+  .doc-layout.gaveta-aberta .doc-lateral {
+    display: block; position: fixed; z-index: 1100; inset: var(--topbar-h) auto 0 0;
+    width: min(300px, 85vw); max-height: none; background: var(--card); padding: 16px; box-shadow: var(--shadow-lg);
+  }
+  .doc-gaveta-fundo { display: block; position: fixed; z-index: 1099; inset: var(--topbar-h) 0 0 0; background: rgba(0, 0, 0, .35); }
+  .doc-artigo { padding: 20px 18px; }
+}
+
+/* ─── Impressão: só o conteúdo ────────────────────────────── */
+@media print {
+  .sidebar, .topbar, .doc-lateral, .doc-sumario, .doc-vizinhas, .doc-acoes, .doc-busca { display: none !important; }
+  .main-wrapper { margin-left: 0 !important; }
+  .page-content { padding: 0 !important; }
+  .doc-layout, .doc-layout.sem-sumario { display: block; }
+  .doc-artigo { box-shadow: none !important; border: 0 !important; padding: 0 !important; }
+  .doc-corpo { max-width: none; }
+  .doc-corpo a[href^="http"]::after { content: ' (' attr(href) ')'; font-size: .85em; color: #555; }
+  .doc-aviso { break-inside: avoid; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}

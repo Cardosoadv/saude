@@ -1,0 +1,36 @@
+name: Testes (vitest)
+
+# Suíte vitest do frontend. Roda em todo PR para a beta e é reaproveitada pelo deploy
+# (deploy.yml), que só publica se ela passar.
+on:
+  pull_request:
+    branches:
+      - beta
+  workflow_call:
+
+concurrency:
+  group: tests-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+jobs:
+  vitest:
+    name: Vitest
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configurando Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Instalando dependências
+        run: npm ci
+
+      - name: Testes
+        run: npm test

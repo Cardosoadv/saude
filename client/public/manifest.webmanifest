@@ -1,0 +1,25 @@
+{
+  "id": "./",
+  "name": "Ordo Juris — Cardoso & Bruno",
+  "short_name": "Ordo Juris",
+  "description": "Sistema de gestão jurídica do escritório Cardoso & Bruno.",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "start_url": "./#/",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#013B51",
+  "background_color": "#f8f7f4",
+  "categories": ["business", "productivity"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Processos", "url": "./#/processos", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Tarefas", "url": "./#/tarefas", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Intimações", "url": "./#/intimacoes", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

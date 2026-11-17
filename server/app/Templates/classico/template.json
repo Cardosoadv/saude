@@ -1,0 +1,600 @@
+{
+  "slug": "classico",
+  "nome": "Clássico",
+  "versao": "1.6.0",
+  "autor": "CognitioTechny",
+  "descricao": "Tema navy e dourado do site original, com hero, pilares, áreas de atuação, notícias e contato.",
+  "ordojuris": ">=6.5.0",
+  "motor": "php",
+  "layouts": [
+    "main",
+    "area"
+  ],
+  "tema": {
+    "cores": {
+      "navy-dark": "#0D1B2A",
+      "navy-medium": "#1B263B",
+      "navy-light": "#415A77",
+      "navy-darker": "#0A131C",
+      "cream": "#FAF9F6",
+      "cream-dark": "#F0EDE6",
+      "gold": "#C9A84C",
+      "gold-hover": "#E5C365",
+      "gold-deep": "#B08E35",
+      "text-primary": "#FAF9F6",
+      "text-muted": "#CBD5E1",
+      "text-dark": "#1E293B"
+    },
+    "fontes": {
+      "serif": "Cormorant Garamond",
+      "sans": "Outfit"
+    },
+    "fontes_url": "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap"
+  },
+  "textos": {
+    "contato.local_rotulo": "Nosso Escritório",
+    "contato.telefone_rotulo": "WhatsApp / Telefone",
+    "contato.email_rotulo": "E-mail de Contato",
+    "contato.nome": "Nome completo *",
+    "contato.nome_placeholder": "Seu nome",
+    "contato.telefone": "Telefone",
+    "contato.telefone_placeholder": "(31) 9 0000-0000",
+    "contato.email": "E-mail *",
+    "contato.email_placeholder": "seu@email.com",
+    "contato.area": "Área de interesse",
+    "contato.area_placeholder": "Selecione uma especialidade",
+    "contato.mensagem": "Descreva brevemente sua situação *",
+    "contato.mensagem_placeholder": "Como podemos ajudá-lo?",
+    "contato.botao": "Enviar Consulta",
+    "contato.enviando": "Enviando...",
+    "contato.sucesso_titulo": "Enviado com Sucesso!",
+    "contato.sucesso_padrao": "Mensagem enviada com sucesso!",
+    "contato.sucesso_outra": "Enviar Outra Mensagem",
+    "contato.erro_padrao": "Erro ao enviar. Tente novamente.",
+    "areas.ver_detalhes": "Conheça nossa atuação em {area}",
+    "noticias.ver_todas": "Ver todos os artigos jurídicos",
+    "noticias.vazio": "Nenhum artigo publicado no momento.",
+    "noticias.ler_artigo": "Ler Artigo",
+    "carrossel.rotulo": "Carrossel de imagens",
+    "carrossel.anterior": "Imagem anterior",
+    "carrossel.proximo": "Próxima imagem",
+    "pilares_carrossel.rotulo": "Carrossel de textos",
+    "pilares_carrossel.anterior": "Itens anteriores",
+    "pilares_carrossel.proximo": "Próximos itens",
+    "carrossel.slide_n": "Ir para a imagem %d",
+    "noticias.anterior": "Anterior",
+    "noticias.proximo": "Próximo",
+    "rodape.links_titulo": "Links Úteis",
+    "rodape.unidades_titulo": "Unidades",
+    "rodape.telefone_abrev": "Tel:",
+    "rodape.direitos": "Todos os direitos reservados.",
+    "rodape.area_cliente": "Área do Cliente",
+    "rodape.painel": "Painel Administrativo",
+    "menu.alternar": "Alternar navegação",
+    "rodape.area_cliente_titulo": "Acessar a Área do Cliente",
+    "rodape.painel_titulo": "Acessar o Painel Administrativo",
+    "contato.sucesso_outra_aria": "Enviar outra mensagem",
+    "noticias.hero_sobretitulo": "Conteúdo Jurídico",
+    "noticias.hero_titulo": "Artigos & <em>Atualizações</em>",
+    "noticias.hero_subtitulo": "Análise técnica sobre as principais mudanças legislativas e jurisprudenciais do Direito Brasileiro.",
+    "noticias.filtro_todos": "Todos",
+    "noticias.busca_placeholder": "Pesquisar artigos...",
+    "noticias.busca_aria": "Pesquisar artigos",
+    "noticias.busca_limpar": "Limpar busca",
+    "noticias.vazio_titulo": "Nenhum artigo encontrado",
+    "noticias.vazio_texto": "Tente alterar os termos de busca ou filtros.",
+    "noticias.vazio_botao": "Ver Todos os Artigos",
+    "noticias.ler_artigo_aria": "Ler artigo sobre",
+    "noticias.pag_nav_aria": "Navegação de páginas",
+    "noticias.pag_anterior": "Página anterior",
+    "noticias.pag_proxima": "Próxima página",
+    "noticias.voltar": "Voltar para a listagem",
+    "noticias.publicado_em": "Publicado em:",
+    "noticias.compartilhar": "Compartilhar:",
+    "noticias.compartilhar_linkedin": "Compartilhar no LinkedIn",
+    "noticias.compartilhar_linkedin_aria": "Compartilhar este artigo no LinkedIn",
+    "noticias.compartilhar_whatsapp": "Compartilhar no WhatsApp",
+    "noticias.compartilhar_whatsapp_aria": "Compartilhar este artigo no WhatsApp",
+    "noticias.leia_tambem": "Leia também",
+    "cliente.titulo": "Área do Cliente",
+    "cliente.subtitulo": "Acesse seus processos e documentos de forma segura.",
+    "cliente.acesso_titulo": "Acesso Seguro",
+    "cliente.acesso_descricao": "Insira o seu e-mail cadastrado para receber um link mágico de acesso à plataforma.",
+    "cliente.email_placeholder": "Seu E-mail",
+    "cliente.email_rotulo": "E-mail Cadastrado",
+    "cliente.botao": "Receber Link Mágico",
+    "cliente.enviado_titulo": "Link Enviado!",
+    "cliente.enviado_antes": "Enviamos um link mágico para",
+    "cliente.enviado_depois": "Verifique sua caixa de entrada e sua pasta de spam.",
+    "cliente.outro_email": "Tentar outro e-mail",
+    "cliente.enviando": "Enviando...",
+    "cliente.erro": "Ocorreu um erro ao solicitar o link de acesso. Verifique se o e-mail está correto.",
+    "painel.titulo": "Painel do Cliente",
+    "painel.carregando": "Carregando...",
+    "painel.acessando": "Acessando seus dados seguros...",
+    "painel.voltar_login": "Voltar para o Login",
+    "painel.meus_processos": "Meus Processos",
+    "painel.sem_processos": "Nenhum processo encontrado vinculado ao seu cadastro.",
+    "painel.voltar_processos": "Voltar aos Processos",
+    "painel.relatorio_final": "Relatório Final de Encerramento",
+    "painel.ramo": "Ramo do Direito",
+    "painel.responsavel": "Advogado Responsável",
+    "painel.linha_tempo": "Linha do Tempo",
+    "painel.mensagens": "Mensagens",
+    "painel.carregando_andamentos": "Carregando andamentos...",
+    "painel.sem_movimentacoes": "Ainda não há movimentações registradas para este processo.",
+    "painel.carregando_mensagens": "Carregando mensagens...",
+    "painel.sem_mensagens": "Nenhuma mensagem ainda. Envie a primeira mensagem ao seu advogado abaixo.",
+    "painel.assunto": "Assunto",
+    "painel.sua_mensagem": "Sua mensagem",
+    "painel.mensagem_placeholder": "Escreva sua dúvida ou mensagem para o advogado responsável...",
+    "painel.enviar": "Enviar Mensagem",
+    "painel.js_bemvindo": "Bem-vindo(a), {nome}",
+    "painel.js_erro_requisicao": "Ocorreu um erro na requisição.",
+    "painel.js_sem_numero": "Processo sem número",
+    "painel.js_sem_titulo": "Sem título",
+    "painel.js_responsavel": "Responsável: {nome}",
+    "painel.js_nao_atribuido": "Não atribuído",
+    "painel.js_erro_detalhes": "Erro ao carregar detalhes do processo.",
+    "painel.js_erro_timeline": "Erro ao carregar a linha do tempo.",
+    "painel.js_erro_mensagens": "Erro ao carregar mensagens.",
+    "painel.js_assunto_padrao": "Dúvida sobre o processo {numero}",
+    "painel.js_equipe": "Equipe OrdoJuris",
+    "painel.js_voce": "Você",
+    "painel.js_preencha": "Preencha o assunto e a mensagem antes de enviar.",
+    "painel.js_enviando": "Enviando...",
+    "painel.js_enviar": "Enviar Mensagem",
+    "painel.js_erro_envio": "Não foi possível enviar a mensagem. Tente novamente.",
+    "painel.js_na": "N/A",
+    "painel.js_link_invalido": "Link inválido ou expirado. Por favor, solicite um novo acesso.",
+    "painel.js_sessao_expirada": "Sessão expirada ou acesso negado. Por favor, faça login novamente.",
+    "contato.privacidade_aceite": "Li e estou ciente da {politica}, que explica como meus dados serão tratados.",
+    "contato.privacidade_link": "Política de Privacidade",
+    "contato.privacidade_aviso": "Ao enviar, você concorda com o tratamento dos seus dados para responder a este contato. Evite informar dados sensíveis (saúde, por exemplo) que não sejam necessários neste primeiro momento.",
+    "cookies.titulo": "Sua privacidade",
+    "cookies.texto": "Usamos cookies necessários para o funcionamento do site e, se você permitir, cookies de estatística (Google Analytics) para entender como o site é usado. Saiba mais na {politica}.",
+    "cookies.aceitar": "Aceitar estatísticas",
+    "cookies.recusar": "Recusar",
+    "cookies.aria": "Preferências de cookies",
+    "rodape.cookies": "Preferências de cookies",
+    "controlador.titulo": "Quem é o controlador e como falar com o encarregado",
+    "controlador.razao_social": "Controlador",
+    "controlador.cnpj": "CNPJ",
+    "controlador.endereco": "Endereço",
+    "controlador.email": "E-mail geral",
+    "controlador.encarregado": "Encarregado pelo tratamento de dados (DPO)",
+    "controlador.encarregado_email": "Canal do encarregado",
+    "equipe.titulo": "Nossa equipe",
+    "equipe.oab": "OAB",
+    "equipe.formacao": "Formação",
+    "equipe.especializacoes": "Especializações",
+    "equipe.areas": "Áreas de atuação",
+    "institucional.titulo": "Dados institucionais",
+    "institucional.razao_social": "Razão social",
+    "institucional.cnpj": "CNPJ",
+    "institucional.registro_oab": "Registro da sociedade na OAB",
+    "institucional.endereco": "Endereço"
+  },
+  "menus": [
+    "cabecalho",
+    "rodape",
+    "lateral_areas"
+  ],
+  "paginas_obrigatorias": [
+    "home"
+  ],
+  "secoes": {
+    "hero": {
+      "rotulo": "Destaque principal",
+      "campos": {
+        "sobretitulo": {
+          "tipo": "texto",
+          "max": 120
+        },
+        "titulo": {
+          "tipo": "texto_inline",
+          "obrigatorio": true
+        },
+        "subtitulo": {
+          "tipo": "textarea"
+        },
+        "botoes": {
+          "tipo": "lista",
+          "itens": {
+            "rotulo": {
+              "tipo": "texto",
+              "obrigatorio": true,
+              "max": 40
+            },
+            "link": {
+              "tipo": "link",
+              "obrigatorio": true
+            },
+            "estilo": {
+              "tipo": "opcao",
+              "opcoes": [
+                "primario",
+                "contorno"
+              ],
+              "padrao": "primario"
+            }
+          }
+        }
+      }
+    },
+    "pilares": {
+      "rotulo": "Pilares",
+      "campos": {
+        "itens": {
+          "tipo": "lista",
+          "itens": {
+            "icone": {
+              "tipo": "icone",
+              "padrao": "bi-award"
+            },
+            "titulo": {
+              "tipo": "texto",
+              "obrigatorio": true,
+              "max": 80
+            },
+            "texto": {
+              "tipo": "textarea",
+              "max": 400
+            }
+          }
+        }
+      }
+    },
+    "carrossel": {
+      "rotulo": "Carrossel de imagens",
+      "campos": {
+        "sobretitulo": {
+          "tipo": "texto",
+          "max": 120
+        },
+        "titulo": {
+          "tipo": "texto"
+        },
+        "autoplay": {
+          "tipo": "bool",
+          "padrao": true
+        },
+        "intervalo": {
+          "tipo": "opcao",
+          "opcoes": [
+            "4",
+            "6",
+            "8",
+            "10"
+          ],
+          "padrao": "6"
+        },
+        "itens": {
+          "tipo": "lista",
+          "itens": {
+            "imagem": {
+              "tipo": "imagem"
+            },
+            "titulo": {
+              "tipo": "texto",
+              "max": 80
+            },
+            "texto": {
+              "tipo": "textarea",
+              "max": 300
+            },
+            "link": {
+              "tipo": "link"
+            },
+            "link_rotulo": {
+              "tipo": "texto",
+              "max": 40
+            }
+          }
+        }
+      }
+    },
+    "pilares_carrossel": {
+      "rotulo": "Carrossel de textos (cards)",
+      "campos": {
+        "sobretitulo": {
+          "tipo": "texto",
+          "max": 120
+        },
+        "titulo": {
+          "tipo": "texto"
+        },
+        "autoplay": {
+          "tipo": "bool",
+          "padrao": false
+        },
+        "itens": {
+          "tipo": "lista",
+          "itens": {
+            "icone": {
+              "tipo": "icone",
+              "padrao": "bi-award"
+            },
+            "titulo": {
+              "tipo": "texto",
+              "obrigatorio": true,
+              "max": 80
+            },
+            "texto": {
+              "tipo": "textarea",
+              "max": 400
+            }
+          }
+        }
+      }
+    },
+    "cards_areas": {
+      "rotulo": "Áreas de atuação (cards)",
+      "campos": {
+        "sobretitulo": {
+          "tipo": "texto",
+          "max": 120
+        },
+        "titulo": {
+          "tipo": "texto",
+          "obrigatorio": true
+        },
+        "itens": {
+          "tipo": "lista",
+          "itens": {
+            "titulo": {
+              "tipo": "texto",
+              "obrigatorio": true,
+              "max": 80
+            },
+            "texto": {
+              "tipo": "textarea",
+              "max": 300
+            },
+            "link": {
+              "tipo": "link",
+              "obrigatorio": true
+            }
+          }
+        }
+      }
+    },
+    "ultimas_noticias": {
+      "rotulo": "Últimas notícias",
+      "campos": {
+        "sobretitulo": {
+          "tipo": "texto",
+          "max": 120
+        },
+        "titulo": {
+          "tipo": "texto",
+          "obrigatorio": true
+        },
+        "artigos": {
+          "tipo": "dinamico",
+          "fonte": "ultimas_noticias"
+        }
+      }
+    },
+    "contato": {
+      "rotulo": "Contato e formulário",
+      "campos": {
+        "sobretitulo": {
+          "tipo": "texto",
+          "max": 120
+        },
+        "titulo": {
+          "tipo": "texto",
+          "obrigatorio": true
+        },
+        "descricao": {
+          "tipo": "textarea"
+        },
+        "areas": {
+          "tipo": "dinamico",
+          "fonte": "areas"
+        }
+      }
+    },
+    "hero_area": {
+      "rotulo": "Cabeçalho de área de atuação",
+      "campos": {
+        "sobretitulo": {
+          "tipo": "texto",
+          "max": 120
+        },
+        "titulo": {
+          "tipo": "texto_inline",
+          "obrigatorio": true
+        }
+      }
+    },
+    "intro_area": {
+      "rotulo": "Introdução da área",
+      "campos": {
+        "lead": {
+          "tipo": "textarea",
+          "obrigatorio": true
+        },
+        "corpo": {
+          "tipo": "rich_text"
+        }
+      }
+    },
+    "lista_destaque": {
+      "rotulo": "Lista com destaque",
+      "campos": {
+        "titulo": {
+          "tipo": "texto",
+          "obrigatorio": true
+        },
+        "marcador": {
+          "tipo": "opcao",
+          "opcoes": [
+            "padrao",
+            "dourado"
+          ],
+          "padrao": "padrao"
+        },
+        "itens": {
+          "tipo": "lista",
+          "itens": {
+            "destaque": {
+              "tipo": "texto",
+              "max": 160
+            },
+            "texto": {
+              "tipo": "textarea",
+              "obrigatorio": true,
+              "max": 600
+            }
+          }
+        }
+      }
+    },
+    "lista_simples": {
+      "rotulo": "Lista simples",
+      "campos": {
+        "titulo": {
+          "tipo": "texto",
+          "obrigatorio": true
+        },
+        "colunas": {
+          "tipo": "opcao",
+          "opcoes": [
+            "1",
+            "2"
+          ],
+          "padrao": "1"
+        },
+        "itens": {
+          "tipo": "lista",
+          "itens": {
+            "texto": {
+              "tipo": "textarea",
+              "obrigatorio": true,
+              "max": 300
+            }
+          }
+        }
+      }
+    },
+    "cta_box": {
+      "rotulo": "Chamada para ação",
+      "campos": {
+        "texto": {
+          "tipo": "textarea",
+          "obrigatorio": true
+        },
+        "botao_rotulo": {
+          "tipo": "texto",
+          "obrigatorio": true,
+          "max": 40
+        },
+        "botao_link": {
+          "tipo": "link",
+          "obrigatorio": true
+        }
+      }
+    },
+    "rich_text": {
+      "rotulo": "Texto livre",
+      "campos": {
+        "titulo": {
+          "tipo": "texto"
+        },
+        "corpo": {
+          "tipo": "rich_text",
+          "obrigatorio": true
+        }
+      }
+    },
+    "dados_controlador": {
+      "rotulo": "Dados do controlador e do encarregado (LGPD)",
+      "campos": {
+        "titulo": {
+          "tipo": "texto",
+          "max": 160
+        }
+      }
+    },
+    "lateral_outras_areas": {
+      "rotulo": "Barra lateral: outras áreas",
+      "campos": {
+        "titulo": {
+          "tipo": "texto",
+          "padrao": "Outras Áreas"
+        },
+        "menu": {
+          "tipo": "referencia_menu",
+          "padrao": "lateral_areas"
+        }
+      }
+    },
+    "equipe": {
+      "rotulo": "Equipe (advogados)",
+      "campos": {
+        "titulo": {
+          "tipo": "texto",
+          "max": 120
+        },
+        "intro": {
+          "tipo": "textarea",
+          "max": 400
+        },
+        "membros": {
+          "tipo": "lista",
+          "itens": {
+            "foto": {
+              "tipo": "imagem"
+            },
+            "nome": {
+              "tipo": "texto",
+              "obrigatorio": true,
+              "max": 120
+            },
+            "oab": {
+              "tipo": "texto",
+              "max": 40
+            },
+            "cargo": {
+              "tipo": "texto",
+              "max": 80
+            },
+            "curriculo": {
+              "tipo": "textarea",
+              "max": 600
+            },
+            "formacao": {
+              "tipo": "texto",
+              "max": 200
+            },
+            "especializacoes": {
+              "tipo": "texto",
+              "max": 200
+            },
+            "areas": {
+              "tipo": "texto",
+              "max": 200
+            },
+            "lattes": {
+              "tipo": "link"
+            },
+            "linkedin": {
+              "tipo": "link"
+            }
+          }
+        }
+      }
+    },
+    "dados_institucionais": {
+      "rotulo": "Dados institucionais (razão social, CNPJ, OAB, endereços)",
+      "campos": {
+        "titulo": {
+          "tipo": "texto",
+          "max": 160
+        }
+      }
+    }
+  }
+}

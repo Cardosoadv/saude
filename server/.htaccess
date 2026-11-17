@@ -1,0 +1,80 @@
+# Disable directory browsing
+Options -Indexes
+
+
+
+# ----------------------------------------------------------------------
+# Rewrite engine
+# ----------------------------------------------------------------------
+
+# Turning on the rewrite engine is necessary for the following rules and features.
+# FollowSymLinks must be enabled for this to work.
+<IfModule mod_rewrite.c>
+	Options +FollowSymlinks
+	RewriteEngine On
+
+	# If you installed CodeIgniter in a subfolder, you will need to
+	# change the following line to match the subfolder you need.
+	# http://httpd.apache.org/docs/current/mod/mod_rewrite.html#rewritebase
+	# RewriteBase /
+
+	# ------------------------------------------------------------------
+	# Endereço canônico (issue #684): https + host sem "www" + sem /ordojuris/,
+	# sempre num único redirecionamento 301. As condições só acumulam E; o
+	# redirecionamento acontece na última regra, depois que as anteriores
+	# decidiram (via variável de ambiente) se ele é necessário.
+	# O host canônico é o próprio Host da requisição sem o "www." (nada
+	# fixo no arquivo). localhost e 127.0.0.1 ficam de fora (desenvolvimento).
+	# ------------------------------------------------------------------
+	RewriteCond %{HTTP_HOST} ^(?:www\.)?([^:]+)(?::[0-9]+)?$ [NC]
+	RewriteRule ^ - [E=HOST_CANONICO:%1]
+
+	RewriteCond %{THE_REQUEST} ^[A-Z]+\s(\S*)\s
+	RewriteRule ^ - [E=CAMINHO_CANONICO:%1]
+
+	# www em qualquer protocolo
+	RewriteCond %{HTTP_HOST} ^www\. [NC]
+	RewriteRule ^ - [E=REDIRECIONAR:1]
+
+	# http (o proxy/CDN avisa o HTTPS original em X-Forwarded-Proto)
+	RewriteCond %{HTTPS} !=on
+	RewriteCond %{HTTP:X-Forwarded-Proto} !https [NC]
+	RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1)(:[0-9]+)?$ [NC]
+	RewriteRule ^ - [E=REDIRECIONAR:1]
+
+	# Pedido externo às páginas públicas dentro de /ordojuris/ (a API e o /sistema/ não são afetados)
+	RewriteCond %{REQUEST_URI} ^/ordojuris(/?$|/(pagina/|noticias|area-cliente|painel-cliente|cliente|sitemap\.xml|robots\.txt|llms(-full)?\.txt))
+	RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1)(:[0-9]+)?$ [NC]
+	RewriteCond %{THE_REQUEST} ^[A-Z]+\s/ordojuris/?(\S*)\s
+	RewriteRule ^ - [E=REDIRECIONAR:1,E=CAMINHO_CANONICO:/%1]
+
+	RewriteCond %{ENV:REDIRECIONAR} =1
+	RewriteRule ^ https://%{ENV:HOST_CANONICO}%{ENV:CAMINHO_CANONICO} [R=301,L,NE]
+
+	# Redirect Trailing Slashes...
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond %{REQUEST_URI} (.+)/$
+	RewriteRule ^ %1 [L,R=301]
+
+	# Checks to see if the user is attempting to access a valid file,
+	# such as an image or css document, if this isn't true it sends the
+	# request to the front controller, index.php
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^([\s\S]*)$ index.php/$1 [L,NC,QSA]
+
+	# Ensure Authorization header is passed along
+	RewriteCond %{HTTP:Authorization} .
+	RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+</IfModule>
+
+<IfModule !mod_rewrite.c>
+	# If we don't have mod_rewrite installed, all 404's
+	# can be sent to index.php, and everything works as normal.
+	ErrorDocument 404 index.php
+</IfModule>
+
+
+# Disable server signature start
+	ServerSignature Off
+# Disable server signature end

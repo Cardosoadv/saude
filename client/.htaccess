@@ -1,0 +1,47 @@
+# ============================================================
+# .htaccess — Ordo Juris Front-End
+# Versão: 1.1.0
+# ============================================================
+
+# Proteger o arquivo .env contra acesso externo
+<Files .env>
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Proteger também o .env.example
+<Files .env.example>
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Painel interno: fora dos buscadores (noindex vale também para assets e rotas do SPA).
+# Não bloquear no robots.txt antes de a URL sair do índice, ou o noindex não é lido.
+<IfModule mod_headers.c>
+    Header set X-Robots-Tag "noindex, nofollow"
+</IfModule>
+
+# PWA: tipo correto do manifest e sem cache HTTP para o que define a versão do app.
+# Sem isso o navegador pode demorar até 24 h para perceber uma versão nova.
+AddType application/manifest+json .webmanifest
+<IfModule mod_headers.c>
+    <FilesMatch "^(sw\.js|vue\.html|config\.js|manifest\.webmanifest)$">
+        Header set Cache-Control "no-cache"
+    </FilesMatch>
+</IfModule>
+
+# Proteger a pasta .agents
+RewriteEngine On
+RewriteRule ^\.agents(/|$) - [F,L]
+
+# Redirecionar todo o tráfego para vue.html
+# (exceto arquivos estáticos existentes como favicon, config.js, assets, etc.)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ vue.html [L]
+
+# Redirecionar index.html para vue.html
+RewriteRule ^index\.html$ vue.html [L,R=301]
+
+# Redirecionar a raiz para vue.html
+DirectoryIndex vue.html

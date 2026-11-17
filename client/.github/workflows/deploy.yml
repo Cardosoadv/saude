@@ -1,0 +1,52 @@
+name: Deploy Automático Hostinger
+
+on:
+  push:
+    branches:
+      - beta
+
+jobs:
+  # O deploy só acontece se a suíte vitest passar (workflow reutilizável tests.yml).
+  testes:
+    name: Testes
+    uses: ./.github/workflows/tests.yml
+
+  web-deploy:
+    name: 🎉 Deploy
+    needs: testes
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🚚 Pegando o código mais recente
+      uses: actions/checkout@v7
+
+    - name: 🟢 Configurando Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22
+        cache: npm
+
+    - name: 📦 Instalando dependências
+      run: npm ci
+
+    - name: 🏗️ Gerando o build
+      run: npm run build
+
+    - name: 📁 Separando o vue.html e os arquivos do PWA para envio
+      run: |
+        mkdir -p deploy
+        cp vue.html deploy/vue.html
+        # PWA: service worker, manifest e ícones ficam ao lado do vue.html
+        cp sw.js manifest.webmanifest deploy/
+        cp -r icons deploy/icons
+
+    - name: 🚀 Enviando vue.html e PWA via FTP
+      uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./deploy/
+        server-dir: ../domains/cardosoebruno.adv.br/public_html/sistema/ # Pasta de destino na Hostinger
+        # Arquivo de estado próprio: o antigo lista todos os arquivos do site, e
+        # reaproveitá-lo faria a action apagar no servidor tudo o que não é vue.html
+        state-name: .ftp-deploy-vue-state.json

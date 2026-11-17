@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ordojuris/schemas/documentacao-pagina.schema.json",
+  "title": "Cabeçalho (frontmatter) de uma página da documentação interna do OrdoJuris",
+  "description": "Descrição para editores/IDEs. A validação oficial é App\\Libraries\\Documentacao\\Frontmatter (docs/documentacao-formato.md).",
+  "type": "object",
+  "required": ["titulo"],
+  "additionalProperties": false,
+  "properties": {
+    "titulo": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "resumo": { "type": "string", "maxLength": 300 },
+    "ordem": { "type": "integer", "minimum": 0, "maximum": 9999, "default": 100 },
+    "modulo": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "description": "Slug de ModulosSeeder::CATALOGO. Sem ele, a página herda o módulo da capa da seção."
+    },
+    "permissao": {
+      "type": "string",
+      "pattern": "^[a-z_]+(?:\\.[a-z_]+)+$",
+      "description": "Permissão do Shield exigida para ver a página. Sem ela, a página herda a permissão da capa da seção."
+    },
+    "telas": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 60 },
+      "description": "currentView da SPA que abrem esta página na ajuda contextual."
+    },
+    "palavras_chave": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1, "maxLength": 60 }
+    }
+  }
+}
