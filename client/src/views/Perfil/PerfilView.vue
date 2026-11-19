@@ -1,7 +1,7 @@
 <template>
   <div class="page-content perfil-page animate-fade-in">
     <div class="breadcrumb">
-      <a href="#" @click.prevent="$emit('set-view', 'list')">Ordo Juris</a>
+      <a href="#" @click.prevent="$emit('set-view', 'list')">Saúde</a>
       <i class="bi bi-chevron-right"></i>
       <span>Meu perfil</span>
     </div>
@@ -35,8 +35,8 @@
           <div class="perfil-email"><i class="bi bi-envelope"></i> {{ form.email }}</div>
 
           <div class="perfil-selos">
-            <span v-if="Number(perfil.is_lawyer) === 1" class="badge badge-info">
-              <i class="bi bi-briefcase"></i> {{ oab ? `OAB ${oab}` : 'Advogado(a)' }}
+            <span v-if="Number(perfil.is_profissional) === 1" class="badge badge-info">
+              <i class="bi bi-briefcase"></i> {{ registro ? `Registro ${registro}` : 'Profissional de saúde' }}
             </span>
             <span v-if="Number(perfil.exibir_site) === 1" class="badge perfil-selo-site" title="Aparece na página Quem Somos do site">
               <i class="bi bi-globe2"></i> Em Quem Somos
@@ -68,10 +68,10 @@
                 <small class="perfil-dica">Usado para entrar no sistema e para recuperar a senha.</small>
               </div>
             </div>
-            <div v-if="Number(perfil.is_lawyer) === 1" class="perfil-linha">
+            <div v-if="Number(perfil.is_profissional) === 1" class="perfil-linha">
               <div class="form-group">
-                <label class="form-label" for="perfil-oab">OAB</label>
-                <input id="perfil-oab" class="form-control" type="text" :value="oab || '—'" disabled />
+                <label class="form-label" for="perfil-registro">Registro no conselho</label>
+                <input id="perfil-registro" class="form-control" type="text" :value="registro || '—'" disabled />
               </div>
             </div>
           </div>
@@ -203,8 +203,8 @@ const iniciais = computed(() =>
   (form.username || 'U').trim().split(/\s+/).map(n => n[0]).join('').toUpperCase().slice(0, 2))
 const senhaDivergente = computed(() =>
   senha.confirmacao.length > 0 && senha.nova !== senha.confirmacao)
-const oab = computed(() =>
-  [perfil.value?.oab_numero, perfil.value?.oab_uf].filter(Boolean).join(' / '))
+const registro = computed(() =>
+  [perfil.value?.registro_numero, perfil.value?.registro_uf].filter(Boolean).join(' / '))
 
 function primeiroErro(err: any, padrao: string): string {
   const erros = err?.data?.errors

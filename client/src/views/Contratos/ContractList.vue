@@ -2,7 +2,7 @@
   <div class="page-content animate-fade-in">
     <!-- Breadcrumb -->
     <div class="breadcrumb">
-      <a href="#" @click.prevent="$emit('set-view', 'list')">Ordo Juris</a>
+      <a href="#" @click.prevent="$emit('set-view', 'list')">Saúde</a>
       <i class="bi bi-chevron-right"></i>
       <span>Lista de Contratos</span>
     </div>
@@ -11,7 +11,7 @@
     <div class="page-header">
       <div>
         <h1>Contratos</h1>
-        <p>Gestão de contratos de honorários e prestação de serviços</p>
+        <p>Gestão de contratos e prestação de serviços</p>
       </div>
       <button class="btn btn-primary" @click="$emit('open-detail', null)">
         <i class="bi bi-plus-circle"></i> Novo Contrato
@@ -57,15 +57,7 @@
         </div>
       </div>
       <div class="toolbar-right" style="display:flex;gap:8px;align-items:center;">
-        <select class="form-control form-select" v-model="selectedRamo" @change="onRamoChange" style="max-width:220px;" aria-label="Filtrar por Ramo do Direito">
-          <option value="">Todos os Ramos</option>
-          <template v-for="ramo in ramosOptions" :key="ramo.id">
-            <option :value="String(ramo.id)">{{ ramo.nome }}</option>
-            <template v-if="ramo.filhos && ramo.filhos.length">
-              <option v-for="filho in ramo.filhos" :key="filho.id" :value="String(filho.id)">&nbsp;&nbsp;&nbsp;↳ {{ filho.nome }}</option>
-            </template>
-          </template>
-        </select>
+        <input type="search" class="form-control" v-model.trim="selectedRamo" @change="onRamoChange" style="max-width:220px;" placeholder="Área / especialidade" aria-label="Filtrar por área ou especialidade" />
         <ResponsavelSelect id="filtro_responsavel_contrato" v-model="selectedResponsavel" placeholder="Todos os responsáveis"
           aria-label="Filtrar por responsável" style="max-width:200px;" @update:model-value="onRamoChange" />
       </div>
@@ -102,12 +94,12 @@
             <div class="process-main" @click="$emit('open-detail', contrato.id_contrato)">
               <a href="#" class="process-cnj" @click.prevent="$emit('open-detail', contrato.id_contrato)">
                 <i v-if="contrato.visibilidade === 'publico'" class="bi bi-globe2" style="font-size:.8em; color:var(--ink-muted); margin-right:4px;"
-                  title="Público: visível para todos os advogados" aria-label="Público"></i>
+                  title="Público: visível para todos os profissionais" aria-label="Público"></i>
                 #{{ contrato.numero_contrato }} - {{ contrato.objeto }}
               </a>
               <div class="process-meta">
                 <span><i class="bi bi-person"></i> Cliente: <strong>{{ contrato.cliente_nome }}</strong></span>
-                <span><i class="bi bi-diagram-3"></i> Ramo: <strong>{{ contrato.ramo_direito || contrato.ramo_nome || contrato.area_atuacao || 'Não informado' }}</strong></span>
+                <span><i class="bi bi-diagram-3"></i> Área: <strong>{{ contrato.ramo_direito || contrato.ramo_nome || contrato.area_atuacao || 'Não informado' }}</strong></span>
                 <span><i class="bi bi-calendar3"></i> Início: {{ formatDate(contrato.data_inicio) }}</span>
                 <span v-if="contrato.valor"><i class="bi bi-cash-coin"></i> Valor: {{ formatCurrency(contrato.valor) }}</span>
                 <span v-if="contrato.responsavel_nome"><i class="bi bi-person-check"></i> Responsável: {{ contrato.responsavel_nome }}</span>
@@ -222,7 +214,6 @@ const loading = ref(true)
 const activeTab = ref('ativos')
 const selectedRamo = ref('')
 const selectedResponsavel = ref('')
-const ramosOptions = ref([])
 
 const stats = reactive({
   total: 0,
@@ -257,17 +248,6 @@ const fetchData = async () => {
     emit('toast', { msg: 'Erro ao carregar contratos.', type: 'danger' })
   } finally {
     loading.value = false
-  }
-}
-
-const fetchRamos = async () => {
-  try {
-    const res = await apiFetch('contratos/ramos')
-    if (res) {
-      ramosOptions.value = Array.isArray(res) ? res : (res.data || [])
-    }
-  } catch (err) {
-    console.error('Erro ao carregar ramos do direito:', err)
   }
 }
 
@@ -381,7 +361,6 @@ onMounted(() => {
   Promise.all([
     fetchData(),
     fetchWidgets(),
-    fetchRamos()
   ])
 })
 </script>

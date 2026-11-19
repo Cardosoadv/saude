@@ -7,7 +7,7 @@ namespace App\Libraries\Site;
 /**
  * Monta o robots.txt do site: bloqueia a API, o painel e as áreas do cliente,
  * mantém os rastreadores de IA liberados e informa o endereço do sitemap.
- * O escritório pode acrescentar regras próprias (`seo.robots_extra`), validadas aqui.
+ * A clínica pode acrescentar regras próprias (`seo.robots_extra`), validadas aqui.
  */
 final class RobotsTxt
 {
@@ -35,7 +35,7 @@ final class RobotsTxt
         $extra = trim(str_replace("\r\n", "\n", $extra));
         if ($extra !== '' && self::erroNoExtra($extra) === null) {
             $linhas[] = '';
-            $linhas[] = '# Regras adicionais do escritório';
+            $linhas[] = '# Regras adicionais da clínica';
             array_push($linhas, ...explode("\n", $extra));
         }
 

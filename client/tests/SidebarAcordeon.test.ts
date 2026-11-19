@@ -6,7 +6,7 @@ vi.mock('../src/utils/acessoTelas', () => ({ telaLiberada: () => true }));
 
 import Sidebar from '../src/components/layout/Sidebar.vue';
 
-const CHAVE = 'ordo_sidebar_secoes_fechadas';
+const CHAVE = 'saude_sidebar_secoes_fechadas';
 const montados: { unmount(): void }[] = [];
 
 function montar(view = 'dashboard', globalStats: Record<string, number> = {}) {
@@ -30,7 +30,7 @@ afterEach(() => { montados.splice(0).forEach((a) => a.unmount()); document.body.
 describe('Sidebar — acordeon das seções', () => {
   it('começa com todas as seções abertas', () => {
     const { raiz } = montar();
-    for (const s of ['principal', 'processos', 'financeiro', 'contabil', 'gestao', 'site']) {
+    for (const s of ['principal', 'financeiro', 'contabil', 'gestao', 'site']) {
       expect(visivel(lista(raiz, s))).toBe(true);
       expect(botao(raiz, s).getAttribute('aria-expanded')).toBe('true');
     }
@@ -78,7 +78,7 @@ describe('Sidebar — acordeon das seções', () => {
   });
 
   it('mostra os contadores no título só quando a seção está fechada', async () => {
-    const stats = { qteReceitasNaoRecebidas: 3, qteDespesasNaoPagas: 0, qteTarefas: 7, qteIntimacoesNaoTratadas: 2 };
+    const stats = { qteReceitasNaoRecebidas: 3, qteDespesasNaoPagas: 0, qteTarefas: 7 };
     const { raiz } = montar('dashboard', stats);
     const badges = (s: string) => [...botao(raiz, s).querySelectorAll('.sidebar-section-badge')].map((b) => b.textContent);
 
@@ -88,7 +88,7 @@ describe('Sidebar — acordeon das seções', () => {
     await nextTick();
     expect(badges('financeiro')).toEqual(['3']); // despesas zeradas não aparecem
     expect(badges('gestao')).toEqual(['7']);
-    expect(badges('processos')).toEqual([]); // aberta
+    expect(badges('principal')).toEqual([]); // aberta
 
     botao(raiz, 'financeiro').click();
     await nextTick();

@@ -7,7 +7,7 @@ namespace Config;
 use CognitioTechny\Contabil\Infrastructure\CodeIgniter\Config\Contabil as BaseContabil;
 
 /**
- * Host configuration for the Contabil accounting package in OrdoJuris.
+ * Host configuration for the Contabil accounting package in Saúde.
  *
  * @version 1.0.0
  */

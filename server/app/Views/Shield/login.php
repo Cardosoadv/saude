@@ -9,7 +9,7 @@
             <div class="card-body">
                 <h5 class="card-title mb-5"><?= lang('Auth.login') ?></h5>
 
-                <img src="<?= shared_asset('dist/assets/img/Ordo.png', true) ?>" alt="Logo" class="img-fluid mb-4">
+                <img src="<?= shared_asset('assets/img/logo-login.png') ?>" alt="Logo" class="img-fluid mb-4">
 
                 <?php if (session('error') !== null) : ?>
                     <div class="alert alert-danger" role="alert"><?= session('error') ?></div>

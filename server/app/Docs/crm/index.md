@@ -12,7 +12,7 @@ colunas, uma por etapa do funil. Cada coluna mostra a quantidade e o valor total
 
 ## Criar uma oportunidade
 
-Clique em **Nova Oportunidade** e informe o **Título da Oportunidade** (ex.: "Inventário Família Silva"), o
+Clique em **Nova Oportunidade** e informe o **Título da Oportunidade** (ex.: "Reforma Clínica Silva"), o
 **Cliente** (busque um existente ou digite um nome novo) e o **Valor Estimado**.
 
 ## Mover entre as etapas

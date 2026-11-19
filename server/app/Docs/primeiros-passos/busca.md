@@ -12,13 +12,10 @@ inteiro. O texto de exemplo dentro do campo indica o que ele aceita:
 
 | Tela | O que a busca encontra |
 |---|---|
-| Processos | processo, cliente, número |
-| Intimações | processo, OAB, termo |
-| Casos | caso, cliente |
 | Contratos | contrato, cliente |
 | Fornecedores | fornecedor |
-| Objetos | cidade, bairro, código |
-| Etiquetas | etiqueta |
+| Leads (CRM) | nome, e-mail, telefone |
+| Tarefas | título, detalhes |
 | Notícias | notícia |
 | Clientes e demais telas | cliente |
 

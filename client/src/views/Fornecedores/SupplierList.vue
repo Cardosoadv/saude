@@ -2,7 +2,7 @@
   <div class="page-content animate-fade-in">
     <!-- Breadcrumb -->
     <div class="breadcrumb">
-      <a href="#" @click.prevent="$emit('set-view', 'list')">Ordo Juris</a>
+      <a href="#" @click.prevent="$emit('set-view', 'list')">Saúde</a>
       <i class="bi bi-chevron-right"></i>
       <span>Lista de Fornecedores</span>
     </div>
@@ -11,7 +11,7 @@
     <div class="page-header">
       <div>
         <h1>Fornecedores</h1>
-        <p>Gerenciamento de parceiros e fornecedores da Cardoso & Bruno Sociedade de Advogados</p>
+        <p>Gerenciamento de parceiros e fornecedores da Clínica Saúde</p>
       </div>
       <button class="btn btn-primary" @click="$emit('open-detail', null)">
         <i class="bi bi-plus-circle"></i> Novo Fornecedor
@@ -179,7 +179,7 @@
           </div>
           <div style="padding:16px 18px; color:var(--ink-muted); font-size:0.82rem; line-height:1.5;">
             <p>Mantenha os dados de seus fornecedores atualizados para facilitar a emissão de notas fiscais e o controle
-              financeiro de despesas do escritório.</p>
+              financeiro de despesas da clínica.</p>
           </div>
         </div>
       </div>
@@ -199,7 +199,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted, watch, nextTick } from 'vue'
-import { apiFetch, formatDate, formatDocument, formatPhone, debounce, generateMockFornecedores } from '../../services/api'
+import { apiFetch, formatDate, formatDocument, formatPhone, debounce } from '../../services/api'
 import ModalTransformarEmCliente from '../../components/modals/Fornecedores/ModalTransformarEmCliente.vue'
 
 const props = defineProps({
@@ -317,37 +317,11 @@ async function fetchData() {
       params.append('status', 'inativo')
     }
 
-    // Try real API, fallback to Mock
-    try {
-      const res = await apiFetch('fornecedores?' + params.toString())
-      if (res && res.success) {
-        listFornecedores.value = res.data || []
-        pagination.total_items = res.pagination?.total_items || res.data.length
-        pagination.total_pages = res.pagination?.total_pages || 1
-      } else {
-        throw new Error('Fallback to mock')
-      }
-    } catch (apiErr) {
-      // Mock fallback
-      const mockData = generateMockFornecedores(20)
-      let filtered = mockData
-
-      if (props.searchQuery) {
-        const s = props.searchQuery.toLowerCase()
-        filtered = filtered.filter(f => f.nome.toLowerCase().includes(s) || f.documento.includes(s))
-      }
-      if (filters.categoria) {
-        filtered = filtered.filter(f => f.categoria === filters.categoria)
-      }
-      if (activeTab.value === 'ativos') {
-        filtered = filtered.filter(f => f.ativo == 1)
-      } else if (activeTab.value === 'inativos') {
-        filtered = filtered.filter(f => f.ativo == 0)
-      }
-
-      pagination.total_items = filtered.length
-      pagination.total_pages = Math.ceil(filtered.length / pagination.limit)
-      listFornecedores.value = filtered.slice((pagination.page - 1) * pagination.limit, pagination.page * pagination.limit)
+    const res = await apiFetch('fornecedores?' + params.toString())
+    if (res && res.success) {
+      listFornecedores.value = res.data || []
+      pagination.total_items = res.pagination?.total_items || res.data.length
+      pagination.total_pages = res.pagination?.total_pages || 1
     }
   } catch (err) {
     console.error(err)
@@ -359,16 +333,10 @@ async function fetchData() {
 
 async function fetchWidgets() {
   try {
-    const res = await apiFetch('fornecedores/estatisticas').catch(() => ({
-      success: true,
-      data: { total: 45, ativos: 42, categorias: 8 }
-    }))
+    const res = await apiFetch('fornecedores/estatisticas')
     if (res && res.success) Object.assign(stats, res.data)
 
-    const recentRes = await apiFetch('fornecedores/recentes').catch(() => ({
-      success: true,
-      data: generateMockFornecedores(5)
-    }))
+    const recentRes = await apiFetch('fornecedores/recentes')
     if (recentRes && recentRes.success) recentFornecedores.value = recentRes.data || []
   } catch (err) {
     console.error('Erro ao sincronizar widgets:', err)

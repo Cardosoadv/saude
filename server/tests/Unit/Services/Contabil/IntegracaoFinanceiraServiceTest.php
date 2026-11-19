@@ -316,7 +316,7 @@ class IntegracaoFinanceiraServiceTest extends CIUnitTestCase
         $contaDespesa = $contas['EXPENSE'][1];
 
         $this->db->table('fin_categorias')->insert(['id_categoria' => 5, 'categoria' => 'Aluguel']);
-        $this->db->table('fin_despesas')->insert(['id_despesa' => 1, 'despesa' => 'Aluguel do escritório']);
+        $this->db->table('fin_despesas')->insert(['id_despesa' => 1, 'despesa' => 'Aluguel da clínica']);
         $this->db->table('fin_despesas_categorias')->insert(['despesa_id' => 1, 'categoria_id' => 5, 'valor' => 3000.00]);
         $this->db->table('fin_pgto_despesas')->insert([
             'id_pgto_despesa'      => 20,

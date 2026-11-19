@@ -16,10 +16,10 @@ class DocumentacaoServiceTest extends CIUnitTestCase
     private string $raiz;
 
     /** @var list<string> */
-    private array $ativos = ['processos', 'financeiro'];
+    private array $ativos = ['clientes', 'financeiro'];
 
     /** @var list<string> */
-    private array $permissoes = ['processos.access'];
+    private array $permissoes = ['clientes.access'];
 
     protected function setUp(): void
     {
@@ -30,10 +30,10 @@ class DocumentacaoServiceTest extends CIUnitTestCase
 
         $this->pagina('primeiros-passos/index.md', "titulo: Primeiros passos\nordem: 0\ntelas: [dashboard]", "Bem-vindo ao sistema.\n");
         $this->pagina('primeiros-passos/navegacao.md', "titulo: Navegação\nresumo: Menu lateral e barra superior.", "## Menu\n\nO menu lateral agrupa as telas.\n");
-        $this->pagina('processos/index.md', "titulo: Processos\nordem: 10\nmodulo: processos\npermissao: processos.access");
-        $this->pagina('processos/cadastro.md', "titulo: Cadastro de processos\ntelas: [list, process-form]\npalavras_chave: [CNJ, número único]", "Informe o número CNJ da ação.\n");
+        $this->pagina('clientes/index.md', "titulo: Clientes\nordem: 10\nmodulo: clientes\npermissao: clientes.access");
+        $this->pagina('clientes/cadastro.md', "titulo: Cadastro de clientes\ntelas: [list, client-form]\npalavras_chave: [CNJ, número único]", "Informe o número CNJ da ação.\n");
         $this->pagina('financeiro/index.md', "titulo: Financeiro\nordem: 20\nmodulo: financeiro\npermissao: financeiro.access", "Receitas e despesas.\n");
-        $this->pagina('objetos/index.md', "titulo: Objetos\nordem: 30\nmodulo: objetos", "Imóveis vinculados.\n");
+        $this->pagina('contratos/index.md', "titulo: Contratos\nordem: 30\nmodulo: contratos", "Contratos vinculados.\n");
     }
 
     protected function tearDown(): void
@@ -74,12 +74,12 @@ class DocumentacaoServiceTest extends CIUnitTestCase
 
     public function testArvoreRespeitaModuloEPermissao(): void
     {
-        // financeiro: módulo ativo, sem permissão; objetos: módulo inativo
-        $this->assertSame(['primeiros-passos', 'processos'], array_column($this->service()->arvore(), 'slug'));
+        // financeiro: módulo ativo, sem permissão; contratos: módulo inativo
+        $this->assertSame(['primeiros-passos', 'clientes'], array_column($this->service()->arvore(), 'slug'));
 
         $this->permissoes[] = 'financeiro.access';
-        $this->ativos[] = 'objetos';
-        $this->assertSame(['primeiros-passos', 'processos', 'financeiro', 'objetos'], array_column($this->service()->arvore(), 'slug'));
+        $this->ativos[] = 'contratos';
+        $this->assertSame(['primeiros-passos', 'clientes', 'financeiro', 'contratos'], array_column($this->service()->arvore(), 'slug'));
     }
 
     public function testPaginaInvisivelEhInexistente(): void
@@ -87,14 +87,14 @@ class DocumentacaoServiceTest extends CIUnitTestCase
         $service = $this->service();
 
         $this->assertNull($service->pagina('financeiro'), 'sem permissão');
-        $this->assertNull($service->pagina('objetos'), 'módulo inativo');
+        $this->assertNull($service->pagina('contratos'), 'módulo inativo');
         $this->assertNull($service->pagina('nao/existe'));
     }
 
     public function testHerancaDaCapaEsconde(): void
     {
         $this->permissoes = [];
-        $this->assertNull($this->service()->pagina('processos/cadastro'), 'herda processos.access da capa');
+        $this->assertNull($this->service()->pagina('clientes/cadastro'), 'herda clientes.access da capa');
     }
 
     public function testPaginaCompletaComVizinhas(): void
@@ -108,10 +108,10 @@ class DocumentacaoServiceTest extends CIUnitTestCase
         $this->assertStringContainsString('<h2 id="menu">Menu</h2>', $p['html']);
         $this->assertSame([['nivel' => 2, 'texto' => 'Menu', 'ancora' => 'menu']], $p['sumario']);
         $this->assertSame(['slug' => 'primeiros-passos', 'titulo' => 'Primeiros passos'], $p['anterior']);
-        $this->assertSame(['slug' => 'processos', 'titulo' => 'Processos'], $p['proxima']);
+        $this->assertSame(['slug' => 'clientes', 'titulo' => 'Clientes'], $p['proxima']);
         $this->assertMatchesRegularExpression('/^\d{4}-\d{2}-\d{2}T/', $p['atualizado_em']);
 
-        $ultima = $this->service()->pagina('processos/cadastro');
+        $ultima = $this->service()->pagina('clientes/cadastro');
         $this->assertNull($ultima['proxima'], 'financeiro e objetos estão invisíveis');
         $this->assertNull($this->service()->pagina('primeiros-passos')['anterior']);
     }
@@ -120,7 +120,7 @@ class DocumentacaoServiceTest extends CIUnitTestCase
     {
         $service = $this->service();
 
-        $this->assertSame('processos/cadastro', $service->porTela('process-form')['slug']);
+        $this->assertSame('clientes/cadastro', $service->porTela('client-form')['slug']);
         $this->assertSame('primeiros-passos', $service->porTela('dashboard')['slug']);
         $this->assertNull($service->porTela('extrato'));
 
@@ -132,8 +132,8 @@ class DocumentacaoServiceTest extends CIUnitTestCase
     {
         $service = $this->service();
 
-        $this->assertSame(['processos/cadastro'], array_column($service->buscar('cnj'), 'slug'));
-        $this->assertSame(['processos/cadastro'], array_column($service->buscar('NUMERO unico'), 'slug'), 'sem acento e sem caixa');
+        $this->assertSame(['clientes/cadastro'], array_column($service->buscar('cnj'), 'slug'));
+        $this->assertSame(['clientes/cadastro'], array_column($service->buscar('NUMERO unico'), 'slug'), 'sem acento e sem caixa');
         $this->assertSame([], $service->buscar('cnj inexistente'), 'todos os termos precisam aparecer');
         $this->assertSame([], $service->buscar('receitas'), 'página sem permissão não aparece');
         $this->assertSame([], $service->buscar('a'), 'termo curto é ignorado');
@@ -165,15 +165,15 @@ class DocumentacaoServiceTest extends CIUnitTestCase
 
     public function testCaminhoDaImagem(): void
     {
-        mkdir($this->raiz . '/processos/img');
-        file_put_contents($this->raiz . '/processos/img/tela.webp', 'x');
+        mkdir($this->raiz . '/clientes/img');
+        file_put_contents($this->raiz . '/clientes/img/tela.webp', 'x');
         $service = $this->service();
 
-        $this->assertSame(realpath($this->raiz . '/processos/img/tela.webp'), $service->caminhoDaImagem('processos/img/tela.webp', $this->raiz));
-        $this->assertNull($service->caminhoDaImagem('processos/img/nao-existe.webp', $this->raiz));
-        $this->assertNull($service->caminhoDaImagem('processos/cadastro.md', $this->raiz));
-        $this->assertNull($service->caminhoDaImagem('../processos/img/tela.webp', $this->raiz));
-        $this->assertNull($service->caminhoDaImagem('processos/img/../../x.webp', $this->raiz));
-        $this->assertNull($service->caminhoDaImagem('processos/img/tela.svg', $this->raiz));
+        $this->assertSame(realpath($this->raiz . '/clientes/img/tela.webp'), $service->caminhoDaImagem('clientes/img/tela.webp', $this->raiz));
+        $this->assertNull($service->caminhoDaImagem('clientes/img/nao-existe.webp', $this->raiz));
+        $this->assertNull($service->caminhoDaImagem('clientes/cadastro.md', $this->raiz));
+        $this->assertNull($service->caminhoDaImagem('../clientes/img/tela.webp', $this->raiz));
+        $this->assertNull($service->caminhoDaImagem('clientes/img/../../x.webp', $this->raiz));
+        $this->assertNull($service->caminhoDaImagem('clientes/img/tela.svg', $this->raiz));
     }
 }

@@ -50,27 +50,8 @@ class BusinessCanvasControllerTest extends CIUnitTestCase
         return $user;
     }
 
-    public function testIndexForbidden()
+    public function testControllerNaoRenderizaMaisViewNoServidor()
     {
-        $user = $this->createMockUser(1, []);
-        $this->actingAs($user);
-
-        $result = $this->withConfig(config('App'))
-                       ->controller(BusinessCanvas::class)
-                       ->execute('index');
-
-        $this->assertEquals(403, $result->response()->getStatusCode());
-    }
-
-    public function testIndexAllowedAccess()
-    {
-        $user = $this->createMockUser(1, ['business_canvas.access']);
-        $this->actingAs($user);
-
-        $result = $this->withConfig(config('App'))
-                       ->controller(BusinessCanvas::class)
-                       ->execute('index');
-
-        $this->assertEquals(200, $result->response()->getStatusCode());
+        $this->assertFalse(method_exists(BusinessCanvas::class, 'index'), 'a tela do Business Canvas é da SPA');
     }
 }

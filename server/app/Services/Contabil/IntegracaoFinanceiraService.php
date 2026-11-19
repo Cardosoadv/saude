@@ -12,7 +12,7 @@ use InvalidArgumentException;
 use Throwable;
 
 /**
- * Serviço de Integração do Módulo Contábil com o Financeiro do OrdoJuris.
+ * Serviço de Integração do Módulo Contábil com o Financeiro do sistema.
  *
  * Responsável por:
  * 1. Consultar receitas recebidas, despesas pagas e transferências bancárias.
@@ -122,7 +122,7 @@ class IntegracaoFinanceiraService
                     'source_type'     => 'fin_pgto_receita',
                     'source_id'       => $id,
                     'data'            => $rec['pagamento_receita_dt'],
-                    'descricao'       => 'Recebimento: ' . ($rec['receita'] ?: 'Receita de Honorários') . ($rec['comentario'] ? ' (' . $rec['comentario'] . ')' : ''),
+                    'descricao'       => 'Recebimento: ' . ($rec['receita'] ?: 'Receita de Atendimentos') . ($rec['comentario'] ? ' (' . $rec['comentario'] . ')' : ''),
                     'valor'           => (float) $rec['valor'],
                     'conta_origem'    => $rec['nome_conta'] ?: 'Conta Bancária Padrão',
                     'status_contabil' => $importado ? 'importado' : 'pendente',
@@ -132,7 +132,7 @@ class IntegracaoFinanceiraService
                     'debito_id'       => $contasPadrao['banco']['id'] ?? null,
                     'debito_rotulo'   => $contasPadrao['banco']['rotulo'] ?? '1.1.1.02.01 - Bancos Conta Movimento',
                     'credito_id'      => $contasPadrao['receita']['id'] ?? null,
-                    'credito_rotulo'  => $contasPadrao['receita']['rotulo'] ?? '4.1.01.01 - Honorários Contratuais (Serviços Prestados)',
+                    'credito_rotulo'  => $contasPadrao['receita']['rotulo'] ?? '4.1.01.01 - Atendimentos (Serviços Prestados)',
                 ], $categoriasReceitas[(int) $rec['receita_id']] ?? [], $dicionario);
             }
         }
@@ -343,7 +343,7 @@ class IntegracaoFinanceiraService
                         sourceType: $sourceType,
                         sourceId: $sourceId,
                         // Chave de idempotência única e segura; o sufixo identifica a parte
-                        idempotencyKey: sprintf('ordojuris:%s:%s:%d', $sourceType, $sourceId, $numero)
+                        idempotencyKey: sprintf('saude:%s:%s:%d', $sourceType, $sourceId, $numero)
                     );
 
                     $uc->createEntry()->execute($entityId, $entryData, post: $postar);

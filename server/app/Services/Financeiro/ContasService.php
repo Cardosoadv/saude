@@ -11,7 +11,6 @@ use App\Services\BaseService;
 /**
  * ContasService
  *
- * @author Cardoso
  * @version 0.9.1
  * @since 2026-01-01
  *

@@ -23,8 +23,8 @@ class LlmsFullServiceTest extends CIUnitTestCase
     private function servico(array $paginas, array $secoes = [], array $artigos = []): LlmsFullService
     {
         $config = [
-            'identidade.nome' => 'Cardoso & Bruno', 'seo.descricao_padrao' => 'Assessoria jurídica.', 'identidade.cnpj' => '12.345.678/0001-90',
-            'contato.telefone' => '(31) 9.9224-6996', 'contato.email' => 'contato@exemplo.adv.br', 'contato.enderecos' => [['resumo' => 'Rua A, 1, Belo Horizonte / MG']],
+            'identidade.nome' => 'Clínica Saúde', 'seo.descricao_padrao' => 'Assessoria jurídica.', 'identidade.cnpj' => '12.345.678/0001-90',
+            'contato.telefone' => '(11) 3000-0000', 'contato.email' => 'contato@exemplo.adv.br', 'contato.enderecos' => [['resumo' => 'Rua A, 1, Belo Horizonte / MG']],
         ];
         $configuracoes = $this->createMock(SiteConfiguracaoService::class);
         $configuracoes->method('obter')->willReturnCallback(fn (string $k, $padrao = null) => $config[$k] ?? $padrao);
@@ -40,9 +40,9 @@ class LlmsFullServiceTest extends CIUnitTestCase
 
     public function testIncluiDadosInstitucionaisETextoDasPaginasEDosArtigos(): void
     {
-        $paginas = [$this->pagina(2, 'direito-civil', 'Direito Civil', 'area')];
+        $paginas = [$this->pagina(2, 'consultas', 'Consultas', 'area')];
         $secoes = [2 => [
-            ['tipo' => 'hero_area', 'dados' => ['titulo' => 'Direito <em>Civil</em>']],
+            ['tipo' => 'hero_area', 'dados' => ['titulo' => 'Consultas']],
             ['tipo' => 'intro_area', 'dados' => ['lead' => 'Assessoria completa.', 'corpo' => '<p>Nossa <strong>equipe</strong>.</p>']],
             ['tipo' => 'lateral_outras_areas', 'dados' => ['titulo' => 'Outras Áreas']],
         ]];
@@ -50,11 +50,11 @@ class LlmsFullServiceTest extends CIUnitTestCase
 
         $md = $this->servico($paginas, $secoes, $artigos)->gerar();
 
-        $this->assertStringStartsWith("# Cardoso & Bruno\n\n> Assessoria jurídica. CNPJ: 12.345.678/0001-90\n\n## Dados institucionais\n", $md);
-        foreach (['- Razão social: Cardoso & Bruno', '- Endereço: Rua A, 1, Belo Horizonte / MG', '- Telefone: (31) 9.9224-6996', '- E-mail: contato@exemplo.adv.br', '- Áreas atendidas: Direito Civil'] as $linha) {
+        $this->assertStringStartsWith("# Clínica Saúde\n\n> Assessoria jurídica. CNPJ: 12.345.678/0001-90\n\n## Dados institucionais\n", $md);
+        foreach (['- Razão social: Clínica Saúde', '- Endereço: Rua A, 1, Belo Horizonte / MG', '- Telefone: (11) 3000-0000', '- E-mail: contato@exemplo.adv.br', '- Áreas atendidas: Consultas'] as $linha) {
             $this->assertStringContainsString($linha . "\n", $md);
         }
-        $this->assertStringContainsString("## Direito Civil\n\nURL: " . base_url('pagina/direito-civil') . "\n\n### Direito Civil\n\nAssessoria completa.\n\nNossa **equipe**.\n", $md);
+        $this->assertStringContainsString("## Consultas\n\nURL: " . base_url('pagina/consultas') . "\n\n### Consultas\n\nAssessoria completa.\n\nNossa **equipe**.\n", $md);
         $this->assertStringNotContainsString('Outras Áreas', $md);
         $this->assertStringContainsString("## Artigos\n\n### Guia — 2026-10-01\n\nURL: " . base_url('noticias/guia') . "\n\n##### Sub\n\nTexto do artigo", $md);
         $this->assertStringNotContainsString('x()', $md);
@@ -64,7 +64,7 @@ class LlmsFullServiceTest extends CIUnitTestCase
     public function testExcluiRascunhosAreaDoClienteEPaginasNoindex(): void
     {
         $paginas = [
-            $this->pagina(1, 'direito-civil', 'Direito Civil', 'area'),
+            $this->pagina(1, 'consultas', 'Consultas', 'area'),
             $this->pagina(2, 'oculta', 'Página Oculta', 'area', ['exibir_sitemap' => 0]),
             $this->pagina(3, 'area-cliente', 'Área do Cliente', 'sistema'),
             $this->pagina(4, 'painel-cliente', 'Painel do Cliente', 'pagina'),
@@ -74,7 +74,7 @@ class LlmsFullServiceTest extends CIUnitTestCase
 
         $md = $this->servico($paginas, $secoes)->gerar();
 
-        $this->assertStringContainsString('## Direito Civil', $md);
+        $this->assertStringContainsString('## Consultas', $md);
         foreach (['Oculta', 'Segredo', 'Área do Cliente', 'Painel', 'Dados do painel', 'Artigos e Notícias'] as $proibido) {
             $this->assertStringNotContainsString($proibido, $md);
         }
@@ -82,7 +82,7 @@ class LlmsFullServiceTest extends CIUnitTestCase
 
     public function testPerguntasFrequentesVaoParaUmBlocoSo(): void
     {
-        $paginas = [$this->pagina(1, 'direito-civil', 'Direito Civil', 'area')];
+        $paginas = [$this->pagina(1, 'consultas', 'Consultas', 'area')];
         $secoes = [1 => [['tipo' => 'faq', 'dados' => ['titulo' => 'Dúvidas', 'itens' => [['pergunta' => 'Quanto custa?', 'resposta' => 'Depende do caso.']]]]]];
 
         $md = $this->servico($paginas, $secoes)->gerar();

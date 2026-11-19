@@ -9,9 +9,9 @@ use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
 
 /**
- * Envia as notificações push pendentes: intimações novas e prazos de tarefas.
+ * Envia as notificações push pendentes: prazos de tarefas.
  *
- * Agendamento sugerido (cron, por tenant), logo depois da captura de intimações:
+ * Agendamento sugerido (cron):
  *   0,15,30,45 * * * * php spark push:notificar   (a cada 15 minutos)
  * Fora do horário configurado em Config\Push o comando não envia nada.
  */
@@ -19,7 +19,7 @@ class PushNotificar extends BaseCommand
 {
     protected $group       = 'Notificações';
     protected $name        = 'push:notificar';
-    protected $description = 'Envia as notificações push pendentes (intimações novas e prazos de tarefas).';
+    protected $description = 'Envia as notificações push pendentes (prazos de tarefas).';
     protected $usage       = 'push:notificar';
 
     public function run(array $params)
@@ -33,12 +33,11 @@ class PushNotificar extends BaseCommand
         }
 
         CLI::table([[
-            (string) $r['intimacoes'],
             (string) $r['prazos'],
             (string) $r['usuarios'],
             (string) $r['falhas'],
             (string) $r['removidas'],
-        ]], ['Intimações avisadas', 'Prazos avisados', 'Usuários', 'Falhas', 'Inscrições removidas']);
+        ]], ['Prazos avisados', 'Usuários', 'Falhas', 'Inscrições removidas']);
 
         return EXIT_SUCCESS;
     }

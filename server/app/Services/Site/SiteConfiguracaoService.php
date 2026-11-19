@@ -244,7 +244,7 @@ class SiteConfiguracaoService
             case 'identidade.cnpj':
                 return Cnpj::valido((string) $valor) ? null : 'CNPJ inválido (confira os dígitos verificadores).';
             case 'identidade.razao_social':
-            case 'identidade.registro_oab':
+            case 'identidade.registro_profissional':
             case 'identidade.faixa_preco':
                 return mb_strlen(trim((string) $valor)) <= 200 ? null : 'Máximo de 200 caracteres.';
             case 'contato.latitude':
@@ -253,6 +253,7 @@ class SiteConfiguracaoService
                 return (is_numeric($valor) && abs((float) $valor) <= $limite) ? null : "Informe um número entre -{$limite} e {$limite}.";
             case 'contato.mapa_url':
                 return (is_string($valor) && preg_match('#^https?://\S+$#i', $valor) && HtmlSanitizer::hrefSeguro($valor)) ? null : 'Informe a URL completa (http ou https).';
+            case 'contato.servicos':
             case 'contato.area_atendida':
                 if (!is_array($valor) || !array_is_list($valor) || count($valor) > 30) {
                     return 'Informe uma lista de até 30 locais.';
@@ -277,18 +278,18 @@ class SiteConfiguracaoService
                     }
                 }
                 return null;
-            case 'identidade.advogados':
+            case 'identidade.profissionais':
                 if (!is_array($valor) || !array_is_list($valor) || count($valor) > 30) {
-                    return 'Informe uma lista de até 30 advogados.';
+                    return 'Informe uma lista de até 30 profissionais.';
                 }
                 foreach ($valor as $adv) {
-                    if (!is_array($adv) || array_diff(array_keys($adv), ['nome', 'cargo', 'oab']) !== []
+                    if (!is_array($adv) || array_diff(array_keys($adv), ['nome', 'cargo', 'registro']) !== []
                         || trim((string) ($adv['nome'] ?? '')) === '') {
-                        return 'Cada advogado aceita só: nome (obrigatório), cargo, oab.';
+                        return 'Cada profissional aceita só: nome (obrigatório), cargo, registro.';
                     }
                     foreach ($adv as $campo) {
                         if (!is_string($campo) || mb_strlen($campo) > 200) {
-                            return 'Os campos do advogado são textos de até 200 caracteres.';
+                            return 'Os campos do profissional são textos de até 200 caracteres.';
                         }
                     }
                 }

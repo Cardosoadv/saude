@@ -16,7 +16,7 @@ namespace App\Mcp\Support;
  *    como Claude Desktop/ChatGPT): o usuário já está autenticado via
  *    Shield. Nesse caso o `usuarioId` vem do token, nunca de um argumento
  *    fornecido pelo modelo — impede que a IA externa aja em nome de outro
- *    usuário do escritório.
+ *    usuário da clínica.
  */
 final class McpContext
 {

@@ -10,19 +10,19 @@ use CodeIgniter\Test\CIUnitTestCase;
  */
 class HostCanonicoTest extends CIUnitTestCase
 {
-    private const PUBLICA = 'https://cardosoebruno.adv.br/';
-    private const BASE = 'https://cardosoebruno.adv.br/ordojuris/';
+    private const PUBLICA = 'https://exemplo.com.br/';
+    private const BASE = 'https://exemplo.com.br/clinica/';
 
     public static function variantes(): array
     {
         return [
-            'http sem www'        => [false, 'cardosoebruno.adv.br', '/pagina/direito-civil', 'https://cardosoebruno.adv.br/pagina/direito-civil'],
-            'https com www'       => [true, 'www.cardosoebruno.adv.br', '/', 'https://cardosoebruno.adv.br/'],
-            'http com www'        => [false, 'www.cardosoebruno.adv.br', '/noticias?page=2', 'https://cardosoebruno.adv.br/noticias?page=2'],
-            'subpasta na home'    => [true, 'cardosoebruno.adv.br', '/ordojuris/', 'https://cardosoebruno.adv.br/'],
-            'subpasta sem barra'  => [true, 'cardosoebruno.adv.br', '/ordojuris', 'https://cardosoebruno.adv.br/'],
-            'subpasta com path'   => [true, 'cardosoebruno.adv.br', '/ordojuris/pagina/x?a=1', 'https://cardosoebruno.adv.br/pagina/x?a=1'],
-            'www, http e subpasta' => [false, 'www.cardosoebruno.adv.br', '/ordojuris/noticias/a', 'https://cardosoebruno.adv.br/noticias/a'],
+            'http sem www'        => [false, 'exemplo.com.br', '/pagina/direito-civil', 'https://exemplo.com.br/pagina/direito-civil'],
+            'https com www'       => [true, 'www.exemplo.com.br', '/', 'https://exemplo.com.br/'],
+            'http com www'        => [false, 'www.exemplo.com.br', '/noticias?page=2', 'https://exemplo.com.br/noticias?page=2'],
+            'subpasta na home'    => [true, 'exemplo.com.br', '/clinica/', 'https://exemplo.com.br/'],
+            'subpasta sem barra'  => [true, 'exemplo.com.br', '/clinica', 'https://exemplo.com.br/'],
+            'subpasta com path'   => [true, 'exemplo.com.br', '/clinica/pagina/x?a=1', 'https://exemplo.com.br/pagina/x?a=1'],
+            'www, http e subpasta' => [false, 'www.exemplo.com.br', '/clinica/noticias/a', 'https://exemplo.com.br/noticias/a'],
         ];
     }
 
@@ -44,12 +44,12 @@ class HostCanonicoTest extends CIUnitTestCase
 
     public function testUrlCanonicaNaoRedireciona(): void
     {
-        $this->assertNull(HostCanonico::destino(self::PUBLICA, self::BASE, true, 'cardosoebruno.adv.br', '/pagina/direito-civil?x=1'));
+        $this->assertNull(HostCanonico::destino(self::PUBLICA, self::BASE, true, 'exemplo.com.br', '/pagina/direito-civil?x=1'));
     }
 
     public function testPrefixoParecidoComASubpastaNaoEhRemovido(): void
     {
-        $this->assertNull(HostCanonico::destino(self::PUBLICA, self::BASE, true, 'cardosoebruno.adv.br', '/ordojuris-novo/pagina'));
+        $this->assertNull(HostCanonico::destino(self::PUBLICA, self::BASE, true, 'exemplo.com.br', '/clinica-novo/pagina'));
     }
 
     public function testSemPublicUrlNaoRedireciona(): void
@@ -65,8 +65,8 @@ class HostCanonicoTest extends CIUnitTestCase
     public function testPublicUrlComMesmaSubpastaDaBaseMantemOCaminho(): void
     {
         $this->assertSame(
-            'https://x.com/ordojuris/pagina/a',
-            HostCanonico::destino('https://x.com/ordojuris/', 'https://x.com/ordojuris/', true, 'www.x.com', '/ordojuris/pagina/a'),
+            'https://x.com/clinica/pagina/a',
+            HostCanonico::destino('https://x.com/clinica/', 'https://x.com/clinica/', true, 'www.x.com', '/clinica/pagina/a'),
         );
     }
 }

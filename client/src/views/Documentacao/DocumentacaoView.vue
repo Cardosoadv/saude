@@ -3,7 +3,7 @@
     <div class="page-header">
       <div>
         <h1>Documentação</h1>
-        <p>Manual do Ordo Juris: como usar cada tela do sistema.</p>
+        <p>Manual do sistema: como usar cada tela do sistema.</p>
       </div>
       <div class="page-header-actions doc-acoes">
         <button
@@ -130,7 +130,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'navegar', destino: { slug: string | null; ancora: string | null }): void
-  /** Edição (ordojuris#711): id da página no banco, ou null para a lista. */
+  /** Edição: id da página no banco, ou null para a lista. */
   (e: 'abrir-edicao', id: number | null): void
   (e: 'toast', toast: { msg: string; type: string }): void
 }>()

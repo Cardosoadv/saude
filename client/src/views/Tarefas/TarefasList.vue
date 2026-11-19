@@ -2,7 +2,7 @@
   <div class="page-content">
     <!-- Breadcrumb -->
     <div class="breadcrumb">
-      <a href="#" @click.prevent>Ordo Juris</a>
+      <a href="#" @click.prevent>Saúde</a>
       <i class="bi bi-chevron-right"></i>
       <span>Tarefas</span>
     </div>
@@ -120,7 +120,6 @@
                   <div class="kanban-card-title">{{ t.tarefa }}</div>
                   <div class="kanban-card-meta">
                     <span><i class="bi bi-calendar-event"></i> {{ formatDate(t.prazo) }}</span>
-                    <PrazoAConferirBadge v-if="prazoAConferir(t)" />
                     <span v-if="t.responsavel_nome || t.responsavel_username">
                       <i class="bi bi-person"></i> {{ t.responsavel_nome || t.responsavel_username }}
                     </span>
@@ -172,7 +171,6 @@
               <div class="process-title">{{ t.tarefa }}</div>
               <div class="process-meta">
                 <span><i class="bi bi-calendar-event"></i> Prazo: {{ formatDate(t.prazo) }}</span>
-                <PrazoAConferirBadge v-if="prazoAConferir(t)" />
                 <span v-if="t.responsavel_nome || t.responsavel_username">
                   <i class="bi bi-person"></i> {{ t.responsavel_nome || t.responsavel_username }}
                 </span>
@@ -216,9 +214,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted, watch, nextTick } from 'vue'
 import { apiFetch, formatDate } from '../../services/api'
-import TarefaModal from '../../components/modals/Processos/TarefaModal.vue'
-import PrazoAConferirBadge from '../../components/widgets/PrazoAConferirBadge.vue'
-import { prazoAConferir } from '../../utils/prazos'
+import TarefaModal from '../../components/modals/Tarefas/TarefaModal.vue'
 
 const props = defineProps({
   searchQuery: {
@@ -227,7 +223,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['toast', 'open-process', 'open-caso', 'open-cliente'])
+const emit = defineEmits(['toast', 'open-cliente'])
 
 const viewMode = ref('kanban')
 const loading = ref(true)
@@ -317,28 +313,18 @@ function updateStats() {
 
 // Entity helper functions
 function getEntityLink(t) {
-  if (t.processo_id || t.id_processo) return 'processo'
-  if (t.caso_id || t.id_caso) return 'caso'
   if (t.cliente_id || t.id_cliente) return 'cliente'
   return null
 }
 
 function getEntityIcon(t) {
   const type = getEntityLink(t)
-  if (type === 'processo') return 'bi bi-briefcase-fill'
-  if (type === 'caso') return 'bi bi-journal-bookmark-fill'
   if (type === 'cliente') return 'bi bi-person-badge-fill'
   return 'bi bi-link-45deg'
 }
 
 function getEntityLabel(t) {
   const type = getEntityLink(t)
-  if (type === 'processo') {
-    return t.processo_numero || t.processo_nome || `Processo #${t.processo_id || t.id_processo}`
-  }
-  if (type === 'caso') {
-    return t.caso_titulo || t.caso_nome || `Caso #${t.caso_id || t.id_caso}`
-  }
   if (type === 'cliente') {
     return t.cliente_nome || t.cliente_razao_social || `Cliente #${t.cliente_id || t.id_cliente}`
   }
@@ -347,13 +333,7 @@ function getEntityLabel(t) {
 
 function navigateToEntity(t) {
   const type = getEntityLink(t)
-  if (type === 'processo') {
-    const id = t.processo_id || t.id_processo
-    emit('open-process', Number(id))
-  } else if (type === 'caso') {
-    const id = t.caso_id || t.id_caso
-    emit('open-caso', Number(id))
-  } else if (type === 'cliente') {
+  if (type === 'cliente') {
     const id = t.cliente_id || t.id_cliente
     emit('open-cliente', Number(id))
   }

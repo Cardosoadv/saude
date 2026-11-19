@@ -68,55 +68,5 @@ class TarefasModelTest extends CIUnitTestCase
 
         $task = $model->find($id);
         $this->assertEquals(1, $task['cliente_id']);
-        $this->assertNull($task['processo_id']);
-        $this->assertNull($task['caso_id']);
-    }
-
-    public function testCanCreateTaskLinkedToCase()
-    {
-        $model = new TarefasModel();
-
-        $data = [
-            'tarefa'      => 'Test Task Case',
-            'prazo'       => date('Y-m-d'),
-            'prioridade'  => 1,
-            'detalhes'    => 'Details',
-            'responsavel' => 1,
-            'status'      => 1,
-            'caso_id'     => 1,
-            'notificar'   => 0
-        ];
-
-        $id = $model->insert($data);
-        $this->assertIsNumeric($id);
-
-        $task = $model->find($id);
-        $this->assertEquals(1, $task['caso_id']);
-        $this->assertNull($task['processo_id']);
-        $this->assertNull($task['cliente_id']);
-    }
-
-    public function testCanCreateTaskLinkedToProcess()
-    {
-        $model = new TarefasModel();
-
-        $data = [
-            'tarefa'      => 'Test Task Process',
-            'prazo'       => date('Y-m-d'),
-            'prioridade'  => 1,
-            'detalhes'    => 'Details',
-            'responsavel' => 1,
-            'status'      => 1,
-            'processo_id' => 1,
-            'notificar'   => 0
-        ];
-
-        $id = $model->insert($data);
-        $this->assertIsNumeric($id);
-
-        $task = $model->find($id);
-        $this->assertEquals(1, $task['processo_id']);
-        $this->assertNull($task['cliente_id']);
-        $this->assertNull($task['caso_id']);
     }
 }

@@ -40,26 +40,6 @@ class BusinessCanvas extends BaseController
     }
 
     /**
-     * Renderiza a página principal do Business Canvas.
-     *
-     * @return string|ResponseInterface
-     */
-    public function index()
-    {
-        if (!$this->verificaPermissao($this->permissao, 'access') && !$this->verificaPermissao($this->permissao, 'exclusive')) {
-            return $this->failForbidden('Você não tem permissão para acessar o Business Model Canvas.');
-        }
-
-        $data = [
-            'titulo' => 'Business Model Canvas',
-            'js_modules' => ['BusinessCanvas'],
-            'blocks' => $this->service->getBlockStructure()
-        ];
-
-        return view('businessCanvas/index', $data);
-    }
-
-    /**
      * Retorna a lista de canvases do usuário logado via AJAX.
      *
      * @return ResponseInterface

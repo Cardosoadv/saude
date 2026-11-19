@@ -1,10 +1,10 @@
 <?php /** @var array $dados */
-// Dados do escritório lidos das configurações do site (nada é digitado aqui).
+// Dados da clínica lidos das configurações do site (nada é digitado aqui).
 $unidades = (array) site_config('contato.enderecos', []);
 $linhas   = array_filter([
     'razao_social'  => (string) (site_config('identidade.razao_social') ?: site_config('identidade.nome', '')),
     'cnpj'          => \App\Libraries\Site\Cnpj::formatar((string) site_config('identidade.cnpj', '')),
-    'registro_oab'  => (string) site_config('identidade.registro_oab', ''),
+    'registro_profissional'  => (string) site_config('identidade.registro_profissional', ''),
 ], static fn (string $v): bool => trim($v) !== '');
 if ($linhas === [] && $unidades === []) {
     return;

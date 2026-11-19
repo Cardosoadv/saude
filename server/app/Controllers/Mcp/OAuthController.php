@@ -53,7 +53,7 @@ class OAuthController extends BaseController
             authorizationServers: [$baseUrl],
             scopesSupported: [config(McpConfig::class)->tokenScope],
             resource: $baseUrl . '/mcp',
-            resourceName: 'OrdoJuris',
+            resourceName: 'Saúde',
         );
 
         return $this->response

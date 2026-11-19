@@ -3,11 +3,10 @@
     <div class="login-card card">
       <div class="login-header">
         <div class="login-logo-wrap">
-          <img src="../assets/logo.png" alt="Cardoso &amp; Bruno — Ordo Juris" class="login-logo">
+          <img src="../assets/logo.png" alt="Saúde" class="login-logo">
         </div>
         <div class="login-brand-divider"></div>
-        <h1 class="login-title">Acesso ao Ordo Juris</h1>
-        <p v-if="tenant?.nome" class="login-tenant">{{ tenant.nome }}</p>
+        <h1 class="login-title">Acesso ao sistema</h1>
         <p>Acesse sua conta para continuar</p>
       </div>
 
@@ -102,17 +101,16 @@
       </form>
 
       <div class="login-footer">
-        <p>&copy; {{ new Date().getFullYear() }} Cardoso & Bruno. Todos os direitos reservados.</p>
+        <p>&copy; {{ new Date().getFullYear() }} Saúde. Todos os direitos reservados.</p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive } from 'vue'
 import { login } from '../services/auth'
 import { perfilApi } from '../services/perfilApi'
-import { buscarTenantAtual, type TenantAtual } from '../services/tenantApi'
 
 const emit = defineEmits(['login-success'])
 
@@ -124,11 +122,6 @@ const credentials = reactive({
 
 const loading = ref(false)
 const error = ref('')
-// Escritório da URL, para mostrar o nome na entrada (vazio se o backend não informar).
-const tenant = ref<TenantAtual | null>(null)
-onMounted(async () => {
-  tenant.value = await buscarTenantAtual()
-})
 const modo = ref<'login' | 'esqueci'>('login')
 const emailRecuperacao = ref('')
 const aviso = ref('')
@@ -244,10 +237,6 @@ async function handleLogin() {
   opacity: 0.8;
 }
 
-.login-tenant {
-  font-weight: 600;
-  margin: 0 0 0.25rem;
-}
 
 .login-title {
   color: var(--accent);

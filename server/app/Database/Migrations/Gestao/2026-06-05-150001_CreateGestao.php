@@ -10,7 +10,7 @@ class CreateGestao extends Migration
     {
         // modulos
         $this->forge->addField([
-            'id'         => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => false],
+            'id'         => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
             'nome'       => ['type' => 'VARCHAR', 'constraint' => 255],
             'ativo'      => ['type' => 'TINYINT', 'constraint' => 1, 'default' => 1],
             'created_at' => ['type' => 'DATETIME', 'null' => true],
@@ -18,7 +18,6 @@ class CreateGestao extends Migration
             'deleted_at' => ['type' => 'DATETIME', 'null' => true],
         ]);
         $this->forge->addPrimaryKey('id');
-        $this->forge->addForeignKey('id', 'users', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('modulos', true);
 
         // business_canvas

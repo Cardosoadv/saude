@@ -2,7 +2,7 @@
 
 Contrato dos endpoints de leitura do manual do sistema, consumidos pelas telas do repositório
 `CognitioTechny/sistema` (épico [sistema#191](https://github.com/CognitioTechny/sistema/issues/191)).
-Épico do backend: ordojuris#699. O formato das páginas está em [`documentacao-formato.md`](documentacao-formato.md).
+ O formato das páginas está em [`documentacao-formato.md`](documentacao-formato.md).
 
 Os exemplos foram gerados executando `DocumentacaoService` sobre as páginas de `app/Docs` (datas variam).
 
@@ -47,7 +47,7 @@ Não há nada a esconder na SPA além do que a API já filtrou.
         {
             "slug": "primeiros-passos",
             "titulo": "Primeiros passos",
-            "resumo": "O que é o Ordo Juris, como entrar no sistema e onde encontrar cada módulo.",
+            "resumo": "O que é o Saúde, como entrar no sistema e onde encontrar cada módulo.",
             "capa": true,
             "paginas": [
                 {
@@ -81,8 +81,8 @@ Não há nada a esconder na SPA além do que a API já filtrou.
         "status": "publicado",
         "id": null,
         "titulo": "Primeiros passos",
-        "resumo": "O que é o Ordo Juris, como entrar no sistema e onde encontrar cada módulo.",
-        "html": "<p>O Ordo Juris reúne em um só lugar …</p>\n<h2 id=\"entrar-no-sistema\">Entrar no sistema</h2>\n…<aside class=\"doc-aviso doc-aviso--dica\" role=\"note\"><p class=\"doc-aviso-titulo\">Dica</p>\n<p>Esqueceu a senha? …</p>\n</aside>…<a href=\"#/documentacao/primeiros-passos/navegacao\">Navegação pelo sistema</a>…",
+        "resumo": "O que é o Saúde, como entrar no sistema e onde encontrar cada módulo.",
+        "html": "<p>O Saúde reúne em um só lugar …</p>\n<h2 id=\"entrar-no-sistema\">Entrar no sistema</h2>\n…<aside class=\"doc-aviso doc-aviso--dica\" role=\"note\"><p class=\"doc-aviso-titulo\">Dica</p>\n<p>Esqueceu a senha? …</p>\n</aside>…<a href=\"#/documentacao/primeiros-passos/navegacao\">Navegação pelo sistema</a>…",
         "sumario": [
             { "nivel": 2, "texto": "Entrar no sistema", "ancora": "entrar-no-sistema" },
             { "nivel": 2, "texto": "O que você vê depende do seu perfil", "ancora": "o-que-voce-ve-depende-do-seu-perfil" },
@@ -116,7 +116,7 @@ Não há nada a esconder na SPA além do que a API já filtrou.
             "slug": "primeiros-passos/navegacao",
             "titulo": "Navegação pelo sistema",
             "secao": "Primeiros passos",
-            "trecho": "Menu lateral O menu à esquerda agrupa as telas por assunto: Principal, Processos, Financeiro, Gestão e Site. Só aparecem os grupos e as telas a que o seu perfil…"
+            "trecho": "Menu lateral O menu à esquerda agrupa as telas por assunto: Principal, Financeiro, Contábil, Gestão e Site. Só aparecem os grupos e as telas a que o seu perfil…"
         },
         {
             "slug": "primeiros-passos",
@@ -153,13 +153,13 @@ GET /api/v2/documentacao/tela/extrato    →  404
 - Só `png`, `jpg`, `jpeg`, `gif`, `webp` e `avif`. Qualquer outro caminho responde 404.
 - `Cache-Control: private, max-age=86400` e `ETag`.
 - O `html` das páginas já traz a URL absoluta, com largura e altura lidas do arquivo
-  (`<img src="https://…/api/v2/documentacao/imagens/processos/img/tela.webp" alt="…" loading="lazy" width="800" height="450">`).
+  (`<img src="https://…/api/v2/documentacao/imagens/clientes/img/tela.webp" alt="…" loading="lazy" width="800" height="450">`).
   Mantenha `height: auto` no CSS para a imagem não distorcer quando encolher.
   Como a rota exige login, a imagem carrega com o cookie da sessão; não há nada a fazer na SPA.
 
 ## Páginas no banco e rascunhos
 
-Além dos arquivos de `app/Docs`, há páginas criadas pela interface, guardadas no banco (ordojuris#710):
+Além dos arquivos de `app/Docs`, há páginas criadas pela interface, guardadas no banco:
 
 - uma página do banco **publicada** com o mesmo slug de um arquivo **substitui** o arquivo para todos;
 - enquanto é **rascunho**, ela só aparece para quem tem `documentacao.editar`, no lugar da versão publicada.
@@ -171,8 +171,7 @@ versão publicada.
 
 ## Edição (admin)
 
-Base: `/api/v2/documentacao/admin`, com os filtros `permission:documentacao.editar` e `modulo:documentacao`
-(ordojuris#711). As respostas seguem o padrão do editor do site: `{"data": …}` e, nas gravações, `"avisos": [...]`.
+Base: `/api/v2/documentacao/admin`, com os filtros `permission:documentacao.editar` e `modulo:documentacao`. As respostas seguem o padrão do editor do site: `{"data": …}` e, nas gravações, `"avisos": [...]`.
 Os erros de validação vêm por campo em `messages`, com código 422; uma página inexistente responde 404.
 
 | Método | Rota | Corpo | Resposta |
@@ -190,7 +189,7 @@ Os erros de validação vêm por campo em `messages`, com código 422; uma pági
 **Item da lista** (`GET paginas`):
 
 ```json
-{ "id": 7, "slug": "processos/cadastro", "titulo": "Cadastro de processos", "secao": "processos",
+{ "id": 7, "slug": "clientes/cadastro", "titulo": "Cadastro de clientes", "secao": "processos",
   "origem": "banco", "status": "rascunho", "tem_arquivo": true, "atualizado_em": "2026-10-14T10:20:00-03:00" }
 ```
 
@@ -242,7 +241,7 @@ Classes geradas pelo backend, para a folha de estilos da SPA:
 |---|---|
 | `#/documentacao/{slug}` | abre a página sem recarregar |
 | `#/documentacao/{slug}#{ancora}` | abre a página e rola até o título com `id="{ancora}"`. **Atenção**: são dois `#`; tudo após o segundo é a âncora |
-| `#/…` (outra tela, ex.: `#/processos`) | navegação normal do hash da SPA |
+| `#/…` (outra tela, ex.: `#/clientes`) | navegação normal do hash da SPA |
 | `https://…`, `mailto:` | já vêm com `target="_blank" rel="noopener noreferrer"` |
 | `<a>` sem `href` | link recusado pelo backend; é só texto |
 

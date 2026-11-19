@@ -24,10 +24,10 @@ Para cadastrar ou editar, veja [Cadastro de clientes](cadastro.md).
 
 ## Transformar em Fornecedor
 
-Caso um cliente também forneça produtos/serviços para o escritório ou precise ser reclassificado como parceiro comercial:
+Caso um cliente também forneça produtos/serviços para a clínica ou precise ser reclassificado como parceiro comercial:
 
 1. Na listagem de clientes ou nos detalhes do cliente, clique em **Transformar em Fornecedor** (<i class="bi bi-arrow-left-right"></i>).
 2. O sistema copia automaticamente todos os dados cadastrais (nome, razão social, documento, contatos e endereço).
 3. Você pode preencher opcionalmente dados bancários (Banco, Agência, Conta, Tipo de Conta e Chave PIX).
-4. Opcionalmente, marque para **Desativar o cadastro de cliente** caso ele não tenha mais processos ou demandas ativas.
+4. Opcionalmente, marque para **Desativar o cadastro de cliente** caso ele não tenha mais atendimentos ou demandas ativas.
 5. Ao confirmar, o novo fornecedor é cadastrado e o sistema disponibiliza o acesso imediato à sua ficha.

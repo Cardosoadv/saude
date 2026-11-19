@@ -2,7 +2,7 @@
   <div class="page-content animate-fade-in">
     <!-- Breadcrumb -->
     <div class="breadcrumb">
-      <a href="#" @click.prevent="$emit('set-view', 'dashboard')">Ordo Juris</a>
+      <a href="#" @click.prevent="$emit('set-view', 'dashboard')">Saúde</a>
       <i class="bi bi-chevron-right"></i>
       <span>Balanço</span>
     </div>
@@ -78,13 +78,13 @@
               </ul>
             </div>
             <div style="flex: 1; min-width: 300px;">
-              <h5 style="border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; margin-bottom: 1rem;">Rateios por Advogado</h5>
+              <h5 style="border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; margin-bottom: 1rem;">Rateios por Profissional</h5>
               <ul class="widget-list">
-                <li v-for="(adv, key) in balancoData.rateios_advogados" :key="'a'+key" style="display: flex; justify-content: space-between; padding: 0.5rem 0;">
+                <li v-for="(adv, key) in balancoData.rateios_profissionais" :key="'a'+key" style="display: flex; justify-content: space-between; padding: 0.5rem 0;">
                   <span>{{ adv.nome }}</span>
                   <strong :style="{ color: adv.valor < 0 ? 'var(--danger)' : 'var(--success)' }">{{ formatCurrency(adv.valor || 0) }}</strong>
                 </li>
-                <li v-if="!balancoData.rateios_advogados || Object.keys(balancoData.rateios_advogados).length === 0" style="color:var(--ink-muted);font-size:.82rem;">
+                <li v-if="!balancoData.rateios_profissionais || Object.keys(balancoData.rateios_profissionais).length === 0" style="color:var(--ink-muted);font-size:.82rem;">
                   Nenhum rateio encontrado.
                 </li>
               </ul>
@@ -127,7 +127,7 @@
               <strong style="color: var(--ink);">Saldo Total:</strong> Soma de todas as contas cadastradas na data de referência.
             </p>
             <p style="margin-bottom: 0.5rem;">
-              <strong style="color: var(--ink);">Rateio Total:</strong> Soma de todos os valores destinados aos advogados nesta data.
+              <strong style="color: var(--ink);">Rateio Total:</strong> Soma de todos os valores destinados aos profissionais nesta data.
             </p>
             <p style="margin-bottom: 0;">
               <i class="bi bi-exclamation-triangle" style="color: var(--warning);"></i>

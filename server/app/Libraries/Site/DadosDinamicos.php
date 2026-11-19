@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Libraries\Site;
 
-use App\Repositories\RamosDireitoRepository;
 use App\Services\NewsService;
 
 /**
@@ -32,9 +31,10 @@ class DadosDinamicos
             (new NewsService())->getLatestPublishedExcept('', 3)
         );
 
+        // Serviços oferecidos (opções do formulário de contato), editáveis em `contato.servicos`.
         $this->provedores['areas'] = static fn (): array => array_map(
-            static fn (array $a) => ['id' => $a['id'], 'nome' => (string) ($a['nome'] ?? '')],
-            (new RamosDireitoRepository())->findAll()
+            static fn (string $nome) => ['id' => $nome, 'nome' => $nome],
+            array_values(array_filter((array) site_config('contato.servicos', []), 'is_string'))
         );
     }
 

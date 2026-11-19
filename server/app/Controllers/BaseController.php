@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Services\Financeiro\DespesasService;
-use App\Services\MensagensService;
 use App\Services\TarefasService;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\CLIRequest;

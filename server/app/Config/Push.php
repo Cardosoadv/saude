@@ -9,7 +9,7 @@ use CodeIgniter\Config\BaseConfig;
 /**
  * Notificações push (Web Push / PWA).
  *
- * Preencha no .env de cada tenant (gere as chaves com `php spark push:vapid`):
+ * Preencha no .env (gere as chaves com `php spark push:vapid`):
  *
  *   push.vapidPublicKey  = "B..."            (base64url, 65 bytes)
  *   push.vapidPrivateKey = "..."             (base64url, 32 bytes) — NUNCA versionar
@@ -25,7 +25,7 @@ class Push extends BaseConfig
     public string $vapidPrivateKey = '';
 
     /** Contato do responsável técnico, exigido pelo VAPID ("mailto:" ou "https://"). */
-    public string $contato = 'mailto:noreply@cardosoebruno.adv.br';
+    public string $contato = 'mailto:noreply@exemplo.com.br';
 
     /**
      * Horário em que o envio é permitido (hora local, 0–23). Fora dele o comando não envia;
@@ -33,9 +33,6 @@ class Push extends BaseConfig
      */
     public int $horaInicio = 7;
     public int $horaFim = 22;
-
-    /** Intimações mais antigas que isto não geram push (evita avalanche após pausas do cron). */
-    public int $janelaIntimacoesHoras = 48;
 
     /** Quantos dias à frente o prazo de uma tarefa gera aviso (0 = só no dia, 1 = hoje e amanhã). */
     public int $diasAntecedenciaPrazo = 1;

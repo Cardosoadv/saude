@@ -3,7 +3,6 @@
  * Auth Service – Integração com CodeIgniter Shield
  */
 import { apiFetch, BASE_URL } from './api';
-import { definirTenantSessao, limparTenantSessao, tenantSlugAtual } from './tenant';
 
 export interface LoginCredentials {
   email?: string;
@@ -27,14 +26,11 @@ export interface AuthUser {
 }
 
 /**
- * Realiza login no backend Shield enviando o tenant slug como parâmetro GET no endpoint de login.
+ * Realiza login no backend Shield.
  * Valida a resposta para garantir que erros de credenciais não permitam entrada.
- * Após login bem-sucedido, registra o tenant na sessão e busca os dados do usuário automaticamente.
  */
-export async function login(credentials: LoginCredentials, tenantSlug?: string | null) {
-  const slug = tenantSlug ?? tenantSlugAtual();
-  const endpoint = slug ? `login?tenant=${encodeURIComponent(slug)}` : 'login';
-  const response = await apiFetch(endpoint, {
+export async function login(credentials: LoginCredentials) {
+  const response = await apiFetch('login', {
     method: 'POST',
     body: credentials
   });
@@ -59,26 +55,14 @@ export async function login(credentials: LoginCredentials, tenantSlug?: string |
     if (!user) {
       throw new Error('Credenciais inválidas. Por favor, tente novamente.');
     }
-    if (user.tenant?.slug) {
-      definirTenantSessao(user.tenant.slug);
-    } else if (slug) {
-      definirTenantSessao(slug);
-    }
     return { success: true, user };
-  }
-
-  const userData = response.user || response;
-  if (userData?.tenant?.slug) {
-    definirTenantSessao(userData.tenant.slug);
-  } else if (slug) {
-    definirTenantSessao(slug);
   }
 
   return response;
 }
 
 /**
- * Realiza logout no backend Shield e limpa o estado e a sessão local de tenant.
+ * Realiza logout no backend Shield.
  */
 export async function logout() {
   try {
@@ -88,8 +72,6 @@ export async function logout() {
   } catch (error) {
     // Mesmo que o servidor falhe, o frontend deve limpar o estado
     console.warn('[Auth] Logout server call failed:', error);
-  } finally {
-    limparTenantSessao();
   }
 }
 
@@ -122,9 +104,6 @@ async function fetchCurrentUser(): Promise<AuthUser | null> {
     }
 
     if (userObj) {
-      if (userObj.tenant?.slug) {
-        definirTenantSessao(userObj.tenant.slug);
-      }
       return userObj;
     }
 

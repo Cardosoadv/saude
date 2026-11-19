@@ -141,7 +141,7 @@ class CashFlowForecastRepositoryTest extends CIUnitTestCase
 
         $this->db->table('fin_despesas')->insert([
             'id_despesa' => 10,
-            'despesa' => 'Aluguel do escritório',
+            'despesa' => 'Aluguel da clínica',
             'valor' => 5000.00,
             'vencimento_dt' => $vencimento,
         ]);

@@ -43,23 +43,27 @@ class AuthGroups extends ShieldAuthGroups
     public array $groups = [
         'superadmin' => [
             'title'       => 'Super Admin',
-            'description' => 'Complete control of the site.',
+            'description' => 'Controle total do sistema.',
         ],
         'admin' => [
-            'title'       => 'Admin',
-            'description' => 'Day to day administrators of the site.',
+            'title'       => 'Administrador',
+            'description' => 'Administração do dia a dia: usuários, cadastros, financeiro e configurações.',
         ],
         'developer' => [
-            'title'       => 'Developer',
-            'description' => 'Site programmers.',
+            'title'       => 'Desenvolvedor',
+            'description' => 'Acesso técnico: documentação e contabilidade.',
+        ],
+        'profissional' => [
+            'title'       => 'Profissional de saúde',
+            'description' => 'Médicos, dentistas, veterinários e demais profissionais: atendimento a clientes, tarefas e consultas.',
+        ],
+        'recepcao' => [
+            'title'       => 'Recepção',
+            'description' => 'Atendimento e cadastro de clientes, tarefas e financeiro básico.',
         ],
         'user' => [
-            'title'       => 'User',
-            'description' => 'General users of the site. Often customers.',
-        ],
-        'beta' => [
-            'title'       => 'Beta User',
-            'description' => 'Has access to beta-level features.',
+            'title'       => 'Usuário',
+            'description' => 'Acesso mínimo (apenas documentação).',
         ],
         'cliente' => [
             'title'       => 'Cliente',
@@ -82,12 +86,11 @@ class AuthGroups extends ShieldAuthGroups
         'users.create'                  => 'Can create new non-admin users',
         'users.edit'                    => 'Can edit existing non-admin users',
         'users.delete'                  => 'Can delete existing non-admin users',
-        'beta.access'                   => 'Can access beta-level features',
         // Minhas Permissões
 
         //Site público (conteúdo gerenciável)
         'site.conteudo'                 => 'Pode editar páginas, seções, menus, mídias e notícias do site',
-        'site.configuracoes'            => 'Pode editar dados do escritório, SEO, integrações e tema do site',
+        'site.configuracoes'            => 'Pode editar dados da clínica, SEO, integrações e tema do site',
         'site.publicar'                 => 'Pode publicar e despublicar páginas do site',
         'site.templates'                => 'Pode instalar, ativar, exportar e remover templates do site',
 
@@ -132,39 +135,19 @@ class AuthGroups extends ShieldAuthGroups
         'fornecedores.delete'             => 'Pode deletar fornecedores',
 
         //Anotações
-        'anotacoes.access'                => 'Pode acessar anotações',
-        'anotacoes.create'                => 'Pode criar anotações',
-        'anotacoes.edit'                  => 'Pode editar anotações',
-        'anotacoes.delete'                => 'Pode deletar anotações',
 
         //Etiquetas
-        'etiquetas.access'                => 'Pode acessar etiquetas',
-        'etiquetas.create'                => 'Pode criar etiquetas',
-        'etiquetas.edit'                  => 'Pode editar etiquetas',
-        'etiquetas.delete'                => 'Pode deletar etiquetas',
 
         //Mensagens
-        'mensagens.access'                => 'Pode acessar mensagens',
-        'mensagens.create'                => 'Pode criar mensagens',
-        'mensagens.edit'                  => 'Pode editar mensagens',
-        'mensagens.delete'                => 'Pode deletar mensagens',
 
-        'monitorar.delete'               => 'Pode deletar monitorar',
-        'monitorar.exclusive'            => 'Pode acessar monitorar exclusivo',
 
         //Módulos do sistema
         'module.access'                   => 'Pode ver os módulos do sistema e se estão ativos',
         'module.edit'                     => 'Pode ativar e desativar módulos do sistema',
 
         //Módulo Extra
-        'module.processos'                => 'Pode acessar o módulo de Estratégia Legal (Legal Ops BI) e relatórios gerenciais',
 
         //Conhecimento
-        'conhecimento.access'             => 'Pode acessar a Base de Conhecimento',
-        'conhecimento.create'             => 'Pode criar itens na Base de Conhecimento',
-        'conhecimento.edit'               => 'Pode editar itens na Base de Conhecimento',
-        'conhecimento.delete'             => 'Pode deletar itens na Base de Conhecimento',
-        'conhecimento.modelos.gerar'      => 'Pode gerar documentos a partir de modelos',
 
         //Business Canvas
         'business_canvas.access'          => 'Pode acessar o Business Model Canvas',
@@ -173,12 +156,10 @@ class AuthGroups extends ShieldAuthGroups
         'business_canvas.delete'          => 'Pode deletar Business Model Canvas',
         'business_canvas.exclusive'       => 'Pode gerenciar apenas seus próprios Business Model Canvas',
 
-        //Consultas (CPF / Endereço - API Brasil)
-        'consultas.access'                => 'Pode realizar consultas de CPF/Endereço (API Brasil)',
 
-        //Privacidade granular (processos, clientes e contratos)
-        'privacidade.bypass'              => 'Vê e edita todos os processos, clientes e contratos, inclusive os restritos',
-        'privacidade.manage'              => 'Pode gerenciar visibilidade e advogados com acesso de qualquer registro',
+        //Privacidade granular (clientes e contratos)
+        'privacidade.bypass'              => 'Vê e edita todos os clientes e contratos, inclusive os restritos',
+        'privacidade.manage'              => 'Pode gerenciar visibilidade e profissionais com acesso de qualquer registro',
 
         //Contábil
         'contabil.access'                 => 'Pode acessar o módulo contábil',
@@ -204,26 +185,13 @@ class AuthGroups extends ShieldAuthGroups
             'contabil.*',
             'privacidade.*',
             'users.*',
-            'beta.*',
-            'casos.*',
             'clientes.*',
             'tarefas.*',
-            'processos.*',
             'financeiro.*',
             'contratos.*',
             'fornecedores.*',
-            'objetos.*',
-            'exportacao.*',
             'module.*',
-            'checklist.*',
-            'liquidacoes.*',
-            'anotacoes.*',
-            'etiquetas.*',
-            'mensagens.*',
-            'monitorar.*',
-            'conhecimento.*',
             'business_canvas.*',
-            'consultas.*',
         ],
         'admin' => [
             'users.*',
@@ -233,87 +201,46 @@ class AuthGroups extends ShieldAuthGroups
             'site.configuracoes',
             'site.publicar',
             'privacidade.*',
-            'beta.*',
-            'casos.*',
             'clientes.*',
             'tarefas.*',
-            'processos.*',
             'financeiro.*',
             'contratos.*',
             'fornecedores.*',
-            'objetos.*',
-            'exportacao.*',
             'module.*',
-            'liquidacoes.*',
-            'anotacoes.*',
-            'etiquetas.*',
-            'mensagens.*',
-            'monitorar.*',
-            'conhecimento.*',
             'business_canvas.*',
-            'consultas.*',
         ],
         'developer' => [
             'documentacao.*',
             'contabil.*',
         ],
-        'estagiario' => [
+        'profissional' => [
             'documentacao.access',
-            'casos.access',
-            'casos.create',
-            'casos.edit',
             'clientes.access',
             'clientes.create',
             'clientes.edit',
             'tarefas.access',
             'tarefas.create',
             'tarefas.edit',
-            'processos.access',
-            'processos.create',
-            'processos.edit',
-            'financeiro.access',
-            'financeiro.create',
-            'financeiro.edit',
-            'intimacoes.access',
-            'intimacoes.create',
-            'intimacoes.edit',
             'contratos.access',
             'contratos.create',
             'contratos.edit',
-            'fornecedores.access',
-            'fornecedores.create',
-            'fornecedores.edit',
-            'objetos.access',
-            'objetos.create',
-            'objetos.edit',
-            'exportacao.access',
-            'exportacao.create',
-            'exportacao.edit',
-            'intimacoes.access',
-            'intimacoes.create',
-            'intimacoes.edit',
-            'module.access',
-            'module.create',
-            'module.edit',
-            'anotacoes.*',
-            'etiquetas.*',
-            'mensagens.*',
-            'monitorar.*',
-            'movimentos.*',
-            'conhecimento.access',
-            'conhecimento.modelos.gerar',
-            'consultas.access',
+            'business_canvas.exclusive',
+        ],
+        'recepcao' => [
+            'documentacao.access',
+            'clientes.access',
+            'clientes.create',
+            'clientes.edit',
+            'tarefas.access',
+            'tarefas.create',
+            'tarefas.edit',
+            'financeiro.access',
+            'financeiro.create',
+            'contratos.access',
         ],
         'user' => [
             'documentacao.access',
-            'processos.exclusive',
-            'liquidacoes.exclusive',
-            'casos.exclusive',
-            'checklist.exclusive',
             'business_canvas.exclusive',
-        ],
-        'beta' => [
-            'beta.access',
         ],
         'cliente' => [],
     ];

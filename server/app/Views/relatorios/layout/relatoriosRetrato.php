@@ -165,8 +165,8 @@
 <body>
     <!-- Rodapé -->
     <div class="footer">
-        <p>Relatório gerado em <?= date('d/m/Y H:i') ?> | © <?= date('Y') ?> Ordo - Escritórios de Advocacia</p>
-        <p>© <?= date('Y') ?> - Ordo - Sistema de Administração de Escritórios de Advocacia</p>
+        <p>Relatório gerado em <?= date('d/m/Y H:i') ?> | © <?= date('Y') ?> Saúde - Sistema de gestão para clínicas</p>
+        <p>© <?= date('Y') ?> - Saúde - Sistema de gestão para clínicas</p>
 
     </div>
 

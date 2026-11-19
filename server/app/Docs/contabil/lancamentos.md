@@ -9,7 +9,7 @@ palavras_chave: [lançamentos, partidas dobradas, livro diário, débito, crédi
 ## Livro Diário
 
 A aba **Lançamentos** (`#/contabil-lancamentos`) exibe a escrituração cronológica oficial
-do escritório, correspondente ao Livro Diário.
+da clínica, correspondente ao Livro Diário.
 
 Cada lançamento reúne:
 - **Número do Lançamento** e data da escrituração;

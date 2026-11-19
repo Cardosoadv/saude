@@ -2,12 +2,12 @@
   <aside :class="['sidebar', { open: sidebarOpen }]">
     <div class="sidebar-brand">
       <div class="logo-mark">
-        <img src="../../assets/logo.png" alt="Cardoso &amp; Bruno — Ordo Juris" class="logo-image" aria-label="Logo Cardoso &amp; Bruno">
+        <img src="../../assets/logo.png" alt="Saúde" class="logo-image" aria-label="Logo Saúde">
       </div>
-      <span class="brand-version">Ordo Juris v7.4.1</span>
+      <span class="brand-version">Saúde</span>
     </div>
 
-    <template v-if="algumaLiberada(['dashboard', 'crm', 'clientes', 'casos', 'contratos', 'documentacao'])">
+    <template v-if="algumaLiberada(['dashboard', 'crm', 'clientes', 'contratos', 'documentacao'])">
       <div class="sidebar-section" role="heading" aria-level="2">
         <button
           type="button"
@@ -72,19 +72,6 @@
             <i class="bi bi-people nav-icon"></i> Clientes
           </a>
         </li>
-        <li v-if="telaLiberada('casos')">
-          <a
-            :class="{ active: currentView === 'casos' || currentView === 'caso-detail' }"
-            @click="$emit('set-view', 'casos')"
-            role="button"
-            tabindex="0"
-            :aria-current="(currentView === 'casos' || currentView === 'caso-detail') ? 'page' : null"
-            @keydown.enter="$emit('set-view', 'casos')"
-            @keydown.space.prevent="$emit('set-view', 'casos')"
-          >
-            <i class="bi bi-briefcase nav-icon"></i> Casos
-          </a>
-        </li>
         <li v-if="telaLiberada('contratos')">
           <a
             :class="{ active: currentView === 'contratos' || currentView === 'contrato-detail' }"
@@ -109,114 +96,6 @@
             @keydown.space.prevent="$emit('set-view', 'documentacao')"
           >
             <i class="bi bi-book nav-icon"></i> Documentação
-          </a>
-        </li>
-      </ul>
-    </template>
-
-    <template v-if="algumaLiberada(['list', 'busca-automatica', 'importacao-processos', 'liquidacoes', 'etiquetas', 'intimacoes'])">
-      <div class="sidebar-section" role="heading" aria-level="2">
-        <button
-          type="button"
-          class="sidebar-section-toggle"
-          :aria-expanded="secaoAberta('processos')"
-          aria-controls="sidebar-secao-processos"
-          @click="alternarSecao('processos')"
-        >
-          Processos
-          <span class="sidebar-section-extra">
-            <template v-if="!secaoAberta('processos')">
-              <span
-                v-for="c in contadoresSecao('processos')"
-                :key="c.tela"
-                class="sidebar-section-badge"
-                :style="{ background: c.cor }"
-                :title="`${c.rotulo}: ${c.valor}`"
-                :aria-label="`${c.rotulo}: ${c.valor}`"
-              >{{ c.valor }}</span>
-            </template>
-            <i :class="['bi', 'bi-chevron-down', 'sidebar-section-chevron', { fechada: !secaoAberta('processos') }]" aria-hidden="true"></i>
-          </span>
-        </button>
-      </div>
-      <ul id="sidebar-secao-processos" class="sidebar-nav" v-show="secaoAberta('processos')" :ref="(el) => registrarLista('processos', el)">
-        <li v-if="telaLiberada('list')">
-          <a
-            :class="{ active: currentView === 'list' }"
-            @click="$emit('set-view', 'list')"
-            role="button"
-            tabindex="0"
-            :aria-current="currentView === 'list' ? 'page' : null"
-            @keydown.enter="$emit('set-view', 'list')"
-            @keydown.space.prevent="$emit('set-view', 'list')"
-          >
-            <i class="bi bi-bank nav-icon"></i> Lista de Processos
-          </a>
-        </li>
-        <li v-if="telaLiberada('busca-automatica')">
-          <a
-            :class="{ active: currentView === 'busca-automatica' }"
-            @click="$emit('set-view', 'busca-automatica')"
-            role="button"
-            tabindex="0"
-            :aria-current="currentView === 'busca-automatica' ? 'page' : null"
-            @keydown.enter="$emit('set-view', 'busca-automatica')"
-            @keydown.space.prevent="$emit('set-view', 'busca-automatica')"
-          >
-            <i class="bi bi-search nav-icon"></i> Busca Automática
-          </a>
-        </li>
-        <li v-if="telaLiberada('importacao-processos')">
-          <a
-            :class="{ active: currentView === 'importacao-processos' }"
-            @click="$emit('set-view', 'importacao-processos')"
-            role="button"
-            tabindex="0"
-            :aria-current="currentView === 'importacao-processos' ? 'page' : null"
-            @keydown.enter="$emit('set-view', 'importacao-processos')"
-            @keydown.space.prevent="$emit('set-view', 'importacao-processos')"
-          >
-            <i class="bi bi-upload nav-icon"></i> Importar em Lote
-          </a>
-        </li>
-        <li v-if="telaLiberada('liquidacoes')">
-          <a
-            :class="{ active: currentView === 'liquidacoes' || currentView === 'liquidacao-detail' }"
-            @click="$emit('set-view', 'liquidacoes')"
-            role="button"
-            tabindex="0"
-            :aria-current="(currentView === 'liquidacoes' || currentView === 'liquidacao-detail') ? 'page' : null"
-            @keydown.enter="$emit('set-view', 'liquidacoes')"
-            @keydown.space.prevent="$emit('set-view', 'liquidacoes')"
-          >
-            <i class="bi bi-calculator nav-icon"></i> Liquidações
-          </a>
-        </li>
-        <li v-if="telaLiberada('etiquetas')">
-          <a
-            :class="{ active: currentView === 'etiquetas' }"
-            @click="$emit('set-view', 'etiquetas')"
-            role="button"
-            tabindex="0"
-            :aria-current="currentView === 'etiquetas' ? 'page' : null"
-            @keydown.enter="$emit('set-view', 'etiquetas')"
-            @keydown.space.prevent="$emit('set-view', 'etiquetas')"
-          >
-            <i class="bi bi-tags nav-icon"></i> Etiquetas
-          </a>
-        </li>
-        <li v-if="telaLiberada('intimacoes')">
-          <a
-            :class="{ active: currentView === 'intimacoes' || currentView === 'intimacao-detail' }"
-            @click="$emit('set-view', 'intimacoes')"
-            role="button"
-            tabindex="0"
-            :aria-current="(currentView === 'intimacoes' || currentView === 'intimacao-detail') ? 'page' : null"
-            @keydown.enter="$emit('set-view', 'intimacoes')"
-            @keydown.space.prevent="$emit('set-view', 'intimacoes')"
-          >
-            <i class="bi bi-envelope nav-icon"></i> Intimações
-            <span :class="['nav-badge', { 'badge-pulse': pulseSubpoenas }]" v-if="globalStats.qteIntimacoesNaoTratadas > 0">{{ globalStats.qteIntimacoesNaoTratadas }}</span>
           </a>
         </li>
       </ul>
@@ -519,7 +398,7 @@
       </ul>
     </template>
 
-    <template v-if="algumaLiberada(['tarefas', 'checklists', 'fornecedores', 'objetos', 'business-canvas', 'legal-ops', 'conhecimento', 'modelos', 'consulta-cpf', 'consulta-processos', 'consulta-veiculo', 'configuracoes'])">
+    <template v-if="algumaLiberada(['tarefas', 'fornecedores', 'business-canvas', 'configuracoes'])">
       <div class="sidebar-section" role="heading" aria-level="2">
         <button
           type="button"
@@ -560,19 +439,6 @@
             <span :class="['nav-badge', { 'badge-pulse': pulseTasks }]" style="background:var(--danger);" v-if="globalStats.qteTarefas > 0">{{ globalStats.qteTarefas }}</span>
           </a>
         </li>
-        <li v-if="telaLiberada('checklists')">
-          <a
-            :class="{ active: currentView === 'checklists' || currentView === 'checklist-detail' }"
-            @click="$emit('set-view', 'checklists')"
-            role="button"
-            tabindex="0"
-            :aria-current="(currentView === 'checklists' || currentView === 'checklist-detail') ? 'page' : null"
-            @keydown.enter="$emit('set-view', 'checklists')"
-            @keydown.space.prevent="$emit('set-view', 'checklists')"
-          >
-            <i class="bi bi-list-check nav-icon"></i> Templates de Checklist
-          </a>
-        </li>
         <li v-if="telaLiberada('fornecedores')">
           <a
             :class="{ active: currentView === 'fornecedores' || currentView === 'fornecedor-detail' }"
@@ -586,19 +452,6 @@
             <i class="bi bi-truck nav-icon"></i> Fornecedores
           </a>
         </li>
-        <li v-if="telaLiberada('objetos')">
-          <a
-            :class="{ active: currentView === 'objetos' || currentView === 'objeto-detail' }"
-            @click="$emit('set-view', 'objetos')"
-            role="button"
-            tabindex="0"
-            :aria-current="(currentView === 'objetos' || currentView === 'objeto-detail') ? 'page' : null"
-            @keydown.enter="$emit('set-view', 'objetos')"
-            @keydown.space.prevent="$emit('set-view', 'objetos')"
-          >
-            <i class="bi bi-houses nav-icon"></i> Objetos
-          </a>
-        </li>
         <li v-if="telaLiberada('business-canvas')">
           <a
             :class="{ active: currentView === 'business-canvas' }"
@@ -610,58 +463,6 @@
             @keydown.space.prevent="$emit('set-view', 'business-canvas')"
           >
             <i class="bi bi-grid-1x2 nav-icon"></i> Business Canvas
-          </a>
-        </li>
-        <li v-if="telaLiberada('legal-ops')">
-          <a
-            :class="{ active: currentView === 'legal-ops' }"
-            @click="$emit('set-view', 'legal-ops')"
-            role="button"
-            tabindex="0"
-            :aria-current="currentView === 'legal-ops' ? 'page' : null"
-            @keydown.enter="$emit('set-view', 'legal-ops')"
-            @keydown.space.prevent="$emit('set-view', 'legal-ops')"
-          >
-            <i class="bi bi-shield-check nav-icon"></i> Estratégia Legal & BI
-          </a>
-        </li>
-        <li v-if="telaLiberada('conhecimento')">
-          <a
-            :class="{ active: currentView === 'conhecimento' }"
-            @click="$emit('set-view', 'conhecimento')"
-            role="button"
-            tabindex="0"
-            :aria-current="currentView === 'conhecimento' ? 'page' : null"
-            @keydown.enter="$emit('set-view', 'conhecimento')"
-            @keydown.space.prevent="$emit('set-view', 'conhecimento')"
-          >
-            <i class="bi bi-lightbulb nav-icon"></i> Conhecimento
-          </a>
-        </li>
-        <li v-if="telaLiberada('modelos')">
-          <a
-            :class="{ active: currentView === 'modelos' || currentView === 'modelo-editor' }"
-            @click="$emit('set-view', 'modelos')"
-            role="button"
-            tabindex="0"
-            :aria-current="(currentView === 'modelos' || currentView === 'modelo-editor') ? 'page' : null"
-            @keydown.enter="$emit('set-view', 'modelos')"
-            @keydown.space.prevent="$emit('set-view', 'modelos')"
-          >
-            <i class="bi bi-file-earmark-ruled nav-icon"></i> Modelos de Documentos
-          </a>
-        </li>
-        <li v-if="telaLiberada('consulta-cpf')">
-          <a
-            :class="{ active: ['consulta-cpf', 'consulta-processos', 'consulta-veiculo'].includes(currentView) }"
-            @click="$emit('set-view', 'consulta-cpf')"
-            role="button"
-            tabindex="0"
-            :aria-current="['consulta-cpf', 'consulta-processos', 'consulta-veiculo'].includes(currentView) ? 'page' : null"
-            @keydown.enter="$emit('set-view', 'consulta-cpf')"
-            @keydown.space.prevent="$emit('set-view', 'consulta-cpf')"
-          >
-            <i class="bi bi-person-vcard nav-icon"></i> Consultas (API Brasil)
           </a>
         </li>
         <li v-if="telaLiberada('configuracoes')">
@@ -708,11 +509,11 @@
       <ul id="sidebar-secao-site" class="sidebar-nav" v-show="secaoAberta('site')" :ref="(el) => registrarLista('site', el)">
         <li v-if="telaLiberada('noticias')">
           <a
-            :class="{ active: currentView === 'noticias' || currentView === 'noticias-form' || currentView === 'noticias-categorias' }"
+            :class="{ active: ['noticias', 'noticias-form', 'noticias-categorias'].includes(currentView) }"
             @click="$emit('set-view', 'noticias')"
             role="button"
             tabindex="0"
-            :aria-current="(currentView === 'noticias' || currentView === 'noticias-form' || currentView === 'noticias-categorias') ? 'page' : null"
+            :aria-current="['noticias', 'noticias-form', 'noticias-categorias'].includes(currentView) ? 'page' : null"
             @keydown.enter="$emit('set-view', 'noticias')"
             @keydown.space.prevent="$emit('set-view', 'noticias')"
           >
@@ -752,7 +553,7 @@ const algumaLiberada = (telas: string[]) => telas.some(telaLiberada)
  * Acordeon das seções do menu. Guarda as seções FECHADAS no sessionStorage,
  * assim uma seção nova (ou uma sessão nova) começa aberta.
  */
-const CHAVE_SECOES_FECHADAS = 'ordo_sidebar_secoes_fechadas'
+const CHAVE_SECOES_FECHADAS = 'saude_sidebar_secoes_fechadas'
 
 function lerSecoesFechadas(): string[] {
   try {
@@ -798,7 +599,7 @@ function abrirSecaoDoItemAtivo() {
   }
 }
 
-/** Editor do site público (ordojuris#641); cada item só aparece com o módulo `site` e a permissão da tela. */
+/** Editor do site público; cada item só aparece com o módulo `site` e a permissão da tela. */
 const TELAS_SITE = [
   { view: 'site-paginas', icone: 'bi-file-earmark-richtext', rotulo: 'Páginas do Site' },
   { view: 'site-menus', icone: 'bi-list-nested', rotulo: 'Menus do Site' },
@@ -814,11 +615,9 @@ const props = defineProps({
   globalStats: {
     type: Object,
     default: () => ({
-      qteMensagensNaoLidas: 0,
       notificacoes: 0,
       qteTarefas: 0,
       qteDespesasNaoPagas: 0,
-      qteIntimacoesNaoTratadas: 0,
       qteReceitasNaoRecebidas: 0
     })
   }
@@ -831,9 +630,6 @@ watch(() => props.currentView, abrirSecaoDoItemAtivo, { flush: 'post' })
 
 /** Contadores dos itens de cada seção, repetidos no título quando a seção está recolhida. */
 const CONTADORES_SECOES: Record<string, { tela: string, campo: string, cor: string, rotulo: string }[]> = {
-  processos: [
-    { tela: 'intimacoes', campo: 'qteIntimacoesNaoTratadas', cor: 'var(--accent)', rotulo: 'Intimações' },
-  ],
   financeiro: [
     { tela: 'receitas', campo: 'qteReceitasNaoRecebidas', cor: 'var(--success)', rotulo: 'Receitas a Receber' },
     { tela: 'despesas', campo: 'qteDespesasNaoPagas', cor: 'var(--warning)', rotulo: 'Despesas a Pagar' },
@@ -849,25 +645,9 @@ const contadoresSecao = (secao: string) =>
     .map((c) => ({ ...c, valor: props.globalStats[c.campo] }))
 
 // Badge Pulse triggers
-const pulseMessages = ref(false)
-const pulseSubpoenas = ref(false)
 const pulseTasks = ref(false)
 const pulseExpenses = ref(false)
 const pulseRevenues = ref(false)
-
-watch(() => props.globalStats.qteMensagensNaoLidas, (newVal, oldVal) => {
-  if (oldVal !== undefined && newVal !== oldVal) {
-    pulseMessages.value = true
-    setTimeout(() => { pulseMessages.value = false }, 1800)
-  }
-})
-
-watch(() => props.globalStats.qteIntimacoesNaoTratadas, (newVal, oldVal) => {
-  if (oldVal !== undefined && newVal !== oldVal) {
-    pulseSubpoenas.value = true
-    setTimeout(() => { pulseSubpoenas.value = false }, 1800)
-  }
-})
 
 watch(() => props.globalStats.qteTarefas, (newVal, oldVal) => {
   if (oldVal !== undefined && newVal !== oldVal) {

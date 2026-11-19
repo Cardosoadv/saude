@@ -34,7 +34,7 @@ class DocumentacaoPermissoesTest extends CIUnitTestCase
             $this->assertContains('documentacao.editar', $efetivas, $grupo);
         }
 
-        foreach (['advogado', 'estagiario', 'user'] as $grupo) {
+        foreach (['profissional', 'recepcao', 'user'] as $grupo) {
             $efetivas = $this->efetivas($auth, $grupo);
             $this->assertContains('documentacao.access', $efetivas, $grupo);
             $this->assertNotContains('documentacao.editar', $efetivas, "{$grupo} não edita a documentação");

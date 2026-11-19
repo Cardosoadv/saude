@@ -41,18 +41,6 @@ describe('useClientAutocomplete', () => {
     expect(ac.clientSearch.value).toBe('');
   });
 
-  it('endpoint de processos: separa o nome do documento', async () => {
-    apiFetch.mockResolvedValue({ results: [{ id: 3, text: 'Banco Exemplo S.A. - 11.222.333/0001-81' }, { id: 4, text: 'Sem Documento' }] });
-    const { ac, parar: p } = criar(undefined, { endpoint: 'processos' }); parar = p;
-
-    ac.clientSearch.value = 'Ban co';
-    ac.onClientInput();
-    await vi.advanceTimersByTimeAsync(400);
-
-    expect(apiFetch).toHaveBeenCalledWith('processos/clientes-busca?term=Ban%20co');
-    expect(ac.clientResults.value.map((r) => r.nome)).toEqual(['Banco Exemplo S.A.', 'Sem Documento']);
-  });
-
   it('não usa cache: um cliente novo aparece na busca seguinte pelo mesmo termo', async () => {
     apiFetch
       .mockResolvedValueOnce({ success: true, data: [] })
@@ -98,8 +86,8 @@ describe('useClientAutocomplete', () => {
   });
 
   it('teclado: setas navegam e Enter devolve o cliente ativo', async () => {
-    apiFetch.mockResolvedValue({ results: [{ id: 1, text: 'A' }, { id: 2, text: 'B' }] });
-    const { ac, parar: p } = criar(undefined, { endpoint: 'processos' }); parar = p;
+    apiFetch.mockResolvedValue({ success: true, data: [{ id_cliente: 1, nome: 'A' }, { id_cliente: 2, nome: 'B' }] });
+    const { ac, parar: p } = criar(); parar = p;
     ac.clientSearch.value = 'ab';
     ac.onClientInput();
     await vi.advanceTimersByTimeAsync(400);

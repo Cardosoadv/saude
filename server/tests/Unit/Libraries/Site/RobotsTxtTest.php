@@ -11,7 +11,7 @@ use CodeIgniter\Test\CIUnitTestCase;
  */
 class RobotsTxtTest extends CIUnitTestCase
 {
-    private const SITEMAP = 'https://cardosoebruno.adv.br/sitemap.xml';
+    private const SITEMAP = 'https://exemplo.com.br/sitemap.xml';
 
     public function testBloqueiaAreasPrivadasEInformaOSitemapAbsoluto(): void
     {

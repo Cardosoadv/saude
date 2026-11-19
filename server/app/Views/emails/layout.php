@@ -8,7 +8,7 @@
  * @var string      $tom             primary|warning|danger|success|accent — cor da etiqueta.
  * @var string|null $preheader       Texto de pré-visualização exibido pelo cliente de e-mail.
  * @var string|null $logoSrc         URL do logo (normalmente "cid:...").
- * @var string      $nomeEscritorio  Nome exibido no rodapé e como texto alternativo do logo.
+ * @var string      $nomeClinica  Nome exibido no rodapé e como texto alternativo do logo.
  * @var string|null $rodape          Observação adicional no rodapé.
  */
 helper('email_layout');
@@ -54,9 +54,9 @@ $fonte = "font-family:'DM Sans',Arial,Helvetica,sans-serif;";
                     <tr>
                         <td align="center" bgcolor="#ffffff" style="background:#ffffff;border:1px solid #e5e2db;border-bottom:0;border-radius:12px 12px 0 0;padding:26px 20px 20px;">
                             <?php if (!empty($logoSrc)): ?>
-                                <img src="<?= htmlspecialchars($logoSrc, ENT_QUOTES) ?>" alt="<?= esc($nomeEscritorio, 'attr') ?>" height="64" style="display:block;height:64px;width:auto;max-width:240px;border:0;margin:0 auto;">
+                                <img src="<?= htmlspecialchars($logoSrc, ENT_QUOTES) ?>" alt="<?= esc($nomeClinica, 'attr') ?>" height="64" style="display:block;height:64px;width:auto;max-width:240px;border:0;margin:0 auto;">
                             <?php else: ?>
-                                <div style="font-family:Georgia,'Playfair Display',serif;font-size:24px;font-weight:700;color:#013B51;letter-spacing:.5px;"><?= esc($nomeEscritorio) ?></div>
+                                <div style="font-family:Georgia,'Playfair Display',serif;font-size:24px;font-weight:700;color:#013B51;letter-spacing:.5px;"><?= esc($nomeClinica) ?></div>
                             <?php endif; ?>
                         </td>
                     </tr>
@@ -92,7 +92,7 @@ $fonte = "font-family:'DM Sans',Arial,Helvetica,sans-serif;";
                                 <?= esc($rodape) ?><br>
                             <?php endif; ?>
                             Este é um e-mail automático. Por favor, não responda a esta mensagem.<br>
-                            <strong style="color:#013B51;"><?= esc($nomeEscritorio) ?></strong>
+                            <strong style="color:#013B51;"><?= esc($nomeClinica) ?></strong>
                         </td>
                     </tr>
                 </table>

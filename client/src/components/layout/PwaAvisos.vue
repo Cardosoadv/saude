@@ -7,7 +7,7 @@
 
     <div v-if="atualizacaoDisponivel" class="pwa-atualizacao card" role="alert">
       <i class="bi bi-arrow-repeat"></i>
-      <span>Nova versão do Ordo Juris disponível.</span>
+      <span>Nova versão do sistema disponível.</span>
       <button class="btn btn-primary btn-sm" type="button" @click="atualizar" :disabled="atualizando">
         {{ atualizando ? 'Atualizando…' : 'Atualizar' }}
       </button>

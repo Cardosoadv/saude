@@ -21,6 +21,6 @@ class InstalaTemplateClassico extends Migration
 
     public function down()
     {
-        // Intencionalmente vazio: remover o template apagaria conteúdo do escritório.
+        // Intencionalmente vazio: remover o template apagaria conteúdo da clínica.
     }
 }

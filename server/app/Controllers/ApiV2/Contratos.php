@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace App\Controllers\ApiV2;
 
 use App\Controllers\BaseController;
-use App\Services\ConhecimentoService;
 use App\Services\ContratosService;
-use App\Traits\AcessoProcessoTrait;
+use App\Traits\AcessoRegistroTrait;
 use App\Traits\VerificaPermissoesTrait;
 use CodeIgniter\API\ResponseTrait;
 use Exception;
@@ -15,7 +14,6 @@ use Exception;
 /**
  * Controller API para fornecer dados de Contratos via JSON.
  *
- * @author Cardoso
  * @version 1.0.0
  * @since 2026-04-26
  */
@@ -23,16 +21,14 @@ class Contratos extends BaseController
 {
     use ResponseTrait;
     use VerificaPermissoesTrait;
-    use AcessoProcessoTrait;
+    use AcessoRegistroTrait;
 
     private ContratosService $service;
-    protected ConhecimentoService $conhecimentoService;
     protected $permissaoNecessaria = 'contratos';
 
-    public function __construct(?ContratosService $service = null, ?ConhecimentoService $conhecimentoService = null)
+    public function __construct(?ContratosService $service = null)
     {
         $this->service = $service ?? new ContratosService();
-        $this->conhecimentoService = $conhecimentoService ?? new ConhecimentoService();
     }
 
     /**
@@ -187,19 +183,4 @@ class Contratos extends BaseController
         }
     }
 
-    /**
-     * Retorna a árvore hierárquica de ramos do direito para uso no formulário de contratos.
-     */
-    public function ramos()
-    {
-        if (!$this->verificaPermissao($this->permissaoNecessaria, 'access')) return $this->failForbidden();
-        try {
-            return $this->respond([
-                'success' => true,
-                'data' => $this->conhecimentoService->getArvoreRamos(),
-            ]);
-        } catch (Exception $e) {
-            return $this->failServerError('Erro ao carregar ramos do direito');
-        }
-    }
 }

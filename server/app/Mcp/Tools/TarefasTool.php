@@ -21,23 +21,23 @@ final class TarefasTool
     }
 
     /**
-     * Lista tarefas com filtros (ex.: responsavel, status, processo_id, cliente_id).
+     * Lista tarefas com filtros (ex.: responsavel, status, cliente_id).
      */
     #[McpTool(name: 'listar_tarefas')]
     public function listarTarefas(array $filtros = []): array
     {
         ModulosMcp::exigir('tarefas', 'tarefas.access');
 
-        return PrivacidadeMcp::filtrarTarefas($this->tarefasService->listarTarefas($filtros));
+        return $this->tarefasService->listarTarefas($filtros);
     }
 
     /**
-     * Cria uma tarefa em nome de um usuário real do escritório.
+     * Cria uma tarefa em nome de um usuário real da clínica.
      *
      * Em chamadas de um chat de IA externo (token pessoal), `usuarioId` é
      * ignorado e sempre substituído pelo usuário autenticado — a IA nunca
      * decide em nome de quem agir. Só é obrigatório em chamadas internas
-     * (GeminiService/Davinci, token de serviço), que o repassam explicitamente.
+     * (token de serviço), que o repassam explicitamente.
      */
     #[McpTool(name: 'criar_tarefa')]
     public function criarTarefa(
@@ -45,7 +45,6 @@ final class TarefasTool
         ?int $usuarioId = null,
         ?string $prazo = null,
         ?int $responsavel = null,
-        ?int $processoId = null,
         ?int $clienteId = null,
         ?string $detalhes = null,
         int $prioridade = 2
@@ -53,13 +52,12 @@ final class TarefasTool
         $usuarioId = McpContext::resolverUsuarioId($usuarioId);
         AtorMcp::assumir($usuarioId);
         ModulosMcp::exigir('tarefas', 'tarefas.access');
-        PrivacidadeMcp::exigirAcesso('processo', $processoId);
+        PrivacidadeMcp::exigirAcesso('cliente', $clienteId);
 
         return $this->tarefasService->salvarTarefa([
             'tarefa'      => $tarefa,
             'prazo'       => $prazo,
             'responsavel' => $responsavel ?? $usuarioId,
-            'processo_id' => $processoId,
             'cliente_id'  => $clienteId,
             'detalhes'    => $detalhes,
             'prioridade'  => $prioridade,

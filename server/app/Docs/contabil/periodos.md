@@ -9,7 +9,7 @@ palavras_chave: [períodos, exercícios fiscais, fechamento contábil, reabertur
 ## Ciclo fiscal
 
 A aba **Períodos** (`#/contabil-periodos`) gerencia os exercícios anuais e períodos mensais
-de escrituração contábil do escritório.
+de escrituração contábil da clínica.
 
 - **Exercício Fiscal**: representa o ano-calendário contábil (ex.: exercício de 2026);
 - **Período Contábil**: divisão mensal do exercício (Janeiro a Dezembro), no qual as

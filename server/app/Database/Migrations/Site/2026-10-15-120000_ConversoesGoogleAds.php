@@ -9,7 +9,7 @@ use CodeIgniter\Database\Migration;
  * Conversões do Google Ads no site: cria, se ainda não existirem, as configurações
  * `integracoes.ads_id`, `integracoes.ads_conversao_formulario` e `integracoes.ads_conversao_whatsapp`.
  *
- * Idempotente e não destrutiva: nunca sobrescreve conteúdo do escritório.
+ * Idempotente e não destrutiva: nunca sobrescreve conteúdo da clínica.
  */
 class ConversoesGoogleAds extends Migration
 {
@@ -32,6 +32,6 @@ class ConversoesGoogleAds extends Migration
 
     public function down()
     {
-        // As configurações ficam: removê-las apagaria conteúdo do escritório.
+        // As configurações ficam: removê-las apagaria conteúdo da clínica.
     }
 }

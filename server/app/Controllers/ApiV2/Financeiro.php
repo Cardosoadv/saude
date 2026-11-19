@@ -17,7 +17,7 @@ use CodeIgniter\API\ResponseTrait;
  *
  * Centraliza os dados consoles para Balanço, Extrato e DRE.
  *
- * @package App\Controllers\Api
+ * @package App\Controllers\ApiV2
  */
 class Financeiro extends BaseController
 {
@@ -253,7 +253,7 @@ class Financeiro extends BaseController
             <div class="periodo">Período: ' . $esc(date('d/m/Y', strtotime($dataInicial))) . ' a ' . $esc(date('d/m/Y', strtotime($dataFinal))) . '</div>
         </div>';
 
-        $html .= '<div id="rodape"><span class="pagina"></span>Ordo Juris &middot; Extrato Financeiro</div>';
+        $html .= '<div id="rodape"><span class="pagina"></span>Saúde &middot; Extrato Financeiro</div>';
 
         $html .= '<table class="resumo"><tr>
             <td><span class="rotulo">Saldo Anterior</span><span class="valor" style="color:' . $corValor($saldoAnterior) . '">' . $moeda($saldoAnterior) . '</span></td>

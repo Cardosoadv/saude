@@ -16,17 +16,16 @@ Use **Nova Configuração** para criar e o lápis para editar.
 ## Integração Google
 
 O cartão **Integração Google** liga o sistema ao Google Drive. Clique em **Autenticar com Google** e autorize
-o acesso na conta do escritório. Isso só é preciso na primeira configuração ou quando o Google pedir nova
+o acesso na conta da clínica. Isso só é preciso na primeira configuração ou quando o Google pedir nova
 autorização.
 
-A autorização inclui a leitura da pasta do Drive, para o cartão **Google Drive** do processo listar também os
-arquivos colocados direto no Drive. Se o cartão avisar que só mostra os arquivos enviados pelo sistema, clique
+A autorização inclui a leitura da pasta do Drive, para listar também os arquivos colocados direto no Drive. Se o cartão avisar que só mostra os arquivos enviados pelo sistema, clique
 em **Autenticar com Google** de novo e aceite todas as permissões pedidas.
 
 ## Sincronização de pastas do Drive
 
 A aba **Google Drive** (só para administradores) gerencia a criação das pastas: cada cliente tem uma pasta na
-raiz do Drive e cada processo, uma subpasta dentro da pasta do cliente. Os pedidos de criação entram numa fila
+raiz do Drive. Os pedidos de criação entram numa fila
 e são processados em lotes.
 
 O topo mostra o resumo da fila e os botões:
@@ -38,9 +37,9 @@ O topo mostra o resumo da fila e os botões:
 - **Limpar concluídos**: remove da lista os pedidos já atendidos.
 - **Atualizar**: recarrega os números.
 
-As sub-abas listam a **fila**, os **clientes** e os **processos**, com busca e filtro por status ou por **Sem pasta** /
+As sub-abas listam a **fila** e os **clientes**, com busca e filtro por status ou por **Sem pasta** /
 **Com pasta**. Marque linhas para **Enfileirar**, **Sincronizar novamente**, **Reprocessar** ou **Remover da fila**
-em lote. O nome do cliente ou do processo abre a ficha em nova guia, e **Abrir pasta** leva ao Drive.
+em lote. O nome do cliente abre a ficha em nova guia, e **Abrir pasta** leva ao Drive.
 
 > [!ATENCAO]
 > Se aparecer o aviso de que o parâmetro `GOOGLE_DRIVE_FOLDER_ID` não está configurado, nada é processado:
@@ -48,17 +47,12 @@ em lote. O nome do cliente ou do processo abre a ficha em nova guia, e **Abrir p
 
 ### Pasta do financeiro (comprovantes)
 
-Os comprovantes de pagamento ficam em uma pasta própria do Drive, separada das pastas de clientes e processos, e
+Os comprovantes de pagamento ficam em uma pasta própria do Drive, separada das pastas de clientes, e
 organizados em subpastas por mês (`AAAA-MM`, pela data do pagamento). Informe o ID (ou o link) dessa pasta no
 parâmetro `GOOGLE_DRIVE_FINANCEIRO_FOLDER_ID`, na aba **Sistema**. Sem ele, não é possível anexar comprovantes.
 
 Para conferir se o sistema consegue gravar na pasta, use o teste de gravação do financeiro
 (`POST /api/v2/financeiro/comprovantes/testar-pasta`): ele cria e apaga um arquivo de teste.
-
-## Índices econômicos
-
-A aba **Índices econômicos** mantém as séries de correção e juros usadas nas liquidações: atualização pelo
-Banco Central, lacunas e importação por CSV. Veja [Índices econômicos](../liquidacoes/indices.md).
 
 ## Manutenção de Cache
 

@@ -8,7 +8,6 @@ use App\Traits\AuditoriaTrait;
 /**
  * Modelo para a tabela de configurações do sistema.
  * 
- * @author Cardoso
  * @version 1.0.0
  * @since 2026-05-09
  */

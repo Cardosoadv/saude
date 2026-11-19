@@ -2,7 +2,7 @@
   "name": "sistema",
   "private": true,
   "version": "7.4.1",
-  "description": "Front-End SPA - Vue 3 - Ordo Juris",
+  "description": "Front-End SPA - Vue 3 - Saúde",
   "type": "module",
   "scripts": {
     "dev": "vite",

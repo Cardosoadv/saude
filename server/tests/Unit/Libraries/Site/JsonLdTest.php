@@ -10,7 +10,7 @@ class JsonLdTest extends CIUnitTestCase
     private function config(): array
     {
         return [
-            'identidade.nome'  => 'Escritório & Cia',
+            'identidade.nome'  => 'Clínica & Cia',
             'contato.telefone' => '(31) 9.9999-0000',
             'contato.email'    => 'oi@exemplo.com',
             'contato.enderecos' => [
@@ -23,12 +23,12 @@ class JsonLdTest extends CIUnitTestCase
         ];
     }
 
-    public function testMontaLegalServiceComOQueExiste(): void
+    public function testMontaMedicalClinicComOQueExiste(): void
     {
-        $d = JsonLd::legalService($this->config(), 'https://site.com/', 'https://site.com/logo.png');
+        $d = JsonLd::organizacao($this->config(), 'https://site.com/', 'https://site.com/logo.png');
 
-        $this->assertSame('LegalService', $d['@type']);
-        $this->assertSame('Escritório & Cia', $d['name']);
+        $this->assertSame('MedicalClinic', $d['@type']);
+        $this->assertSame('Clínica & Cia', $d['name']);
         $this->assertSame('https://site.com/logo.png', $d['logo']);
         $this->assertSame('(31) 9.9999-0000', $d['telephone']);
         $this->assertSame('oi@exemplo.com', $d['email']);
@@ -42,10 +42,10 @@ class JsonLdTest extends CIUnitTestCase
 
     public function testOmiteCamposAusentesESemNomeNaoGeraNada(): void
     {
-        $this->assertNull(JsonLd::legalService(['contato.telefone' => '1'], 'https://site.com/'));
+        $this->assertNull(JsonLd::organizacao(['contato.telefone' => '1'], 'https://site.com/'));
         $this->assertSame('', JsonLd::script(null));
 
-        $d = JsonLd::legalService(['identidade.nome' => 'X'], 'https://site.com/');
+        $d = JsonLd::organizacao(['identidade.nome' => 'X'], 'https://site.com/');
         $this->assertSame(['@context', '@type', '@id', 'name', 'url'], array_keys($d));
         $this->assertSame('https://site.com/#organizacao', $d['@id']);
     }
@@ -56,7 +56,7 @@ class JsonLdTest extends CIUnitTestCase
             ['rua' => 'A', 'cidade' => 'BH'], ['rua' => 'B', 'cidade' => 'Juatuba'],
         ]];
 
-        $this->assertCount(2, JsonLd::legalService($cfg, 'https://site.com/')['address']);
+        $this->assertCount(2, JsonLd::organizacao($cfg, 'https://site.com/')['address']);
     }
 
     public function testScriptNaoPermiteFecharATagNemInjetarHtml(): void
@@ -72,8 +72,8 @@ class JsonLdTest extends CIUnitTestCase
     private function completo(): array
     {
         return $this->config() + [
-            'identidade.nome_curto'   => 'Escritório',
-            'identidade.razao_social' => 'Escritório & Cia Sociedade de Advogados',
+            'identidade.nome_curto'   => 'Clínica',
+            'identidade.razao_social' => 'Clínica & Cia Sociedade de Profissionais',
             'identidade.cnpj'         => '11222333000181',
             'identidade.faixa_preco'  => '$$',
             'contato.area_atendida'   => ['Belo Horizonte', 'Juatuba', ' ', 'Minas Gerais'],
@@ -84,15 +84,15 @@ class JsonLdTest extends CIUnitTestCase
             'contato.latitude'        => '-19.9',
             'contato.longitude'       => '-43.9',
             'contato.mapa_url'        => 'https://maps.google.com/?q=x',
-            'identidade.advogados'    => [['nome' => 'Fulana', 'oab' => 'OAB/MG 1'], ['nome' => ' '], ['nome' => 'Beltrano', 'cargo' => 'Sócio']],
+            'identidade.profissionais'    => [['nome' => 'Fulana', 'registro' => 'CRM/MG 1'], ['nome' => ' '], ['nome' => 'Beltrano', 'cargo' => 'Diretor']],
         ];
     }
 
-    public function testLegalServiceAmpliadoComIdentidadeAreaEHorario(): void
+    public function testMedicalClinicAmpliadoComIdentidadeAreaEHorario(): void
     {
-        $d = JsonLd::legalService($this->completo(), 'https://site.com/', 'https://site.com/logo.png', ['Direito Civil', 'Direito Civil', 'Contratos'], 'https://site.com/og.png');
+        $d = JsonLd::organizacao($this->completo(), 'https://site.com/', 'https://site.com/logo.png', ['Direito Civil', 'Direito Civil', 'Contratos'], 'https://site.com/og.png');
 
-        $this->assertSame('Escritório & Cia Sociedade de Advogados', $d['legalName']);
+        $this->assertSame('Clínica & Cia Sociedade de Profissionais', $d['legalName']);
         $this->assertSame('11.222.333/0001-81', $d['taxID']);
         $this->assertSame('https://site.com/og.png', $d['image']);
         $this->assertSame('$$', $d['priceRange']);
@@ -105,7 +105,7 @@ class JsonLdTest extends CIUnitTestCase
 
     public function testCamposNovosVaziosOuInvalidosSaem(): void
     {
-        $d = JsonLd::legalService(['identidade.nome' => 'X', 'identidade.cnpj' => '123', 'contato.latitude' => '99', 'contato.longitude' => '1', 'contato.mapa_url' => 'javascript:x', 'contato.horario' => [], 'contato.area_atendida' => []], 'https://site.com/');
+        $d = JsonLd::organizacao(['identidade.nome' => 'X', 'identidade.cnpj' => '123', 'contato.latitude' => '99', 'contato.longitude' => '1', 'contato.mapa_url' => 'javascript:x', 'contato.horario' => [], 'contato.area_atendida' => []], 'https://site.com/');
 
         foreach (['legalName', 'taxID', 'image', 'priceRange', 'geo', 'hasMap', 'areaServed', 'knowsAbout', 'openingHoursSpecification'] as $campo) {
             $this->assertArrayNotHasKey($campo, $d);
@@ -123,22 +123,22 @@ class JsonLdTest extends CIUnitTestCase
         return $por;
     }
 
-    public function testGrafoDaHomeTemOrganizacaoSiteEAdvogados(): void
+    public function testGrafoDaHomeTemOrganizacaoSiteEProfissionais(): void
     {
         $g = JsonLd::grafo($this->completo(), 'https://site.com/', null, ['pagina' => ['titulo' => 'Início', 'url' => 'https://site.com/', 'tipo' => 'home']]);
         $this->assertSame('https://schema.org', $g['@context']);
         $n = $this->nos($g);
 
-        $this->assertSame(['LegalService', 'WebSite', 'Person'], array_keys($n));
+        $this->assertSame(['MedicalClinic', 'WebSite', 'Person'], array_keys($n));
         $this->assertSame('https://site.com/#website', $n['WebSite'][0]['@id']);
         $this->assertSame('pt-BR', $n['WebSite'][0]['inLanguage']);
         $this->assertSame(['@id' => 'https://site.com/#organizacao'], $n['WebSite'][0]['publisher']);
-        $this->assertSame('Escritório', $n['WebSite'][0]['name']);
-        $this->assertCount(2, $n['Person'], 'advogado sem nome é ignorado');
-        $this->assertSame(['@type' => 'PropertyValue', 'propertyID' => 'OAB', 'value' => 'OAB/MG 1'], $n['Person'][0]['identifier']);
-        $this->assertSame('Advogado(a)', $n['Person'][0]['jobTitle']);
-        $this->assertSame('Sócio', $n['Person'][1]['jobTitle']);
-        $this->assertCount(2, $n['LegalService'][0]['member']);
+        $this->assertSame('Clínica', $n['WebSite'][0]['name']);
+        $this->assertCount(2, $n['Person'], 'profissional sem nome é ignorado');
+        $this->assertSame(['@type' => 'PropertyValue', 'propertyID' => 'Registro profissional', 'value' => 'CRM/MG 1'], $n['Person'][0]['identifier']);
+        $this->assertSame('Profissional de saúde', $n['Person'][0]['jobTitle']);
+        $this->assertSame('Diretor', $n['Person'][1]['jobTitle']);
+        $this->assertCount(2, $n['MedicalClinic'][0]['member']);
     }
 
     public function testPaginaInternaGanhaWebPageEBreadcrumb(): void

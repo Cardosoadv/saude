@@ -79,7 +79,7 @@ class CreateFinanceiroCategoriasSplit extends Migration
         // Remove a antiga coluna única `categoria`, agora substituída pelo rateio.
         // No SQLite (usado nos testes), Forge precisa recriar a tabela inteira para
         // dropar coluna/FK, o que é instável neste projeto — mesmo padrão já adotado
-        // em outras migrations (ver AddProcessoIdToMensagens). Nesse driver a coluna
+        // em outras migrations. Nesse driver a coluna
         // antiga simplesmente deixa de ser usada pela aplicação.
         if ($this->db->DBDriver !== 'SQLite3') {
             $this->forge->dropForeignKey('fin_despesas', 'fin_despesas_categoria_foreign');

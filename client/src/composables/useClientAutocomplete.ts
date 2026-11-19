@@ -20,13 +20,8 @@ interface ClientSearchItem {
   cpf_cnpj?: string | null
 }
 
-/**
- * Endpoint da busca:
- *  - "clientes" → GET clientes/buscar (exige o módulo Clientes e clientes.access);
- *  - "processos" → GET processos/clientes-busca (liberado a quem acessa Processos,
- *    para escolher o cliente de um processo sem acesso ao módulo Clientes).
- */
-export type ClientEndpoint = 'clientes' | 'processos'
+/** Endpoint da busca: GET clientes/buscar (exige o módulo Clientes e clientes.access). */
+export type ClientEndpoint = 'clientes'
 
 export interface ClientAutocompleteOptions {
   endpoint?: ClientEndpoint
@@ -40,11 +35,6 @@ export interface ClientAutocompleteOptions {
   debounceMs?: number
 }
 
-/** "Nome - 123.456.789-09" (processos/clientes-busca) → "Nome". */
-function semDocumento(texto: string): string {
-  return texto.replace(/\s+-\s+[\d./-]+\s*$/, '').trim()
-}
-
 const ENDPOINTS: Record<ClientEndpoint, { url: (q: string) => string, extrair: (res: any) => ClientOption[] }> = {
   clientes: {
     url: q => 'clientes/buscar?term=' + encodeURIComponent(q),
@@ -52,14 +42,6 @@ const ENDPOINTS: Record<ClientEndpoint, { url: (q: string) => string, extrair: (
       id: c.id_cliente,
       text: c.nome + (c.cpf_cnpj ? ` (${c.cpf_cnpj})` : ''),
       nome: c.nome,
-    })),
-  },
-  processos: {
-    url: q => 'processos/clientes-busca?term=' + encodeURIComponent(q),
-    extrair: res => (Array.isArray(res?.results) ? res.results : []).map((r: { id: number | string, text: string }) => ({
-      id: r.id,
-      text: r.text,
-      nome: semDocumento(r.text),
     })),
   },
 }

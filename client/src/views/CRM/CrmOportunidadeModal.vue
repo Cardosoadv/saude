@@ -141,9 +141,9 @@ function onClientInput() {
   }
   clientTimeout = setTimeout(async () => {
     try {
-      const res = await apiFetch('processos/clientes-busca?term=' + encodeURIComponent(clientSearch.value))
-      if (res && res.results) {
-        clientResults.value = res.results
+      const res = await apiFetch('clientes/buscar?term=' + encodeURIComponent(clientSearch.value))
+      if (res && res.success && Array.isArray(res.data)) {
+        clientResults.value = res.data.map(c => ({ id: c.id_cliente, text: c.nome + (c.cpf_cnpj ? ` (${c.cpf_cnpj})` : '') }))
         showClients.value = true
       }
     } catch (err) {

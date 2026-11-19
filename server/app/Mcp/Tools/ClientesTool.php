@@ -45,9 +45,8 @@ final class ClientesTool
 
     /**
      * Retorna dados cadastrais de um cliente e todos os seus vínculos
-     * recentes: processos, casos, anotações, movimentações financeiras e
-     * intimações. Use para responder perguntas sobre as conexões de um
-     * cliente com o escritório.
+     * recentes (movimentações financeiras e estatísticas). Use para responder
+     * perguntas sobre as conexões de um cliente com a clínica.
      */
     #[McpTool(name: 'obter_cliente')]
     public function obterCliente(int $clienteId): array
@@ -58,11 +57,7 @@ final class ClientesTool
         return ModulosMcp::ocultarBlocos([
             'cliente'        => $this->clienteService->encontrarCliente($clienteId),
             'estatisticas'   => $this->clienteService->obterEstatisticasCliente($clienteId),
-            'processos'      => $this->clienteService->obterProcessosCliente($clienteId),
-            'casos'          => $this->clienteService->obterCasosCliente($clienteId),
-            'anotacoes'      => $this->clienteService->obterAnotacoesCliente($clienteId),
             'movimentacoes'  => $this->clienteService->obterMovimentacoesCliente($clienteId),
-            'intimacoes'     => $this->clienteService->obterIntimacoesCliente($clienteId),
         ], ClienteService::BLOCOS_DETALHE);
     }
 
@@ -94,7 +89,7 @@ final class ClientesTool
      * @param string|null $complemento    Complemento.
      * @param string|null $cidade         Cidade.
      * @param string|null $uf             UF (sigla com 2 letras).
-     * @param int|null    $responsavelId  Advogado responsável (padrão: quem cadastra).
+     * @param int|null    $responsavelId  Profissional responsável (padrão: quem cadastra).
      * @param string|null $visibilidade   publico ou restrito.
      */
     #[McpTool(name: 'adicionar_cliente')]

@@ -5,13 +5,13 @@ namespace App\Database\Migrations;
 use CodeIgniter\Database\Migration;
 
 /**
- * Privacidade granular: visibilidade e responsável em processos, clientes e contratos.
+ * Privacidade granular: visibilidade e responsável em clientes e contratos.
  *
  * - `visibilidade`: 'restrito' por padrão (inclusive para os registros já
  *   existentes). O filtro só passa a valer quando a configuração
  *   `privacidade_granular_ativa` for ligada, depois de rodar
  *   `php spark privacidade:backfill` e revisar o relatório.
- * - `clientes.responsavel_id` / `contratos.responsavel_id`: advogado (users.id)
+ * - `clientes.responsavel_id` / `contratos.responsavel_id`: profissional (users.id)
  *   responsável. Não confundir com `clientes.usuario_id`, que é o login do
  *   próprio cliente na Área do Cliente. `contratos.responsavel_interno` (texto
  *   livre) é mantido por enquanto apenas para leitura/migração.
@@ -31,7 +31,7 @@ class AddPrivacidadeColumns extends Migration
 
     public function up()
     {
-        foreach (['processos', 'clientes', 'contratos'] as $tabela) {
+        foreach (['clientes', 'contratos'] as $tabela) {
             if (!$this->temColuna('visibilidade', $tabela)) {
                 $this->forge->addColumn($tabela, ['visibilidade' => self::VISIBILIDADE]);
             }
@@ -75,7 +75,7 @@ class AddPrivacidadeColumns extends Migration
             $this->db->table('configuracoes')->insert([
                 'nome'       => 'privacidade_granular_ativa',
                 'valor'      => '0',
-                'descricao'  => 'Ativa a privacidade granular de processos, clientes e contratos (1 = ativo). '
+                'descricao'  => 'Ativa a privacidade granular de clientes e contratos (1 = ativo). '
                     . 'Rode "php spark privacidade:backfill" e revise o relatório antes de ativar.',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
@@ -87,7 +87,7 @@ class AddPrivacidadeColumns extends Migration
     {
         $this->db->table('configuracoes')->where('nome', 'privacidade_granular_ativa')->delete();
 
-        // Seguindo o padrão do projeto (ver AddProcessoIdToMensagens), o rollback
+        // Seguindo o padrão do projeto, o rollback
         // de colunas é pulado em SQLite.
         if ($this->db->DBDriver === 'SQLite3') {
             return;
@@ -102,7 +102,7 @@ class AddPrivacidadeColumns extends Migration
             }
         }
 
-        foreach (['processos', 'clientes', 'contratos'] as $tabela) {
+        foreach (['clientes', 'contratos'] as $tabela) {
             if ($this->temColuna('visibilidade', $tabela)) {
                 $this->forge->dropColumn($tabela, 'visibilidade');
             }

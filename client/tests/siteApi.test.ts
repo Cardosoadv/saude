@@ -83,12 +83,12 @@ describe('siteApi: endpoints', () => {
     await site.listarMidias({ page: 2, per_page: 12, busca: 'logo' });
     expect(ultima()[0]).toBe('site/admin/midias?page=2&per_page=12&busca=logo');
 
-    await site.enviarMidia(new Blob(['x'], { type: 'image/png' }), 'Logo do escritório');
+    await site.enviarMidia(new Blob(['x'], { type: 'image/png' }), 'Logo da clínica');
     const [url, opts] = ultima();
     expect(url).toBe('site/admin/midias');
     expect(opts.method).toBe('POST');
     expect(opts.body).toBeInstanceOf(FormData);
-    expect(opts.body.get('alt')).toBe('Logo do escritório');
+    expect(opts.body.get('alt')).toBe('Logo da clínica');
     expect(opts.body.get('arquivo')).toBeInstanceOf(Blob);
 
     await site.atualizarAltMidia(5, null);

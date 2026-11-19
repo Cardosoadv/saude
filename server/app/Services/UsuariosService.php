@@ -8,7 +8,6 @@ use Exception;
 
 /**
  * Service para gerenciar Usuários.
- * @author Cardoso
  * @version 0.9.1
  * @since 2025-12-20
  *
@@ -76,9 +75,9 @@ class UsuariosService extends BaseService
         unset($data['photo']);
 
         // Business Logic Validation
-        if (isset($data['is_lawyer']) && $data['is_lawyer'] == 1) {
-            if (empty($data['oab_numero']) || empty($data['oab_uf'])) {
-                throw new Exception('Para advogados, o número e UF da OAB são obrigatórios.');
+        if (isset($data['is_profissional']) && $data['is_profissional'] == 1) {
+            if (empty($data['registro_numero']) || empty($data['registro_uf'])) {
+                throw new Exception('Para profissionais de saúde, o número e a UF do registro no conselho são obrigatórios.');
             }
         }
 
@@ -106,9 +105,9 @@ class UsuariosService extends BaseService
         $photo = $data['photo'] ?? null;
         unset($data['photo']);
 
-        if (isset($data['is_lawyer']) && $data['is_lawyer'] == 1) {
-            if (empty($data['oab_numero']) || empty($data['oab_uf'])) {
-                throw new Exception('Para advogados, o número e UF da OAB são obrigatórios.');
+        if (isset($data['is_profissional']) && $data['is_profissional'] == 1) {
+            if (empty($data['registro_numero']) || empty($data['registro_uf'])) {
+                throw new Exception('Para profissionais de saúde, o número e a UF do registro no conselho são obrigatórios.');
             }
         }
 
@@ -135,7 +134,7 @@ class UsuariosService extends BaseService
             return null;
         }
 
-        $campos = ['id', 'username', 'email', 'is_lawyer', 'oab_numero', 'oab_uf', 'exibir_site', 'responsavel_tarefas',
+        $campos = ['id', 'username', 'email', 'is_profissional', 'registro_numero', 'registro_uf', 'exibir_site', 'responsavel_tarefas',
             'cargo', 'formacao', 'especializacoes', 'areas_atuacao', 'curriculo', 'lattes_url', 'linkedin_url', 'auth_image'];
 
         return array_intersect_key($u, array_flip($campos));
@@ -286,9 +285,9 @@ class UsuariosService extends BaseService
     }
 
 
-    public function getAdvogados(): array
+    public function getProfissionais(): array
     {
-        return $this->repository->getAdvogados();
+        return $this->repository->getProfissionais();
     }
 
     /**

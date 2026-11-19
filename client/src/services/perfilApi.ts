@@ -8,9 +8,9 @@ export interface PerfilUsuario {
   id: number
   username: string
   email: string
-  is_lawyer?: number | string
-  oab_numero?: string | null
-  oab_uf?: string | null
+  is_profissional?: number | string
+  registro_numero?: string | null
+  registro_uf?: string | null
   exibir_site?: number | string
   responsavel_tarefas?: number | string
   cargo?: string | null

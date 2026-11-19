@@ -55,7 +55,7 @@ export interface ContratoOption {
 }
 
 /**
- * Campo de busca de contrato com autocompletar (processos/contratos-busca),
+ * Campo de busca de contrato com autocompletar (contratos/buscar),
  * para usar várias vezes na mesma tela. Emite "select" e limpa o campo.
  */
 withDefaults(defineProps<{
@@ -79,7 +79,8 @@ const termo = ref('')
 const ativo = ref(-1)
 
 const { results, isLoading, showDropdown, onInput, clear } = useSearchAutocomplete<ContratoOption>({
-  searchEndpoint: 'processos/contratos-busca',
+  searchEndpoint: q => 'contratos/buscar?term=' + encodeURIComponent(q),
+  extractResults: res => (res?.success && Array.isArray(res.data) ? res.data : []),
   minChars: MIN_CARACTERES,
   cache: false,
 })

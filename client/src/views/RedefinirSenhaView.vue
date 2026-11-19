@@ -2,7 +2,7 @@
   <div class="reset-page">
     <div class="reset-card card">
       <div class="reset-header">
-        <img src="../assets/logo.png" alt="Cardoso &amp; Bruno — Ordo Juris" class="reset-logo">
+        <img src="../assets/logo.png" alt="Saúde" class="reset-logo">
         <h1 class="reset-title">Criar nova senha</h1>
       </div>
 

@@ -10,10 +10,10 @@ use CodeIgniter\Config\BaseConfig;
 class SiteTemplate extends BaseConfig
 {
     /**
-     * Versão do OrdoJuris usada para checar `ordojuris` do manifesto.
+     * Versão do sistema usada para checar `sistema` do manifesto.
      * Manter alinhada à versão do README.
      */
-    public string $versaoOrdojuris = '7.1.0';
+    public string $versaoSistema = '7.1.0';
 
     /** Motores de view aceitos. `php` só para templates de origem core/cli. */
     public array $motores = ['php', 'twig'];
@@ -51,7 +51,7 @@ class SiteTemplate extends BaseConfig
     public string $prefixoUploads   = 'public/uploads/site';
 
     /**
-     * Famílias do Google Fonts que o escritório pode escolher para as fontes do tema, com a
+     * Famílias do Google Fonts que a clínica pode escolher para as fontes do tema, com a
      * família genérica de reserva. Lista fechada: o nome vai para uma URL e para o CSS.
      *
      * @var array<string, string>

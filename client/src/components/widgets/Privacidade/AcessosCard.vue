@@ -27,10 +27,10 @@
 
       <p class="acessos-ajuda">
         <template v-if="acessos.visibilidade === 'restrito'">
-          Somente o responsável, os advogados abaixo e os administradores veem e editam.
+          Somente o responsável, os profissionais abaixo e os administradores veem e editam.
         </template>
         <template v-else>
-          Todos os advogados do escritório veem e editam.
+          Todos os profissionais da clínica veem e editam.
         </template>
       </p>
 
@@ -56,7 +56,7 @@
           </button>
         </li>
         <li v-if="!acessos.responsavel && !acessos.usuarios.length" class="acessos-vazio">
-          Nenhum advogado com acesso além dos administradores.
+          Nenhum profissional com acesso além dos administradores.
         </li>
       </ul>
 
@@ -64,7 +64,7 @@
         <label class="sr-only" :for="'acesso-novo-' + tipo + '-' + entidadeId">Liberar acesso para</label>
         <select :id="'acesso-novo-' + tipo + '-' + entidadeId" v-model="novoUsuario" class="form-control" :disabled="salvando">
           <option value="">Liberar acesso para...</option>
-          <option v-for="adv in advogadosDisponiveis" :key="adv.id" :value="adv.id">{{ adv.username }}</option>
+          <option v-for="adv in profissionaisDisponiveis" :key="adv.id" :value="adv.id">{{ adv.username }}</option>
         </select>
         <button type="submit" class="btn btn-primary btn-sm" :disabled="!novoUsuario || salvando">
           <i class="bi bi-person-plus"></i> Adicionar
@@ -77,10 +77,10 @@
           Copiar também a visibilidade
         </label>
         <button type="button" class="btn btn-outline-secondary btn-sm" :disabled="salvando" @click="propagar">
-          <i class="bi bi-diagram-3"></i> Aplicar aos processos e contratos
+          <i class="bi bi-diagram-3"></i> Aplicar aos contratos
         </button>
         <p class="acessos-ajuda">
-          Libera o responsável e os advogados acima em todos os processos e contratos deste cliente.
+          Libera o responsável e os profissionais acima em todos os contratos deste cliente.
           É uma cópia feita agora: mudanças futuras no cliente não se propagam sozinhas.
         </p>
       </div>
@@ -90,13 +90,13 @@
 
 <script setup lang="ts">
 /**
- * Privacidade granular: visibilidade e advogados com acesso a um processo,
+ * Privacidade granular: visibilidade e profissionais com acesso a um registro,
  * cliente ou contrato. Só quem pode gerenciar (responsável, admin ou
  * privacidade.manage) vê os controles de edição.
  */
 import { computed, onMounted, ref, watch, type PropType } from 'vue'
 import { apiFetch } from '../../../services/api'
-import { useAdvogados } from '../../../composables/useAdvogados'
+import { useProfissionais } from '../../../composables/useProfissionais'
 import type { AcessosEntidade, AcessoUsuario, Id, TipoEntidadeAcesso, Visibilidade } from '../../../types/domain'
 
 const props = defineProps({
@@ -114,18 +114,18 @@ const opcoesVisibilidade: { valor: Visibilidade; rotulo: string; icone: string }
 ]
 
 const acessos = ref<AcessosEntidade | null>(null)
-const { advogados } = useAdvogados()
+const { profissionais: profissionais } = useProfissionais()
 const novoUsuario = ref<Id | ''>('')
 const salvando = ref(false)
 const copiarVisibilidade = ref(false)
 
 const base = computed(() => `acessos/${props.tipo}/${props.entidadeId}`)
 
-const advogadosDisponiveis = computed(() => {
+const profissionaisDisponiveis = computed(() => {
   if (!acessos.value) return []
   const ocupados = new Set(acessos.value.usuarios.map(u => String(u.user_id)))
   if (acessos.value.responsavel) ocupados.add(String(acessos.value.responsavel.user_id))
-  return advogados.value.filter(a => !ocupados.has(String(a.id)))
+  return profissionais.value.filter(a => !ocupados.has(String(a.id)))
 })
 
 function inicial(nome?: string | null) {

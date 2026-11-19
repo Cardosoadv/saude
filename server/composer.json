@@ -1,28 +1,23 @@
 {
-    "name": "cognitiotechny/ordojuris",
-    "description": "Sistema de GestÃ£o JurÃ­dica - Cardoso & Bruno Advogados",
+    "name": "cognitiotechny/saude",
+    "description": "Sistema de gestão para clínicas de saúde (médicas, odontológicas e veterinárias).",
     "license": "MIT",
     "type": "project",
-    "version": "7.1.0",
+    "version": "1.0.0",
     "keywords": [
-        "advocacia",
-        "gest\u00e3o jur\u00eddica",
-        "processos",
-        "intima\u00e7\u00f5es",
-        "cnj"
+        "saúde",
+        "clínica",
+        "pacientes",
+        "prontuário",
+        "agendamento",
+        "gestão"
     ],
-    "homepage": "https://ordojuris.com.br",
     "authors": [
         {
-            "name": "Cardoso",
-            "email": "contato@ordojuris.com.br",
+            "name": "Equipe Saúde",
             "role": "Developer"
         }
     ],
-    "support": {
-        "email": "suporte@ordojuris.com.br",
-        "docs": "https://docs.ordojuris.com.br"
-    },
     "require": {
         "php": "^8.3",
         "ext-intl": "*",

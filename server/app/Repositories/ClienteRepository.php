@@ -3,8 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\ClientesModel;
-use App\Models\ProcessosModel;
-use App\Models\CasosModel;
 use App\Repositories\Traits\EscopoPrivacidadeTrait;
 use App\Services\AcessoEntidadeService;
 
@@ -21,16 +19,6 @@ class ClienteRepository extends BaseRepository
     use EscopoPrivacidadeTrait;
 
     /**
-     * @var ProcessosModel
-     */
-    protected $processosModel;
-
-    /**
-     * @var CasosModel
-     */
-    protected $casosModel;
-
-    /**
      * Construtor do ClienteRepository.
      */
     public function __construct(?ClientesModel $model = null, ?AcessoEntidadeService $acessos = null)
@@ -39,8 +27,6 @@ class ClienteRepository extends BaseRepository
         $this->acessos = $acessos;
         $this->model = $model ?? model('ClientesModel');
         $this->cacheKey = 'clientes';
-        $this->processosModel = new ProcessosModel();
-        $this->casosModel = model('CasosModel');
     }
 
     /**
@@ -209,144 +195,27 @@ class ClienteRepository extends BaseRepository
      */
     public function buscarEstatisticasCliente(int $clienteId): array
     {
-        return $this->remember("estatisticas_cliente_{$clienteId}" . $this->sufixoEscopo('processo'), function () use ($clienteId) {
-            // Conta processos do cliente (apenas os visíveis ao usuário)
-            $processos = $this->escopo($this->processosModel, 'processo')
-                ->where('cliente_id', $clienteId)
-                ->countAllResults();
-
-            // Conta casos do cliente
-            $casos = $this->casosModel
-                ->where('cliente_id', $clienteId)
-                ->countAllResults();
-
-            // Busca receitas totais (assumindo que existe uma tabela de receitas)
+        return $this->remember("estatisticas_cliente_{$clienteId}", function () use ($clienteId) {
             $db = \Config\Database::connect();
-            $receitasQuery = $db->table('fin_receitas')
-                ->join('fin_pgto_receitas', 'fin_receitas.id_receita = fin_pgto_receitas.receita_id')
-                ->selectSum('fin_pgto_receitas.valor')
-                ->where('fin_receitas.cliente_id', $clienteId)
-                ->where('fin_pgto_receitas.pagamento_receita_dt >= ', '2000-01-01')
-                ->get();
 
-            $receitas = $receitasQuery->getRow()->valor ?? 0;
-
-            // Conta tarefas relacionadas ao cliente
-            $condicao = $this->condicaoEscopo('processo', 'p');
-            $tarefasQuery = $db->query("
-            SELECT COUNT(DISTINCT t.id_tarefa) as total
-            FROM tarefas t
-            LEFT JOIN processos p ON t.processo_id = p.id_processo
-            WHERE p.cliente_id = ?
-        " . ($condicao ? " AND {$condicao}" : ''), [$clienteId]);
-
-            $tarefas = $tarefasQuery->getRow()->total ?? 0;
-
-            return [
-                'processos' => $processos,
-                'casos'     => $casos,
-                'receitas'  => floatval($receitas),
-                'tarefas'   => $tarefas,
-            ];
-        });
-    }
-
-    /**
-     * Busca processos de um cliente.
-     *
-     * @param int $clienteId
-     * @param int $limit
-     * @return array
-     */
-    public function buscarProcessosCliente(int $clienteId, int $limit = 5): array
-    {
-        return $this->remember("processos_cliente_{$clienteId}_{$limit}" . $this->sufixoEscopo('processo'), function () use ($clienteId, $limit) {
-            return $this->escopo($this->processosModel, 'processo')
-                ->select('id_processo, titulo_processo, numeroprocessocommascara, ativo')
-                ->where('cliente_id', $clienteId)
-                ->orderBy('id_processo', 'DESC')
-                ->limit($limit)
-                ->findAll();
-        });
-    }
-
-    /**
-     * Busca casos de um cliente.
-     *
-     * @param int $clienteId
-     * @param int $limit
-     * @return array
-     */
-    public function buscarCasosCliente(int $clienteId, int $limit = 5): array
-    {
-        return $this->remember("casos_cliente_{$clienteId}_{$limit}", function () use ($clienteId, $limit) {
-            return $this->casosModel
-                ->select('id_caso, titulo, tipo, descricao, status')
-                ->where('cliente_id', $clienteId)
-                ->orderBy('id_caso', 'DESC')
-                ->limit($limit)
-                ->findAll();
-        });
-    }
-
-    /**
-     * Busca anotações de um cliente.
-     *
-     * @param int $clienteId
-     * @param int $limit
-     * @return array
-     */
-    public function buscarAnotacoesCliente(int $clienteId, int $limit = 5): array
-    {
-        return $this->remember("anotacoes_cliente_{$clienteId}_{$limit}" . $this->sufixoEscopo('processo'), function () use ($clienteId, $limit) {
-            $db = \Config\Database::connect();
-            $condicao = $this->condicaoEscopo('processo', 'p');
-
-            // Busca anotações de processos (da tabela processos_anotacao)
-            $sql = "
-                SELECT
-                    a.id_anotacao,
-                    a.titulo,
-                    a.anotacao as conteudo,
-                    a.created_at,
-                    'processo' as tipo,
-                    p.id_processo as entidade_id,
-                    p.numeroprocessocommascara as referencia
-                FROM processos_anotacao a
-                INNER JOIN processos p ON a.processo_id = p.id_processo
-                WHERE p.cliente_id = ?
-            " . ($condicao ? " AND {$condicao}" : '');
-            $params = [$clienteId];
-
-            // Busca anotações de casos extrajudiciais se a tabela anotacoes_casos existir no banco
-            if ($db->tableExists('anotacoes_casos')) {
-                $sql .= "
-                    UNION ALL
-
-                    SELECT
-                        a.id_anotacao,
-                        a.titulo,
-                        a.anotacao as conteudo,
-                        a.created_at,
-                        'caso' as tipo,
-                        c.id_caso as entidade_id,
-                        c.titulo as referencia
-                    FROM anotacoes_casos a
-                    INNER JOIN casos c ON a.caso_id = c.id_caso
-                    WHERE c.cliente_id = ?
-                ";
-                $params[] = $clienteId;
+            $receitas = 0;
+            if ($db->tableExists('fin_receitas') && $db->tableExists('fin_pgto_receitas')) {
+                $receitas = $db->table('fin_receitas')
+                    ->join('fin_pgto_receitas', 'fin_receitas.id_receita = fin_pgto_receitas.receita_id')
+                    ->selectSum('fin_pgto_receitas.valor')
+                    ->where('fin_receitas.cliente_id', $clienteId)
+                    ->get()->getRow()->valor ?? 0;
             }
 
-            $sql .= "
-                ORDER BY created_at DESC
-                LIMIT ?
-            ";
-            $params[] = $limit;
+            $tarefas = $db->table('tarefas')
+                ->where('cliente_id', $clienteId)
+                ->where('deleted_at', null)
+                ->countAllResults();
 
-            $query = $db->query($sql, $params);
-
-            return $query->getResultArray();
+            return [
+                'receitas' => (float) $receitas,
+                'tarefas'  => $tarefas,
+            ];
         });
     }
 
@@ -400,40 +269,6 @@ class ClienteRepository extends BaseRepository
                 ORDER BY created_at DESC
                 LIMIT ?
             ", [$clienteId, $limit]);
-
-            return $query->getResultArray();
-        });
-    }
-
-    /**
-     * Busca intimações relacionadas ao cliente.
-     *
-     * @param int $clienteId
-     * @param int $limit
-     * @return array
-     */
-    public function buscarIntimacoesCliente(int $clienteId, int $limit = 5): array
-    {
-        return $this->remember("intimacoes_cliente_{$clienteId}_{$limit}" . $this->sufixoEscopo('processo'), function () use ($clienteId, $limit) {
-            $db = \Config\Database::connect();
-            $condicao = $this->condicaoEscopo('processo', 'p');
-
-            $query = $db->query("
-            SELECT
-                i.id_intimacao,
-                i.data_disponibilizacao as data_intimacao,
-                i.data_disponibilizacao as data_publicacao,
-                COALESCE(i.tipoComunicacao, i.meio, 'DJE') as diario,
-                COALESCE(i.ai_resumo, i.texto) as conteudo,
-                p.id_processo,
-                p.numero_processo,
-                p.numeroprocessocommascara
-            FROM intimacoes i
-            INNER JOIN processos p ON i.numero_processo = p.numero_processo
-            WHERE p.cliente_id = ?" . ($condicao ? " AND {$condicao}" : '') . "
-            ORDER BY i.data_disponibilizacao DESC
-            LIMIT ?
-        ", [$clienteId, $limit]);
 
             return $query->getResultArray();
         });

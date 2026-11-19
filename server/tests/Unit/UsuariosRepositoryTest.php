@@ -33,10 +33,10 @@ class UsuariosRepositoryTest extends CIUnitTestCase
             status_message VARCHAR(255),
             active TINYINT(1) DEFAULT 1,
             last_active DATETIME,
-            is_lawyer TINYINT(1) DEFAULT 0,
+            is_profissional TINYINT(1) DEFAULT 0,
             rateio_ativo TINYINT(1) DEFAULT 0,
-            oab_numero VARCHAR(50),
-            oab_uf VARCHAR(2),
+            registro_numero VARCHAR(50),
+            registro_uf VARCHAR(2),
             avatar VARCHAR(255),
             created_at DATETIME,
             updated_at DATETIME,
@@ -141,15 +141,15 @@ class UsuariosRepositoryTest extends CIUnitTestCase
         $this->assertEquals('active', $users[0]['username'] ?? $users[0]->username);
     }
 
-    public function testGetAdvogados()
+    public function testGetProfissionais()
     {
         $this->db->table('users')->insertBatch([
-            ['username' => 'lawyer', 'is_lawyer' => 1],
-            ['username' => 'not_lawyer', 'is_lawyer' => 0]
+            ['username' => 'lawyer', 'is_profissional' => 1],
+            ['username' => 'not_lawyer', 'is_profissional' => 0]
         ]);
 
         $repository = new UsuariosRepository();
-        $users = $repository->getAdvogados();
+        $users = $repository->getProfissionais();
 
         $this->assertCount(1, $users);
         $this->assertEquals('lawyer', $users[0]['username'] ?? $users[0]->username);

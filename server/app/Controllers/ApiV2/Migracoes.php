@@ -15,7 +15,6 @@ use Throwable;
  * Controller API V2 que expõe as migrations do banco via HTTP
  * (proxy do `php spark migrate`). Restrito a administradores.
  *
- * @author Cardoso
  * @version 1.0.0
  * @since 2026-09-19
  */

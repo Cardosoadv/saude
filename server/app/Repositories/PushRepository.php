@@ -17,7 +17,7 @@ class PushRepository
     /** Status de tarefa em aberto (mesmo critério de TarefasRepository::contarPorResponsavel). */
     public const STATUS_TAREFA_ABERTA = [1, 2, 3];
 
-    public const PREFERENCIAS = ['notificar_intimacoes', 'notificar_prazos'];
+    public const PREFERENCIAS = ['notificar_prazos'];
 
     protected BaseConnection $db;
 
@@ -181,23 +181,6 @@ class PushRepository
     }
 
     /**
-     * Intimações ainda não tratadas que chegaram a partir de `$desde`.
-     *
-     * @return list<array{id_intimacao: int|string, numero_processo: ?string, tipoComunicacao: ?string, created_at: string}>
-     */
-    public function intimacoesNovas(string $desde): array
-    {
-        return $this->db->table('intimacoes')
-            ->select('intimacoes.id_intimacao, intimacoes.numero_processo, intimacoes.tipoComunicacao, intimacoes.created_at')
-            ->join('intimacoes_tratamento as it', 'it.intimacao_id = intimacoes.id_intimacao', 'left')
-            ->where('it.tratamento_id IS NULL')
-            ->where('intimacoes.deleted_at IS NULL')
-            ->where('intimacoes.created_at >=', $desde)
-            ->orderBy('intimacoes.id_intimacao')
-            ->get()->getResultArray();
-    }
-
-    /**
      * Tarefas em aberto, com responsável, cujo prazo está entre as datas (inclusive).
      *
      * @return list<array<string, mixed>>
@@ -205,9 +188,7 @@ class PushRepository
     public function tarefasComPrazoEntre(string $inicio, string $fim): array
     {
         return $this->db->table('tarefas')
-            ->select('tarefas.id_tarefa, tarefas.tarefa, tarefas.prazo, tarefas.responsavel, tarefas.processo_id, '
-                . 'processos.numeroprocessocommascara, processos.numero_processo')
-            ->join('processos', 'processos.id_processo = tarefas.processo_id', 'left')
+            ->select('tarefas.id_tarefa, tarefas.tarefa, tarefas.prazo, tarefas.responsavel, tarefas.status')
             ->whereIn('tarefas.status', self::STATUS_TAREFA_ABERTA)
             ->where('tarefas.responsavel IS NOT NULL')
             ->where('tarefas.deleted_at IS NULL')

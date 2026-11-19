@@ -2,7 +2,7 @@
   <div class="page-content animate-fade-in pb-5">
     <!-- Breadcrumb -->
     <div class="breadcrumb">
-      <a href="#" @click.prevent="$emit('set-view', 'list')">Ordo Juris</a>
+      <a href="#" @click.prevent="$emit('set-view', 'list')">Saúde</a>
       <i class="bi bi-chevron-right"></i>
       <a href="#" @click.prevent="$emit('set-view', 'despesas-pagas')">Pagamentos</a>
       <i class="bi bi-chevron-right"></i>
@@ -89,7 +89,7 @@
         <!-- Rateio Module -->
         <div class="card glass-panel form-card" style="margin-top: 24px;">
           <div class="card-header" style="display:flex; justify-content:space-between; align-items:center;">
-            <h3><i class="bi bi-diagram-3"></i> Rateio entre Advogados</h3>
+            <h3><i class="bi bi-diagram-3"></i> Rateio entre Profissionais</h3>
             <div style="display:flex; gap: 8px;">
               <button class="btn btn-sm btn-outline-primary" @click="dividirIgualmente" v-if="form.rateio.length > 0">
                 <i class="bi bi-calculator"></i> Dividir Igualmente

@@ -2,7 +2,7 @@
   <div class="page-content animate-fade-in">
     <!-- Breadcrumb -->
     <div class="breadcrumb">
-      <a href="#" @click.prevent="$emit('set-view', 'dashboard')">Ordo Juris</a>
+      <a href="#" @click.prevent="$emit('set-view', 'dashboard')">Saúde</a>
       <i class="bi bi-chevron-right"></i>
       <a href="#" @click.prevent="$emit('set-view', 'extrato')">Extrato Financeiro</a>
       <i class="bi bi-chevron-right"></i>

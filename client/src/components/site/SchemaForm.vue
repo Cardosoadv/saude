@@ -179,7 +179,7 @@
 /**
  * Formulário gerado a partir dos `campos` do schema de um tipo de seção
  * (`GET site/admin/template/schema`). Cada tipo de campo vira um componente
- * (ver docs/api-site-admin.md do ordojuris); listas são repetidores recursivos.
+ * (ver docs/api-site-admin.md\); listas são repetidores recursivos.
  *
  * `errors` usa os caminhos da API já sem o prefixo `dados.` (`botoes.1.rotulo`);
  * use `errosSemPrefixo(erros, 'dados.')` ao receber o 422 de uma seção.

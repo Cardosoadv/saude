@@ -631,9 +631,9 @@ class ExtratoRepository extends BaseRepository
         // transações (receitas - despesas - transferências de saída + transferências
         // de entrada), nunca a partir da soma dos rateios individuais.
         //
-        // O rateio é uma atribuição informativa por advogado e não tem garantia de
+        // O rateio é uma atribuição informativa por profissional e não tem garantia de
         // somar 100% do valor da transação (ex.: parte do valor fica sem rateio
-        // explícito, atribuída implicitamente ao escritório). Se o total fosse
+        // explícito, atribuída implicitamente a clínica). Se o total fosse
         // reconstruído a partir da soma dos rateios (como era feito antes), qualquer
         // transação com rateio parcial faria o saldo anterior "sumir" uma diferença,
         // fazendo o mesmo período gerar saldos diferentes dependendo de onde a data
@@ -668,7 +668,7 @@ class ExtratoRepository extends BaseRepository
 
         $totalGeral = $totalReceitas - $totalDespesas - $totalTransfSaida + $totalTransfEntrada;
 
-        // 1. Somar Rateios de Receitas (apenas para o detalhamento por advogado)
+        // 1. Somar Rateios de Receitas (apenas para o detalhamento por profissional)
         $receitasRateio = $db->table('fin_pgto_receitas_rateio as rr')
             ->select('rr.user_id, SUM(rr.valor) as total')
             ->join('fin_pgto_receitas as pr', 'pr.id_pgto_receita = rr.pagto_receita_id')

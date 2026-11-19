@@ -14,7 +14,6 @@ use App\Repositories\UsuariosRepository;
  * Esta classe processa dados de despesas, receitas e transferências para gerar
  * extratos detalhados por conta, incluindo cálculos de saldo acumulado e rateio.
  *
- * @author Cardoso
  * @version 1.2.0
  * @since 2026-05-04
  */
@@ -295,7 +294,7 @@ class ExtratoService extends BaseService
         $contas = $this->contasRepository->findAll(200);
 
         $saldosPorConta = [];
-        $rateiosPorAdvogado = [];
+        $rateiosPorProfissional = [];
 
         foreach ($contas as $conta) {
             $conta_id = $conta['id_conta'];
@@ -315,26 +314,26 @@ class ExtratoService extends BaseService
             ];
 
             if (isset($extratoResultado['rateio_acumulado'])) {
-                foreach ($extratoResultado['rateio_acumulado'] as $advogado_id => $dados) {
-                    if ($advogado_id !== 'geral') {
-                        if (!isset($rateiosPorAdvogado[$advogado_id])) {
-                            $rateiosPorAdvogado[$advogado_id] = 0;
+                foreach ($extratoResultado['rateio_acumulado'] as $profissional_id => $dados) {
+                    if ($profissional_id !== 'geral') {
+                        if (!isset($rateiosPorProfissional[$profissional_id])) {
+                            $rateiosPorProfissional[$profissional_id] = 0;
                         }
-                        $rateiosPorAdvogado[$advogado_id] += $dados['rateio_acumulado'];
+                        $rateiosPorProfissional[$profissional_id] += $dados['rateio_acumulado'];
                     }
                 }
             }
         }
 
-        // Buscar nomes dos advogados
+        // Buscar nomes dos profissionais
         $users = $this->usuariosRepository->getUsers();
         $userMap = [];
         foreach ($users as $user) {
             $userMap[$user['id']] = $user['username'];
         }
 
-        foreach ($rateiosPorAdvogado as $advogado_id => &$valor) {
-            $nome = $userMap[$advogado_id] ?? 'Advogado #' . $advogado_id;
+        foreach ($rateiosPorProfissional as $profissional_id => &$valor) {
+            $nome = $userMap[$profissional_id] ?? 'Profissional #' . $profissional_id;
             $valor = [
                 'nome' => $nome,
                 'valor' => $valor,
@@ -342,15 +341,15 @@ class ExtratoService extends BaseService
         }
 
         $saldoTotal = array_sum(array_column($saldosPorConta, 'saldo'));
-        $rateioTotal = array_sum(array_column($rateiosPorAdvogado, 'valor'));
+        $rateioTotal = array_sum(array_column($rateiosPorProfissional, 'valor'));
 
         return [
             'data_referencia' => $dataReferencia,
             'saldos_contas' => $saldosPorConta,
-            'rateios_advogados' => $rateiosPorAdvogado,
+            'rateios_profissionais' => $rateiosPorProfissional,
             'saldo_total' => $saldoTotal,
             'rateio_total' => $rateioTotal,
-            // O rateio é uma atribuição opcional por advogado e pode não cobrir 100%
+            // O rateio é uma atribuição opcional por profissional e pode não cobrir 100%
             // do valor das transações (ex.: item de rateio com valor incorreto/
             // incompleto); esta diferença é o sinal de que algo precisa de revisão.
             'diferenca' => round($saldoTotal - $rateioTotal, 2),

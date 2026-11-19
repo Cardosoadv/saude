@@ -4,7 +4,6 @@ namespace App\Services\Financeiro;
 
 use App\Repositories\Financeiro\DespesasRepository;
 use App\Repositories\Financeiro\ReceitasRepository;
-use App\Repositories\RamosDireitoRepository;
 use App\Services\BaseService;
 
 /**
@@ -31,27 +30,17 @@ class FinanceiroService extends BaseService
     protected DespesasRepository $despesasRepository;
 
     /**
-     * Repositório de ramos do direito.
-     *
-     * @var RamosDireitoRepository
-     */
-    protected RamosDireitoRepository $ramosDireitoRepository;
-
-    /**
      * Construtor para inicializar os repositórios necessários via injeção de dependência.
      *
      * @param ReceitasRepository|null $receitasRepository
      * @param DespesasRepository|null $despesasRepository
-     * @param RamosDireitoRepository|null $ramosDireitoRepository
      */
     public function __construct(
         ?ReceitasRepository $receitasRepository = null,
-        ?DespesasRepository $despesasRepository = null,
-        ?RamosDireitoRepository $ramosDireitoRepository = null
+        ?DespesasRepository $despesasRepository = null
     ) {
         $this->receitasRepository = $receitasRepository ?? new ReceitasRepository();
         $this->despesasRepository = $despesasRepository ?? new DespesasRepository();
-        $this->ramosDireitoRepository = $ramosDireitoRepository ?? new RamosDireitoRepository();
     }
 
     /**
@@ -285,42 +274,40 @@ class FinanceiroService extends BaseService
     }
 
     /**
-     * Obtém o resultado financeiro (receitas - despesas) agrupado por ramo do direito,
-     * a partir dos contratos vinculados às receitas/despesas pagas no período.
+     * Obtém o resultado financeiro (receitas - despesas) agrupado pela área/especialidade
+     * do contrato vinculado às receitas/despesas pagas no período.
      *
-     * Receitas/despesas sem contrato vinculado, ou vinculadas a um contrato sem ramo
-     * definido, são agrupadas sob o ramo "Sem Ramo definido".
+     * Receitas/despesas sem contrato vinculado, ou vinculadas a um contrato sem área
+     * definida, são agrupadas sob "Sem área definida".
      *
      * @param string $dataInicio Data de início do período (formato 'Y-m-d').
      * @param string $dataFim Data de fim do período (formato 'Y-m-d').
-     * @return array Lista ordenada por resultado (desc) de [ramo_id, ramo, receitas, despesas, resultado].
+     * @return array Lista ordenada por resultado (desc) de [area, receitas, despesas, resultado].
      */
-    public function getResultadoFinanceiroPorRamo(string $dataInicio, string $dataFim): array
+    public function getResultadoFinanceiroPorArea(string $dataInicio, string $dataFim): array
     {
-        $receitas = $this->receitasRepository->getReceitasPagasAgrupadasPorRamo($dataInicio, $dataFim);
-        $despesas = $this->despesasRepository->getDespesasPagasAgrupadasPorRamo($dataInicio, $dataFim);
-        $nomes    = $this->ramosDireitoRepository->mapaIdNome();
+        $receitas = $this->receitasRepository->getReceitasPagasAgrupadasPorArea($dataInicio, $dataFim);
+        $despesas = $this->despesasRepository->getDespesasPagasAgrupadasPorArea($dataInicio, $dataFim);
 
-        $porRamo = [];
+        $porArea = [];
 
         foreach ($receitas as $linha) {
-            $ramoId = (int) ($linha['ramo_id'] ?? 0);
-            $porRamo[$ramoId]['receitas'] = ($porRamo[$ramoId]['receitas'] ?? 0.0) + (float) ($linha['receitas'] ?? 0);
+            $area = trim((string) ($linha['area'] ?? ''));
+            $porArea[$area]['receitas'] = ($porArea[$area]['receitas'] ?? 0.0) + (float) ($linha['receitas'] ?? 0);
         }
 
         foreach ($despesas as $linha) {
-            $ramoId = (int) ($linha['ramo_id'] ?? 0);
-            $porRamo[$ramoId]['despesas'] = ($porRamo[$ramoId]['despesas'] ?? 0.0) + (float) ($linha['despesas'] ?? 0);
+            $area = trim((string) ($linha['area'] ?? ''));
+            $porArea[$area]['despesas'] = ($porArea[$area]['despesas'] ?? 0.0) + (float) ($linha['despesas'] ?? 0);
         }
 
         $resultado = [];
-        foreach ($porRamo as $ramoId => $valores) {
+        foreach ($porArea as $area => $valores) {
             $totalReceitas = $valores['receitas'] ?? 0.0;
             $totalDespesas = $valores['despesas'] ?? 0.0;
 
             $resultado[] = [
-                'ramo_id'   => $ramoId,
-                'ramo'      => $ramoId > 0 ? ($nomes[$ramoId] ?? "Ramo #{$ramoId}") : 'Sem Ramo definido',
+                'area'      => $area !== '' ? $area : 'Sem área definida',
                 'receitas'  => $totalReceitas,
                 'despesas'  => $totalDespesas,
                 'resultado' => $totalReceitas - $totalDespesas,

@@ -37,7 +37,6 @@ class ContratosModel extends Model
         'prazo_vigencia',
         'prazo_tipo',
         'valor',
-        'honorarios_exito',
         'forma_pagamento',
         'dia_vencimento',
         'status',
@@ -75,7 +74,7 @@ class ContratosModel extends Model
             ]
         ],
         'tipo_contrato' => [
-            'rules' => 'required|in_list[Honorários,Consultoria,Assessoria,Êxito,Misto,Pro Bono]',
+            'rules' => 'required|in_list[Mensalidade,Plano de tratamento,Convênio,Pacote de sessões,Consultoria,Outro]',
             'errors' => [
                 'required' => 'O tipo de contrato é obrigatório.',
                 'in_list' => 'Tipo de contrato inválido.',
@@ -105,12 +104,6 @@ class ContratosModel extends Model
             'rules' => 'permit_empty|decimal',
             'errors' => [
                 'decimal' => 'O valor deve ser um número decimal.',
-            ]
-        ],
-        'honorarios_exito' => [
-            'rules' => 'permit_empty|decimal',
-            'errors' => [
-                'decimal' => 'Os honorários de êxito devem ser um número decimal.',
             ]
         ],
         'forma_pagamento' => [

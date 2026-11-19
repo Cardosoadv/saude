@@ -22,7 +22,7 @@ vi.mock('../src/utils/zipManifesto', () => zip);
 import TemplatesSiteView from '../src/views/Site/TemplatesSiteView.vue';
 
 const tpl = (extra: Record<string, unknown> = {}) => ({
-  slug: 'classico', nome: 'Clássico', versao: '1.2.0', autor: 'Cardoso & Bruno', descricao: 'Visual clássico.', origem: 'core',
+  slug: 'classico', nome: 'Clássico', versao: '1.2.0', autor: 'Clínica Saúde', descricao: 'Visual clássico.', origem: 'core',
   ativo: true, motor: 'php', removivel: false, preview_url: 'http://x/classico/preview.png', ...extra,
 });
 const LISTA = () => [
@@ -65,7 +65,7 @@ describe('TemplatesSiteView', () => {
     const classico = q('[data-template="classico"]');
     expect(q('img', classico).getAttribute('src')).toBe('http://x/classico/preview.png');
     expect(classico.textContent).toContain('Clássico');
-    expect(classico.textContent).toContain('Versão 1.2.0 · Cardoso & Bruno');
+    expect(classico.textContent).toContain('Versão 1.2.0 · Clínica Saúde');
     expect(q('[data-ativo]', classico).textContent).toBe('Ativo');
     expect(q('[data-origem]', classico).textContent).toContain('Padrão do sistema');
 

@@ -71,17 +71,17 @@ class ManifestValidator
 
     private function compatibilidade(array $m, Resultado $r): void
     {
-        $exigida = $m['ordojuris'] ?? null;
+        $exigida = $m['sistema'] ?? null;
         if ($exigida === null) {
-            $r->aviso('ordojuris', 'Sem versão mínima declarada; a compatibilidade não pode ser verificada.');
+            $r->aviso('sistema', 'Sem versão mínima declarada; a compatibilidade não pode ser verificada.');
             return;
         }
         if (!is_string($exigida) || !preg_match('/^>=\s*(\d+\.\d+\.\d+)$/', $exigida, $mt)) {
-            $r->erro('ordojuris', "Use o formato '>=X.Y.Z'.");
+            $r->erro('sistema', "Use o formato '>=X.Y.Z'.");
             return;
         }
-        if (version_compare($this->config->versaoOrdojuris, $mt[1], '<')) {
-            $r->erro('ordojuris', "Exige OrdoJuris {$mt[1]} ou superior (instalado: {$this->config->versaoOrdojuris}).");
+        if (version_compare($this->config->versaoSistema, $mt[1], '<')) {
+            $r->erro('sistema', "Exige Saúde {$mt[1]} ou superior (instalado: {$this->config->versaoSistema}).");
         }
     }
 

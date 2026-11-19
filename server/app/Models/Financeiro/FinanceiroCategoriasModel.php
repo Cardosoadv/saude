@@ -9,7 +9,6 @@ use CodeIgniter\Model;
 /**
  * Modelo para a tabela de categorias financeiras.
  * 
- * @author Cardoso
  * @version 0.9.1
  * @since 2026-01-01
  *

@@ -14,7 +14,7 @@ class AddGoogleEventIdToTarefas extends Migration
                 'type'       => 'VARCHAR',
                 'constraint' => 255,
                 'null'       => true,
-                'after'      => 'checklist_item_id',
+                'after'      => 'notificar',
             ],
         ];
         $this->forge->addColumn('tarefas', $fields);
@@ -32,7 +32,7 @@ class AddGoogleEventIdToTarefas extends Migration
             $db->table('configuracoes')->insert([
                 'nome'       => 'GOOGLE_CALENDAR_ID',
                 'valor'      => null,
-                'descricao'  => 'ID do calendário do Google utilizado para sincronização de tarefas (Ordo Juris).',
+                'descricao'  => 'ID do calendário do Google utilizado para sincronização de tarefas (Saúde).',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);

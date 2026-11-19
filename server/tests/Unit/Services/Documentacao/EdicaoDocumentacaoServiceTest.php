@@ -41,9 +41,9 @@ class EdicaoDocumentacaoServiceTest extends CIUnitTestCase
         $base = sys_get_temp_dir() . '/docs-edicao-' . bin2hex(random_bytes(4));
         $this->raiz = $base . '/docs';
         $this->imagens = $base . '/imagens';
-        mkdir($this->raiz . '/processos', 0777, true);
-        file_put_contents($this->raiz . '/processos/index.md', "---\ntitulo: Processos\nmodulo: processos\ntelas: [list]\n---\nCapa.\n");
-        file_put_contents($this->raiz . '/processos/cadastro.md', "---\ntitulo: Cadastro\nordem: 10\ntelas: [process-form]\npalavras_chave: [CNJ]\n---\n## Partes\n");
+        mkdir($this->raiz . '/clientes', 0777, true);
+        file_put_contents($this->raiz . '/clientes/index.md', "---\ntitulo: Clientes\nmodulo: clientes\ntelas: [list]\n---\nCapa.\n");
+        file_put_contents($this->raiz . '/clientes/cadastro.md', "---\ntitulo: Cadastro\nordem: 10\ntelas: [client-form]\npalavras_chave: [CNJ]\n---\n## Partes\n");
         CatalogoDocumentacao::limparCache();
     }
 
@@ -78,15 +78,15 @@ class EdicaoDocumentacaoServiceTest extends CIUnitTestCase
     public function testCriarComoRascunhoEEditar(): void
     {
         $r = $this->service()->criar([
-            'slug' => 'processos/prazos', 'titulo' => 'Prazos', 'resumo' => 'Como contar', 'ordem' => '20',
+            'slug' => 'clientes/prazos', 'titulo' => 'Prazos', 'resumo' => 'Como contar', 'ordem' => '20',
             'telas' => ['tarefas', ' '], 'palavras_chave' => ['prazo'], 'markdown' => "## Contagem\n",
         ]);
 
         $p = $r['data'];
-        $this->assertSame(['processos/prazos', 'rascunho', 20, ['tarefas'], false], [$p['slug'], $p['status'], $p['ordem'], $p['telas'], $p['tem_arquivo']]);
+        $this->assertSame(['clientes/prazos', 'rascunho', 20, ['tarefas'], false], [$p['slug'], $p['status'], $p['ordem'], $p['telas'], $p['tem_arquivo']]);
         $this->assertSame([], $r['avisos']);
 
-        $r = $this->service()->atualizar($p['id'], ['slug' => 'processos/prazos', 'titulo' => 'Prazos processuais', 'markdown' => 'Novo texto [x](nao-existe.xlsx)']);
+        $r = $this->service()->atualizar($p['id'], ['slug' => 'clientes/prazos', 'titulo' => 'Prazos processuais', 'markdown' => 'Novo texto [x](nao-existe.xlsx)']);
         $this->assertSame('Prazos processuais', $r['data']['titulo']);
         $this->assertSame('rascunho', $r['data']['status'], 'editar não publica');
         $this->assertSame(['Link recusado: nao-existe.xlsx'], $r['avisos']);
@@ -95,60 +95,60 @@ class EdicaoDocumentacaoServiceTest extends CIUnitTestCase
     public function testValidacao(): void
     {
         $erros = $this->erros(fn () => $this->service()->criar([
-            'slug' => 'processos/novo item', 'titulo' => '', 'modulo' => 'inexistente', 'ordem' => 'dez', 'telas' => ['Tela Ruim'],
+            'slug' => 'clientes/novo item', 'titulo' => '', 'modulo' => 'inexistente', 'ordem' => 'dez', 'telas' => ['Tela Ruim'],
         ]));
         $this->assertSame(['slug', 'titulo', 'ordem', 'modulo', 'telas.0'], array_keys($erros));
 
-        $this->assertArrayHasKey('slug', $this->erros(fn () => $this->service()->criar(['slug' => 'processos/index', 'titulo' => 'X'])));
+        $this->assertArrayHasKey('slug', $this->erros(fn () => $this->service()->criar(['slug' => 'clientes/index', 'titulo' => 'X'])));
         $this->assertArrayHasKey('slug', $this->erros(fn () => $this->service()->criar(['slug' => 'a/b/c', 'titulo' => 'X'])));
 
-        $this->service()->criar(['slug' => 'processos/x', 'titulo' => 'X']);
-        $this->assertSame('Já existe uma página com este endereço.', $this->erros(fn () => $this->service()->criar(['slug' => 'processos/x', 'titulo' => 'Y']))['slug']);
+        $this->service()->criar(['slug' => 'clientes/x', 'titulo' => 'X']);
+        $this->assertSame('Já existe uma página com este endereço.', $this->erros(fn () => $this->service()->criar(['slug' => 'clientes/x', 'titulo' => 'Y']))['slug']);
     }
 
     public function testAvisoDeTelaJaUsada(): void
     {
-        $r = $this->service()->criar(['slug' => 'processos/outra', 'titulo' => 'Outra', 'telas' => ['list']]);
+        $r = $this->service()->criar(['slug' => 'clientes/outra', 'titulo' => 'Outra', 'telas' => ['list']]);
 
-        $this->assertSame(["A tela 'list' também abre a página 'processos' na ajuda contextual."], $r['avisos']);
+        $this->assertSame(["A tela 'list' também abre a página 'clientes' na ajuda contextual."], $r['avisos']);
     }
 
     public function testPublicarDespublicarEListar(): void
     {
-        $id = $this->service()->criar(['slug' => 'processos/cadastro', 'titulo' => 'Cadastro (editado)', 'markdown' => 'x'])['data']['id'];
+        $id = $this->service()->criar(['slug' => 'clientes/cadastro', 'titulo' => 'Cadastro (editado)', 'markdown' => 'x'])['data']['id'];
 
         $lista = array_column($this->service()->listar(), null, 'slug');
-        $this->assertSame(['banco', 'rascunho', true], [$lista['processos/cadastro']['origem'], $lista['processos/cadastro']['status'], $lista['processos/cadastro']['tem_arquivo']]);
-        $this->assertSame(['arquivo', null], [$lista['processos']['origem'], $lista['processos']['id']]);
+        $this->assertSame(['banco', 'rascunho', true], [$lista['clientes/cadastro']['origem'], $lista['clientes/cadastro']['status'], $lista['clientes/cadastro']['tem_arquivo']]);
+        $this->assertSame(['arquivo', null], [$lista['clientes']['origem'], $lista['clientes']['id']]);
 
         $this->assertSame('publicado', $this->service()->publicar($id)['status']);
-        $this->assertSame('Cadastro (editado)', (new CatalogoDocumentacao($this->raiz))->pagina('processos/cadastro')['titulo'], 'publicada substitui o arquivo para todos');
+        $this->assertSame('Cadastro (editado)', (new CatalogoDocumentacao($this->raiz))->pagina('clientes/cadastro')['titulo'], 'publicada substitui o arquivo para todos');
         $this->seeInDatabase('auditoria', ['table_name' => 'documentacao_paginas', 'action_type' => 'UPDATE']);
 
         $this->assertSame('rascunho', $this->service()->despublicar($id)['status']);
-        $this->assertSame('Cadastro', (new CatalogoDocumentacao($this->raiz))->pagina('processos/cadastro')['titulo']);
+        $this->assertSame('Cadastro', (new CatalogoDocumentacao($this->raiz))->pagina('clientes/cadastro')['titulo']);
 
         $this->service()->excluir($id);
-        $this->assertSame('arquivo', array_column($this->service()->listar(), null, 'slug')['processos/cadastro']['origem']);
+        $this->assertSame('arquivo', array_column($this->service()->listar(), null, 'slug')['clientes/cadastro']['origem']);
         $this->expectException(NaoEncontrado::class);
         $this->service()->obter($id);
     }
 
     public function testCopiarDoArquivo(): void
     {
-        $p = $this->service()->copiarDoArquivo('processos/cadastro')['data'];
+        $p = $this->service()->copiarDoArquivo('clientes/cadastro')['data'];
 
-        $this->assertSame(['Cadastro', 10, ['process-form'], ['CNJ'], "## Partes\n", 'rascunho'], [$p['titulo'], $p['ordem'], $p['telas'], $p['palavras_chave'], $p['markdown'], $p['status']]);
+        $this->assertSame(['Cadastro', 10, ['client-form'], ['CNJ'], "## Partes\n", 'rascunho'], [$p['titulo'], $p['ordem'], $p['telas'], $p['palavras_chave'], $p['markdown'], $p['status']]);
         $this->assertNull($p['modulo'], 'não copia o módulo herdado da capa');
 
-        $this->assertArrayHasKey('slug', $this->erros(fn () => $this->service()->copiarDoArquivo('processos/cadastro')));
+        $this->assertArrayHasKey('slug', $this->erros(fn () => $this->service()->copiarDoArquivo('clientes/cadastro')));
         $this->expectException(NaoEncontrado::class);
-        $this->service()->copiarDoArquivo('processos/nao-existe');
+        $this->service()->copiarDoArquivo('clientes/nao-existe');
     }
 
     public function testPreview(): void
     {
-        $r = $this->service()->preview("## Título\n\n> [!DICA]\n> Use.\n\n[x](../outra/pagina.md)", 'processos/novo');
+        $r = $this->service()->preview("## Título\n\n> [!DICA]\n> Use.\n\n[x](../outra/pagina.md)", 'clientes/novo');
 
         $this->assertStringContainsString('<h2 id="titulo">', $r['html']);
         $this->assertStringContainsString('doc-aviso--dica', $r['html']);
@@ -161,20 +161,20 @@ class EdicaoDocumentacaoServiceTest extends CIUnitTestCase
         $tmp = tempnam(sys_get_temp_dir(), 'img');
         imagepng(imagecreatetruecolor(2000, 1000), $tmp);
 
-        $r = $this->service()->enviarImagem($tmp, 'Tela de Processos.PNG', 'processos');
+        $r = $this->service()->enviarImagem($tmp, 'Tela de Clientes.PNG', 'clientes');
         unlink($tmp);
 
-        $this->assertMatchesRegularExpression('#^processos/img/tela-de-processos-[0-9a-f]{6}\.png$#', $r['caminho']);
+        $this->assertMatchesRegularExpression('#^clientes/img/tela-de-clientes-[0-9a-f]{6}\.png$#', $r['caminho']);
         $this->assertSame([1600, 800], [$r['largura'], $r['altura']], 'reduzida para 1600 px');
         $this->assertSame([1600, 800], array_slice(getimagesize($this->imagens . '/' . $r['caminho']), 0, 2));
-        $this->assertStringStartsWith('![Descreva a imagem](img/tela-de-processos-', $r['markdown']);
+        $this->assertStringStartsWith('![Descreva a imagem](img/tela-de-clientes-', $r['markdown']);
 
-        $html = $this->service()->preview($r['markdown'], 'processos/x')['html'];
+        $html = $this->service()->preview($r['markdown'], 'clientes/x')['html'];
         $this->assertStringContainsString('width="1600" height="800"', $html, 'o motor acha a imagem enviada');
 
         $texto = tempnam(sys_get_temp_dir(), 'txt');
         file_put_contents($texto, 'não é imagem');
-        $this->assertArrayHasKey('arquivo', $this->erros(fn () => $this->service()->enviarImagem($texto, 'a.png', 'processos')));
+        $this->assertArrayHasKey('arquivo', $this->erros(fn () => $this->service()->enviarImagem($texto, 'a.png', 'clientes')));
         $this->assertArrayHasKey('secao', $this->erros(fn () => $this->service()->enviarImagem($texto, 'a.png', '../x')));
         unlink($texto);
     }

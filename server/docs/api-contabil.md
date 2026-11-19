@@ -45,13 +45,13 @@ Matriz de permissões gerenciada pelo Shield (`app/Config/AuthGroups.php`):
 O pacote `cognitiotechny/contabil` é agnóstico e opera por injeção de dependências via interfaces (Ports)
 implementadas em `app/Libraries/Contabil/`:
 
-1. **`OrdoJurisContabilAuthorizer`** (`AuthorizerInterface`):
+1. **`SaudeContabilAuthorizer`** (`AuthorizerInterface`):
    - Mapeia as ações do pacote (`contabil.*`) na biblioteca Shield do usuário corrente.
-2. **`OrdoJurisContabilCurrentUser`** (`CurrentUserInterface`):
+2. **`SaudeContabilCurrentUser`** (`CurrentUserInterface`):
    - Extrai o identificador do usuário autenticado no sistema para carimbo de auditoria.
-3. **`OrdoJurisContabilCurrentEntity`** (`CurrentEntityInterface`):
-   - Fornece o ID e metadados da entidade contábil ativa (padrão: "Cardoso & Bruno Advogados").
-4. **`OrdoJurisContabilPdfRenderer`** (`PdfRendererInterface`):
+3. **`SaudeContabilCurrentEntity`** (`CurrentEntityInterface`):
+   - Fornece o ID e metadados da entidade contábil ativa (padrão: "Clínica Saúde").
+4. **`SaudeContabilPdfRenderer`** (`PdfRendererInterface`):
    - Renderiza relatórios e demonstrações em formato PDF utilizando Dompdf.
 
 Os serviços são configurados em `app/Config/Services.php` e carregados automaticamente pelo CodeIgniter.
@@ -79,10 +79,10 @@ Controlados por `App\Controllers\ApiV2\Contabil\IntegracaoController`:
         "tipo": "receita",
         "id_origem": 45,
         "data": "2026-10-15",
-        "descricao": "Honorários contratuais - Processo 0001234-56.2026.8.26.0100",
+        "descricao": "Atendimentos - Consulta de 10/11/2026",
         "valor": 5000.0,
         "conta_financeira": "Banco do Brasil",
-        "categoria_financeira": "Honorários Contratuais",
+        "categoria_financeira": "Atendimentos",
         "status_contabil": "pendente",
         "id_lancamento": null,
         "sugestao_debito": 14,
@@ -131,8 +131,8 @@ Controlados por `App\Controllers\ApiV2\Contabil\IntegracaoController`:
   ```
 
 ### 4. Modelos e Inicialização de Plano de Contas
-- `GET /api/v2/contabil/integracao/planos-modelo`: retorna os modelos disponíveis. O primeiro, `itg-1000-advocacia`, é o plano padrão do sistema; os demais (`professional-services`, `generic`) vêm do pacote contábil.
-- `POST /api/v2/contabil/integracao/plano-padrao`: importa e inicializa o plano modelo no banco (corpo `{ "model": "itg-1000-advocacia", "entity_id": 1 }`).
+- `GET /api/v2/contabil/integracao/planos-modelo`: retorna os modelos disponíveis. O primeiro, `itg-1000-clinica`, é o plano padrão do sistema; os demais (`professional-services`, `generic`) vêm do pacote contábil.
+- `POST /api/v2/contabil/integracao/plano-padrao`: importa e inicializa o plano modelo no banco (corpo `{ "model": "itg-1000-clinica", "entity_id": 1 }`).
 - Instalações com o plano anterior convertem o plano pelo comando `php spark contabil:adequar-itg1000` (veja a página de ajuda *Plano de contas*).
 
 ### 5. Abertura Contábil
@@ -210,9 +210,9 @@ Montados sob `/api/v2/contabil/` a partir dos controllers do pacote:
 
 1. **Valores Monetários**: o pacote trabalha internamente com valores inteiros em centavos (*minor units*). Na API de integração, a conversão é realizada por `Money::fromDecimal()` de forma exata, prevenindo erros de arredondamento de ponto flutuante.
 2. **Idempotência de Importação**: cada transação importada recebe uma `idempotency_key` única:
-   - Receita: `ordojuris:fin_receita:{id}:1`
-   - Despesa: `ordojuris:fin_despesa:{id}:1`
-   - Transferência: `ordojuris:fin_transferencia:{id}:1`
+   - Receita: `saude:fin_receita:{id}:1`
+   - Despesa: `saude:fin_despesa:{id}:1`
+   - Transferência: `saude:fin_transferencia:{id}:1`
 3. **Imutabilidade**: lançamentos confirmados são indeléveis. Qualquer retificação gera novo lançamento com tipo `REVERSAL` referenciando o ID original.
 4. **Fechamento de Período**: lançamentos e estornos com datas em períodos fechados são rejeitados com erro 422.
 

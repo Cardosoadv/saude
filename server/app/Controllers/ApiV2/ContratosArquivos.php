@@ -6,7 +6,7 @@ namespace App\Controllers\ApiV2;
 
 use App\Controllers\BaseController;
 use App\Services\ContratosArquivosService;
-use App\Traits\AcessoProcessoTrait;
+use App\Traits\AcessoRegistroTrait;
 use App\Traits\VerificaPermissoesTrait;
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -20,7 +20,7 @@ class ContratosArquivos extends BaseController
 {
     use ResponseTrait;
     use VerificaPermissoesTrait;
-    use AcessoProcessoTrait;
+    use AcessoRegistroTrait;
 
     protected ContratosArquivosService $service;
     protected $permissaoNecessaria = 'contratos';

@@ -2,7 +2,7 @@
   <div class="page-content animate-fade-in pb-5">
     <!-- Breadcrumb -->
     <div class="breadcrumb">
-      <a href="#" @click.prevent="$emit('set-view', 'list')">Ordo Juris</a>
+      <a href="#" @click.prevent="$emit('set-view', 'list')">Saúde</a>
       <i class="bi bi-chevron-right"></i>
       <a href="#" @click.prevent="$emit('set-view', 'transferencias')">Lista de Transferências</a>
       <i class="bi bi-chevron-right"></i>
@@ -111,9 +111,9 @@
                   <div v-for="(r, index) in form.rateio" :key="index" class="rateio-item">
                     <div class="form-row" style="margin-bottom:0; align-items: center;">
                       <div class="form-group col-sm-8" style="margin-bottom:0; flex: 1;">
-                        <label :for="'rateio-user-' + index" class="sr-only" style="display:none;">Sócio / Advogado</label>
-                        <select :id="'rateio-user-' + index" class="form-control" v-model="r.id" style="font-size: 0.9rem; padding: 0.4rem 0.75rem;" aria-label="Sócio ou Advogado para rateio">
-                          <option value="">Selecione o Sócio/Advogado...</option>
+                        <label :for="'rateio-user-' + index" class="sr-only" style="display:none;">Sócio / Profissional</label>
+                        <select :id="'rateio-user-' + index" class="form-control" v-model="r.id" style="font-size: 0.9rem; padding: 0.4rem 0.75rem;" aria-label="Sócio ou Profissional para rateio">
+                          <option value="">Selecione o Sócio/Profissional...</option>
                           <option v-for="u in userOptions" :key="u.id" :value="u.id">{{ u.text || u.username || u.nome || u.name }}</option>
                         </select>
                       </div>

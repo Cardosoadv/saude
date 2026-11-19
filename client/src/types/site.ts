@@ -1,6 +1,6 @@
 /**
- * Tipos do editor do site público (API `api/v2/site/admin/*`, ordojuris#641).
- * Contrato: docs/api-site-admin.md do repositório ordojuris.
+ * Tipos do editor do site público (API `api/v2/site/admin/*`).
+ * Contrato: docs/api-site-admin.md.
  */
 
 export type SitePaginaTipo = 'home' | 'pagina' | 'area' | 'sistema'
@@ -210,4 +210,39 @@ export interface SiteNoticiaCategoriaEntrada {
   /** Vazio: gerado a partir do nome. */
   slug?: string
   meta_description?: string | null
+}
+
+/** Notícia do site (colunas de `site_news`). */
+export interface SiteNoticia {
+  id: number
+  title: string
+  slug: string
+  status: 'draft' | 'published'
+  category_id: number
+  category_name?: string | null
+  summary?: string | null
+  content?: string | null
+  meta_title?: string | null
+  meta_description?: string | null
+  published_at: string | null
+}
+
+export interface SiteNoticiaEntrada {
+  title?: string
+  category_id?: number | string
+  status?: 'draft' | 'published'
+  summary?: string
+  content?: string
+  meta_title?: string
+  meta_description?: string
+  /** Formato `YYYY-MM-DDTHH:mm`. */
+  published_at?: string
+}
+
+export interface SiteNoticiaLista {
+  data: SiteNoticia[]
+  total: number
+  per_page: number
+  current_page: number
+  last_page: number
 }

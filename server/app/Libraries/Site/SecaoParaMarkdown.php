@@ -22,7 +22,7 @@ final class SecaoParaMarkdown
     ];
 
     /** Chaves que sempre guardam texto, mesmo de uma palavra só. */
-    private const CHAVES_DE_TEXTO = ['texto', 'lead', 'subtitulo', 'descricao', 'corpo', 'resposta', 'curriculo', 'cargo', 'oab', 'areas'];
+    private const CHAVES_DE_TEXTO = ['texto', 'lead', 'subtitulo', 'descricao', 'corpo', 'resposta', 'curriculo', 'cargo', 'registro', 'areas'];
 
     /** Chaves que nomeiam o item de uma lista (vão em negrito). */
     private const CHAVES_DE_NOME = ['destaque', 'titulo', 'pergunta', 'nome'];

@@ -94,7 +94,7 @@ class ClientesModel extends Model
         'status_crm',
         'origem_id',
         'temperatura',
-        'responsavel_id', // Advogado responsável (users.id). Não confundir com usuario_id (login do cliente na Área do Cliente)
+        'responsavel_id', // Profissional responsável (users.id). Não confundir com usuario_id (login do cliente na Área do Cliente)
         'visibilidade',
     ];
 

@@ -398,7 +398,7 @@ class SiteTemplateGestaoTest extends CIUnitTestCase
     public function testAtivarAplicaPadroesDeCamposNovosEReportaSecaoQueFicouInvalida(): void
     {
         $this->servico()->instalarZip($this->zip($this->arquivos()));
-        $pagina = (int) $this->db->table('site_paginas')->where('slug', 'direito-civil')->get()->getRow()->id;
+        $pagina = (int) $this->db->table('site_paginas')->where('slug', 'consultas')->get()->getRow()->id;
         $this->db->table('site_secoes')->insert(['pagina_id' => $pagina, 'tipo' => 'faixa', 'ordem' => 50, 'dados' => json_encode(['titulo' => 'Ok'])]);
         $this->db->table('site_secoes')->insert(['pagina_id' => $pagina, 'tipo' => 'faixa', 'ordem' => 51, 'dados' => json_encode(['subtitulo' => 'sem título'])]);
         $ids = array_column($this->db->table('site_secoes')->where('tipo', 'faixa')->get()->getResultArray(), 'id');
@@ -413,7 +413,7 @@ class SiteTemplateGestaoTest extends CIUnitTestCase
         $this->assertSame((int) $ids[1], (int) $revisar[0]['id']);
         $this->assertArrayHasKey('titulo', $revisar[0]['erros']);
         $invalida = json_decode($this->db->table('site_secoes')->where('id', $ids[1])->get()->getRow()->dados, true);
-        $this->assertSame('sem título', $invalida['subtitulo'], 'nada do que o escritório escreveu é apagado, só reportado');
+        $this->assertSame('sem título', $invalida['subtitulo'], 'nada do que a clínica escreveu é apagado, só reportado');
     }
 
     public function testVoltarAoClassicoRestauraAExibicaoDasSecoes(): void
@@ -572,10 +572,10 @@ class SiteTemplateGestaoTest extends CIUnitTestCase
         $bytes = $this->servico()->exportar('classico', comConteudo: true);
         $seed = json_decode($this->listaZip($bytes)['classico/seed/content.json'], true);
 
-        $this->assertContains('direito-civil', array_column($seed['paginas'], 'slug'));
+        $this->assertContains('consultas', array_column($seed['paginas'], 'slug'));
         $home = array_values(array_filter($seed['paginas'], fn ($p) => $p['tipo'] === 'home'))[0];
         $cards = array_values(array_filter($home['secoes'], fn ($s) => $s['tipo'] === 'cards_areas'))[0];
-        $this->assertSame(['tipo' => 'pagina', 'slug' => 'direito-civil'], $cards['dados']['itens'][0]['link'], 'link por slug, não por id');
+        $this->assertSame(['tipo' => 'pagina', 'slug' => 'consultas'], $cards['dados']['itens'][0]['link'], 'link por slug, não por id');
         $this->assertSame('Início', $seed['menus']['rodape'][0]['rotulo']);
         $this->assertSame('inicio', $seed['menus']['rodape'][0]['pagina']);
         $this->assertArrayHasKey('contato.telefone', $seed['configuracoes']);

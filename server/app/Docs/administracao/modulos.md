@@ -1,6 +1,6 @@
 ---
 titulo: Módulos
-resumo: Ligar e desligar partes do sistema para todo o escritório, sem perder dados.
+resumo: Ligar e desligar partes do sistema para todo a clínica, sem perder dados.
 ordem: 20
 palavras_chave: [módulo, ativar, desativar, desligar]
 ---

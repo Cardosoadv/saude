@@ -2,7 +2,7 @@
   <div class="page-content animate-fade-in">
     <!-- Breadcrumb -->
     <div class="breadcrumb">
-      <a href="#" @click.prevent="$emit('set-view', 'fornecedores')">Ordo Juris</a>
+      <a href="#" @click.prevent="$emit('set-view', 'fornecedores')">Saúde</a>
       <i class="bi bi-chevron-right"></i>
       <a href="#" @click.prevent="$emit('set-view', 'fornecedores')">Fornecedores</a>
       <i class="bi bi-chevron-right"></i>
@@ -16,14 +16,6 @@
         <p>{{ isNew ? 'Cadastre um novo fornecedor ou parceiro' : 'Gerencie os dados e informações bancárias do fornecedor' }}</p>
       </div>
       <div style="display:flex;gap:.5rem;align-items:center;">
-        <button
-          v-if="podeEnriquecer"
-          class="btn btn-outline-primary"
-          @click="showEnriquecerModal = true"
-          :title="`Completar endereço e dados cadastrais pelo ${documentoDigitos.length === 14 ? 'CNPJ (Receita Federal)' : 'CPF (API Brasil)'}`"
-        >
-          <i class="bi bi-stars"></i> Enriquecer Dados
-        </button>
         <button
           v-if="!isNew && ehCliente"
           class="btn btn-outline-primary"
@@ -223,27 +215,14 @@
       @success="onTransformSuccess"
     />
 
-    <ModalEnriquecerCadastro
-      v-if="showEnriquecerModal && props.supplierId"
-      :show="showEnriquecerModal"
-      tipo="fornecedor"
-      :id="props.supplierId"
-      :nome="form.nome"
-      :documento="form.documento"
-      @close="showEnriquecerModal = false"
-      @toast="$emit('toast', $event)"
-      @aplicado="onEnriquecido"
-    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive, onMounted, computed } from 'vue'
-import { apiFetch, formatDate, formatDocument, formatPhone, generateMockSupplierDetail } from '../../services/api'
+import { apiFetch, formatDate, formatDocument, formatPhone } from '../../services/api'
 import ModalTransformarEmCliente from '../../components/modals/Fornecedores/ModalTransformarEmCliente.vue'
-import ModalEnriquecerCadastro from '../../components/Consultas/ModalEnriquecerCadastro.vue'
 import { liberado, pode } from '../../composables/useAcesso'
-import { documentoEnriquecivel, somenteDigitos } from '../../services/consultasApi'
 
 const props = defineProps({
   supplierId: { type: Number, default: null }
@@ -254,24 +233,9 @@ const emit = defineEmits(['set-view', 'toast', 'open-client-detail'])
 const isNew = computed(() => !props.supplierId)
 const saving = ref(false)
 const showTransformModal = ref(false)
-const showEnriquecerModal = ref(false)
 
-const documentoDigitos = computed(() => somenteDigitos(form.documento || ''))
 /** Cadastro único: o mesmo registro pode ser cliente/CRM e fornecedor. */
 const ehCliente = ref(false)
-/** Consultas (módulo gestão) + edição de fornecedores + CPF/CNPJ completo. */
-const podeEnriquecer = computed(() =>
-  !isNew.value && liberado('gestao', 'consultas.access') && pode('fornecedores.edit')
-  && documentoEnriquecivel(form.documento)
-)
-
-/** Campos já gravados pelo enriquecimento: reflete no formulário. */
-function onEnriquecido(campos: Record<string, string>) {
-  Object.entries(campos).forEach(([k, v]) => {
-    if (k in form) (form as Record<string, string>)[k] = v
-  })
-}
-
 function onTransformSuccess(payload: { clienteId: number; message: string }) {
   if (payload.clienteId) {
     emit('open-client-detail', payload.clienteId)
@@ -335,10 +299,7 @@ function formatPhoneInput() {
 async function loadDetails() {
   if (isNew.value) return
   try {
-    const res = await apiFetch(`fornecedores/detalhes/${props.supplierId}`).catch(() => ({
-      success: true,
-      data: generateMockSupplierDetail(props.supplierId)
-    }))
+    const res = await apiFetch(`fornecedores/detalhes/${props.supplierId}`)
     if (res && res.success) {
       Object.keys(form).forEach(k => {
         if (res.data[k] !== undefined && res.data[k] !== null) form[k] = String(res.data[k])

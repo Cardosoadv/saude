@@ -7,7 +7,7 @@ import type { SiteConfiguracoes } from '../src/types/site';
 
 const GRUPOS: SiteConfiguracoes = {
   identidade: [
-    { chave: 'identidade.nome', tipo: 'string', grupo: 'identidade', valor: 'Silva & Souza Advogados' },
+    { chave: 'identidade.nome', tipo: 'string', grupo: 'identidade', valor: 'Silva & Souza Profissionais' },
     { chave: 'identidade.logo', tipo: 'imagem', grupo: 'identidade', valor: '3' },
   ],
   contato: [
@@ -30,7 +30,7 @@ describe('estado e normalização', () => {
   it('monta o estado: padrões vazios, imagem numérica, unidades só com os campos conhecidos', () => {
     const e = estadoInicial(GRUPOS, TEXTOS);
 
-    expect(e['identidade.nome']).toBe('Silva & Souza Advogados');
+    expect(e['identidade.nome']).toBe('Silva & Souza Profissionais');
     expect(e['identidade.nome_curto']).toBe('');
     expect(e['identidade.logo']).toBe(3);
     expect(e['identidade.favicon']).toBeNull();
@@ -114,7 +114,7 @@ describe('validação local', () => {
     expect(validarLocal('integracoes.ga_id', 'UA-1234')).toMatch(/inválido/);
     expect(validarLocal('integracoes.ga_id', 'g-abc123')).toMatch(/inválido/);
     expect(validarLocal('integracoes.ga_id', '')).toBeNull();
-    expect(validarLocal('lgpd.encarregado_email', 'dpo@escritorio.adv.br')).toBeNull();
+    expect(validarLocal('lgpd.encarregado_email', 'dpo@clinica.com.br')).toBeNull();
     expect(validarLocal('lgpd.encarregado_email', 'dpo@')).toMatch(/inválido/);
     expect(validarLocal('lgpd.politica_versao', 'x'.repeat(21))).toMatch(/20/);
   });
@@ -143,8 +143,8 @@ describe('validação local', () => {
 describe('prévia no Google e textos', () => {
   it('título = título padrão + sufixo, cortado em 60; descrição em 160', () => {
     const p = previaGoogle({
-      'seo.titulo_padrao': 'Escritório de advocacia empresarial em São Paulo',
-      'seo.sufixo_titulo': ' | Silva & Souza Advogados',
+      'seo.titulo_padrao': 'Clínica de saúde integrada e humanizada em São Paulo',
+      'seo.sufixo_titulo': ' | Silva & Souza Profissionais',
       'seo.descricao_padrao': 'd'.repeat(200),
       'contato.site': 'https://www.silva.adv.br/',
     });

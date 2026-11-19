@@ -10,11 +10,11 @@ use CodeIgniter\Shield\Entities\User;
 use InvalidArgumentException;
 
 /**
- * Privacidade granular de processos, clientes e contratos.
+ * Privacidade granular de clientes e contratos.
  *
  * Um registro `restrito` só é visível para:
  *  - o responsável (`responsavel_id` da própria entidade);
- *  - os advogados listados em `acessos_entidades` (acesso de leitura e edição);
+ *  - os profissionais listados em `acessos_entidades` (acesso de leitura e edição);
  *  - usuários com a permissão `privacidade.bypass` (admin/superadmin).
  * Registros `publico` continuam visíveis para todos com acesso ao módulo.
  *
@@ -34,7 +34,6 @@ class AcessoEntidadeService
      * Mapa entidade → tabela, chave primária e prefixo de permissão do módulo.
      */
     public const TIPOS = [
-        'processo' => ['tabela' => 'processos', 'pk' => 'id_processo', 'permissao' => 'processos', 'repositorio' => \App\Repositories\ProcessosRepository::class],
         'cliente'  => ['tabela' => 'clientes', 'pk' => 'id_cliente', 'permissao' => 'clientes', 'repositorio' => \App\Repositories\ClienteRepository::class],
         'contrato' => ['tabela' => 'contratos', 'pk' => 'id_contrato', 'permissao' => 'contratos', 'repositorio' => \App\Repositories\ContratosRepository::class],
     ];
@@ -59,8 +58,8 @@ class AcessoEntidadeService
     /**
      * Indica se o escopo não se aplica: funcionalidade desligada, contexto de
      * sistema (sem usuário), permissão `privacidade.bypass` ou, informado o
-     * tipo, usuário "exclusive" do módulo (ex.: `processos.exclusive` sem
-     * `processos.access`), que já é restrito aos registros do próprio cliente.
+     * tipo, usuário "exclusive" do módulo (ex.: `clientes.exclusive` sem
+     * `clientes.access`), que já é restrito aos registros do próprio cliente.
      */
     public function ignoraEscopo(?int $userId = null, ?string $tipo = null): bool
     {
@@ -149,40 +148,6 @@ class AcessoEntidadeService
     private array $ocultosPorUsuario = [];
 
     /**
-     * Processos que o usuário NÃO vê, para filtrar listas montadas em PHP
-     * (intimações, tarefas, dashboard) a partir do vínculo com o processo.
-     * Null quando o escopo não se aplica.
-     *
-     * @return array{ids: array<int, true>, numeros: array<string, true>}|null
-     */
-    public function processosOcultos(?int $userId = null): ?array
-    {
-        $userId ??= user_id();
-        $condicao = $this->condicaoSql('processo', 'p', $userId);
-
-        if ($condicao === null) {
-            return null;
-        }
-
-        if (!isset($this->ocultosPorUsuario[$userId])) {
-            $tabela = $this->db->prefixTable('processos');
-            // CASE em vez de NOT: com responsavel_id nulo a condição vale NULL, e NOT NULL não seleciona a linha.
-            $linhas = $this->db->query("SELECT p.id_processo, p.numero_processo FROM {$tabela} p WHERE CASE WHEN {$condicao} THEN 0 ELSE 1 END = 1")->getResultArray();
-
-            $ocultos = ['ids' => [], 'numeros' => []];
-            foreach ($linhas as $linha) {
-                $ocultos['ids'][(int) $linha['id_processo']] = true;
-                if ($linha['numero_processo'] !== null && $linha['numero_processo'] !== '') {
-                    $ocultos['numeros'][(string) $linha['numero_processo']] = true;
-                }
-            }
-            $this->ocultosPorUsuario[$userId] = $ocultos;
-        }
-
-        return $this->ocultosPorUsuario[$userId];
-    }
-
-    /**
      * Verifica se o usuário pode ver/editar o registro. Registro inexistente
      * retorna false (o chamador deve responder 404 em ambos os casos, para não
      * revelar a existência de registros restritos).
@@ -230,7 +195,7 @@ class AcessoEntidadeService
     }
 
     /**
-     * Visibilidade, responsável e advogados com acesso a um registro.
+     * Visibilidade, responsável e profissionais com acesso a um registro.
      *
      * @return array{visibilidade: string, responsavel: array|null, usuarios: array}|null
      */
@@ -338,7 +303,7 @@ class AcessoEntidadeService
     public function concederAoCriador(string $tipo, int $id): void
     {
         $userId = user_id();
-        if (!$userId || !$this->ehAdvogadoAtivo($userId)) {
+        if (!$userId || !$this->ehProfissionalAtivo($userId)) {
             return;
         }
 
@@ -347,10 +312,10 @@ class AcessoEntidadeService
 
     /**
      * Herança opcional: copia a lista de acessos (e, se pedido, a visibilidade)
-     * do cliente para seus processos e contratos. Cópia pontual — alterações
+     * do cliente para seus contratos. Cópia pontual — alterações
      * posteriores no cliente não se propagam sozinhas.
      *
-     * @return array{processos: int, contratos: int} Quantidade de registros afetados.
+     * @return array{contratos: int} Quantidade de registros afetados.
      */
     public function propagarDoCliente(int $clienteId, ?int $concedidoPor = null, bool $copiarVisibilidade = false): array
     {
@@ -365,9 +330,9 @@ class AcessoEntidadeService
         }
         $usuarios = array_values(array_unique($usuarios));
 
-        $afetados = ['processos' => 0, 'contratos' => 0];
+        $afetados = ['contratos' => 0];
 
-        foreach (['processo' => 'processos', 'contrato' => 'contratos'] as $tipo => $chave) {
+        foreach (['contrato' => 'contratos'] as $tipo => $chave) {
             $meta = self::TIPOS[$tipo];
             $ids  = array_column(
                 $this->db->table($meta['tabela'])
@@ -396,13 +361,13 @@ class AcessoEntidadeService
 
     /**
      * Responsável atribuído a registros criados sem usuário logado (crons,
-     * filas). Null se não configurado ou se o usuário não for advogado ativo.
+     * filas). Null se não configurado ou se o usuário não for profissional ativo.
      */
     public function responsavelPadraoDoSistema(): ?int
     {
         $valor = trim((string) $this->configuracoes->getValor(self::CONFIG_RESPONSAVEL_PADRAO, ''));
 
-        if (!ctype_digit($valor) || !$this->ehAdvogadoAtivo((int) $valor)) {
+        if (!ctype_digit($valor) || !$this->ehProfissionalAtivo((int) $valor)) {
             return null;
         }
 
@@ -410,19 +375,19 @@ class AcessoEntidadeService
     }
 
     /**
-     * Advogado = usuário ativo que não pertence ao grupo `cliente`.
+     * Profissional = usuário ativo que não pertence ao grupo `cliente`.
      */
-    public function ehAdvogadoAtivo(int $userId): bool
+    public function ehProfissionalAtivo(int $userId): bool
     {
-        return $this->queryAdvogados()->where('u.id', $userId)->countAllResults() > 0;
+        return $this->queryProfissionais()->where('u.id', $userId)->countAllResults() > 0;
     }
 
     /**
-     * Lista advogados ativos para autocomplete (responsável e acessos).
+     * Lista profissionais ativos para autocomplete (responsável e acessos).
      */
-    public function buscarAdvogados(string $termo = '', int $limite = 20): array
+    public function buscarProfissionais(string $termo = '', int $limite = 20): array
     {
-        $builder = $this->queryAdvogados()->select('u.id, u.username');
+        $builder = $this->queryProfissionais()->select('u.id, u.username');
 
         if (trim($termo) !== '') {
             $builder->like('u.username', trim($termo));
@@ -431,7 +396,7 @@ class AcessoEntidadeService
         return $builder->orderBy('u.username', 'ASC')->limit(max(1, min($limite, 100)))->get()->getResultArray();
     }
 
-    protected function queryAdvogados(): BaseBuilder
+    protected function queryProfissionais(): BaseBuilder
     {
         $grupos = $this->db->protectIdentifiers('auth_groups_users', true);
 
@@ -479,8 +444,8 @@ class AcessoEntidadeService
     /**
      * As listagens ficam em cache (por usuário quando o escopo está ativo);
      * mudanças de visibilidade ou de acessos precisam invalidá-lo. Limpa os
-     * três porque as fichas se cruzam (ex.: a ficha do cliente lista os
-     * processos dele, em cache de clientes).
+     * dois porque as fichas se cruzam (ex.: a ficha do cliente lista os
+     * contratos dele, em cache de clientes).
      */
     protected function limparCache(string $tipo): void
     {

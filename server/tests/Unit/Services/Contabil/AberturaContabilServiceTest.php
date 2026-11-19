@@ -36,9 +36,9 @@ class AberturaContabilServiceTest extends CIUnitTestCase
         $forge = Database::forge($this->db);
 
         if (! $this->db->tableExists('acc_entities')) {
-            require_once dirname(__DIR__, 5) . '/contabil/src/Infrastructure/CodeIgniter/Database/Migrations/2026-10-20-000001_CreateCoreTables.php';
-            require_once dirname(__DIR__, 5) . '/contabil/src/Infrastructure/CodeIgniter/Database/Migrations/2026-10-20-000002_CreateEntryTables.php';
-            require_once dirname(__DIR__, 5) . '/contabil/src/Infrastructure/CodeIgniter/Database/Migrations/2026-10-20-000003_CreateSupportTables.php';
+            require_once dirname(__DIR__, 4) . '/vendor/cognitiotechny/contabil/src/Infrastructure/CodeIgniter/Database/Migrations/2026-10-20-000001_CreateCoreTables.php';
+            require_once dirname(__DIR__, 4) . '/vendor/cognitiotechny/contabil/src/Infrastructure/CodeIgniter/Database/Migrations/2026-10-20-000002_CreateEntryTables.php';
+            require_once dirname(__DIR__, 4) . '/vendor/cognitiotechny/contabil/src/Infrastructure/CodeIgniter/Database/Migrations/2026-10-20-000003_CreateSupportTables.php';
 
             (new CreateCoreTables($forge))->up();
             (new CreateEntryTables($forge))->up();

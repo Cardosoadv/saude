@@ -4,8 +4,6 @@ namespace App\Repositories;
 
 use App\Models\TarefasModel;
 use App\Models\ClientesModel;
-use App\Models\CasosModel;
-use App\Models\ProcessosModel;
 
 /**
  * Repositório responsável pelo acesso aos dados de tarefas.
@@ -23,29 +21,13 @@ class TarefasRepository extends BaseRepository
     private ClientesModel $clientesModel;
 
     /**
-     * Modelo de casos.
-     *
-     * @var CasosModel
-     */
-    private CasosModel $casosModel;
-
-    /**
-     * Modelo de processos.
-     *
-     * @var ProcessosModel
-     */
-    private ProcessosModel $processosModel;
-
-    /**
      * Construtor do TarefasRepository.
      */
-    public function __construct(?TarefasModel $model = null, ?ClientesModel $clientesModel = null, ?CasosModel $casosModel = null, ?ProcessosModel $processosModel = null)
+    public function __construct(?TarefasModel $model = null, ?ClientesModel $clientesModel = null)
     {
         parent::__construct();
         $this->model           = $model ?? model('TarefasModel');
         $this->clientesModel   = $clientesModel ?? model('ClientesModel');
-        $this->casosModel      = $casosModel ?? model('CasosModel');
-        $this->processosModel  = $processosModel ?? model('ProcessosModel');
         $this->cacheKey        = 'tarefas';
     }
 
@@ -64,13 +46,9 @@ class TarefasRepository extends BaseRepository
 
             $builder->select('tarefas.*');
             $builder->select('clientes.nome as cliente_nome, clientes.razao_social as cliente_razao_social');
-            $builder->select('casos.titulo as caso_titulo');
-            $builder->select('processos.numeroprocessocommascara as processo_numero');
             $builder->select('users.username as responsavel_username');
 
             $builder->join('clientes', 'clientes.id_cliente = tarefas.cliente_id', 'left');
-            $builder->join('casos', 'casos.id_caso = tarefas.caso_id', 'left');
-            $builder->join('processos', 'processos.id_processo = tarefas.processo_id', 'left');
             $builder->join('users', 'users.id = tarefas.responsavel', 'left');
 
             // Filtro por usuário
@@ -93,12 +71,6 @@ class TarefasRepository extends BaseRepository
                 switch ($filtros['vinculo']) {
                     case 'cliente':
                         $builder->where('tarefas.cliente_id IS NOT NULL');
-                        break;
-                    case 'caso':
-                        $builder->where('tarefas.caso_id IS NOT NULL');
-                        break;
-                    case 'processo':
-                        $builder->where('tarefas.processo_id IS NOT NULL');
                         break;
                 }
             }
@@ -153,17 +125,6 @@ class TarefasRepository extends BaseRepository
     public function inserir(array $dados)
     {
         return $this->create($dados);
-    }
-
-    /**
-     * Método dedicado para inserir tarefa originada de checklist.
-     *
-     * @param array $dados Dados da tarefa
-     * @return int|false ID da tarefa criada ou false
-     */
-    public function criarTarefaDeChecklist(array $dados)
-    {
-        return $this->inserir($dados);
     }
 
     /**
@@ -299,27 +260,18 @@ class TarefasRepository extends BaseRepository
         }
 
         // Verifica se a primeira tarefa já possui os campos do JOIN
-        $hasJoinData = isset($tarefas[0]['cliente_nome']) || isset($tarefas[0]['caso_titulo']) ||
-                      isset($tarefas[0]['processo_numero']) || isset($tarefas[0]['responsavel_username']);
+        $hasJoinData = isset($tarefas[0]['cliente_nome']) || isset($tarefas[0]['responsavel_username']);
 
         $clientesMap = [];
-        $casosMap = [];
-        $processosMap = [];
         $responsaveisMap = [];
 
         if (!$hasJoinData) {
             $clienteIds = [];
-            $casoIds = [];
-            $processoIds = [];
             $responsavelIds = [];
 
             foreach ($tarefas as $tarefa) {
                 if (!empty($tarefa['cliente_id'])) {
                     $clienteIds[] = $tarefa['cliente_id'];
-                } elseif (!empty($tarefa['caso_id'])) {
-                    $casoIds[] = $tarefa['caso_id'];
-                } elseif (!empty($tarefa['processo_id'])) {
-                    $processoIds[] = $tarefa['processo_id'];
                 }
                 if (!empty($tarefa['responsavel'])) {
                     $responsavelIds[] = $tarefa['responsavel'];
@@ -329,14 +281,6 @@ class TarefasRepository extends BaseRepository
             if (!empty($clienteIds)) {
                 $clientes = $this->clientesModel->whereIn('id_cliente', array_unique($clienteIds))->findAll();
                 $clientesMap = array_column($clientes, null, 'id_cliente');
-            }
-            if (!empty($casoIds)) {
-                $casos = $this->casosModel->whereIn('id_caso', array_unique($casoIds))->findAll();
-                $casosMap = array_column($casos, null, 'id_caso');
-            }
-            if (!empty($processoIds)) {
-                $processos = $this->processosModel->whereIn('id_processo', array_unique($processoIds))->findAll();
-                $processosMap = array_column($processos, null, 'id_processo');
             }
             if (!empty($responsavelIds)) {
                 $usersModel = model('UserModel');
@@ -363,24 +307,7 @@ class TarefasRepository extends BaseRepository
                     $tarefa['vinculo_info'] = $cliente['nome'] ?? $cliente['razao_social'] ?? 'Cliente não encontrado';
                 }
                 $tarefa['vinculo_url'] = $frontURL . 'clientes/editar/' . $tarefa['cliente_id'];
-            } elseif (!empty($tarefa['caso_id'])) {
-                $tarefa['vinculo_tipo'] = 'caso';
-                if ($hasJoinData) {
-                    $tarefa['vinculo_info'] = $tarefa['caso_titulo'] ?? 'Caso não encontrado';
-                } else {
-                    $caso = $casosMap[$tarefa['caso_id']] ?? null;
-                    $tarefa['vinculo_info'] = $caso['titulo'] ?? 'Caso não encontrado';
-                }
-                $tarefa['vinculo_url'] = $frontURL . 'casos/detalhes/' . $tarefa['caso_id'];
-            } elseif (!empty($tarefa['processo_id'])) {
-                $tarefa['vinculo_tipo'] = 'processo';
-                if ($hasJoinData) {
-                    $tarefa['vinculo_info'] = $tarefa['processo_numero'] ?? 'Processo não encontrado';
-                } else {
-                    $processo = $processosMap[$tarefa['processo_id']] ?? null;
-                    $tarefa['vinculo_info'] = $processo['numeroprocessocommascara'] ?? 'Processo não encontrado';
-                }
-                $tarefa['vinculo_url'] = $frontURL . 'processos/detalhes/' . $tarefa['processo_id'];
+
             }
 
             // Informações do Responsável

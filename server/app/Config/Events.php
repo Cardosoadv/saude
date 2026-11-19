@@ -70,11 +70,3 @@ Events::on('site.paginas.alterado', static function (): void {
 Events::on('site.conteudo.alterado', static function (): void {
     \App\Services\Site\SiteCache::invalidar();
 });
-
-/*
- * Liquidação: valores novos de um índice econômico recalculam as liquidações em aberto
- * que o usam (as homologadas, em pagamento e quitadas ficam como estão).
- */
-Events::on('indices_atualizados', static function (array $codigos): void {
-    (new \App\Services\LiquidacoesService())->recalcularPorIndices($codigos);
-});

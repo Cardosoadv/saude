@@ -28,7 +28,7 @@ trait PrivacidadeEntidadeTrait
 
     /**
      * beforeInsert: sem responsável informado, o responsável é quem cadastra
-     * (desde que seja um advogado ativo). Em contexto de sistema, usa o
+     * (desde que seja um profissional ativo). Em contexto de sistema, usa o
      * responsável padrão configurado.
      */
     protected function definirResponsavelPadrao(array $data): array
@@ -41,7 +41,7 @@ trait PrivacidadeEntidadeTrait
         $userId  = user_id();
 
         if ($userId) {
-            if ($acessos->ehAdvogadoAtivo((int) $userId)) {
+            if ($acessos->ehProfissionalAtivo((int) $userId)) {
                 $data['data']['responsavel_id'] = (int) $userId;
             }
 
@@ -53,7 +53,7 @@ trait PrivacidadeEntidadeTrait
 
     /**
      * beforeInsert: registros criados sem usuário logado (crons, filas,
-     * comandos — ex.: processos importados do DJE) recebem o responsável
+     * comandos e importações) recebem o responsável
      * padrão configurado em `privacidade_responsavel_padrao`. Sem isso, um
      * registro restrito sem responsável ficaria visível só para admins.
      */

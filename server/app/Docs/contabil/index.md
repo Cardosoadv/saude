@@ -8,7 +8,7 @@ telas: [contabil]
 palavras_chave: [contábil, contabilidade, livro diário, razão, balancete, dre, balanço patrimonial, plano de contas, partidas dobradas, exercícios fiscais]
 ---
 
-A seção **Contábil** do menu reúne o controle contábil oficial do escritório, integrando
+A seção **Contábil** do menu reúne o controle contábil oficial da clínica, integrando
 as operações financeiras diárias às normas de contabilidade em partidas dobradas:
 
 | Tela | Para que serve |
@@ -26,7 +26,7 @@ as operações financeiras diárias às normas de contabilidade em partidas dobr
   mantendo a equação fundamental `Ativo = Passivo + Patrimônio Líquido`. A soma dos débitos é
   sempre idêntica à soma dos créditos.
 - **Entidade Contábil**: a contabilidade é estruturada por entidade jurídica (no padrão da banca,
-  Cardoso & Bruno Advogados).
+  Clínica Saúde).
 - **Imutabilidade e Rastreabilidade**: lançamentos contábeis já escriturados nunca são apagados
   ou editados diretamente. Retificações são realizadas exclusivamente por lançamentos de estorno
   com registro de justificativa, data e usuário responsável.

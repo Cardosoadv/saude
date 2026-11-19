@@ -1,5 +1,5 @@
 /**
- * Service Worker — Ordo Juris (PWA, fase 1)
+ * Service Worker — Saúde (PWA, fase 1)
  *
  * Guarda em cache só o "casco" do app (vue.html, config.js, manifest e ícones)
  * para abrir sem conexão e permitir a instalação. Requisições à API e a
@@ -11,10 +11,10 @@
  * nova e o app exibir o aviso "Nova versão disponível".
  */
 const VERSAO = '__BUILD_VERSION__';
-const PREFIXO = 'ordojuris-shell-';
+const PREFIXO = 'saude-shell-';
 const CACHE = PREFIXO + VERSAO;
 
-/** Base do escopo (ex.: https://cardosoebruno.adv.br/sistema/). */
+/** Base do escopo (ex.: https://exemplo.com.br/sistema/). */
 const BASE = new URL('./', self.location.href);
 const url = (caminho) => new URL(caminho, BASE).href;
 
@@ -98,7 +98,7 @@ self.addEventListener('fetch', (event) => {
 
   const destino = new URL(request.url);
   destino.hash = '';
-  // Fora da origem ou fora do escopo (inclui a API em /ordo/...): não intercepta.
+  // Fora da origem ou fora do escopo (inclui a API em /api/...): não intercepta.
   if (destino.origin !== BASE.origin || !destino.pathname.startsWith(BASE.pathname)) return;
 
   // Abertura do app (/sistema/, /sistema/vue.html ou qualquer rota reescrita pelo .htaccess).
@@ -123,7 +123,7 @@ self.addEventListener('fetch', (event) => {
 
 // ─── Notificações push (fase 3) ───────────────────────────────────────────
 // O servidor envia JSON cifrado: { title, body, url, tag, timestamp }. `url` é uma rota
-// do painel (ex.: "#/intimacoes/detalhes/10"), relativa à pasta do app.
+// do painel (ex.: "#/tarefas"), relativa à pasta do app.
 
 self.addEventListener('push', (event) => {
   let dados = {};
@@ -133,13 +133,13 @@ self.addEventListener('push', (event) => {
     dados = { body: event.data ? event.data.text() : '' };
   }
 
-  const titulo = dados.title || 'Ordo Juris';
+  const titulo = dados.title || 'Saúde';
   event.waitUntil(self.registration.showNotification(titulo, {
     body: dados.body || '',
     icon: url('icons/icon-192.png'),
     badge: url('icons/badge-96.png'),
     tag: dados.tag || undefined,
-    // Mesmo tag (ex.: "intimacoes"): substitui o aviso anterior em vez de empilhar, mas avisa de novo.
+    // Mesmo tag (ex.: "prazos"): substitui o aviso anterior em vez de empilhar, mas avisa de novo.
     renotify: Boolean(dados.tag),
     timestamp: dados.timestamp || Date.now(),
     lang: 'pt-BR',

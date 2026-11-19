@@ -1,13 +1,12 @@
 /**
  * Cliente tipado da API administrativa do site (`api/v2/site/admin/*`).
  * Respostas: `{ data, avisos? }`; erros de validação (422) trazem `messages` por
- * caminho de campo (ver `errosDeCampo`). Contrato: docs/api-site-admin.md (ordojuris).
+ * caminho de campo (ver `errosDeCampo`). Contrato: docs/api-site-admin.md.
  */
 import { apiFetch, ApiError, BASE_URL } from './api'
-import { cabecalhosDeTenant } from './tenant'
 import type {
   SiteConfiguracoes, SiteMenuItem, SiteMenus, SiteMidia, SiteMidiaPager, SiteMidiaUso,
-  SiteNoticiaCategoria, SiteNoticiaCategoriaEntrada,
+  SiteNoticia, SiteNoticiaCategoria, SiteNoticiaCategoriaEntrada, SiteNoticiaEntrada, SiteNoticiaLista,
   SitePagina, SitePaginaEntrada, SiteResposta, SiteSecao, SiteSecaoEntrada, SiteTema,
   SiteTemplate, SiteTemplateAtivacao, SiteTemplateResumo, TemplateSchema,
 } from '../types/site'
@@ -113,10 +112,6 @@ export const tokenPreview = (id: number) =>
 export const listarCategoriasNoticias = (busca?: string) =>
   apiFetch<SiteResposta<SiteNoticiaCategoria[]>>(`${RAIZ}/noticias/categorias${consulta({ busca })}`)
 
-/** Sugere meta título e meta descrição pela IA a partir do conteúdo da notícia (nada é gravado). */
-export const gerarMetatagsNoticia = (entrada: { title: string; content: string }) =>
-  apiFetch<SiteResposta<{ summary: string; meta_title: string; meta_description: string }>>(`${RAIZ}/noticias/metatags`, json('POST', entrada))
-
 export const criarCategoriaNoticia = (entrada: SiteNoticiaCategoriaEntrada) =>
   apiFetch<SiteResposta<SiteNoticiaCategoria>>(`${RAIZ}/noticias/categorias`, json('POST', entrada))
 
@@ -127,6 +122,23 @@ export const atualizarCategoriaNoticia = (id: number, entrada: SiteNoticiaCatego
 /** 422 em `categoria` se ainda houver notícias nela. */
 export const excluirCategoriaNoticia = (id: number) =>
   apiFetch<{ id: number; message: string }>(`${RAIZ}/noticias/categorias/${id}`, json('DELETE'))
+
+// ---------------------------------------------------------------- notícias
+
+export const listarNoticias = (filtro: { search?: string; page?: number; limit?: number } = {}) =>
+  apiFetch<SiteNoticiaLista>(`${RAIZ}/noticias${consulta(filtro)}`)
+
+export const obterNoticia = (id: number) =>
+  apiFetch<SiteResposta<SiteNoticia>>(`${RAIZ}/noticias/${id}`)
+
+export const criarNoticia = (entrada: SiteNoticiaEntrada) =>
+  apiFetch<{ id: number; message: string }>(`${RAIZ}/noticias`, json('POST', entrada))
+
+export const atualizarNoticia = (id: number, entrada: SiteNoticiaEntrada) =>
+  apiFetch<{ message: string }>(`${RAIZ}/noticias/${id}`, json('PUT', entrada))
+
+export const excluirNoticia = (id: number) =>
+  apiFetch<{ id: number; message: string }>(`${RAIZ}/noticias/${id}`, json('DELETE'))
 
 // ---------------------------------------------------------------- seções
 
@@ -214,7 +226,6 @@ export function instalarTemplateComProgresso(zip: File | Blob, aoProgredir: (fra
     xhr.timeout = 120000
     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
     xhr.setRequestHeader('Accept', 'application/json')
-    for (const [nome, valor] of Object.entries(cabecalhosDeTenant())) xhr.setRequestHeader(nome, valor)
     const csrf = document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content
     if (csrf) xhr.setRequestHeader('X-CSRF-TOKEN', csrf)
 

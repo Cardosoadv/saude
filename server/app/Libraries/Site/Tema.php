@@ -7,10 +7,10 @@ namespace App\Libraries\Site;
 use Config\SiteTemplate;
 
 /**
- * Tema visual do site: cores e fontes que o escritório pode trocar sem mexer no template.
+ * Tema visual do site: cores e fontes que a clínica pode trocar sem mexer no template.
  *
  * O template declara os tokens e seus padrões em `template.json → tema`
- * (`cores`, `fontes`, `fontes_url`); o escritório sobrescreve em
+ * (`cores`, `fontes`, `fontes_url`); a clínica sobrescreve em
  * `tema.cores.<token>` e `tema.fontes.<token>` nas configurações. Aqui saem:
  *  - o CSS (`:root{--token:valor}`) só dos tokens sobrescritos;
  *  - a URL do Google Fonts com as famílias em uso;

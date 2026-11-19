@@ -84,8 +84,8 @@
                 </label>
 
                 <label class="d-flex align-items-center justify-content-between" style="cursor:pointer;">
-                  <span style="font-weight: 500; font-size: 0.9rem;">Advogado</span>
-                  <input type="checkbox" v-model="form.is_lawyer" style="width:18px; height:18px; accent-color:var(--accent);" />
+                  <span style="font-weight: 500; font-size: 0.9rem;">Profissional</span>
+                  <input type="checkbox" v-model="form.is_profissional" style="width:18px; height:18px; accent-color:var(--accent);" />
                 </label>
               </div>
             </div>
@@ -138,15 +138,15 @@
                 />
               </div>
 
-              <!-- OAB Details (Displays only if is_lawyer checked) -->
-              <div v-if="form.is_lawyer" class="card" style="padding: 12px; border: 1px dashed var(--accent); background: rgba(var(--accent-rgb), 0.05); display: grid; grid-template-columns: 2fr 1fr; gap: 8px;">
+              <!-- Registro no conselho profissional (somente se "profissional" estiver marcado) -->
+              <div v-if="form.is_profissional" class="card" style="padding: 12px; border: 1px dashed var(--accent); background: rgba(var(--accent-rgb), 0.05); display: grid; grid-template-columns: 2fr 1fr; gap: 8px;">
                 <div class="form-group" style="margin:0;">
-                  <label class="form-label required-field" style="font-size:0.8rem;">Número da OAB</label>
+                  <label class="form-label required-field" style="font-size:0.8rem;">Registro no conselho (CRM, CRO, CRMV...)</label>
                   <input
                     type="text"
                     class="form-control"
-                    v-model="form.oab_numero"
-                    placeholder="Ex: 123456"
+                    v-model="form.registro_numero"
+                    placeholder="Ex: CRM 123456"
                     style="padding: 6px 10px;"
                   />
                 </div>
@@ -155,7 +155,7 @@
                   <input
                     type="text"
                     class="form-control"
-                    v-model="form.oab_uf"
+                    v-model="form.registro_uf"
                     placeholder="UF"
                     maxlength="2"
                     style="padding: 6px 10px; text-transform: uppercase;"
@@ -326,7 +326,7 @@ const form = reactive({
   pass_confirm: '',
   active: props.userData ? (props.userData.active == 1) : true,
   rateio_ativo: props.userData ? (props.userData.rateio_ativo == 1) : false,
-  is_lawyer: props.userData ? (props.userData.is_lawyer == 1) : false,
+  is_profissional: props.userData ? (props.userData.is_profissional == 1) : false,
   responsavel_tarefas: props.userData ? (props.userData.responsavel_tarefas == 1) : true,
   exibir_site: props.userData ? (props.userData.exibir_site == 1) : false,
   site_ordem: Number(props.userData?.site_ordem || 0),
@@ -337,8 +337,8 @@ const form = reactive({
   curriculo: props.userData?.curriculo || '',
   lattes_url: props.userData?.lattes_url || '',
   linkedin_url: props.userData?.linkedin_url || '',
-  oab_numero: props.userData?.oab_numero || '',
-  oab_uf: props.userData?.oab_uf || '',
+  registro_numero: props.userData?.registro_numero || '',
+  registro_uf: props.userData?.registro_uf || '',
   groups: props.userData?.groups ? [...props.userData.groups] : [],
   permissions: props.userData?.permissions ? [...props.userData.permissions] : []
 })
@@ -422,13 +422,13 @@ function onSubmit() {
   }
 
   // Lawyer validations
-  if (form.is_lawyer) {
-    if (!form.oab_numero || !form.oab_numero.trim()) {
-      emit('warn', 'Para advogados, o número da OAB é obrigatório.')
+  if (form.is_profissional) {
+    if (!form.registro_numero || !form.registro_numero.trim()) {
+      emit('warn', 'Para profissionais, o registro no conselho é obrigatório.')
       return
     }
-    if (!form.oab_uf || !form.oab_uf.trim()) {
-      emit('warn', 'Para advogados, a UF da OAB é obrigatória.')
+    if (!form.registro_uf || !form.registro_uf.trim()) {
+      emit('warn', 'Para profissionais, a UF do registro é obrigatória.')
       return
     }
   }

@@ -124,14 +124,14 @@ class NoticiaCategoriaServiceTest extends CIUnitTestCase
 
     public function testCriarGeraSlugDoNomeSemAcentoEUnico(): void
     {
-        $a = $this->servico()->criar(['name' => '  Direito Previdenciário ', 'meta_description' => '']);
-        $b = $this->servico()->criar(['name' => 'Direito previdenciario!']);
+        $a = $this->servico()->criar(['name' => '  Clínica Geral ', 'meta_description' => '']);
+        $b = $this->servico()->criar(['name' => 'Clinica geral!']);
 
-        $this->assertSame('Direito Previdenciário', $a['name']);
-        $this->assertSame('direito-previdenciario', $a['slug']);
+        $this->assertSame('Clínica Geral', $a['name']);
+        $this->assertSame('clinica-geral', $a['slug']);
         $this->assertNull($a['meta_description']);
         $this->assertSame(0, $a['total_noticias']);
-        $this->assertSame('direito-previdenciario-2', $b['slug']);
+        $this->assertSame('clinica-geral-2', $b['slug']);
     }
 
     public function testCriarRecusaDadosInvalidos(): void
@@ -156,16 +156,16 @@ class NoticiaCategoriaServiceTest extends CIUnitTestCase
         $this->assertSame('Nova', $r['meta_description']);
         $this->assertSame('trabalhista', $r['slug']);
 
-        $r = $this->servico()->atualizar($c['id'], ['slug' => 'direito-do-trabalho']);
-        $this->assertSame('direito-do-trabalho', $r['slug']);
+        $r = $this->servico()->atualizar($c['id'], ['slug' => 'saude-ocupacional']);
+        $this->assertSame('saude-ocupacional', $r['slug']);
         $this->assertSame('Trabalhista', $r['name']);
 
-        $r = $this->servico()->atualizar($c['id'], ['name' => 'Direito do Trabalho', 'slug' => '']);
-        $this->assertSame('direito-do-trabalho', $r['slug'], 'slug vazio regenera do nome, sem colidir consigo mesma');
+        $r = $this->servico()->atualizar($c['id'], ['name' => 'Saúde Ocupacional', 'slug' => '']);
+        $this->assertSame('saude-ocupacional', $r['slug'], 'slug vazio regenera do nome, sem colidir consigo mesma');
 
         $outra = $this->servico()->criar(['name' => 'Tributário']);
-        $this->assertArrayHasKey('name', $this->erros(fn () => $this->servico()->atualizar($outra['id'], ['name' => 'direito do trabalho'])));
-        $this->assertArrayHasKey('slug', $this->erros(fn () => $this->servico()->atualizar($outra['id'], ['slug' => 'direito-do-trabalho'])));
+        $this->assertArrayHasKey('name', $this->erros(fn () => $this->servico()->atualizar($outra['id'], ['name' => 'saúde ocupacional'])));
+        $this->assertArrayHasKey('slug', $this->erros(fn () => $this->servico()->atualizar($outra['id'], ['slug' => 'saude-ocupacional'])));
     }
 
     public function testListarOrdenaPorNomeContaNoticiasEFiltra(): void
@@ -262,8 +262,8 @@ class NoticiaCategoriaServiceTest extends CIUnitTestCase
         $this->assertSame(200, $this->json('show', null, [$id])->response()->getStatusCode());
         $this->assertSame(404, $this->json('show', null, [99999])->response()->getStatusCode());
 
-        $r = $this->json('update', ['meta_description' => 'Direito de família.'], [$id]);
-        $this->assertSame('Direito de família.', $this->corpo($r)['data']['meta_description']);
+        $r = $this->json('update', ['meta_description' => 'Saúde da família.'], [$id]);
+        $this->assertSame('Saúde da família.', $this->corpo($r)['data']['meta_description']);
 
         $this->noticia($id);
         $this->assertSame(422, $this->json('destroy', null, [$id])->response()->getStatusCode());

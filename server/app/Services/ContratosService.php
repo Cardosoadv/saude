@@ -49,9 +49,6 @@ class ContratosService extends BaseService
         if (isset($dados['valor'])) {
             $dados['valor'] = $this->formatarValorParaBanco($dados['valor']);
         }
-        if (isset($dados['honorarios_exito'])) {
-            $dados['honorarios_exito'] = $this->formatarValorParaBanco($dados['honorarios_exito']);
-        }
 
         if (!isset($dados['status'])) {
             $dados['status'] = 'Ativo';
@@ -77,9 +74,6 @@ class ContratosService extends BaseService
     {
         if (isset($dados['valor'])) {
             $dados['valor'] = $this->formatarValorParaBanco($dados['valor']);
-        }
-        if (isset($dados['honorarios_exito'])) {
-            $dados['honorarios_exito'] = $this->formatarValorParaBanco($dados['honorarios_exito']);
         }
 
         $this->db->transStart();
@@ -239,26 +233,6 @@ class ContratosService extends BaseService
             ];
         }
         return $dadosCsv;
-    }
-
-    public function vincularProcesso(int $contratoId, int $processoId): bool
-    {
-        return $this->repository->vincularProcesso($contratoId, $processoId);
-    }
-
-    public function vincularCaso(int $contratoId, int $casoId): bool
-    {
-        return $this->repository->vincularCaso($contratoId, $casoId);
-    }
-
-    public function desvincularProcesso(int $processoId): bool
-    {
-        return $this->repository->desvincularProcesso($processoId);
-    }
-
-    public function desvincularCaso(int $casoId): bool
-    {
-        return $this->repository->desvincularCaso($casoId);
     }
 
     /**

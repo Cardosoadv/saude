@@ -244,6 +244,6 @@
 .equipe-card { height: 100%; padding: 1.5rem; border: 1px solid rgba(var(--gold-rgb), 0.25); border-radius: 8px; }
 .equipe-foto { display: block; width: 100%; max-width: 220px; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: center top; border-radius: 8px; margin-bottom: 1rem; }
 .equipe-nome { font-family: var(--font-serif); font-size: 1.4rem; margin-bottom: 0.25rem; }
-.equipe-cargo, .equipe-oab { margin-bottom: 0.25rem; font-weight: 500; }
+.equipe-cargo, .equipe-registro { margin-bottom: 0.25rem; font-weight: 500; }
 .equipe-bio, .equipe-detalhe { font-size: 0.95rem; margin: 0.75rem 0 0; }
 .equipe-links { margin: 0.75rem 0 0; display: flex; gap: 1rem; flex-wrap: wrap; }

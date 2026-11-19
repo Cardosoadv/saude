@@ -2,7 +2,7 @@
   <div class="page-content animate-fade-in">
     <!-- Breadcrumb -->
     <div class="breadcrumb">
-      <a href="#/dashboard" @click.exact.prevent="$emit('set-view', 'dashboard')">Ordo Juris</a>
+      <a href="#/dashboard" @click.exact.prevent="$emit('set-view', 'dashboard')">Saúde</a>
       <i class="bi bi-chevron-right"></i>
       <span>Lista de Clientes</span>
     </div>
@@ -11,7 +11,7 @@
     <div class="page-header">
       <div>
         <h1>Clientes & CRM</h1>
-        <p>Gerenciamento da carteira de clientes e temperatura comercial da Cardoso & Bruno Sociedade de Advogados</p>
+        <p>Gerenciamento da carteira de clientes e temperatura comercial da Clínica Saúde</p>
       </div>
       <a href="#/clientes/novo" class="btn btn-primary" @click.exact.prevent="$emit('open-detail', null)">
         <i class="bi bi-plus-circle"></i> Novo Cliente
@@ -103,7 +103,7 @@
             <div class="process-main" @click="$emit('open-detail', cliente.id_cliente)">
               <a :href="'#/clientes/editar/' + cliente.id_cliente" class="process-cnj" @click.exact.prevent.stop="$emit('open-detail', cliente.id_cliente)">
                 <i v-if="cliente.visibilidade === 'publico'" class="bi bi-globe2" style="font-size:.8em; color:var(--ink-muted); margin-right:4px;"
-                  title="Público: visível para todos os advogados" aria-label="Público"></i>
+                  title="Público: visível para todos os profissionais" aria-label="Público"></i>
                 {{ cliente.nome }}
               </a>
               <div class="process-title" v-if="cliente.razao_social && cliente.razao_social !== cliente.nome">

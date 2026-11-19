@@ -82,58 +82,6 @@ class Auth extends ShieldAuth
         'group_denied'      => '/',
     ];
 
-
-    /**
-     * Configura as rotas baseadas no tenant atual
-     */
-    protected function configureTenantRoutes(): void
-    {
-        // 1. Tenta identificar o tenant pela BaseURL (caso do .env específico)
-        $baseUrl = base_url();
-        $path = parse_url($baseUrl, PHP_URL_PATH);
-        $pathSegments = array_filter(explode('/', trim($path ?? '', '/')));
-        $lastSegment = end($pathSegments);
-
-        if ($lastSegment && $this->isTenantSegment($lastSegment)) {
-            // Tenant está na BaseURL, não precisamos prefixar os redirects
-            // pois o site_url() já incluirá o tenant
-            // Apenas garantimos que os redirects apontem para a raiz do tenant corretamente
-            return;
-        }
-
-        // 2. Tenta identificar o tenant pelo primeiro segmento da URI (caso multi-tenant no mesmo domínio)
-        $uri = service('request')->getUri();
-        $segments = $uri->getSegments();
-
-        // Se o primeiro segmento for um tenant (crbio04)
-        if (!empty($segments[0]) && $this->isTenantSegment($segments[0])) {
-            $tenant = $segments[0];
-
-            // Atualiza todas as rotas com o prefixo do tenant
-            $this->redirects = [
-                'register'          => $tenant . '/',
-                'login'             => $tenant . '/',
-                'logout'            => $tenant . '/login',
-                'force_reset'       => $tenant . '/',
-                'permission_denied' => $tenant . '/',
-                'group_denied'      => $tenant . '/',
-            ];
-        }
-    }
-
-    /**
-     * Verifica se o segmento é um tenant válido
-     * Você pode melhorar isso consultando o banco de dados
-     */
-    protected function isTenantSegment(string $segment): bool
-    {
-        // Lista de tenants conhecidos
-        // Você pode carregar isso do .env ou banco de dados
-        $validTenants = ['crbio04'];
-
-        return in_array($segment, $validTenants, true);
-    }
-
     /**
      * --------------------------------------------------------------------
      * Authentication Actions
@@ -210,9 +158,8 @@ class Auth extends ShieldAuth
     public function __construct()
     {
         parent::__construct();
-        // Detecta o tenant e ajusta as rotas
-        $this->configureTenantRoutes();
-        $this->allowRegistration = ENVIRONMENT === 'development';
+        // Usuários são cadastrados por um administrador; não há autocadastro.
+        $this->allowRegistration = false;
     }
 
 

@@ -20,10 +20,7 @@ class ClienteService extends BaseService
      * chave => [slug do módulo, permissões aceitas]. Ver VisibilidadeModulosService.
      */
     public const BLOCOS_DETALHE = [
-        'processos'     => ['processos', 'processos.access', 'processos.exclusive'],
-        'casos'         => ['casos', 'casos.access'],
         'movimentacoes' => ['financeiro', 'financeiro.access'],
-        'intimacoes'    => ['intimacoes', 'intimacoes.access'],
     ];
 
     use FormataDocumentoTrait;
@@ -155,56 +152,6 @@ class ClienteService extends BaseService
     }
 
     /**
-     * Busca processos de um cliente.
-     *
-     * @param int $clienteId
-     * @param int $limit
-     * @return array
-     */
-    public function obterProcessosCliente(int $clienteId, int $limit = 5): array
-    {
-        return $this->repository->buscarProcessosCliente($clienteId, $limit); 
-    }
-
-    /**
-     * Busca casos de um cliente.
-     *
-     * @param int $clienteId
-     * @param int $limit
-     * @return array
-     */
-    public function obterCasosCliente(int $clienteId, int $limit = 5): array
-    {
-        return $this->repository->buscarCasosCliente($clienteId, $limit);
-    }
-
-    /**
-     * Busca anotações de um cliente.
-     *
-     * @param int $clienteId
-     * @param int $limit
-     * @return array
-     */
-    public function obterAnotacoesCliente(int $clienteId, int $limit = 5): array
-    {
-        $anotacoes = $this->repository->buscarAnotacoesCliente($clienteId, $limit);
-
-        // Formata as datas
-        return array_map(function ($anotacao) {
-            $anotacao['data_formatada'] = !empty($anotacao['created_at'])
-                ? date('d/m/Y H:i', strtotime($anotacao['created_at']))
-                : 'N/A';
-
-            // Limita o conteúdo se for muito longo
-            if (!empty($anotacao['conteudo']) && strlen($anotacao['conteudo']) > 100) {
-                $anotacao['conteudo'] = substr($anotacao['conteudo'], 0, 100);
-            }
-
-            return $anotacao;
-        }, $anotacoes);
-    }
-
-    /**
      * Busca movimentações financeiras de um cliente.
      *
      * @param int $clienteId
@@ -225,29 +172,6 @@ class ClienteService extends BaseService
 
             return $mov;
         }, $movimentacoes);
-    }
-
-    /**
-     * Busca intimações de um cliente.
-     *
-     * @param int $clienteId
-     * @param int $limit
-     * @return array
-     */
-    public function obterIntimacoesCliente(int $clienteId, int $limit = 5): array
-    {
-        $intimacoes = $this->repository->buscarIntimacoesCliente($clienteId, $limit);
-
-        // Formata as datas
-        return array_map(function ($intimacao) {
-            $intimacao['data_formatada'] = !empty($intimacao['data_intimacao'])
-                ? date('d/m/Y', strtotime($intimacao['data_intimacao']))
-                : 'N/A';
-
-            $intimacao['urgente'] = (bool) ($intimacao['urgente'] ?? false);
-
-            return $intimacao;
-        }, $intimacoes);
     }
 
     public function obterOrigens(): array
@@ -364,19 +288,6 @@ class ClienteService extends BaseService
      */
     public function deletarCliente(int $id): void
     {
-        // Verifica se o cliente tem processos ou casos vinculados
-        $stats = $this->repository->buscarEstatisticasCliente($id);
-
-        if ($stats['processos'] > 0 || $stats['casos'] > 0) {
-            throw new Exception(
-                'Não é possível excluir este cliente pois existem '
-                    . ($stats['processos'] > 0 ? $stats['processos'] . ' processo(s)' : '')
-                    . ($stats['processos'] > 0 && $stats['casos'] > 0 ? ' e ' : '')
-                    . ($stats['casos'] > 0 ? $stats['casos'] . ' caso(s)' : '')
-                    . ' vinculado(s).'
-            );
-        }
-
         if (!$this->delete($id)) {
             throw new Exception('Erro ao excluir cliente.');
         }

@@ -11,7 +11,7 @@ use App\Repositories\Site\SitePaginaRepository;
 use App\Services\NewsService;
 
 /**
- * Monta o /llms.txt (https://llmstxt.org): um resumo em markdown do escritório para assistentes
+ * Monta o /llms.txt (https://llmstxt.org): um resumo em markdown da clínica para assistentes
  * de IA, gerado do banco: configurações (`identidade.*`, `contato.*`, `seo.*`), páginas publicadas
  * e últimas notícias. Páginas em rascunho, fora do sitemap (noindex), a área e o painel do cliente
  * e o `/sistema/` nunca aparecem.
@@ -77,7 +77,7 @@ class LlmsTxtService
         return $this->linha((string) $this->configuracoes->obter('identidade.nome', ''), 'Site');
     }
 
-    /** Parágrafo de apresentação: `seo.llms_resumo`, senão a descrição padrão de SEO, senão o texto do rodapé; com CNPJ e OAB. */
+    /** Parágrafo de apresentação: `seo.llms_resumo`, senão a descrição padrão de SEO, senão o texto do rodapé; com CNPJ e registro profissional. */
     protected function resumo(): string
     {
         $texto = '';
@@ -88,9 +88,9 @@ class LlmsTxtService
             }
         }
 
-        $registro = [];
-        $oab = (string) ($this->configuracoes->obter('identidade.registro_oab', '') ?: $this->configuracoes->obter('identidade.oab', ''));
-        foreach (['CNPJ' => Cnpj::formatar((string) $this->configuracoes->obter('identidade.cnpj', '')), 'OAB' => $oab] as $rotulo => $valor) {
+        $registro        = [];
+        $registroClinica = (string) $this->configuracoes->obter('identidade.registro_profissional', '');
+        foreach (['CNPJ' => Cnpj::formatar((string) $this->configuracoes->obter('identidade.cnpj', '')), 'Registro' => $registroClinica] as $rotulo => $valor) {
             $valor = $this->linha($valor);
             if ($valor !== '') {
                 $registro[] = "{$rotulo}: {$valor}";

@@ -9,7 +9,7 @@
     <div class="page-header">
       <div>
         <h1>{{ isNew ? 'Novo Contrato' : form.objeto || 'Carregando...' }}</h1>
-        <p v-if="!isNew">#{{ form.numero_contrato }} — Gerenciamento de vigência e honorários</p>
+        <p v-if="!isNew">#{{ form.numero_contrato }} — Gerenciamento de vigência e valores</p>
       </div>
       <div class="page-header-actions">
         <button class="btn btn-ghost" @click="$emit('set-view', 'contratos')">Cancelar</button>
@@ -81,12 +81,12 @@
                 <label class="form-label required-field"><i class="bi bi-bookmark"></i> Tipo de Contrato</label>
                 <select class="form-control form-select" v-model="form.tipo_contrato" required>
                   <option value="">Selecione o tipo</option>
-                  <option value="Honorários">Honorários</option>
+                  <option value="Mensalidade">Mensalidade</option>
+                  <option value="Plano de tratamento">Plano de tratamento</option>
+                  <option value="Convênio">Convênio</option>
+                  <option value="Pacote de sessões">Pacote de sessões</option>
                   <option value="Consultoria">Consultoria</option>
-                  <option value="Assessoria">Assessoria</option>
-                  <option value="Êxito">Êxito</option>
-                  <option value="Misto">Misto</option>
-                  <option value="Pro Bono">Pro Bono</option>
+                  <option value="Outro">Outro</option>
                 </select>
               </div>
               <div class="form-group" style="flex: 2;">
@@ -128,13 +128,6 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="form-label"><i class="bi bi-percent"></i> Honorários de Êxito</label>
-                <div style="display: flex; align-items: center; border: 1px solid var(--border-color); border-radius: 4px; overflow: hidden;">
-                  <input type="number" step="0.01" class="form-control" v-model="form.honorarios_exito" style="border: none;" placeholder="0.00">
-                  <span style="padding: 0.5rem; background: var(--bg-alt); border-left: 1px solid var(--border-color);">%</span>
-                </div>
-              </div>
-              <div class="form-group">
                 <label class="form-label required-field"><i class="bi bi-credit-card"></i> Forma de Pgto</label>
                 <select class="form-control form-select" v-model="form.forma_pagamento" required>
                   <option value="">Selecione</option>
@@ -166,25 +159,10 @@
                   <option value="Cancelado">Cancelado</option>
                 </select>
               </div>
-                                <div class="form-group">
-                    <label class="form-label"><i class="bi bi-briefcase"></i> Área de Atuação</label>
-                    <select class="form-control form-select" v-model="form.area_atuacao">
-                      <option value="">Selecione o Ramo do Direito...</option>
-                      <template v-for="ramo in ramos" :key="ramo.id">
-                        <option :value="String(ramo.id)" class="option-parent">{{ ramo.nome }}</option>
-                        <template v-if="ramo.filhos && ramo.filhos.length">
-                          <template v-for="filho in ramo.filhos" :key="filho.id">
-                            <option :value="String(filho.id)" class="option-child">&nbsp;&nbsp;&nbsp;↳ {{ filho.nome }}</option>
-                            <template v-if="filho.filhos && filho.filhos.length">
-                              <option v-for="neto in filho.filhos" :key="neto.id" :value="String(neto.id)" class="option-grandchild">
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• {{ neto.nome }}
-                              </option>
-                            </template>
-                          </template>
-                        </template>
-                      </template>
-                    </select>
-                  </div>
+              <div class="form-group">
+                <label class="form-label"><i class="bi bi-briefcase"></i> Área / Especialidade</label>
+                <input type="text" class="form-control" v-model="form.area_atuacao" maxlength="100" placeholder="Ex.: Odontologia, Clínica geral, Pequenos animais" />
+              </div>
               <div class="form-group">
                 <label class="form-label"><i class="bi bi-arrow-repeat"></i> Renovação Automática</label>
                 <select class="form-control form-select" v-model="form.renovacao_automatica">
@@ -213,7 +191,7 @@
                 <label class="form-label" for="contrato_visibilidade"><i class="bi bi-lock"></i> Visibilidade</label>
                 <select id="contrato_visibilidade" v-model="form.visibilidade" class="form-control">
                   <option value="restrito">Restrito: você, o responsável e quem for liberado</option>
-                  <option value="publico">Público: todos os advogados</option>
+                  <option value="publico">Público: todos os profissionais</option>
                 </select>
               </div>
             </div>
@@ -299,51 +277,6 @@
             </button>
           </div>
           <div class="tab-content" style="padding:1.5rem 0;">
-            <!-- Processos Vinculados -->
-            <div v-if="activeTab === 'processos'">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                <h6 style="margin:0;">Processos Vinculados</h6>
-                <button class="btn btn-sm btn-outline-primary" @click="vincularProcesso"><i class="bi bi-plus"></i> Adicionar</button>
-              </div>
-              <div v-if="form.processos && form.processos.length" class="list-group">
-                <div v-for="proc in form.processos" :key="proc.id_processo" class="list-group-item" style="display:flex; justify-content:space-between; align-items:center; padding:0.75rem; border:1px solid var(--border-color); border-radius:4px; margin-bottom:0.5rem;">
-                  <div>
-                    <strong style="color:var(--primary); cursor:pointer;">{{ proc.numero_processo }}</strong>
-                    <div style="font-size:0.85rem; color:var(--ink-muted);">{{ proc.titulo_processo || 'Sem título' }}</div>
-                  </div>
-                  <button class="btn btn-sm btn-ghost" @click="desvincularProcesso(proc.id_processo)" title="Desvincular">
-                    <i class="bi bi-x-lg" style="color:var(--danger);"></i>
-                  </button>
-                </div>
-              </div>
-              <div v-else class="table-empty">
-                <i class="bi bi-link-45deg"></i>
-                <p>Nenhum processo vinculado.</p>
-              </div>
-            </div>
-            
-            <!-- Casos Vinculados -->
-            <div v-if="activeTab === 'casos'">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                <h6 style="margin:0;">Casos Vinculados</h6>
-                <button class="btn btn-sm btn-outline-primary" @click="vincularCaso"><i class="bi bi-plus"></i> Adicionar</button>
-              </div>
-              <div v-if="form.casos && form.casos.length" class="list-group">
-                <div v-for="caso in form.casos" :key="caso.id_caso" class="list-group-item" style="display:flex; justify-content:space-between; align-items:center; padding:0.75rem; border:1px solid var(--border-color); border-radius:4px; margin-bottom:0.5rem;">
-                  <div>
-                    <strong style="color:var(--primary); cursor:pointer;">{{ caso.titulo }}</strong>
-                  </div>
-                  <button class="btn btn-sm btn-ghost" @click="desvincularCaso(caso.id_caso)" title="Desvincular">
-                    <i class="bi bi-x-lg" style="color:var(--danger);"></i>
-                  </button>
-                </div>
-              </div>
-              <div v-else class="table-empty">
-                <i class="bi bi-briefcase"></i>
-                <p>Nenhum caso vinculado.</p>
-              </div>
-            </div>
-
             <!-- Financeiro Vinculado -->
             <div v-if="activeTab === 'financeiro'">
               <div class="form-row col-2">
@@ -476,17 +409,14 @@ const podeGerenciarAcessos = ref(false)
 const responsavelSalvo = ref('')
 const saving = ref(false)
 const showExtraInfo = ref(false)
-const activeTab = ref('processos')
+const activeTab = ref('financeiro')
 
 // Autocomplete Cliente
 const clienteBusca = ref('')
 const clienteOptions = ref([])
 const showClientes = ref(false)
-const ramos = ref([])
 
 const tabs = [
-  { id: 'processos', label: 'Processos', icon: 'bi bi-bezier2' },
-  { id: 'casos', label: 'Casos', icon: 'bi bi-briefcase' },
   { id: 'financeiro', label: 'Financeiro', icon: 'bi bi-currency-dollar' }
 ]
 
@@ -505,7 +435,6 @@ const form = reactive<Record<string, any>>({
   prazo_vigencia: '',
   prazo_tipo: 'meses',
   valor: '',
-  honorarios_exito: '',
   forma_pagamento: '',
   dia_vencimento: '10',
   renovacao_automatica: 'Não',
@@ -519,8 +448,6 @@ const form = reactive<Record<string, any>>({
   indice_reajuste: '',
   pasta: '',
   clausulas_especiais: '',
-  processos: [],
-  casos: [],
   receitas: [],
   despesas: []
 })
@@ -687,25 +614,8 @@ const excluirContrato = async () => {
   }
 }
 
-const vincularProcesso = () => emit('toast', { msg: 'Vincular Processo (Em breve)', type: 'info' })
-const desvincularProcesso = (id) => emit('toast', { msg: 'Desvincular Processo (Em breve)', type: 'info' })
-const vincularCaso = () => emit('toast', { msg: 'Vincular Caso (Em breve)', type: 'info' })
-const desvincularCaso = (id) => emit('toast', { msg: 'Desvincular Caso (Em breve)', type: 'info' })
-
-const fetchRamos = async () => {
-  try {
-    const res = await apiFetch('contratos/ramos')
-    if (res) {
-      ramos.value = Array.isArray(res) ? res : (res.data || [])
-    }
-  } catch (err) {
-    console.error('Erro ao buscar ramos:', err)
-  }
-}
-
 onMounted(() => {
   fetchDetail()
-  fetchRamos()
   document.addEventListener('click', closeAutocompleteOutside)
 })
 
@@ -783,19 +693,5 @@ onUnmounted(() => {
   font-size: 0.8rem;
 }
 
-/* Ramo tree styling */
-.option-parent {
-  font-weight: 700;
-  color: var(--primary);
-}
 
-.option-child {
-  font-weight: 500;
-  color: var(--ink-dim);
-}
-
-.option-grandchild {
-  font-size: 0.8rem;
-  color: var(--ink-muted);
-}
 </style>

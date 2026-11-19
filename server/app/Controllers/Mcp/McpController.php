@@ -35,7 +35,7 @@ class McpController extends BaseController
         $request  = $psr17->createServerRequestFromGlobals();
 
         $server = Server::builder()
-            ->setServerInfo('OrdoJuris', '1.0.0')
+            ->setServerInfo('Saúde', '1.0.0')
             // Sem logger, o SDK engole em silêncio falhas de descoberta (ex.:
             // symfony/finder ausente, classe de Tool com erro) e o servidor
             // sobe normalmente, só que sem nenhuma tool registrada.

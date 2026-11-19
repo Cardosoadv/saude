@@ -1,7 +1,7 @@
 <template>
   <div class="page-content animate-fade-in">
     <div class="breadcrumb">
-      <a href="#" @click.prevent="$emit('set-view', 'list')">Ordo Juris</a>
+      <a href="#" @click.prevent="$emit('set-view', 'list')">Saúde</a>
       <i class="bi bi-chevron-right"></i>
       <span>Contas Bancárias</span>
     </div>
@@ -70,7 +70,7 @@
           <div class="modal-body" style="padding: 1.5rem;">
             <div class="form-group">
               <label for="conta-nome" class="required-field">Nome da conta</label>
-              <input id="conta-nome" class="form-control" v-model.trim="form.conta" maxlength="50" placeholder="Ex: Conta principal do escritório" :class="{ 'is-invalid': erros.conta }" />
+              <input id="conta-nome" class="form-control" v-model.trim="form.conta" maxlength="50" placeholder="Ex: Conta principal da clínica" :class="{ 'is-invalid': erros.conta }" />
               <small v-if="erros.conta" class="text-danger">{{ erros.conta }}</small>
             </div>
             <div class="form-group">

@@ -5,7 +5,6 @@
 import { apiFetch } from './api'
 
 export interface PreferenciasPush {
-  intimacoes: boolean
   prazos: boolean
 }
 
@@ -14,7 +13,7 @@ export interface ConfigPush {
   chavePublica: string | null
   /** Preferências deste aparelho, quando ele já está inscrito para o usuário logado. */
   inscricao: PreferenciasPush | null
-  /** Janela de envio (hora local do escritório). Ausente em backends antigos. */
+  /** Janela de envio (hora local da clínica). Ausente em backends antigos. */
   horario?: { inicio: number; fim: number }
 }
 

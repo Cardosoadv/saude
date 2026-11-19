@@ -78,7 +78,7 @@ const emit = defineEmits(['close', 'toast'])
 
 const configJson = computed(() => JSON.stringify({
   mcpServers: {
-    ordojuris: {
+    saude: {
       url: props.mcpUrl,
       headers: {
         Authorization: `Bearer ${props.token}`

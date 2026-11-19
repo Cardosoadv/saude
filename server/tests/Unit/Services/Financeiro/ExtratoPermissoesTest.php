@@ -25,7 +25,7 @@ class ExtratoPermissoesTest extends CIUnitTestCase
     public function testGruposComFinanceiroCuringaRecebemAsTres(): void
     {
         $matriz = (new AuthGroups())->matrix;
-        foreach (['admin', 'advogado'] as $grupo) {
+        foreach (['superadmin', 'admin'] as $grupo) {
             $this->assertContains('financeiro.*', $matriz[$grupo], "grupo {$grupo}");
         }
     }

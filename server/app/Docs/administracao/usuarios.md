@@ -1,8 +1,8 @@
 ---
 titulo: Usuários e grupos
-resumo: Cadastrar usuários, definir grupos de acesso, permissões específicas, OAB e rateio.
+resumo: Cadastrar usuários, definir grupos de acesso, permissões específicas, registro profissional e rateio.
 ordem: 10
-palavras_chave: [usuário, senha, esqueci minha senha, grupo, permissão, perfil, OAB, rateio, advogado, responsável, tarefas, quem somos, equipe]
+palavras_chave: [usuário, senha, esqueci minha senha, grupo, permissão, perfil, registro profissional, rateio, profissional, responsável, tarefas, quem somos, equipe]
 ---
 
 Em **Configurações › Usuários** ficam todos os usuários, com busca por nome ou e-mail.
@@ -19,7 +19,7 @@ Clique em **Novo Usuário**, ou no lápis ao lado de um usuário. O formulário 
 - **Participa do Rateio**: o usuário aparece nos repasses de receitas e despesas entre sócios.
 - **Responsável por Tarefas**: só quem estiver marcado aparece na busca de responsável ao criar ou editar uma tarefa. Usuários que já existiam no sistema vêm marcados; os novos, também, mas você pode desmarcar. Tarefas antigas continuam com o responsável que já tinham.
 - **Exibir em Quem Somos**: o usuário passa a integrar a equipe da página **Quem Somos** do site, com a foto e os dados profissionais do perfil. Ao marcar, aparecem os campos **Cargo**, **Ordem na equipe**, **Formação**, **Especializações**, **Áreas de atuação**, **Lattes**, **LinkedIn** e **Minicurrículo**.
-- **Advogado**: exige **Número da OAB** e **UF**. Em Quem Somos a OAB aparece junto do nome.
+- **Profissional**: exige o **registro no conselho** (CRM, CRO, CRMV...) e a **UF**. Em Quem Somos o registro aparece junto do nome.
 - **Nome de Usuário** e **E-mail**: usados para entrar no sistema.
 - **Senha** e **Confirmar Senha**: mínimo de 8 caracteres. Ao editar, deixe em branco para manter a senha atual.
 
@@ -40,18 +40,18 @@ Quem esqueceu a senha clica em **Esqueci minha senha** na tela de entrada e info
 
 ## Quem Somos
 
-A seção **Equipe** da página Quem Somos usa, nesta ordem: os membros cadastrados na própria seção (editor do site); se não houver, os usuários marcados com **Exibir em Quem Somos**; se também não houver, a lista de advogados das configurações do site. Só usuários **ativos** aparecem, e só a foto deles fica pública.
+A seção **Equipe** da página Quem Somos usa, nesta ordem: os membros cadastrados na própria seção (editor do site); se não houver, os usuários marcados com **Exibir em Quem Somos**; se também não houver, a lista de profissionais das configurações do site. Só usuários **ativos** aparecem, e só a foto deles fica pública.
 
 ## Grupos padrão
 
 | Grupo | Para quem |
 |---|---|
 | Super Admin | controle total do sistema, inclusive templates do site |
-| Admin | administradores do dia a dia do escritório |
+| Admin | administradores do dia a dia da clínica |
 | Developer | equipe técnica que mantém o sistema |
-| Advogado | advogados; grupo padrão de novos usuários |
-| User | usuários com acesso restrito aos próprios processos e casos |
-| Beta User | acesso a funções em teste |
+| Profissional | médicos, dentistas, veterinários e demais profissionais de saúde |
+| Recepção | atendimento: clientes, tarefas e financeiro básico |
+| User | acesso mínimo (somente a documentação) |
 | Cliente | só a Área do Cliente, fora deste sistema |
 
 > [!NOTA]

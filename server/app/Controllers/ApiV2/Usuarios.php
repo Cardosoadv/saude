@@ -13,7 +13,6 @@ use Exception;
 /**
  * Controller API para fornecer dados de Usuários via JSON.
  *
- * @author Cardoso
  * @version 1.1.0
  * @since 2026-05-25
  */
@@ -148,7 +147,7 @@ class Usuarios extends BaseController
             $data['photo'] = $this->request->getFile('foto-perfil');
 
             // Trata booleanos enviados por formulário
-            $data['is_lawyer'] = (isset($data['is_lawyer']) && ($data['is_lawyer'] === 'true' || $data['is_lawyer'] == 1)) ? 1 : 0;
+            $data['is_profissional'] = (isset($data['is_profissional']) && ($data['is_profissional'] === 'true' || $data['is_profissional'] == 1)) ? 1 : 0;
             $data['rateio_ativo'] = (isset($data['rateio_ativo']) && ($data['rateio_ativo'] === 'true' || $data['rateio_ativo'] == 1)) ? 1 : 0;
             $data['active'] = (isset($data['active']) && ($data['active'] === 'true' || $data['active'] == 1)) ? 1 : 0;
             foreach (['responsavel_tarefas', 'exibir_site'] as $flag) {
@@ -224,7 +223,7 @@ class Usuarios extends BaseController
             $data = $this->request->getPost();
             $data['photo'] = $this->request->getFile('foto-perfil');
 
-            $data['is_lawyer'] = (isset($data['is_lawyer']) && ($data['is_lawyer'] === 'true' || $data['is_lawyer'] == 1)) ? 1 : 0;
+            $data['is_profissional'] = (isset($data['is_profissional']) && ($data['is_profissional'] === 'true' || $data['is_profissional'] == 1)) ? 1 : 0;
             $data['rateio_ativo'] = (isset($data['rateio_ativo']) && ($data['rateio_ativo'] === 'true' || $data['rateio_ativo'] == 1)) ? 1 : 0;
             $data['active'] = (isset($data['active']) && ($data['active'] === 'true' || $data['active'] == 1)) ? 1 : 0;
             foreach (['responsavel_tarefas', 'exibir_site'] as $flag) {
@@ -325,17 +324,15 @@ class Usuarios extends BaseController
 
     /**
      * Busca usuários para componentes de autocomplete.
-     * Implementa restrição para usuários com permissão 'exclusive' (clientes).
+     * Exige acesso a clientes, tarefas ou administração.
      *
      * @return ResponseInterface
      */
     public function buscar()
     {
-        // Proteção: Clientes (permissão exclusive sem acesso administrativo) não devem listar usuários do sistema
-        $isClientProcessos = auth()->user()->can('processos.exclusive') && !auth()->user()->can('processos.access');
-        $isClientCasos     = auth()->user()->can('casos.exclusive') && !auth()->user()->can('casos.access');
-
-        if ($isClientProcessos || $isClientCasos) {
+        // Quem só tem acesso restrito (sem acesso a clientes/tarefas) não lista usuários do sistema.
+        $usuario = auth()->user();
+        if (!$usuario->can('clientes.access') && !$usuario->can('tarefas.access') && !$usuario->can('admin.access')) {
             return $this->respond(['results' => []], 403);
         }
 
@@ -405,14 +402,14 @@ class Usuarios extends BaseController
         }
     }
 
-    public function getAdvogados(){
+    public function getProfissionais(){
         try {
-            $advogados = $this->service->getAdvogados();
-            return $this->respond(['results' => $advogados]);
+            $profissionais = $this->service->getProfissionais();
+            return $this->respond(['results' => $profissionais]);
         } catch (Exception $e) {
             return $this->respond([
                 'success' => false,
-                'message' => 'Erro interno ao buscar advogados.',
+                'message' => 'Erro interno ao buscar profissionais.',
             ], 500);
         }
     }

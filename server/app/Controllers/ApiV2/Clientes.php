@@ -7,7 +7,7 @@ namespace App\Controllers\ApiV2;
 use App\Controllers\BaseController;
 use App\Services\ClienteService;
 use App\Services\VisibilidadeModulosService;
-use App\Traits\AcessoProcessoTrait;
+use App\Traits\AcessoRegistroTrait;
 use App\Traits\ValidacoesTrait;
 use App\Traits\VerificaPermissoesTrait;
 use CodeIgniter\API\ResponseTrait;
@@ -16,7 +16,6 @@ use Exception;
 /**
  * Controller API V2 para fornecer e gerenciar dados de Clientes via JSON no SPA.
  *
- * @author Cardoso
  * @version 1.4.2
  * @since 2026-05-19
  */
@@ -25,7 +24,7 @@ class Clientes extends BaseController
     use ResponseTrait;
     use VerificaPermissoesTrait;
     use ValidacoesTrait;
-    use AcessoProcessoTrait;
+    use AcessoRegistroTrait;
 
     private ClienteService $service;
     protected $permissaoNecessaria = 'clientes';
@@ -160,17 +159,9 @@ class Clientes extends BaseController
                 ], 404);
             }
 
-            // Busca relacionamentos associados para renderizar nas abas
-            $processos = $this->service->obterProcessosCliente($id, 10);
-            $casos     = $this->service->obterCasosCliente($id, 10);
-
-            //@TODO: Incluir relacionamentos financeiros, tarefas, anotações, etc.
-
             return $this->respond((new VisibilidadeModulosService())->ocultarBlocos([
                 'success'   => true,
                 'data'      => $cliente,
-                'processos' => $processos,
-                'casos'     => $casos,
                 'origens'   => $origens,
             ], ClienteService::BLOCOS_DETALHE));
         } catch (Exception $e) {
@@ -273,7 +264,7 @@ class Clientes extends BaseController
     }
 
     /**
-     * Retorna as estatísticas detalhadas de um cliente específico (processos, finanças, tarefas).
+     * Retorna as estatísticas detalhadas de um cliente específico (finanças, tarefas).
      * Rota GET /api/v2/estatisticasCliente/{id}
      *
      * @param int $id ID do cliente
@@ -303,41 +294,6 @@ class Clientes extends BaseController
             return $this->respond([
                 'success' => false,
                 'message' => 'Erro ao obter estatísticas do cliente.',
-            ], 500);
-        }
-    }
-
-    /**
-     * Retorna as anotações do cliente.
-     * Rota GET /api/v2/clientes/anotacoes/{id}
-     *
-     * @param int $id ID do cliente
-     * @return \CodeIgniter\HTTP\ResponseInterface
-     */
-    public function anotacoes(int $id)
-    {
-        if (!$this->verificaPermissao($this->permissaoNecessaria, 'access')) {
-            return $this->respond([
-                'success' => false,
-                'message' => 'Você não tem permissão para obter anotações.',
-            ], 403);
-        }
-
-        if ($negado = $this->acessoAoRegistroNegado('cliente', $id)) {
-            return $negado;
-        }
-
-        try {
-            $anotacoes = $this->service->obterAnotacoesCliente($id, 10);
-            return $this->respond([
-                'success' => true,
-                'data'    => $anotacoes,
-            ]);
-        } catch (Exception $e) {
-            log_message('error', 'Erro ao obter anotações API V2: ' . $e->getMessage());
-            return $this->respond([
-                'success' => false,
-                'message' => 'Erro ao carregar anotações do cliente.',
             ], 500);
         }
     }
@@ -373,40 +329,6 @@ class Clientes extends BaseController
             return $this->respond([
                 'success' => false,
                 'message' => 'Erro ao carregar receitas financeiras.',
-            ], 500);
-        }
-    }
-
-    /**
-     * Retorna as intimações ativas relacionadas ao cliente.
-     *
-     * @param int $id ID do cliente
-     * @return \CodeIgniter\HTTP\ResponseInterface
-     */
-    public function intimacoes(int $id)
-    {
-        if (!$this->verificaPermissao($this->permissaoNecessaria, 'access')) {
-            return $this->respond([
-                'success' => false,
-                'message' => 'Você não tem permissão para obter intimações.',
-            ], 403);
-        }
-
-        if ($negado = $this->acessoAoRegistroNegado('cliente', $id)) {
-            return $negado;
-        }
-
-        try {
-            $intimacoes = $this->service->obterIntimacoesCliente($id, 10);
-            return $this->respond([
-                'success' => true,
-                'data'    => $intimacoes,
-            ]);
-        } catch (Exception $e) {
-            log_message('error', 'Erro ao obter intimações API V2: ' . $e->getMessage());
-            return $this->respond([
-                'success' => false,
-                'message' => 'Erro ao carregar publicações/intimações.',
             ], 500);
         }
     }

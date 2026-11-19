@@ -28,7 +28,7 @@ class ModulosMcpTest extends CIUnitTestCase
         $this->assertNull(auth()->user());
 
         $modulos = $this->createMock(ModulosService::class);
-        $modulos->method('isActive')->willReturnCallback(static fn (string $slug) => $slug === 'processos');
+        $modulos->method('isActive')->willReturnCallback(static fn (string $slug) => $slug === 'clientes');
         Services::injectMock('modulos', $modulos);
     }
 
@@ -40,7 +40,7 @@ class ModulosMcpTest extends CIUnitTestCase
 
     public function testModuloAtivoSemUsuarioPassa(): void
     {
-        ModulosMcp::exigir('processos', 'processos.access');
+        ModulosMcp::exigir('clientes', 'processos.access');
 
         $this->addToAssertionCount(1);
     }
@@ -56,10 +56,10 @@ class ModulosMcpTest extends CIUnitTestCase
     public function testOcultaBlocoDeModuloDesativado(): void
     {
         $dados = ModulosMcp::ocultarBlocos(
-            ['processos' => [1], 'intimacoes' => [2]],
-            ['processos' => ['processos', 'processos.access'], 'intimacoes' => ['intimacoes', 'intimacoes.access']],
+            ['clientes' => [1], 'contratos' => [2]],
+            ['clientes' => ['clientes', 'processos.access'], 'contratos' => ['contratos', 'intimacoes.access']],
         );
 
-        $this->assertSame(['processos' => [1], 'intimacoes' => []], $dados);
+        $this->assertSame(['clientes' => [1], 'contratos' => []], $dados);
     }
 }

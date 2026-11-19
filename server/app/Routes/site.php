@@ -1,7 +1,6 @@
 <?php
 // API Pública
 $routes->group('api/v2/site/', ['namespace' => 'App\Controllers\ApiV2\Site'], function ($routes) {
-    $routes->get('areas', 'ApiController::areas');
     $routes->get('noticias', 'ApiController::noticias');
     $routes->get('noticias/(:segment)', 'ApiController::noticiaBySlug/$1');
     $routes->post('contact', 'ApiController::submitContact');
@@ -97,18 +96,13 @@ $routes->group('api/v2/site/cliente', [
     'filter'    => 'clienteAuth',
 ], function ($routes) {
     $routes->get('perfil',                          'ClienteArea::perfil');
-    $routes->get('processos',                       'ClienteArea::processos');
-    $routes->get('processos/(:num)',                'ClienteArea::processo/$1');
-    $routes->get('processos/(:num)/timeline',       'ClienteArea::timeline/$1');
-    $routes->get('processos/(:num)/mensagens',      'ClienteArea::mensagens/$1');
-    $routes->post('processos/(:num)/mensagens',     'ClienteArea::enviarMensagem/$1');
 });
 
 // ============================================================
 // FRONTEND SITE SSR
 // ============================================================
 // Todas as rotas públicas passam pelo filtro `hostcanonico`: protocolo, host (www × sem www) e
-// subpasta /ordojuris/ são normalizados com um 301 para a `publicURL` (issue #684).
+// subpasta /clinica/ são normalizados com um 301 para a `publicURL` (issue #684).
 $routes->group('', ['filter' => 'hostcanonico'], function ($routes) {
     $routes->get('/', 'Site::index', ['namespace' => 'App\Controllers']);
     $routes->get('pagina/(:segment)', 'Site::pagina/$1', ['namespace' => 'App\Controllers']);
@@ -125,7 +119,7 @@ $routes->group('', ['filter' => 'hostcanonico'], function ($routes) {
     // robots.txt na raiz do site (issue #685)
     $routes->get('robots.txt', 'Robots::index', ['namespace' => 'App\Controllers\ApiV2\Site']);
 
-    // Contexto do escritório para IAs (issues #686 e #687)
+    // Contexto da clínica para IAs (issues #686 e #687)
     $routes->get('llms.txt', 'LlmsTxt::index', ['namespace' => 'App\Controllers\ApiV2\Site']);
     $routes->get('llms-full.txt', 'LlmsFullTxt::index', ['namespace' => 'App\Controllers\ApiV2\Site']);
 });

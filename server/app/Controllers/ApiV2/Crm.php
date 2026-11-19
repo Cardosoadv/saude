@@ -4,7 +4,7 @@ namespace App\Controllers\ApiV2;
 
 use App\Controllers\BaseController;
 use App\Services\CrmService;
-use App\Traits\AcessoProcessoTrait;
+use App\Traits\AcessoRegistroTrait;
 use App\Traits\VerificaPermissoesTrait;
 use CodeIgniter\API\ResponseTrait;
 
@@ -12,7 +12,7 @@ class Crm extends BaseController
 {
     use ResponseTrait;
     use VerificaPermissoesTrait;
-    use AcessoProcessoTrait;
+    use AcessoRegistroTrait;
 
     protected $service;
 

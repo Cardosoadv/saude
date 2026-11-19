@@ -21,10 +21,10 @@ class PermissoesEfetivasServiceTest extends CIUnitTestCase
     public function testUneDiretasEGruposSemRepetirEOrdena(): void
     {
         $efetivas = PermissoesEfetivasService::calcular(
-            ['advogado', 'estagiario'],
+            ['profissional', 'estagiario'],
             ['clientes.access', 'Objetos.Edit'],
             [
-                'advogado'   => ['objetos.access', 'objetos.edit'],
+                'profissional'   => ['objetos.access', 'objetos.edit'],
                 'estagiario' => ['objetos.access'],
             ],
             self::DECLARADAS,

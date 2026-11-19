@@ -15,7 +15,7 @@ use Exception;
  * Serviço responsável pela sincronização de tarefas com o Google Agendas.
  *
  * Utiliza o mesmo fluxo OAuth centralizado do Google Drive para gerenciar
- * um calendário exclusivo para as tarefas do sistema (Ordo Juris).
+ * um calendário exclusivo para as tarefas do sistema (Saúde).
  */
 class GoogleCalendarService extends BaseService
 {
@@ -43,7 +43,7 @@ class GoogleCalendarService extends BaseService
 
         if ($clientId && $clientSecret && $refreshToken) {
             $this->client = $client ?? new Client();
-            $this->client->setApplicationName('Ordo');
+            $this->client->setApplicationName('Saude');
             $this->client->setScopes([Calendar::CALENDAR]);
             $this->client->setAccessType('offline');
             $this->client->setClientId($clientId);
@@ -69,10 +69,10 @@ class GoogleCalendarService extends BaseService
     }
 
     /**
-     * Busca ou cria o calendário dedicado "Ordo Juris" para tarefas.
+     * Busca ou cria o calendário dedicado "Saúde" para tarefas.
      * Retorna o ID do calendário no Google.
      */
-    public function getOrCreateOrdoCalendar(): ?string
+    public function getOrCreateCalendar(): ?string
     {
         if (!$this->isReady()) {
             return null;
@@ -93,11 +93,11 @@ class GoogleCalendarService extends BaseService
             }
         }
 
-        // 2. Busca na lista de calendários do usuário pelo nome "Ordo Juris"
+        // 2. Busca na lista de calendários do usuário pelo nome "Saúde"
         try {
             $calendarList = $this->service->calendarList->listCalendarList();
             foreach ($calendarList->getItems() as $item) {
-                if ($item->getSummary() === 'Ordo Juris') {
+                if ($item->getSummary() === 'Saúde') {
                     $this->salvarCalendarIdConfig($item->getId());
                     return $item->getId();
                 }
@@ -109,9 +109,9 @@ class GoogleCalendarService extends BaseService
         // 3. Se não encontrar, cria um novo calendário dedicado
         try {
             $newCalendar = new GoogleCalendarModel();
-            $newCalendar->setSummary('Ordo Juris');
+            $newCalendar->setSummary('Saúde');
             $newCalendar->setTimeZone('America/Sao_Paulo');
-            $newCalendar->setDescription('Calendário exclusivo de tarefas e prazos do sistema Ordo Juris.');
+            $newCalendar->setDescription('Calendário exclusivo de tarefas e prazos do sistema Saúde.');
 
             $createdCalendar = $this->service->calendars->insert($newCalendar);
             if ($createdCalendar && $createdCalendar->getId()) {
@@ -119,7 +119,7 @@ class GoogleCalendarService extends BaseService
                 return $createdCalendar->getId();
             }
         } catch (Exception $e) {
-            log_message('error', 'Google Calendar: Erro ao criar calendário "Ordo Juris": ' . $e->getMessage());
+            log_message('error', 'Google Calendar: Erro ao criar calendário "Saúde": ' . $e->getMessage());
         }
 
         return null;
@@ -139,7 +139,7 @@ class GoogleCalendarService extends BaseService
                 $configModel->insert([
                     'nome'      => 'GOOGLE_CALENDAR_ID',
                     'valor'     => $id,
-                    'descricao' => 'ID do calendário do Google utilizado para sincronização de tarefas (Ordo Juris).',
+                    'descricao' => 'ID do calendário do Google utilizado para sincronização de tarefas (Saúde).',
                 ]);
             }
             // Limpa o cache das configurações para carregar o valor atualizado
@@ -163,7 +163,7 @@ class GoogleCalendarService extends BaseService
             return;
         }
 
-        $calendarId = $this->getOrCreateOrdoCalendar();
+        $calendarId = $this->getOrCreateCalendar();
         if (!$calendarId) {
             log_message('error', 'Google Calendar: Não foi possível obter ou criar o calendário dedicado.');
             return;
@@ -274,14 +274,8 @@ class GoogleCalendarService extends BaseService
         if (!empty($tarefa['vinculo_tipo']) && !empty($tarefa['vinculo_info'])) {
             $tipoLabel = '';
             switch ($tarefa['vinculo_tipo']) {
-                case 'processo':
-                    $tipoLabel = 'Proc';
-                    break;
                 case 'cliente':
                     $tipoLabel = 'Cliente';
-                    break;
-                case 'caso':
-                    $tipoLabel = 'Caso';
                     break;
             }
             $titulo .= " ({$tipoLabel}: " . $tarefa['vinculo_info'] . ")";
@@ -330,7 +324,7 @@ class GoogleCalendarService extends BaseService
         }
 
         $description .= "--------------------------------------------------\n";
-        $description .= "Sincronizado automaticamente por Ordo Juris.\n";
+        $description .= "Sincronizado automaticamente por Saúde.\n";
 
         return $description;
     }

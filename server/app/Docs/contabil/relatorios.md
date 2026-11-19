@@ -9,7 +9,7 @@ palavras_chave: [balancete, dre, balanço patrimonial, razão, demonstrações f
 ## Demonstrações disponíveis
 
 A aba **Relatórios** (`#/contabil-relatorios`) permite emitir e consultar as demonstrações
-contábeis oficiais do escritório:
+contábeis oficiais da clínica:
 
 ### 1. Balancete de Verificação
 
@@ -26,7 +26,7 @@ de créditos e detectar divergências de escrituração.
 ### 2. DRE — Demonstração do Resultado do Exercício
 
 Apresenta o resultado econômico (Lucro Líquido ou Prejuízo) acumulado no período:
-- **Receita Bruta**: soma dos honorários e serviços prestados;
+- **Receita Bruta**: soma dos atendimentos e serviços prestados;
 - **Deduções e Tributos sobre Serviços**: ISS, PIS, COFINS;
 - **Custos Operacionais**: despesas diretamente vinculadas à operação;
 - **Despesas Gerais e Administrativas**: aluguel, software, pessoal, materiais;

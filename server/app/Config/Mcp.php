@@ -7,7 +7,7 @@ namespace Config;
 use CodeIgniter\Config\BaseConfig;
 
 /**
- * Configuração do servidor e do cliente MCP do OrdoJuris.
+ * Configuração do servidor e do cliente MCP do sistema.
  *
  * O endpoint /mcp serve dois tipos de chamador, ambos autenticados via
  * `Authorization: Bearer <token>`, diferenciados em McpAuthFilter:

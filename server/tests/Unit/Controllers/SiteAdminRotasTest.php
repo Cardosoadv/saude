@@ -87,7 +87,7 @@ class SiteAdminRotasTest extends CIUnitTestCase
         foreach (['site.conteudo', 'site.configuracoes', 'site.publicar'] as $permissao) {
             $this->assertContains($permissao, $auth->matrix['admin']);
         }
-        foreach (['advogado', 'estagiario'] as $grupo) {
+        foreach (['profissional', 'estagiario'] as $grupo) {
             $this->assertSame([], preg_grep('/^site\./', $auth->matrix[$grupo] ?? []), "{$grupo} não edita o site por padrão");
         }
     }

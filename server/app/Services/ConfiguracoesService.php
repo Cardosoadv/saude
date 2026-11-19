@@ -9,7 +9,6 @@ use App\Repositories\ConfiguracoesRepository;
 /**
  * Serviço para gerenciar a lógica de negócio de configurações.
  * 
- * @author Cardoso
  * @version 1.0.0
  * @since 2026-05-09
  */

@@ -1,7 +1,7 @@
 <template>
   <div class="page-content animate-fade-in">
     <div class="breadcrumb">
-      <a href="#" @click.prevent="emit('set-view', 'dashboard')">Ordo Juris</a>
+      <a href="#" @click.prevent="emit('set-view', 'dashboard')">Saúde</a>
       <i class="bi bi-chevron-right"></i>
       <span>Movimentos do Extrato</span>
     </div>

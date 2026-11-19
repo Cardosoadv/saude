@@ -31,7 +31,7 @@ const CONFIG = {
     { chave: 'contato.telefone', tipo: 'string', grupo: 'contato', valor: '(11) 4000-1111' },
     { chave: 'contato.enderecos', tipo: 'json', grupo: 'contato', valor: [] },
   ],
-  seo: [{ chave: 'seo.titulo_padrao', tipo: 'string', grupo: 'seo', valor: 'Advocacia' }],
+  seo: [{ chave: 'seo.titulo_padrao', tipo: 'string', grupo: 'seo', valor: 'Clínica' }],
   textos: [{ chave: 'textos.contato.nome', tipo: 'string', grupo: 'textos', valor: 'Seu nome' }],
 };
 const SCHEMA = { data: { textos: { 'contato.nome': 'Nome completo *', 'contato.telefone': 'Telefone' } } };

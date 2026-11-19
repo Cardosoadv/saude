@@ -11,10 +11,10 @@ palavras_chave: [balanço, DRE, resultado, lucro, previsão, fluxo de caixa, ano
 **Financeiro › Balanço** mostra, na **Data de Referência**:
 
 - **Saldo Total**: soma de todas as contas;
-- **Rateio Total**: soma do que cabe aos advogados;
+- **Rateio Total**: soma do que cabe aos profissionais;
 - **Diferença**: se houver, procure transações ou saldos iniciais sem rateio.
 
-Abaixo ficam os **Saldos das Contas** e os **Rateios por Advogado**.
+Abaixo ficam os **Saldos das Contas** e os **Rateios por Profissional**.
 
 ## DRE
 

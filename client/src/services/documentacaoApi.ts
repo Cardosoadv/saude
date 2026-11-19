@@ -1,7 +1,7 @@
 /**
  * Cliente da API de leitura da documentação interna (`api/v2/documentacao/*`).
  * Respostas `{ success, data }`; página inexistente ou invisível para o usuário
- * responde 404. Contrato: docs/api-documentacao.md (ordojuris).
+ * responde 404. Contrato: docs/api-documentacao.md.
  */
 import { apiFetch } from './api'
 import type {

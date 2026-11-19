@@ -32,15 +32,6 @@ class ApiController extends BaseController
     }
 
     /**
-     * Retorna a lista de ramos do direito (áreas de atuação).
-     */
-    public function areas()
-    {
-        $areas = $this->crmContactService->getRamosDireito();
-        return $this->respond($areas);
-    }
-
-    /**
      * Retorna a lista de notícias publicadas com paginação e busca.
      * A lógica de pesquisa é delegada ao NewsService/NewsRepository.
      */
@@ -88,7 +79,7 @@ class ApiController extends BaseController
             'email' => 'required|valid_email|max_length[100]',
             'telefone' => 'permit_empty|max_length[20]',
             'mensagem' => 'required',
-            'area_interesse' => 'permit_empty|integer',
+            'area_interesse' => 'permit_empty|max_length[150]',
             'aceite_privacidade' => 'required',
         ];
         $messages = [
@@ -98,9 +89,8 @@ class ApiController extends BaseController
         // Ciência da Política de Privacidade (LGPD): checkbox do formulário ("1"/"on") ou booleano no JSON.
         $data['aceite_privacidade'] = filter_var($data['aceite_privacidade'] ?? false, FILTER_VALIDATE_BOOLEAN) ? '1' : '';
 
-        // Se o valor de 'area' for numérico, define no campo correspondente
-        $areaInteresse = isset($data['area']) && is_numeric($data['area']) ? (int) $data['area'] : 1;
-        $data['area_interesse'] = $areaInteresse;
+        // Serviço/especialidade de interesse informado no formulário (texto livre)
+        $data['area_interesse'] = trim((string) ($data['area_interesse'] ?? $data['area'] ?? '')) ?: null;
 
         $validation = \Config\Services::validation();
         $validation->setRules($rules, $messages);

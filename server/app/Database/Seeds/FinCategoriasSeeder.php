@@ -10,16 +10,16 @@ class FinCategoriasSeeder extends Seeder
     {
         $categorias = [
             'Receita Operacional',
-            'Salário Rodrigo',
-            'Honorário Contrato Avulso',
-            'Honorário Sucumbência',
-            'Honorário Partido Mensal',
+            'Consultas',
+            'Exames e procedimentos',
+            'Convênios e planos de saúde',
             'Outras receitas operacionais',
             'Receita de Capital',
             'Rendimento Aplicações',
             'Outras Receitas de Capital',
             'Despesa Operacional',
-            'Custa Judicial',
+            'Materiais e insumos clínicos',
+            'Medicamentos',
             'Contabilidade',
             'Softwares',
             'Outras despesas operacionais',
@@ -31,7 +31,7 @@ class FinCategoriasSeeder extends Seeder
             'Impostos e Taxas',
             'INSS',
             'SIMPLES',
-            'OAB',
+            'Conselhos profissionais',
             'Taxas Municipais',
             'Taxas Estaduais',
             'Outras Taxas',
@@ -48,9 +48,6 @@ class FinCategoriasSeeder extends Seeder
             $data[] = ['categoria' => $categoria];
         }
 
-        // Usando o modelo para inserir os dados
-        $builder = $this->db->table('fin_categorias'); // Nome da sua tabela
-
-        $builder->insertBatch($data);
+        $this->db->table('fin_categorias')->insertBatch($data);
     }
 }

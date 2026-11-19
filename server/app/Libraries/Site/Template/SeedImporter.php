@@ -15,7 +15,7 @@ use App\Repositories\Site\SiteSecaoRepository;
 
 /**
  * Importa o conteúdo inicial de um template (`seed/content.json`) SEM
- * sobrescrever nada do que o escritório já tem:
+ * sobrescrever nada do que a clínica já tem:
  *
  *  - configuração: só as chaves que ainda não existem;
  *  - página: só os slugs que ainda não existem (as demais ficam como estão);

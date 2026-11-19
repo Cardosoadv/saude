@@ -10,7 +10,7 @@ use App\Repositories\Site\SiteConfiguracaoRepository;
 
 /**
  * Aparência do site (API administrativa, issue #651): cores e fontes do template ativo
- * que o escritório pode sobrescrever. As escolhas ficam em `tema.cores.<token>` e
+ * que a clínica pode sobrescrever. As escolhas ficam em `tema.cores.<token>` e
  * `tema.fontes.<token>` nas configurações; valor vazio ou `null` volta ao padrão.
  */
 class SiteTemaService

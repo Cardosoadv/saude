@@ -12,7 +12,7 @@ use CodeIgniter\Database\Migration;
  * `dados_institucionais`), cria a página `quem-somos` se ainda não existir e a
  * acrescenta aos menus `cabecalho` e `rodape`.
  *
- * Idempotente e não destrutiva: nunca sobrescreve conteúdo do escritório.
+ * Idempotente e não destrutiva: nunca sobrescreve conteúdo da clínica.
  */
 class PaginaQuemSomos extends Migration
 {
@@ -42,7 +42,7 @@ class PaginaQuemSomos extends Migration
 
     public function down()
     {
-        // A página e os links ficam: removê-los apagaria conteúdo do escritório.
+        // A página e os links ficam: removê-los apagaria conteúdo da clínica.
     }
 
     /** O SeedImporter não mexe em menu que já tem itens; aqui só acrescentamos o que falta. */

@@ -3,7 +3,7 @@
    ========================================================================== */
 .news-hero {
   position: relative;
-  background-image: url('../img/themis.jpeg');
+  background-image: url('../img/hero-bg.jpg');
   background-size: cover;
   background-position: center;
   height: 50vh;
